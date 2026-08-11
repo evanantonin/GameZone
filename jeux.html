@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GameZone - Jeux</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+    <a href="index.html">Accueil</a>
+    <a href="liste-jeux.html">Jeux</a>
+</nav>
+
+    <h1>jeu de clique</h1>
+    <a href="liste-jeux.html">
+    <button>⬅️ Retour aux jeux</button>
+</a>
+
+    <p>Score : <span id="score">0</span></p>
+    <p>Meilleur score : <span id="meilleurScore">0</span></p>
+    <p>Temps : <span id="temps">30</span> secondes</p>
+
+    <button id="boutonJeu" onclick="ajouterPoint()">Cliquez !</button>
+    <button id="rejouer" onclick="rejouer()" style="display: none;">
+        Rejouer 🔄
+    </button>
+
+    <script>
+        let score = 0;
+        let meilleurScore = localStorage.getItem("meilleurScore") || 0;
+        let temps = 30;
+        let chrono;
+
+        document.getElementById("meilleurScore").textContent = meilleurScore;
+
+        function ajouterPoint() {
+            score++;
+
+            document.getElementById("score").textContent = score;
+
+            if (score > meilleurScore) {
+                meilleurScore = score;
+                document.getElementById("meilleurScore").textContent = meilleurScore;
+
+                localStorage.setItem("meilleurScore", meilleurScore);
+            }
+        }
+
+        function demarrerChrono() {
+            chrono = setInterval(function () {
+
+                temps--;
+                document.getElementById("temps").textContent = temps;
+
+                if (temps === 0) {
+                    clearInterval(chrono);
+
+                    document.getElementById("boutonJeu").disabled = true;
+                    document.getElementById("rejouer").style.display = "inline-block";
+
+                    alert("Temps écoulé ! Ton score est : " + score);
+                }
+
+            }, 1000);
+        }
+
+        function rejouer() {
+
+            clearInterval(chrono);
+
+            score = 0;
+            temps = 30;
+
+            document.getElementById("score").textContent = score;
+            document.getElementById("temps").textContent = temps;
+
+            document.getElementById("boutonJeu").disabled = false;
+            document.getElementById("rejouer").style.display = "none";
+
+            demarrerChrono();
+        }
+
+        demarrerChrono();
+
+    </script>
+
+</body>
+
+</html>
