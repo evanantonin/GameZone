@@ -3,35 +3,27 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 ```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
 <title>GameZone - Snake</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
+
     #jeu {
         border: 5px solid black;
         display: block;
         margin: 20px auto;
         max-width: 100%;
         height: auto;
-        background-color: #222;
     }
 
-    .controles-snake {
-        text-align: center;
-        margin-top: 15px;
-    }
-
-    .controles-snake button {
-        font-size: 25px;
-        padding: 10px 18px;
-        margin: 3px;
-        cursor: pointer;
-    }
 </style>
 ```
 
@@ -41,8 +33,11 @@
 
 ```
 <nav>
+
     <a href="index.html">Accueil</a>
+
     <a href="liste-jeux.html">Jeux</a>
+
 </nav>
 
 
@@ -51,15 +46,21 @@
     <h2>🐍 Snake</h2>
 
     <p>
-        Utilise ZQSD ou les flèches pour contrôler le serpent.
+        Utilise ZQSD ou les flèches
+        pour contrôler le serpent.
     </p>
 
 
-    <canvas id="jeu" width="400" height="400"></canvas>
+    <canvas
+        id="jeu"
+        width="400"
+        height="400">
+    </canvas>
 
 
     <p>
-        Score : <span id="score">0</span>
+        Score :
+        <span id="score">0</span>
     </p>
 
 
@@ -67,7 +68,10 @@
         🔄 Recommencer
     </button>
 
-    <button onclick="pauseJeu()" id="boutonPause">
+
+    <button
+        onclick="pauseJeu()"
+        id="boutonPause">
         ⏸️ Pause
     </button>
 
@@ -75,25 +79,29 @@
     <p id="message"></p>
 
 
-    <!-- Contrôles pour téléphone -->
+    <!-- CONTRÔLES POUR TÉLÉPHONE -->
 
     <div class="controles-snake">
 
-        <button onclick="changerDirectionTactile('haut')">
+        <button
+            onclick="changerDirectionTactile('haut')">
             ⬆️
         </button>
 
         <div>
 
-            <button onclick="changerDirectionTactile('gauche')">
+            <button
+                onclick="changerDirectionTactile('gauche')">
                 ⬅️
             </button>
 
-            <button onclick="changerDirectionTactile('bas')">
+            <button
+                onclick="changerDirectionTactile('bas')">
                 ⬇️
             </button>
 
-            <button onclick="changerDirectionTactile('droite')">
+            <button
+                onclick="changerDirectionTactile('droite')">
                 ➡️
             </button>
 
@@ -110,10 +118,14 @@
     // VARIABLES
     // =========================
 
-    const canvas = document.getElementById("jeu");
-    const contexte = canvas.getContext("2d");
+    let canvas =
+        document.getElementById("jeu");
 
-    const tailleCase = 20;
+    let contexte =
+        canvas.getContext("2d");
+
+
+    let tailleCase = 20;
 
 
     // =========================
@@ -121,9 +133,13 @@
     // =========================
 
     let serpent = [
+
         { x: 200, y: 200 },
+
         { x: 180, y: 200 },
+
         { x: 160, y: 200 }
+
     ];
 
 
@@ -139,8 +155,11 @@
     // =========================
 
     let nourriture = {
+
         x: 300,
+
         y: 200
+
     };
 
 
@@ -156,71 +175,125 @@
     // =========================
 
     let jeuTermine = false;
+
     let jeuEnPause = false;
 
 
     // =========================
-    // TOUCHES CLAVIER
+    // TOUCHES
     // =========================
 
-    document.addEventListener("keydown", changerDirection);
+    document.addEventListener(
+        "keydown",
+        changerDirection
+    );
 
 
     function changerDirection(event) {
 
-        const touche = event.key.toLowerCase();
-
-
-        // Empêcher les flèches de faire défiler la page
+        // Empêcher l'écran de bouger
+        // avec les flèches
 
         if (
+
             event.key === "ArrowUp" ||
+
             event.key === "ArrowDown" ||
+
             event.key === "ArrowLeft" ||
+
             event.key === "ArrowRight"
+
         ) {
+
             event.preventDefault();
+
         }
 
 
         // Z ou flèche haut
 
         if (
-            (touche === "z" || event.key === "ArrowUp") &&
+
+            (
+                event.key === "z" ||
+                event.key === "Z" ||
+                event.key === "ArrowUp"
+            )
+
+            &&
+
             direction !== "bas"
+
         ) {
+
             direction = "haut";
+
         }
 
 
         // S ou flèche bas
 
         if (
-            (touche === "s" || event.key === "ArrowDown") &&
+
+            (
+                event.key === "s" ||
+                event.key === "S" ||
+                event.key === "ArrowDown"
+            )
+
+            &&
+
             direction !== "haut"
+
         ) {
+
             direction = "bas";
+
         }
 
 
         // Q ou flèche gauche
 
         if (
-            (touche === "q" || event.key === "ArrowLeft") &&
+
+            (
+                event.key === "q" ||
+                event.key === "Q" ||
+                event.key === "ArrowLeft"
+            )
+
+            &&
+
             direction !== "droite"
+
         ) {
+
             direction = "gauche";
+
         }
 
 
         // D ou flèche droite
 
         if (
-            (touche === "d" || event.key === "ArrowRight") &&
+
+            (
+                event.key === "d" ||
+                event.key === "D" ||
+                event.key === "ArrowRight"
+            )
+
+            &&
+
             direction !== "gauche"
+
         ) {
+
             direction = "droite";
+
         }
+
     }
 
 
@@ -228,48 +301,79 @@
     // BOUTONS TACTILES
     // =========================
 
-    function changerDirectionTactile(nouvelleDirection) {
+    function changerDirectionTactile(
+        nouvelleDirection
+    ) {
 
         if (
-            nouvelleDirection === "haut" &&
+
+            nouvelleDirection === "haut"
+
+            &&
+
             direction !== "bas"
+
         ) {
+
             direction = "haut";
+
         }
 
 
         if (
-            nouvelleDirection === "bas" &&
+
+            nouvelleDirection === "bas"
+
+            &&
+
             direction !== "haut"
+
         ) {
+
             direction = "bas";
+
         }
 
 
         if (
-            nouvelleDirection === "gauche" &&
+
+            nouvelleDirection === "gauche"
+
+            &&
+
             direction !== "droite"
+
         ) {
+
             direction = "gauche";
+
         }
 
 
         if (
-            nouvelleDirection === "droite" &&
+
+            nouvelleDirection === "droite"
+
+            &&
+
             direction !== "gauche"
+
         ) {
+
             direction = "droite";
+
         }
+
     }
 
 
     // =========================
-    // DESSINER LE JEU
+    // DESSINER
     // =========================
 
     function dessiner() {
 
-        // Effacer le canvas
+        // Effacer le terrain
 
         contexte.clearRect(
             0,
@@ -286,11 +390,17 @@
             contexte.fillStyle = "green";
 
             contexte.fillRect(
+
                 partie.x,
+
                 partie.y,
+
                 tailleCase,
+
                 tailleCase
+
             );
+
         }
 
 
@@ -299,11 +409,17 @@
         contexte.fillStyle = "red";
 
         contexte.fillRect(
+
             nourriture.x,
+
             nourriture.y,
+
             tailleCase,
+
             tailleCase
+
         );
+
     }
 
 
@@ -313,37 +429,54 @@
 
     function avancer() {
 
-        // Ne rien faire si le jeu est terminé ou en pause
+        if (
+            jeuTermine ||
+            jeuEnPause
+        ) {
 
-        if (jeuTermine || jeuEnPause) {
             return;
+
         }
 
 
-        // Créer une nouvelle tête
+        // Nouvelle tête
 
         let tete = {
+
             x: serpent[0].x,
+
             y: serpent[0].y
+
         };
 
 
         // Déplacement
 
         if (direction === "droite") {
+
             tete.x += tailleCase;
+
         }
+
 
         if (direction === "gauche") {
+
             tete.x -= tailleCase;
+
         }
+
 
         if (direction === "haut") {
+
             tete.y -= tailleCase;
+
         }
 
+
         if (direction === "bas") {
+
             tete.y += tailleCase;
+
         }
 
 
@@ -352,49 +485,70 @@
         // =========================
 
         if (tete.x < 0) {
-            tete.x = canvas.width - tailleCase;
+
+            tete.x =
+                canvas.width - tailleCase;
+
         }
+
 
         if (tete.x >= canvas.width) {
+
             tete.x = 0;
+
         }
+
 
         if (tete.y < 0) {
-            tete.y = canvas.height - tailleCase;
+
+            tete.y =
+                canvas.height - tailleCase;
+
         }
+
 
         if (tete.y >= canvas.height) {
+
             tete.y = 0;
+
         }
 
 
-        // Ajouter la nouvelle tête
+        // Ajouter la tête
 
         serpent.unshift(tete);
 
 
         // =========================
-        // MANGER LA NOURRITURE
+        // MANGER
         // =========================
 
         if (
+
             tete.x === nourriture.x &&
+
             tete.y === nourriture.y
+
         ) {
 
             score++;
 
 
-            document.getElementById("score").textContent = score;
+            document.getElementById(
+                "score"
+            ).textContent = score;
 
 
             nouvelleNourriture();
 
-        } else {
+        }
+
+        else {
 
             // Retirer la queue
 
             serpent.pop();
+
         }
 
 
@@ -403,26 +557,34 @@
         // =========================
 
         for (
+
             let i = 1;
+
             i < serpent.length;
+
             i++
+
         ) {
 
             if (
+
                 tete.x === serpent[i].x &&
+
                 tete.y === serpent[i].y
+
             ) {
 
                 terminerJeu();
 
                 return;
+
             }
+
         }
 
 
-        // Redessiner
-
         dessiner();
+
     }
 
 
@@ -433,17 +595,32 @@
     function nouvelleNourriture() {
 
         nourriture.x =
+
             Math.floor(
+
                 Math.random() *
-                (canvas.width / tailleCase)
+
+                (
+                    canvas.width /
+                    tailleCase
+                )
+
             ) * tailleCase;
 
 
         nourriture.y =
+
             Math.floor(
+
                 Math.random() *
-                (canvas.height / tailleCase)
+
+                (
+                    canvas.height /
+                    tailleCase
+                )
+
             ) * tailleCase;
+
     }
 
 
@@ -456,8 +633,13 @@
         jeuTermine = true;
 
 
-        document.getElementById("message").textContent =
-            "💀 Game Over ! Score : " + score;
+        document.getElementById(
+            "message"
+        ).textContent =
+
+            "💀 Game Over ! Score : "
+            + score;
+
     }
 
 
@@ -467,19 +649,21 @@
 
     function pauseJeu() {
 
-        // Impossible de mettre en pause
-        // une partie terminée
-
         if (jeuTermine) {
+
             return;
+
         }
 
 
-        jeuEnPause = !jeuEnPause;
+        jeuEnPause =
+            !jeuEnPause;
 
 
-        const bouton =
-            document.getElementById("boutonPause");
+        let bouton =
+            document.getElementById(
+                "boutonPause"
+            );
 
 
         if (jeuEnPause) {
@@ -488,18 +672,26 @@
                 "▶️ Reprendre";
 
 
-            document.getElementById("message").textContent =
+            document.getElementById(
+                "message"
+            ).textContent =
                 "⏸️ Jeu en pause";
 
-        } else {
+        }
+
+        else {
 
             bouton.textContent =
                 "⏸️ Pause";
 
 
-            document.getElementById("message").textContent =
+            document.getElementById(
+                "message"
+            ).textContent =
                 "";
+
         }
+
     }
 
 
@@ -509,57 +701,49 @@
 
     function recommencer() {
 
-        // Nouveau serpent
-
         serpent = [
+
             { x: 200, y: 200 },
+
             { x: 180, y: 200 },
+
             { x: 160, y: 200 }
+
         ];
 
-
-        // Direction
 
         direction = "droite";
 
 
-        // Score
-
         score = 0;
 
 
-        // État du jeu
-
         jeuTermine = false;
+
         jeuEnPause = false;
 
 
-        // Afficher score 0
-
-        document.getElementById("score").textContent =
-            "0";
-
-
-        // Effacer message
-
-        document.getElementById("message").textContent =
-            "";
+        document.getElementById(
+            "score"
+        ).textContent = "0";
 
 
-        // Remettre le bouton Pause
+        document.getElementById(
+            "message"
+        ).textContent = "";
 
-        document.getElementById("boutonPause").textContent =
+
+        document.getElementById(
+            "boutonPause"
+        ).textContent =
             "⏸️ Pause";
 
-
-        // Nouvelle nourriture
 
         nouvelleNourriture();
 
 
-        // Redessiner
-
         dessiner();
+
     }
 
 
@@ -570,9 +754,10 @@
     dessiner();
 
 
-    // Le serpent avance toutes les 120 ms
-
-    setInterval(avancer, 120);
+    setInterval(
+        avancer,
+        120
+    );
 
 </script>
 ```
