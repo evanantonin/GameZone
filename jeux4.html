@@ -16,12 +16,207 @@
 
 <style>
 
-    #jeu {
-        border: 5px solid black;
-        display: block;
+    /* =========================
+       SNAKE
+    ========================= */
+
+    .jeu-snake {
+        max-width: 600px;
         margin: 20px auto;
-        max-width: 100%;
+        text-align: center;
+    }
+
+
+    #jeu {
+        display: block;
+        width: min(90vw, 400px);
         height: auto;
+        aspect-ratio: 1 / 1;
+
+        border: 5px solid black;
+        background-color: #eeeeee;
+
+        margin: 20px auto;
+
+        touch-action: none;
+    }
+
+
+    /* =========================
+       CONTRÔLES
+    ========================= */
+
+    .controles-snake {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-top: 20px;
+
+        user-select: none;
+    }
+
+
+    .ligne-controles {
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .controles-snake button {
+        width: 70px;
+        height: 60px;
+
+        margin: 5px;
+
+        font-size: 28px;
+
+        border-radius: 15px;
+
+        touch-action: manipulation;
+
+        -webkit-tap-highlight-color: transparent;
+    }
+
+
+    .controles-snake button:active {
+        transform: scale(0.90);
+    }
+
+
+    /* =========================
+       BOUTONS DU JEU
+    ========================= */
+
+    .boutons-jeu {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        flex-wrap: wrap;
+
+        margin-top: 15px;
+    }
+
+
+    .boutons-jeu button {
+        font-size: 16px;
+        padding: 12px 18px;
+    }
+
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    #message {
+        min-height: 25px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        body {
+            margin: 8px;
+        }
+
+
+        nav {
+            padding: 12px;
+            text-align: center;
+        }
+
+
+        nav a {
+            font-size: 17px;
+            margin-right: 15px;
+        }
+
+
+        .jeu-snake {
+            width: 100%;
+            padding: 15px 5px;
+            box-sizing: border-box;
+        }
+
+
+        .jeu-snake h2 {
+            font-size: 28px;
+        }
+
+
+        .jeu-snake p {
+            font-size: 16px;
+        }
+
+
+        #jeu {
+            width: 92vw;
+            max-width: 400px;
+
+            border-width: 4px;
+
+            margin: 15px auto;
+        }
+
+
+        .controles-snake {
+            margin-top: 15px;
+        }
+
+
+        .controles-snake button {
+            width: 75px;
+            height: 65px;
+
+            font-size: 30px;
+
+            margin: 4px;
+        }
+
+
+        .boutons-jeu {
+            gap: 8px;
+        }
+
+
+        .boutons-jeu button {
+            padding: 14px 18px;
+            font-size: 17px;
+        }
+
+    }
+
+
+    /* =========================
+       PETITS TÉLÉPHONES
+    ========================= */
+
+    @media (max-width: 380px) {
+
+        .controles-snake button {
+            width: 62px;
+            height: 58px;
+
+            font-size: 25px;
+        }
+
+
+        .jeu-snake h2 {
+            font-size: 24px;
+        }
+
+
+        #jeu {
+            width: 90vw;
+        }
+
     }
 
 </style>
@@ -34,9 +229,13 @@
 ```
 <nav>
 
-    <a href="index.html">Accueil</a>
+    <a href="index.html">
+        Accueil
+    </a>
 
-    <a href="liste-jeux.html">Jeux</a>
+    <a href="liste-jeux.html">
+        Jeux
+    </a>
 
 </nav>
 
@@ -45,9 +244,13 @@
 
     <h2>🐍 Snake</h2>
 
+
     <p>
-        Utilise ZQSD ou les flèches
-        pour contrôler le serpent.
+        🖥️ PC : ZQSD ou flèches
+    </p>
+
+    <p>
+        📱 Mobile : utilise les boutons
     </p>
 
 
@@ -59,49 +262,59 @@
 
 
     <p>
-        Score :
-        <span id="score">0</span>
+        🏆 Score :
+        <strong id="score">0</strong>
     </p>
 
 
-    <button onclick="recommencer()">
-        🔄 Recommencer
-    </button>
+    <div class="boutons-jeu">
 
+        <button onclick="recommencer()">
+            🔄 Recommencer
+        </button>
 
-    <button
-        onclick="pauseJeu()"
-        id="boutonPause">
-        ⏸️ Pause
-    </button>
+        <button
+            onclick="pauseJeu()"
+            id="boutonPause">
+            ⏸️ Pause
+        </button>
+
+    </div>
 
 
     <p id="message"></p>
 
 
-    <!-- CONTRÔLES POUR TÉLÉPHONE -->
+    <!-- CONTRÔLES MOBILE -->
 
     <div class="controles-snake">
 
         <button
-            onclick="changerDirectionTactile('haut')">
+            onclick="changerDirectionTactile('haut')"
+            aria-label="Haut">
             ⬆️
         </button>
 
-        <div>
+
+        <div class="ligne-controles">
 
             <button
-                onclick="changerDirectionTactile('gauche')">
+                onclick="changerDirectionTactile('gauche')"
+                aria-label="Gauche">
                 ⬅️
             </button>
 
+
             <button
-                onclick="changerDirectionTactile('bas')">
+                onclick="changerDirectionTactile('bas')"
+                aria-label="Bas">
                 ⬇️
             </button>
 
+
             <button
-                onclick="changerDirectionTactile('droite')">
+                onclick="changerDirectionTactile('droite')"
+                aria-label="Droite">
                 ➡️
             </button>
 
@@ -128,10 +341,6 @@
     let tailleCase = 20;
 
 
-    // =========================
-    // SERPENT
-    // =========================
-
     let serpent = [
 
         { x: 200, y: 200 },
@@ -143,36 +352,17 @@
     ];
 
 
-    // =========================
-    // DIRECTION
-    // =========================
-
     let direction = "droite";
 
 
-    // =========================
-    // NOURRITURE
-    // =========================
-
     let nourriture = {
-
         x: 300,
-
         y: 200
-
     };
 
 
-    // =========================
-    // SCORE
-    // =========================
-
     let score = 0;
 
-
-    // =========================
-    // ÉTAT DU JEU
-    // =========================
 
     let jeuTermine = false;
 
@@ -180,7 +370,7 @@
 
 
     // =========================
-    // TOUCHES
+    // CLAVIER
     // =========================
 
     document.addEventListener(
@@ -191,17 +381,17 @@
 
     function changerDirection(event) {
 
-        // Empêcher l'écran de bouger
-        // avec les flèches
+        const touche =
+            event.key.toLowerCase();
+
+
+        // Empêcher le défilement
 
         if (
 
             event.key === "ArrowUp" ||
-
             event.key === "ArrowDown" ||
-
             event.key === "ArrowLeft" ||
-
             event.key === "ArrowRight"
 
         ) {
@@ -211,15 +401,10 @@
         }
 
 
-        // Z ou flèche haut
-
         if (
 
-            (
-                event.key === "z" ||
-                event.key === "Z" ||
-                event.key === "ArrowUp"
-            )
+            (touche === "z" ||
+            event.key === "ArrowUp")
 
             &&
 
@@ -232,15 +417,10 @@
         }
 
 
-        // S ou flèche bas
-
         if (
 
-            (
-                event.key === "s" ||
-                event.key === "S" ||
-                event.key === "ArrowDown"
-            )
+            (touche === "s" ||
+            event.key === "ArrowDown")
 
             &&
 
@@ -253,15 +433,10 @@
         }
 
 
-        // Q ou flèche gauche
-
         if (
 
-            (
-                event.key === "q" ||
-                event.key === "Q" ||
-                event.key === "ArrowLeft"
-            )
+            (touche === "q" ||
+            event.key === "ArrowLeft")
 
             &&
 
@@ -274,15 +449,10 @@
         }
 
 
-        // D ou flèche droite
-
         if (
 
-            (
-                event.key === "d" ||
-                event.key === "D" ||
-                event.key === "ArrowRight"
-            )
+            (touche === "d" ||
+            event.key === "ArrowRight")
 
             &&
 
@@ -298,7 +468,7 @@
 
 
     // =========================
-    // BOUTONS TACTILES
+    // CONTRÔLES TACTILES
     // =========================
 
     function changerDirectionTactile(
@@ -307,10 +477,7 @@
 
         if (
 
-            nouvelleDirection === "haut"
-
-            &&
-
+            nouvelleDirection === "haut" &&
             direction !== "bas"
 
         ) {
@@ -322,10 +489,7 @@
 
         if (
 
-            nouvelleDirection === "bas"
-
-            &&
-
+            nouvelleDirection === "bas" &&
             direction !== "haut"
 
         ) {
@@ -337,10 +501,7 @@
 
         if (
 
-            nouvelleDirection === "gauche"
-
-            &&
-
+            nouvelleDirection === "gauche" &&
             direction !== "droite"
 
         ) {
@@ -352,10 +513,7 @@
 
         if (
 
-            nouvelleDirection === "droite"
-
-            &&
-
+            nouvelleDirection === "droite" &&
             direction !== "gauche"
 
         ) {
@@ -368,12 +526,10 @@
 
 
     // =========================
-    // DESSINER
+    // DESSIN
     // =========================
 
     function dessiner() {
-
-        // Effacer le terrain
 
         contexte.clearRect(
             0,
@@ -383,30 +539,51 @@
         );
 
 
-        // Dessiner le serpent
+        // Fond
 
-        for (let partie of serpent) {
+        contexte.fillStyle = "#eeeeee";
 
-            contexte.fillStyle = "green";
+        contexte.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        // Serpent
+
+        for (
+            let i = 0;
+            i < serpent.length;
+            i++
+        ) {
+
+            contexte.fillStyle =
+                i === 0
+                    ? "#0b8f00"
+                    : "#21b51a";
+
 
             contexte.fillRect(
 
-                partie.x,
+                serpent[i].x,
 
-                partie.y,
+                serpent[i].y,
 
-                tailleCase,
+                tailleCase - 1,
 
-                tailleCase
+                tailleCase - 1
 
             );
 
         }
 
 
-        // Dessiner la nourriture
+        // Nourriture
 
         contexte.fillStyle = "red";
+
 
         contexte.fillRect(
 
@@ -414,9 +591,9 @@
 
             nourriture.y,
 
-            tailleCase,
+            tailleCase - 1,
 
-            tailleCase
+            tailleCase - 1
 
         );
 
@@ -424,7 +601,7 @@
 
 
     // =========================
-    // FAIRE AVANCER LE SERPENT
+    // AVANCER
     // =========================
 
     function avancer() {
@@ -439,8 +616,6 @@
         }
 
 
-        // Nouvelle tête
-
         let tete = {
 
             x: serpent[0].x,
@@ -449,8 +624,6 @@
 
         };
 
-
-        // Déplacement
 
         if (direction === "droite") {
 
@@ -480,9 +653,7 @@
         }
 
 
-        // =========================
-        // TRAVERSER LES BORDS
-        // =========================
+        // Traverser les bords
 
         if (tete.x < 0) {
 
@@ -514,19 +685,14 @@
         }
 
 
-        // Ajouter la tête
-
         serpent.unshift(tete);
 
 
-        // =========================
-        // MANGER
-        // =========================
+        // Manger
 
         if (
 
             tete.x === nourriture.x &&
-
             tete.y === nourriture.y
 
         ) {
@@ -545,23 +711,17 @@
 
         else {
 
-            // Retirer la queue
-
             serpent.pop();
 
         }
 
 
-        // =========================
-        // SE MORDRE
-        // =========================
+        // Collision avec le corps
 
         for (
 
             let i = 1;
-
             i < serpent.length;
-
             i++
 
         ) {
@@ -569,7 +729,6 @@
             if (
 
                 tete.x === serpent[i].x &&
-
                 tete.y === serpent[i].y
 
             ) {
@@ -589,7 +748,7 @@
 
 
     // =========================
-    // NOUVELLE NOURRITURE
+    // NOURRITURE
     // =========================
 
     function nouvelleNourriture() {
@@ -599,11 +758,7 @@
             Math.floor(
 
                 Math.random() *
-
-                (
-                    canvas.width /
-                    tailleCase
-                )
+                (canvas.width / tailleCase)
 
             ) * tailleCase;
 
@@ -613,11 +768,7 @@
             Math.floor(
 
                 Math.random() *
-
-                (
-                    canvas.height /
-                    tailleCase
-                )
+                (canvas.height / tailleCase)
 
             ) * tailleCase;
 
@@ -748,7 +899,7 @@
 
 
     // =========================
-    // LANCER LE JEU
+    // LANCEMENT
     // =========================
 
     dessiner();
