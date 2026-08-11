@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 <html>
@@ -530,3 +531,509 @@
 
 </html>
 ```
+=======
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GameZone - Snake</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        #jeu {
+            border: 5px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="liste-jeux.html">Jeux</a>
+    </nav>
+
+
+    <div class="jeu-snake">
+
+        <h2>🐍 Snake</h2>
+
+        <p>
+            Utilise ZQSD ou les flèches pour contrôler le serpent.
+        </p>
+
+        <canvas id="jeu" width="400" height="400"></canvas>
+
+        <p>
+            Score : <span id="score">0</span>
+        </p>
+
+        <button onclick="recommencer()">
+            🔄 Recommencer
+        </button>
+
+        <button onclick="pauseJeu()" id="boutonPause">
+            ⏸️ Pause
+        </button>
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <script>
+
+        // =========================
+        // VARIABLES
+        // =========================
+
+        let canvas = document.getElementById("jeu");
+        let contexte = canvas.getContext("2d");
+
+        let tailleCase = 20;
+
+
+        // Serpent
+        let serpent = [
+            { x: 200, y: 200 },
+            { x: 180, y: 200 },
+            { x: 160, y: 200 }
+        ];
+
+
+        // Direction
+        let direction = "droite";
+
+
+        // Nourriture
+        let nourriture = {
+            x: 300,
+            y: 200
+        };
+
+
+        // Score
+        let score = 0;
+
+
+        // État du jeu
+        let jeuTermine = false;
+        let jeuEnPause = false;
+
+
+        // =========================
+        // TOUCHES
+        // =========================
+
+        document.addEventListener(
+            "keydown",
+            changerDirection
+        );
+
+
+        function changerDirection(event) {
+
+            // Empêcher la page de bouger
+            // avec les flèches
+
+            if (
+                event.key === "ArrowUp" ||
+                event.key === "ArrowDown" ||
+                event.key === "ArrowLeft" ||
+                event.key === "ArrowRight"
+            ) {
+
+                event.preventDefault();
+            }
+
+
+            // Z ou flèche haut
+            if (
+                (event.key === "z" ||
+                 event.key === "ArrowUp") &&
+                direction !== "bas"
+            ) {
+
+                direction = "haut";
+            }
+
+
+            // S ou flèche bas
+            if (
+                (event.key === "s" ||
+                 event.key === "ArrowDown") &&
+                direction !== "haut"
+            ) {
+
+                direction = "bas";
+            }
+
+
+            // Q ou flèche gauche
+            if (
+                (event.key === "q" ||
+                 event.key === "ArrowLeft") &&
+                direction !== "droite"
+            ) {
+
+                direction = "gauche";
+            }
+
+
+            // D ou flèche droite
+            if (
+                (event.key === "d" ||
+                 event.key === "ArrowRight") &&
+                direction !== "gauche"
+            ) {
+
+                direction = "droite";
+            }
+        }
+
+
+        // =========================
+        // DESSINER LE JEU
+        // =========================
+
+        function dessiner() {
+
+            // Effacer le canvas
+
+            contexte.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            // Dessiner le serpent
+
+            for (let partie of serpent) {
+
+                contexte.fillStyle = "green";
+
+                contexte.fillRect(
+                    partie.x,
+                    partie.y,
+                    tailleCase,
+                    tailleCase
+                );
+            }
+
+
+            // Dessiner la nourriture
+
+            contexte.fillStyle = "red";
+
+            contexte.fillRect(
+                nourriture.x,
+                nourriture.y,
+                tailleCase,
+                tailleCase
+            );
+        }
+
+
+        // =========================
+        // FAIRE AVANCER LE SERPENT
+        // =========================
+
+        function avancer() {
+
+            // Ne rien faire si le jeu est terminé
+            // ou en pause
+
+            if (jeuTermine || jeuEnPause) {
+                return;
+            }
+
+
+            // Nouvelle tête
+
+            let tete = {
+                x: serpent[0].x,
+                y: serpent[0].y
+            };
+
+
+            // Déplacement
+
+            if (direction === "droite") {
+                tete.x += tailleCase;
+            }
+
+            if (direction === "gauche") {
+                tete.x -= tailleCase;
+            }
+
+            if (direction === "haut") {
+                tete.y -= tailleCase;
+            }
+
+            if (direction === "bas") {
+                tete.y += tailleCase;
+            }
+
+
+            // =========================
+            // TRAVERSER LES BORDS
+            // =========================
+
+            if (tete.x < 0) {
+
+                tete.x =
+                    canvas.width - tailleCase;
+            }
+
+
+            if (tete.x >= canvas.width) {
+
+                tete.x = 0;
+            }
+
+
+            if (tete.y < 0) {
+
+                tete.y =
+                    canvas.height - tailleCase;
+            }
+
+
+            if (tete.y >= canvas.height) {
+
+                tete.y = 0;
+            }
+
+
+            // Ajouter la tête
+
+            serpent.unshift(tete);
+
+
+            // =========================
+            // MANGER LA NOURRITURE
+            // =========================
+
+            if (
+                tete.x === nourriture.x &&
+                tete.y === nourriture.y
+            ) {
+
+                score++;
+
+                document.getElementById(
+                    "score"
+                ).textContent = score;
+
+
+                nouvelleNourriture();
+
+            } else {
+
+                // Retirer la queue
+
+                serpent.pop();
+            }
+
+
+            // =========================
+            // SE MORDRE
+            // =========================
+
+            for (
+                let i = 1;
+                i < serpent.length;
+                i++
+            ) {
+
+                if (
+                    tete.x === serpent[i].x &&
+                    tete.y === serpent[i].y
+                ) {
+
+                    terminerJeu();
+
+                    return;
+                }
+            }
+
+
+            // Redessiner
+
+            dessiner();
+        }
+
+
+        // =========================
+        // NOUVELLE NOURRITURE
+        // =========================
+
+        function nouvelleNourriture() {
+
+            nourriture.x =
+                Math.floor(
+                    Math.random() *
+                    (canvas.width / tailleCase)
+                ) * tailleCase;
+
+
+            nourriture.y =
+                Math.floor(
+                    Math.random() *
+                    (canvas.height / tailleCase)
+                ) * tailleCase;
+        }
+
+
+        // =========================
+        // GAME OVER
+        // =========================
+
+        function terminerJeu() {
+
+            jeuTermine = true;
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "💀 Game Over ! Score : " + score;
+        }
+
+
+        // =========================
+        // PAUSE
+        // =========================
+
+        function pauseJeu() {
+
+            // Impossible de mettre en pause
+            // une partie terminée
+
+            if (jeuTermine) {
+                return;
+            }
+
+
+            jeuEnPause = !jeuEnPause;
+
+
+            let bouton =
+                document.getElementById(
+                    "boutonPause"
+                );
+
+
+            if (jeuEnPause) {
+
+                bouton.textContent =
+                    "▶️ Reprendre";
+
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "⏸️ Jeu en pause";
+
+            } else {
+
+                bouton.textContent =
+                    "⏸️ Pause";
+
+
+                document.getElementById(
+                    "message"
+                ).textContent = "";
+            }
+        }
+
+
+        // =========================
+        // RECOMMENCER
+        // =========================
+
+        function recommencer() {
+
+            // Nouveau serpent
+
+            serpent = [
+                { x: 200, y: 200 },
+                { x: 180, y: 200 },
+                { x: 160, y: 200 }
+            ];
+
+
+            // Direction
+
+            direction = "droite";
+
+
+            // Score
+
+            score = 0;
+
+
+            // État du jeu
+
+            jeuTermine = false;
+            jeuEnPause = false;
+
+
+            // Afficher score 0
+
+            document.getElementById(
+                "score"
+            ).textContent = "0";
+
+
+            // Effacer message
+
+            document.getElementById(
+                "message"
+            ).textContent = "";
+
+
+            // Remettre le bouton Pause
+
+            document.getElementById(
+                "boutonPause"
+            ).textContent = "⏸️ Pause";
+
+
+            // Nouvelle nourriture
+
+            nouvelleNourriture();
+
+
+            // Redessiner
+
+            dessiner();
+        }
+
+
+        // =========================
+        // LANCER LE JEU
+        // =========================
+
+        dessiner();
+
+
+        // Le serpent avance
+        // toutes les 120 millisecondes
+
+        setInterval(
+            avancer,
+            120
+        );
+
+    </script>
+
+</body>
+
+</html>
+```
+>>>>>>> 221972f174383d481314cb0684cedcd3c0fa5c75
