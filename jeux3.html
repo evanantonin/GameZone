@@ -1,514 +1,319 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
-<html>
+
+<html lang="fr">
 
 <head>
-    <title>GameZone - Pierre Feuille Ciseaux</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>GameZone - Pierre Feuille Ciseaux</title>
+
+<link rel="stylesheet" href="style.css">
+```
+
 </head>
 
 <body>
 
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="liste-jeux.html">Jeux</a>
-    </nav>
+```
+<nav>
+    <a href="index.html">Accueil</a>
+    <a href="liste-jeux.html">Jeux</a>
+</nav>
 
-    <div class="jeu-pfc">
 
-        <h2>Pierre 🪨 Feuille 📄 Ciseaux ✂️</h2>
+<div class="jeu-pfc">
 
-        <button onclick="jouer('pierre')">
-            🪨 Pierre
-        </button>
+    <h2>Pierre 🪨 Feuille 📄 Ciseaux ✂️</h2>
 
-        <button onclick="jouer('feuille')">
-            📄 Feuille
-        </button>
 
-        <button onclick="jouer('ciseaux')">
-            ✂️ Ciseaux
-        </button>
+    <button onclick="jouer('pierre')">
+        🪨 Pierre
+    </button>
 
-        <p id="choixJoueur">🧑 Toi : -</p>
+    <button onclick="jouer('feuille')">
+        📄 Feuille
+    </button>
 
-        <p id="choixOrdinateur">🤖 Ordinateur : -</p>
+    <button onclick="jouer('ciseaux')">
+        ✂️ Ciseaux
+    </button>
 
-        <div class="score">
 
-            <p>
-                🧑 Toi :
-                <span id="scoreJoueur">0</span>
-            </p>
+    <p id="choixJoueur">
+        🧑 Toi : -
+    </p>
 
-            <p>
-                🤖 Ordinateur :
-                <span id="scoreOrdinateur">0</span>
-            </p>
+    <p id="choixOrdinateur">
+        🤖 Ordinateur : -
+    </p>
 
-        </div>
 
-        
+    <div class="score">
 
-        <button onclick="resetScore()">
-            🔄 Réinitialiser le score
-        </button>
+        <p>
+            🧑 Toi :
+            <span id="scoreJoueur">0</span>
+        </p>
 
-        <p id="resultat"></p>
-        <h3>📜 Historique</h3>
-
-        <ul id="historique"></ul>
+        <p>
+            🤖 Ordinateur :
+            <span id="scoreOrdinateur">0</span>
+        </p>
 
     </div>
 
 
-    <script>
+    <button onclick="resetScore()">
+        🔄 Réinitialiser le score
+    </button>
+
+
+    <p id="resultat"></p>
+
+
+    <h3>📜 Historique</h3>
+
+    <ul id="historique"></ul>
+
+</div>
+
+
+<script>
+
+    // =========================
+    // SCORES
+    // =========================
+
+    let scoreJoueur = 0;
+    let scoreOrdinateur = 0;
+
+
+    // Partie terminée à 5 points
+
+    let partieTerminee = false;
+
+
+    // =========================
+    // JOUER
+    // =========================
+
+    function jouer(choixJoueur) {
+
+        // Empêcher de jouer après la fin
+
+        if (partieTerminee) {
+            return;
+        }
+
+
+        // Choix possibles
+
+        let choix = [
+            "pierre",
+            "feuille",
+            "ciseaux"
+        ];
+
+
+        // Choix aléatoire de l'ordinateur
+
+        let choixOrdinateur =
+            choix[Math.floor(Math.random() * 3)];
+
+
+        // Emojis
+
+        let emojis = {
+
+            pierre: "🪨 Pierre",
+
+            feuille: "📄 Feuille",
+
+            ciseaux: "✂️ Ciseaux"
+
+        };
+
+
+        // Afficher le choix du joueur
+
+        document.getElementById("choixJoueur").textContent =
+            "🧑 Toi : " + emojis[choixJoueur];
+
+
+        // Afficher le choix de l'ordinateur
+
+        document.getElementById("choixOrdinateur").textContent =
+            "🤖 Ordinateur : " + emojis[choixOrdinateur];
+
+
+        let resultat = "";
+
+
+        // =========================
+        // ÉGALITÉ
+        // =========================
+
+        if (choixJoueur === choixOrdinateur) {
+
+            resultat = "🤝 Égalité !";
+
+        }
+
+
+        // =========================
+        // JOUEUR GAGNE
+        // =========================
+
+        else if (
+
+            (choixJoueur === "pierre" &&
+                choixOrdinateur === "ciseaux")
+
+            ||
+
+            (choixJoueur === "feuille" &&
+                choixOrdinateur === "pierre")
+
+            ||
+
+            (choixJoueur === "ciseaux" &&
+                choixOrdinateur === "feuille")
+
+        ) {
+
+            resultat = "🎉 Tu as gagné !";
+
+            scoreJoueur++;
+
+        }
+
+
+        // =========================
+        // ORDINATEUR GAGNE
+        // =========================
+
+        else {
+
+            resultat = "😢 Tu as perdu !";
+
+            scoreOrdinateur++;
+
+        }
+
+
+        // =========================
+        // METTRE À JOUR LES SCORES
+        // =========================
+
+        document.getElementById("scoreJoueur").textContent =
+            scoreJoueur;
+
+        document.getElementById("scoreOrdinateur").textContent =
+            scoreOrdinateur;
+
+
+        // =========================
+        // AFFICHER LE RÉSULTAT
+        // =========================
+
+        document.getElementById("resultat").textContent =
+            resultat;
+
+
+        // =========================
+        // HISTORIQUE
+        // =========================
+
+        let ligne = document.createElement("li");
+
+
+        ligne.textContent =
+            emojis[choixJoueur]
+            + " vs "
+            + emojis[choixOrdinateur]
+            + " → "
+            + resultat;
+
+
+        document.getElementById("historique")
+            .appendChild(ligne);
+
+
+        // =========================
+        // PREMIER À 5
+        // =========================
+
+        if (scoreJoueur === 5) {
+
+            document.getElementById("resultat").textContent =
+                "🏆 TU AS GAGNÉ LA PARTIE ! 🏆";
+
+            partieTerminee = true;
+
+        }
+
+
+        else if (scoreOrdinateur === 5) {
+
+            document.getElementById("resultat").textContent =
+                "🤖 L'ORDINATEUR A GAGNÉ LA PARTIE !";
+
+            partieTerminee = true;
+
+        }
+
+    }
+
+
+    // =========================
+    // RÉINITIALISER
+    // =========================
+
+    function resetScore() {
+
+        scoreJoueur = 0;
+
+        scoreOrdinateur = 0;
+
+        partieTerminee = false;
+
 
         // Scores
-        let scoreJoueur = 0;
-        let scoreOrdinateur = 0;
 
-        // Permet de bloquer le jeu quand quelqu'un atteint 5
-        let partieTerminee = false;
+        document.getElementById("scoreJoueur").textContent =
+            "0";
 
+        document.getElementById("scoreOrdinateur").textContent =
+            "0";
 
-        function jouer(choixJoueur) {
 
-            // Si la partie est terminée, on ne joue plus
-            if (partieTerminee) {
-                return;
-            }
+        // Résultat
 
+        document.getElementById("resultat").textContent =
+            "";
 
-            // Choix possibles
-            let choix = [
-                "pierre",
-                "feuille",
-                "ciseaux"
-            ];
 
+        // Choix
 
-            // Choix aléatoire de l'ordinateur
-            let choixOrdinateur =
-                choix[Math.floor(Math.random() * 3)];
+        document.getElementById("choixJoueur").textContent =
+            "🧑 Toi : -";
 
+        document.getElementById("choixOrdinateur").textContent =
+            "🤖 Ordinateur : -";
 
-            // Emojis des choix
-            let emojis = {
 
-                pierre: "🪨 Pierre",
+        // Historique
 
-                feuille: "📄 Feuille",
+        document.getElementById("historique").innerHTML =
+            "";
 
-                ciseaux: "✂️ Ciseaux"
+    }
 
-            };
-
-
-            // Afficher le choix du joueur
-            document.getElementById("choixJoueur").textContent =
-                "🧑 Toi : " + emojis[choixJoueur];
-
-
-            // Afficher le choix de l'ordinateur
-            document.getElementById("choixOrdinateur").textContent =
-                "🤖 Ordinateur : " + emojis[choixOrdinateur];
-
-
-            let resultat = "";
-
-
-            // Égalité
-            if (choixJoueur === choixOrdinateur) {
-
-                resultat = "🤝 Égalité !";
-
-            }
-
-
-            // Joueur gagne
-            else if (
-
-                (choixJoueur === "pierre" &&
-                    choixOrdinateur === "ciseaux")
-
-                ||
-
-                (choixJoueur === "feuille" &&
-                    choixOrdinateur === "pierre")
-
-                ||
-
-                (choixJoueur === "ciseaux" &&
-                    choixOrdinateur === "feuille")
-
-            ) {
-
-                resultat = "🎉 Tu as gagné !";
-
-                scoreJoueur++;
-
-            }
-
-
-            // Ordinateur gagne
-            else {
-
-                resultat = "😢 Tu as perdu !";
-
-                scoreOrdinateur++;
-
-            }
-
-
-            // Mettre à jour les scores
-            document.getElementById("scoreJoueur").textContent =
-                scoreJoueur;
-
-            document.getElementById("scoreOrdinateur").textContent =
-                scoreOrdinateur;
-
-
-            // Afficher le résultat
-            document.getElementById("resultat").textContent =
-                resultat;
-
-
-            // Ajouter la manche à l'historique
-            let ligne = document.createElement("li");
-
-            ligne.textContent =
-                emojis[choixJoueur]
-                + " vs "
-                + emojis[choixOrdinateur]
-                + " → "
-                + resultat;
-
-
-            document.getElementById("historique")
-                .appendChild(ligne);
-
-
-            // Vérifier si le joueur arrive à 5
-            if (scoreJoueur === 5) {
-
-                document.getElementById("resultat").textContent =
-                    "🏆 TU AS GAGNÉ LA PARTIE ! 🏆";
-
-                partieTerminee = true;
-
-            }
-
-
-            // Vérifier si l'ordinateur arrive à 5
-            else if (scoreOrdinateur === 5) {
-
-                document.getElementById("resultat").textContent =
-                    "🤖 L'ORDINATEUR A GAGNÉ LA PARTIE !";
-
-                partieTerminee = true;
-
-            }
-
-        }
-
-
-        // Réinitialiser la partie
-        function resetScore() {
-
-            scoreJoueur = 0;
-
-            scoreOrdinateur = 0;
-
-            partieTerminee = false;
-
-
-            // Remettre les scores à zéro
-            document.getElementById("scoreJoueur").textContent =
-                "0";
-
-            document.getElementById("scoreOrdinateur").textContent =
-                "0";
-
-
-            // Effacer le résultat
-            document.getElementById("resultat").textContent =
-                "";
-
-
-            // Effacer les choix
-            document.getElementById("choixJoueur").textContent =
-                "🧑 Toi : -";
-
-            document.getElementById("choixOrdinateur").textContent =
-                "🤖 Ordinateur : -";
-
-
-            // Effacer l'historique
-            document.getElementById("historique").innerHTML =
-                "";
-
-        }
-
-    </script>
+</script>
+```
 
 </body>
 
-=======
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>GameZone - Pierre Feuille Ciseaux</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="liste-jeux.html">Jeux</a>
-    </nav>
-
-    <div class="jeu-pfc">
-
-        <h2>Pierre 🪨 Feuille 📄 Ciseaux ✂️</h2>
-
-        <button onclick="jouer('pierre')">
-            🪨 Pierre
-        </button>
-
-        <button onclick="jouer('feuille')">
-            📄 Feuille
-        </button>
-
-        <button onclick="jouer('ciseaux')">
-            ✂️ Ciseaux
-        </button>
-
-        <p id="choixJoueur">🧑 Toi : -</p>
-
-        <p id="choixOrdinateur">🤖 Ordinateur : -</p>
-
-        <div class="score">
-
-            <p>
-                🧑 Toi :
-                <span id="scoreJoueur">0</span>
-            </p>
-
-            <p>
-                🤖 Ordinateur :
-                <span id="scoreOrdinateur">0</span>
-            </p>
-
-        </div>
-
-        
-
-        <button onclick="resetScore()">
-            🔄 Réinitialiser le score
-        </button>
-
-        <p id="resultat"></p>
-        <h3>📜 Historique</h3>
-
-        <ul id="historique"></ul>
-
-    </div>
-
-
-    <script>
-
-        // Scores
-        let scoreJoueur = 0;
-        let scoreOrdinateur = 0;
-
-        // Permet de bloquer le jeu quand quelqu'un atteint 5
-        let partieTerminee = false;
-
-
-        function jouer(choixJoueur) {
-
-            // Si la partie est terminée, on ne joue plus
-            if (partieTerminee) {
-                return;
-            }
-
-
-            // Choix possibles
-            let choix = [
-                "pierre",
-                "feuille",
-                "ciseaux"
-            ];
-
-
-            // Choix aléatoire de l'ordinateur
-            let choixOrdinateur =
-                choix[Math.floor(Math.random() * 3)];
-
-
-            // Emojis des choix
-            let emojis = {
-
-                pierre: "🪨 Pierre",
-
-                feuille: "📄 Feuille",
-
-                ciseaux: "✂️ Ciseaux"
-
-            };
-
-
-            // Afficher le choix du joueur
-            document.getElementById("choixJoueur").textContent =
-                "🧑 Toi : " + emojis[choixJoueur];
-
-
-            // Afficher le choix de l'ordinateur
-            document.getElementById("choixOrdinateur").textContent =
-                "🤖 Ordinateur : " + emojis[choixOrdinateur];
-
-
-            let resultat = "";
-
-
-            // Égalité
-            if (choixJoueur === choixOrdinateur) {
-
-                resultat = "🤝 Égalité !";
-
-            }
-
-
-            // Joueur gagne
-            else if (
-
-                (choixJoueur === "pierre" &&
-                    choixOrdinateur === "ciseaux")
-
-                ||
-
-                (choixJoueur === "feuille" &&
-                    choixOrdinateur === "pierre")
-
-                ||
-
-                (choixJoueur === "ciseaux" &&
-                    choixOrdinateur === "feuille")
-
-            ) {
-
-                resultat = "🎉 Tu as gagné !";
-
-                scoreJoueur++;
-
-            }
-
-
-            // Ordinateur gagne
-            else {
-
-                resultat = "😢 Tu as perdu !";
-
-                scoreOrdinateur++;
-
-            }
-
-
-            // Mettre à jour les scores
-            document.getElementById("scoreJoueur").textContent =
-                scoreJoueur;
-
-            document.getElementById("scoreOrdinateur").textContent =
-                scoreOrdinateur;
-
-
-            // Afficher le résultat
-            document.getElementById("resultat").textContent =
-                resultat;
-
-
-            // Ajouter la manche à l'historique
-            let ligne = document.createElement("li");
-
-            ligne.textContent =
-                emojis[choixJoueur]
-                + " vs "
-                + emojis[choixOrdinateur]
-                + " → "
-                + resultat;
-
-
-            document.getElementById("historique")
-                .appendChild(ligne);
-
-
-            // Vérifier si le joueur arrive à 5
-            if (scoreJoueur === 5) {
-
-                document.getElementById("resultat").textContent =
-                    "🏆 TU AS GAGNÉ LA PARTIE ! 🏆";
-
-                partieTerminee = true;
-
-            }
-
-
-            // Vérifier si l'ordinateur arrive à 5
-            else if (scoreOrdinateur === 5) {
-
-                document.getElementById("resultat").textContent =
-                    "🤖 L'ORDINATEUR A GAGNÉ LA PARTIE !";
-
-                partieTerminee = true;
-
-            }
-
-        }
-
-
-        // Réinitialiser la partie
-        function resetScore() {
-
-            scoreJoueur = 0;
-
-            scoreOrdinateur = 0;
-
-            partieTerminee = false;
-
-
-            // Remettre les scores à zéro
-            document.getElementById("scoreJoueur").textContent =
-                "0";
-
-            document.getElementById("scoreOrdinateur").textContent =
-                "0";
-
-
-            // Effacer le résultat
-            document.getElementById("resultat").textContent =
-                "";
-
-
-            // Effacer les choix
-            document.getElementById("choixJoueur").textContent =
-                "🧑 Toi : -";
-
-            document.getElementById("choixOrdinateur").textContent =
-                "🤖 Ordinateur : -";
-
-
-            // Effacer l'historique
-            document.getElementById("historique").innerHTML =
-                "";
-
-        }
-
-    </script>
-
-</body>
-
->>>>>>> 221972f174383d481314cb0684cedcd3c0fa5c75
 </html>
