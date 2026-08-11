@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Devine le nombre</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+    <a href="index.html">Accueil</a>
+    <a href="liste-jeux.html">Jeux</a>
+</nav>
+
+    <h1>🎲 Devine le nombre</h1>
+    <a href="liste-jeux.html">
+    <button>⬅️ Retour aux jeux</button>
+</a>
+
+    <p>Je pense à un nombre entre 1 et 5.</p>
+
+    <input type="number" id="nombre" min="1" max="5">
+    
+    <button onclick="verifier()">Valider</button>
+
+    <p id="message"></p>
+
+    <script>
+        let nombreSecret = Math.floor(Math.random() * 5) + 1;
+
+        function verifier() {
+            let choix = document.getElementById("nombre").value;
+
+            if (choix == nombreSecret) {
+                document.getElementById("message").textContent = "🎉 Bravo ! Tu as trouvé le bon nombre.";
+            } else {
+                document.getElementById("message").textContent = "❌ Raté ! Essaie encore.";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
