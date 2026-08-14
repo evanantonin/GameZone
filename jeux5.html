@@ -226,7 +226,7 @@
 
             width: 100%;
 
-            justify-content: space-between;
+            justify-content: center;
 
             margin-top: 20px;
 
@@ -330,8 +330,11 @@
 
         .mode-2-joueurs {
 
+            display: flex;
+
             justify-content: space-between;
 
+            align-items: flex-start;
         }
 
         .mode-2-joueurs .controle-joueur1 {
@@ -387,8 +390,7 @@
             }
 
 
-            /* Afficher les contrôles
-               du joueur 1 */
+            /* Afficher les contrôles */
 
             .controles-mobile {
 
@@ -397,17 +399,9 @@
             }
 
 
-            /* Par défaut :
-               joueur 2 caché */
-
-            .controle-joueur2 {
-
-                display: none;
-
-            }
-
-
-            /* Mode 1 joueur */
+            /* =====================
+               MODE 1 JOUEUR
+            ===================== */
 
             .controles-mobile:not(
                 .mode-2-joueurs
@@ -422,12 +416,25 @@
                 .mode-2-joueurs
             ) .controle-joueur1 {
 
+                display: flex;
+
                 width: 100%;
 
             }
 
 
-            /* Mode 2 joueurs */
+            .controles-mobile:not(
+                .mode-2-joueurs
+            ) .controle-joueur2 {
+
+                display: none;
+
+            }
+
+
+            /* =====================
+               MODE 2 JOUEURS
+            ===================== */
 
             .mode-2-joueurs {
 
@@ -435,6 +442,9 @@
 
                 justify-content:
                     space-between;
+
+                align-items:
+                    flex-start;
 
             }
 
@@ -492,11 +502,22 @@
 
             .controles-mobile button {
 
-                width: 60px;
+                width: 58px;
 
-                height: 55px;
+                height: 52px;
 
-                font-size: 24px;
+                font-size: 23px;
+
+            }
+
+
+            .mode-2-joueurs
+            .controle-joueur1,
+
+            .mode-2-joueurs
+            .controle-joueur2 {
+
+                width: 48%;
 
             }
 
@@ -908,11 +929,6 @@
             reinitialiserBalle();
 
 
-            /*
-                Retirer le mode
-                2 joueurs
-            */
-
             document
                 .getElementById(
                     "controlesMobile"
@@ -964,11 +980,6 @@
 
             reinitialiserBalle();
 
-
-            /*
-                Activer le mode
-                2 joueurs
-            */
 
             document
                 .getElementById(
@@ -1279,6 +1290,58 @@
 
 
         // =========================
+        // ACCELERATION
+        // =========================
+
+        function accelererBalle() {
+
+            /*
+                La balle accélère de 8 %
+                à chaque rebond.
+            */
+
+            balle.vitesseX *= 1.08;
+
+            balle.vitesseY *= 1.08;
+
+
+            /*
+                Empêcher la balle de devenir
+                beaucoup trop rapide.
+            */
+
+            const vitesseMax = 14;
+
+
+            if (
+                Math.abs(balle.vitesseX)
+                > vitesseMax
+            ) {
+
+                balle.vitesseX =
+                    Math.sign(
+                        balle.vitesseX
+                    ) * vitesseMax;
+
+            }
+
+
+            if (
+                Math.abs(balle.vitesseY)
+                > vitesseMax
+            ) {
+
+                balle.vitesseY =
+                    Math.sign(
+                        balle.vitesseY
+                    ) * vitesseMax;
+
+            }
+
+        }
+
+
+        // =========================
         // MISE À JOUR
         // =========================
 
@@ -1360,6 +1423,10 @@
 
                 balle.vitesseX *= -1;
 
+                // ⚡ ACCELERATION
+
+                accelererBalle();
+
             }
 
 
@@ -1379,6 +1446,10 @@
                     balle.rayon;
 
                 balle.vitesseX *= -1;
+
+                // ⚡ ACCELERATION
+
+                accelererBalle();
 
             }
 
@@ -1502,7 +1573,7 @@
                     document.getElementById(
                         "message"
                     ).textContent =
-                        "🏆 🧑‍💻 JOUEUR 2 A GAGNÉ ! 🏆";
+                        "🏆 🧑‍💻 JOUEUR 2 A GAGNÉ LA PARTIE ! 🏆";
 
                 }
 
