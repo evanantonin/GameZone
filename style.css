@@ -463,3 +463,69 @@ body.page-jeu h1 {
 body.page-jeu p {
     color: white;
 }
+/* =========================
+   CONTROLES PONG 2 JOUEURS
+========================= */
+
+.controles-2-joueurs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    gap: 30px;
+}
+
+.controles-joueur {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.controles-joueur h3 {
+    margin: 5px;
+    color: white;
+}
+
+.controles-joueur button {
+    width: 65px;
+    height: 55px;
+    font-size: 25px;
+    padding: 0;
+}
+
+/* Joueur 1 à gauche */
+.joueur1 {
+    order: 1;
+}
+
+/* Joueur 2 à droite */
+.joueur2 {
+    order: 2;
+}
+
+
+/* =========================
+   TELEPHONE
+========================= */
+
+@media (max-width: 600px) {
+
+    .controles-2-joueurs {
+        width: 95%;
+        gap: 10px;
+    }
+
+    .controles-joueur {
+        width: 45%;
+    }
+
+    .controles-joueur button {
+        width: 60px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+}
