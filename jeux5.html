@@ -49,18 +49,6 @@
 
 
         /* =========================
-           TITRE
-        ========================= */
-
-        h1 {
-            text-align: center;
-            color: #00aaff;
-            font-size: 45px;
-            margin: 20px;
-        }
-
-
-        /* =========================
            CONTENEUR
         ========================= */
 
@@ -73,7 +61,18 @@
 
 
         /* =========================
-           BOUTON RETOUR
+           TITRE
+        ========================= */
+
+        h1 {
+            color: #00aaff;
+            font-size: 45px;
+            margin: 20px;
+        }
+
+
+        /* =========================
+           RETOUR
         ========================= */
 
         .retour {
@@ -132,6 +131,7 @@
         .score-pong {
             display: flex;
             justify-content: center;
+
             gap: 80px;
 
             font-size: 25px;
@@ -150,7 +150,7 @@
 
 
         /* =========================
-           CANVAS
+           TERRAIN PONG
         ========================= */
 
         #pong {
@@ -164,6 +164,7 @@
             background-color: black;
 
             border: 4px solid #00aaff;
+
             border-radius: 10px;
 
             box-shadow:
@@ -179,84 +180,10 @@
             min-height: 30px;
 
             font-size: 22px;
+
             font-weight: bold;
 
             color: #00aaff;
-        }
-
-
-        /* =========================
-           CONTROLES MOBILES
-        ========================= */
-
-        .controles-mobile {
-            display: none;
-
-            width: 100%;
-
-            justify-content: space-between;
-
-            margin-top: 20px;
-
-            user-select: none;
-        }
-
-
-        /* JOUEUR 1 */
-
-        .controle-joueur1 {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            width: 45%;
-        }
-
-        .controle-joueur1 h3 {
-            color: #00aaff;
-        }
-
-
-        /* JOUEUR 2 */
-
-        .controle-joueur2 {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            width: 45%;
-        }
-
-        .controle-joueur2 h3 {
-            color: #ff4444;
-        }
-
-
-        /* BOUTONS CONTROLE */
-
-        .controles-mobile button {
-            width: 70px;
-            height: 60px;
-
-            margin: 5px;
-
-            border: none;
-            border-radius: 15px;
-
-            font-size: 28px;
-
-            background-color: #333;
-            color: white;
-
-            cursor: pointer;
-
-            touch-action: manipulation;
-
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .controles-mobile button:active {
-            transform: scale(0.90);
         }
 
 
@@ -270,9 +197,11 @@
             padding: 12px 22px;
 
             border: none;
+
             border-radius: 10px;
 
             background-color: #00aaff;
+
             color: white;
 
             font-size: 17px;
@@ -282,7 +211,102 @@
 
         #boutonRejouer:hover {
             background-color: #007bff;
+
             transform: scale(1.05);
+        }
+
+
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
+
+        .controles-mobile {
+
+            display: none;
+
+            width: 100%;
+
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+            user-select: none;
+        }
+
+
+        /* =========================
+           JOUEUR 1
+        ========================= */
+
+        .controle-joueur1 {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            width: 45%;
+        }
+
+        .controle-joueur1 h3 {
+            color: #00aaff;
+        }
+
+
+        /* =========================
+           JOUEUR 2
+        ========================= */
+
+        .controle-joueur2 {
+
+            display: none;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            width: 45%;
+        }
+
+        .controle-joueur2 h3 {
+            color: #ff4444;
+        }
+
+
+        /* =========================
+           BOUTONS MOBILE
+        ========================= */
+
+        .controles-mobile button {
+
+            width: 70px;
+
+            height: 60px;
+
+            margin: 5px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            font-size: 28px;
+
+            background-color: #333;
+
+            color: white;
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .controles-mobile button:active {
+
+            transform: scale(0.90);
+
         }
 
 
@@ -291,6 +315,7 @@
         ========================= */
 
         .instructions {
+
             margin-top: 20px;
 
             color: #ccc;
@@ -300,14 +325,35 @@
 
 
         /* =========================
+           MODE 2 JOUEURS
+        ========================= */
+
+        .mode-2-joueurs {
+
+            justify-content: space-between;
+
+        }
+
+        .mode-2-joueurs .controle-joueur1 {
+
+            display: flex;
+
+            width: 45%;
+        }
+
+        .mode-2-joueurs .controle-joueur2 {
+
+            display: flex;
+
+            width: 45%;
+        }
+
+
+        /* =========================
            MOBILE
         ========================= */
 
         @media (max-width: 600px) {
-
-            h1 {
-                font-size: 34px;
-            }
 
             nav {
                 padding: 12px 5px;
@@ -315,25 +361,108 @@
 
             nav a {
                 font-size: 17px;
+
                 margin: 0 8px;
             }
 
+
+            h1 {
+                font-size: 34px;
+            }
+
+
             .score-pong {
+
                 gap: 35px;
+
                 font-size: 21px;
             }
 
+
             #pong {
+
                 width: 94vw;
+
                 border-width: 3px;
             }
 
+
+            /* Afficher les contrôles
+               du joueur 1 */
+
             .controles-mobile {
+
                 display: flex;
+
             }
 
+
+            /* Par défaut :
+               joueur 2 caché */
+
+            .controle-joueur2 {
+
+                display: none;
+
+            }
+
+
+            /* Mode 1 joueur */
+
+            .controles-mobile:not(
+                .mode-2-joueurs
+            ) {
+
+                justify-content: center;
+
+            }
+
+
+            .controles-mobile:not(
+                .mode-2-joueurs
+            ) .controle-joueur1 {
+
+                width: 100%;
+
+            }
+
+
+            /* Mode 2 joueurs */
+
+            .mode-2-joueurs {
+
+                display: flex;
+
+                justify-content:
+                    space-between;
+
+            }
+
+
+            .mode-2-joueurs
+            .controle-joueur1 {
+
+                display: flex;
+
+                width: 45%;
+
+            }
+
+
+            .mode-2-joueurs
+            .controle-joueur2 {
+
+                display: flex;
+
+                width: 45%;
+
+            }
+
+
             .instructions {
+
                 font-size: 14px;
+
             }
 
         }
@@ -346,40 +475,32 @@
         @media (max-width: 380px) {
 
             h1 {
+
                 font-size: 29px;
+
             }
+
 
             .score-pong {
+
                 gap: 20px;
+
                 font-size: 18px;
+
             }
 
+
             .controles-mobile button {
+
                 width: 60px;
+
                 height: 55px;
+
                 font-size: 24px;
+
             }
 
         }
-        /* =========================
-   CACHER LES CONTROLES JOUEUR 2 SUR MOBILE
-========================= */
-
-@media (max-width: 600px) {
-
-    .controle-joueur2 {
-        display: none;
-    }
-
-    .controles-mobile {
-        justify-content: center;
-    }
-
-    .controle-joueur1 {
-        width: 100%;
-    }
-
-}
 
     </style>
 
@@ -413,10 +534,14 @@
     <main class="pong-container">
 
 
-        <h1>🏓 Pong</h1>
+        <h1>
+            🏓 Pong
+        </h1>
 
 
-        <!-- RETOUR -->
+        <!-- =========================
+             RETOUR
+        ========================= -->
 
         <div class="retour">
 
@@ -432,17 +557,22 @@
 
 
         <!-- =========================
-             CHOIX DU MODE
+             MODES
         ========================= -->
 
         <div class="choix-mode">
 
             <button onclick="modeUnJoueur()">
+
                 🤖 1 Joueur
+
             </button>
 
+
             <button onclick="modeDeuxJoueurs()">
+
                 👥 2 Joueurs
+
             </button>
 
         </div>
@@ -455,26 +585,41 @@
         <div class="score-pong">
 
             <div>
+
                 🧑 Joueur 1 :
-                <span id="scoreJoueur1">0</span>
+
+                <span id="scoreJoueur1">
+                    0
+                </span>
+
             </div>
 
+
             <div>
+
                 🧑‍💻 Joueur 2 :
-                <span id="scoreJoueur2">0</span>
+
+                <span id="scoreJoueur2">
+                    0
+                </span>
+
             </div>
 
         </div>
 
 
         <!-- =========================
-             TERRAIN
+             CANVAS
         ========================= -->
 
         <canvas
             id="pong"
             width="800"
             height="450">
+
+            Ton navigateur ne supporte pas
+            le jeu Pong.
+
         </canvas>
 
 
@@ -483,7 +628,9 @@
         ========================= -->
 
         <p id="message">
+
             Choisis un mode pour commencer !
+
         </p>
 
 
@@ -501,7 +648,7 @@
 
 
         <!-- =========================
-             CONTROLES MOBILE
+             CONTROLES TELEPHONE
         ========================= -->
 
         <div
@@ -510,7 +657,7 @@
 
 
             <!-- =====================
-                 JOUEUR 1 À GAUCHE
+                 JOUEUR 1
             ====================== -->
 
             <div class="controle-joueur1">
@@ -519,17 +666,17 @@
                     🧑 Joueur 1
                 </h3>
 
+
                 <button
-                    onclick="monterJoueur1()"
-                    aria-label="Joueur 1 monter">
+                    onclick="monterJoueur1()">
 
                     ⬆️
 
                 </button>
 
+
                 <button
-                    onclick="descendreJoueur1()"
-                    aria-label="Joueur 1 descendre">
+                    onclick="descendreJoueur1()">
 
                     ⬇️
 
@@ -539,26 +686,28 @@
 
 
             <!-- =====================
-                 JOUEUR 2 À DROITE
+                 JOUEUR 2
             ====================== -->
 
-            <div class="controle-joueur2">
+            <div
+                class="controle-joueur2"
+                id="controleJoueur2">
 
                 <h3>
                     🧑‍💻 Joueur 2
                 </h3>
 
+
                 <button
-                    onclick="monterJoueur2()"
-                    aria-label="Joueur 2 monter">
+                    onclick="monterJoueur2()">
 
                     ⬆️
 
                 </button>
 
+
                 <button
-                    onclick="descendreJoueur2()"
-                    aria-label="Joueur 2 descendre">
+                    onclick="descendreJoueur2()">
 
                     ⬇️
 
@@ -577,7 +726,9 @@
         <div class="instructions">
 
             <p id="instruction">
+
                 🎮 Choisis un mode de jeu.
+
             </p>
 
         </div>
@@ -613,12 +764,15 @@
 
             x: 20,
 
-            y: canvas.height / 2 -
+            y:
+                canvas.height / 2 -
                 hauteurRaquette / 2,
 
-            largeur: largeurRaquette,
+            largeur:
+                largeurRaquette,
 
-            hauteur: hauteurRaquette,
+            hauteur:
+                hauteurRaquette,
 
             vitesse: 7
 
@@ -627,14 +781,19 @@
 
         let joueur2 = {
 
-            x: canvas.width - 32,
+            x:
+                canvas.width -
+                32,
 
-            y: canvas.height / 2 -
+            y:
+                canvas.height / 2 -
                 hauteurRaquette / 2,
 
-            largeur: largeurRaquette,
+            largeur:
+                largeurRaquette,
 
-            hauteur: hauteurRaquette,
+            hauteur:
+                hauteurRaquette,
 
             vitesse: 7
 
@@ -647,9 +806,11 @@
 
         let balle = {
 
-            x: canvas.width / 2,
+            x:
+                canvas.width / 2,
 
-            y: canvas.height / 2,
+            y:
+                canvas.height / 2,
 
             rayon: 9,
 
@@ -691,11 +852,17 @@
             "keydown",
             function(event) {
 
-                touches[event.key.toLowerCase()] = true;
+                touches[
+                    event.key.toLowerCase()
+                ] = true;
+
 
                 if (
-                    event.key === "ArrowUp" ||
-                    event.key === "ArrowDown"
+                    event.key ===
+                        "ArrowUp" ||
+
+                    event.key ===
+                        "ArrowDown"
                 ) {
 
                     event.preventDefault();
@@ -710,7 +877,9 @@
             "keyup",
             function(event) {
 
-                touches[event.key.toLowerCase()] = false;
+                touches[
+                    event.key.toLowerCase()
+                ] = false;
 
             }
         );
@@ -728,28 +897,47 @@
 
             jeuTermine = false;
 
+
             score1 = 0;
 
             score2 = 0;
 
+
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            /*
+                Retirer le mode
+                2 joueurs
+            */
+
+            document
+                .getElementById(
+                    "controlesMobile"
+                )
+                .classList.remove(
+                    "mode-2-joueurs"
+                );
+
 
             document.getElementById(
                 "message"
             ).textContent =
                 "🏓 Joue contre l'ordinateur !";
 
+
             document.getElementById(
                 "instruction"
             ).textContent =
-                "⌨️ Joueur 1 : Z / S ou ⬆️⬇️";
+                "⌨️ Joueur 1 : Z / S ou ↑ / ↓";
 
 
             document.getElementById(
                 "boutonRejouer"
-            ).style.display = "none";
+            ).style.display =
+                "none";
 
         }
 
@@ -766,72 +954,103 @@
 
             jeuTermine = false;
 
+
             score1 = 0;
 
             score2 = 0;
 
+
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            /*
+                Activer le mode
+                2 joueurs
+            */
+
+            document
+                .getElementById(
+                    "controlesMobile"
+                )
+                .classList.add(
+                    "mode-2-joueurs"
+                );
+
 
             document.getElementById(
                 "message"
             ).textContent =
                 "👥 Mode 2 joueurs !";
 
+
             document.getElementById(
                 "instruction"
             ).textContent =
-                "🧑 Joueur 1 : Z/S | 🧑‍💻 Joueur 2 : ↑/↓";
+                "🧑 Joueur 1 : Z / S | 🧑‍💻 Joueur 2 : ↑ / ↓";
 
 
             document.getElementById(
                 "boutonRejouer"
-            ).style.display = "none";
+            ).style.display =
+                "none";
 
         }
 
 
         // =========================
-        // JOUEUR 1
+        // JOUEUR 1 MOBILE
         // =========================
 
         function monterJoueur1() {
 
-            joueur1.y -= joueur1.vitesse * 3;
+            joueur1.y -=
+                joueur1.vitesse * 3;
 
-            limiterRaquette(joueur1);
+            limiterRaquette(
+                joueur1
+            );
 
         }
 
 
         function descendreJoueur1() {
 
-            joueur1.y += joueur1.vitesse * 3;
+            joueur1.y +=
+                joueur1.vitesse * 3;
 
-            limiterRaquette(joueur1);
+            limiterRaquette(
+                joueur1
+            );
 
         }
 
 
         // =========================
-        // JOUEUR 2
+        // JOUEUR 2 MOBILE
         // =========================
 
         function monterJoueur2() {
 
-            joueur2.y -= joueur2.vitesse * 3;
+            joueur2.y -=
+                joueur2.vitesse * 3;
 
-            limiterRaquette(joueur2);
+            limiterRaquette(
+                joueur2
+            );
 
         }
 
 
         function descendreJoueur2() {
 
-            joueur2.y += joueur2.vitesse * 3;
+            joueur2.y +=
+                joueur2.vitesse * 3;
 
-            limiterRaquette(joueur2);
+            limiterRaquette(
+                joueur2
+            );
 
         }
 
@@ -840,17 +1059,23 @@
         // LIMITER RAQUETTE
         // =========================
 
-        function limiterRaquette(raquette) {
+        function limiterRaquette(
+            raquette
+        ) {
 
-            if (raquette.y < 0) {
+            if (
+                raquette.y < 0
+            ) {
 
                 raquette.y = 0;
 
             }
 
+
             if (
-                raquette.y + raquette.hauteur
-                > canvas.height
+                raquette.y +
+                raquette.hauteur >
+                canvas.height
             ) {
 
                 raquette.y =
@@ -863,17 +1088,18 @@
 
 
         // =========================
-        // CONTROLES
+        // CONTROLES CLAVIER
         // =========================
 
         function controles() {
 
 
-            // Joueur 1
+            // =====================
+            // JOUEUR 1
+            // =====================
 
             if (
-                touches["z"] ||
-                touches["arrowup"]
+                touches["z"]
             ) {
 
                 joueur1.y -=
@@ -883,8 +1109,7 @@
 
 
             if (
-                touches["s"] ||
-                touches["arrowdown"]
+                touches["s"]
             ) {
 
                 joueur1.y +=
@@ -893,9 +1118,13 @@
             }
 
 
-            // Mode 2 joueurs
+            // =====================
+            // JOUEUR 2
+            // =====================
 
-            if (mode === 2) {
+            if (
+                mode === 2
+            ) {
 
                 if (
                     touches["arrowup"]
@@ -905,6 +1134,7 @@
                         joueur2.vitesse;
 
                 }
+
 
                 if (
                     touches["arrowdown"]
@@ -918,9 +1148,13 @@
             }
 
 
-            limiterRaquette(joueur1);
+            limiterRaquette(
+                joueur1
+            );
 
-            limiterRaquette(joueur2);
+            limiterRaquette(
+                joueur2
+            );
 
         }
 
@@ -931,7 +1165,9 @@
 
         function ordinateur() {
 
-            if (mode !== 1) {
+            if (
+                mode !== 1
+            ) {
 
                 return;
 
@@ -949,7 +1185,8 @@
             ) {
 
                 joueur2.y +=
-                    joueur2.vitesse * 0.75;
+                    joueur2.vitesse *
+                    0.75;
 
             }
 
@@ -960,18 +1197,21 @@
             ) {
 
                 joueur2.y -=
-                    joueur2.vitesse * 0.75;
+                    joueur2.vitesse *
+                    0.75;
 
             }
 
 
-            limiterRaquette(joueur2);
+            limiterRaquette(
+                joueur2
+            );
 
         }
 
 
         // =========================
-        // BALLE
+        // REINITIALISER BALLE
         // =========================
 
         function reinitialiserBalle() {
@@ -990,13 +1230,13 @@
 
 
             balle.vitesseY =
-                (Math.random() * 4) - 2;
+                Math.random() * 4 - 2;
 
         }
 
 
         // =========================
-        // COLLISION RAQUETTE
+        // COLLISION
         // =========================
 
         function collisionRaquette(
@@ -1005,27 +1245,31 @@
 
             return (
 
-                balle.x - balle.rayon
-                    <
+                balle.x -
+                balle.rayon
+                <
                 raquette.x +
                 raquette.largeur
 
                 &&
 
-                balle.x + balle.rayon
-                    >
+                balle.x +
+                balle.rayon
+                >
                 raquette.x
 
                 &&
 
-                balle.y + balle.rayon
-                    >
+                balle.y +
+                balle.rayon
+                >
                 raquette.y
 
                 &&
 
-                balle.y - balle.rayon
-                    <
+                balle.y -
+                balle.rayon
+                <
                 raquette.y +
                 raquette.hauteur
 
@@ -1035,7 +1279,7 @@
 
 
         // =========================
-        // METTRE À JOUR
+        // MISE À JOUR
         // =========================
 
         function mettreAJour() {
@@ -1063,7 +1307,7 @@
 
 
             // =====================
-            // MURS HAUT / BAS
+            // MUR HAUT
             // =====================
 
             if (
@@ -1078,6 +1322,10 @@
 
             }
 
+
+            // =====================
+            // MUR BAS
+            // =====================
 
             if (
                 balle.y +
@@ -1100,7 +1348,9 @@
 
             if (
                 balle.vitesseX < 0 &&
-                collisionRaquette(joueur1)
+                collisionRaquette(
+                    joueur1
+                )
             ) {
 
                 balle.x =
@@ -1119,7 +1369,9 @@
 
             if (
                 balle.vitesseX > 0 &&
-                collisionRaquette(joueur2)
+                collisionRaquette(
+                    joueur2
+                )
             ) {
 
                 balle.x =
@@ -1145,7 +1397,11 @@
 
                 verifierVictoire();
 
-                reinitialiserBalle();
+                if (!jeuTermine) {
+
+                    reinitialiserBalle();
+
+                }
 
             }
 
@@ -1165,7 +1421,11 @@
 
                 verifierVictoire();
 
-                reinitialiserBalle();
+                if (!jeuTermine) {
+
+                    reinitialiserBalle();
+
+                }
 
             }
 
@@ -1180,12 +1440,14 @@
 
             document.getElementById(
                 "scoreJoueur1"
-            ).textContent = score1;
+            ).textContent =
+                score1;
 
 
             document.getElementById(
                 "scoreJoueur2"
-            ).textContent = score2;
+            ).textContent =
+                score2;
 
         }
 
@@ -1202,10 +1464,12 @@
 
                 jeuTermine = true;
 
+
                 document.getElementById(
                     "message"
                 ).textContent =
                     "🏆 🧑 JOUEUR 1 A GAGNÉ ! 🏆";
+
 
                 document.getElementById(
                     "boutonRejouer"
@@ -1222,7 +1486,9 @@
                 jeuTermine = true;
 
 
-                if (mode === 1) {
+                if (
+                    mode === 1
+                ) {
 
                     document.getElementById(
                         "message"
@@ -1265,6 +1531,7 @@
 
             jeuCommence = true;
 
+
             mettreAJourScore();
 
             reinitialiserBalle();
@@ -1290,7 +1557,9 @@
 
         function dessiner() {
 
-            // Fond
+            // =====================
+            // FOND
+            // =====================
 
             contexte.fillStyle =
                 "black";
@@ -1303,7 +1572,9 @@
             );
 
 
-            // Ligne centrale
+            // =====================
+            // LIGNE CENTRALE
+            // =====================
 
             contexte.strokeStyle =
                 "#333";
@@ -1313,6 +1584,7 @@
             contexte.setLineDash(
                 [10, 10]
             );
+
 
             contexte.beginPath();
 
@@ -1332,7 +1604,7 @@
 
 
             // =====================
-            // RAQUETTE JOUEUR 1
+            // JOUEUR 1
             // =====================
 
             contexte.fillStyle =
@@ -1352,7 +1624,7 @@
 
 
             // =====================
-            // RAQUETTE JOUEUR 2
+            // JOUEUR 2
             // =====================
 
             contexte.fillStyle =
@@ -1419,7 +1691,7 @@
 
 
         // =========================
-        // DÉMARRAGE
+        // DEMARRAGE
         // =========================
 
         dessiner();
