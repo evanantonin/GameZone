@@ -1,86 +1,306 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone - Devine le nombre</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =========================
+           PAGE DEVINE LE NOMBRE
+        ========================= */
+
+        .page-nombre {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .page-nombre h1 {
+            color: #c77dff;
+            font-size: 45px;
+        }
+
+        .page-nombre p {
+            font-size: 20px;
+        }
 
 
-<title>Devine le nombre</title>
+        /* =========================
+           INPUT
+        ========================= */
 
-<link rel="stylesheet" href="style.css">
+        #nombre {
+            width: 100px;
 
+            padding: 12px;
 
-</head>
+            font-size: 20px;
 
-<body>
+            text-align: center;
 
+            border: 2px solid #9b59b6;
 
-<nav>
-    <a href="index.html">Accueil</a>
-    <a href="liste-jeux.html">Jeux</a>
-</nav>
+            border-radius: 10px;
 
-
-<h1>🎲 Devine le nombre</h1>
-
-
-<a href="liste-jeux.html">
-    <button>⬅️ Retour aux jeux</button>
-</a>
+            margin: 10px;
+        }
 
 
-<p>Je pense à un nombre entre 1 et 5.</p>
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .page-nombre button {
+            background-color: #9b59b6;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 12px 20px;
+
+            font-size: 17px;
+
+            cursor: pointer;
+        }
+
+        .page-nombre button:hover {
+            background-color: #c77dff;
+
+            transform: scale(1.05);
+        }
 
 
-<input
-    type="number"
-    id="nombre"
-    min="1"
-    max="5"
->
+        /* =========================
+           RETOUR
+        ========================= */
+
+        .retour-jeux {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            background-color: #333;
+
+            color: white;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 16px;
+        }
+
+        .retour-jeux:hover {
+            background-color: #555;
+        }
 
 
-<button onclick="verifier()">
-    Valider
-</button>
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        #message {
+            margin-top: 25px;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            min-height: 30px;
+        }
 
 
-<p id="message"></p>
+        /* =========================
+           MOBILE
+        ========================= */
 
+        @media (max-width: 600px) {
 
-<script>
+            .page-nombre {
+                padding: 20px 10px;
+            }
 
-    // Nombre secret entre 1 et 5
+            .page-nombre h1 {
+                font-size: 32px;
+            }
 
-    let nombreSecret =
-        Math.floor(Math.random() * 5) + 1;
+            .page-nombre p {
+                font-size: 18px;
+            }
 
-
-    // Vérifier la réponse
-
-    function verifier() {
-
-        let choix =
-            document.getElementById("nombre").value;
-
-
-        if (choix == nombreSecret) {
-
-            document.getElementById("message").textContent =
-                "🎉 Bravo ! Tu as trouvé le bon nombre.";
-
-        } else {
-
-            document.getElementById("message").textContent =
-                "❌ Raté ! Essaie encore.";
+            #nombre {
+                width: 90px;
+                font-size: 18px;
+            }
 
         }
 
-    }
+    </style>
 
-</script>
+</head>
+
+
+<body class="page-jeu">
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Accueil
+        </a>
+
+        <a href="liste-jeux.html">
+            🎮 Jeux
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         JEU
+    ========================= -->
+
+    <main class="page-nombre">
+
+        <h1>
+            🎲 Devine le nombre
+        </h1>
+
+
+        <!-- RETOUR -->
+
+        <a
+            href="liste-jeux.html"
+            class="retour-jeux">
+
+            ⬅️ Retour aux jeux
+
+        </a>
+
+
+        <p>
+            🤔 Je pense à un nombre entre
+            <strong>1 et 5</strong>.
+        </p>
+
+
+        <!-- INPUT -->
+
+        <input
+            type="number"
+            id="nombre"
+            min="1"
+            max="5"
+            placeholder="1-5"
+        >
+
+
+        <!-- VALIDER -->
+
+        <button onclick="verifier()">
+
+            Valider 🎯
+
+        </button>
+
+
+        <!-- MESSAGE -->
+
+        <p id="message"></p>
+
+    </main>
+
+
+    <script>
+
+        /* =========================
+           NOMBRE SECRET
+        ========================= */
+
+        let nombreSecret =
+            Math.floor(
+                Math.random() * 5
+            ) + 1;
+
+
+        /* =========================
+           VERIFIER
+        ========================= */
+
+        function verifier() {
+
+            let choix =
+                Number(
+                    document.getElementById(
+                        "nombre"
+                    ).value
+                );
+
+
+            /* Vérifier si le joueur
+               a bien entré un nombre */
+
+            if (
+                choix < 1 ||
+                choix > 5 ||
+                choix === 0
+            ) {
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "⚠️ Entre un nombre entre 1 et 5.";
+
+                return;
+
+            }
+
+
+            /* Bonne réponse */
+
+            if (
+                choix === nombreSecret
+            ) {
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "🎉 Bravo ! Tu as trouvé le bon nombre !";
+
+
+            }
+
+            /* Mauvaise réponse */
+
+            else {
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "❌ Raté ! Essaie encore.";
+
+            }
+
+        }
+
+    </script>
 
 
 </body>

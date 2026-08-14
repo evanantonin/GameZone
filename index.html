@@ -1,82 +1,634 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
-    <title>GameZone</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone - Accueil</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =========================
+           ACCUEIL GAMEZONE
+        ========================= */
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
+
+
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+            background-color: black;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #00aaff;
+        }
+
+
+        /* =========================
+           ACCUEIL
+        ========================= */
+
+        .accueil {
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        .accueil h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #00aaff;
+        }
+
+        .accueil > p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           LISTE DES JEUX
+        ========================= */
+
+        .liste-jeux {
+            width: 95%;
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(240px, 1fr));
+
+            gap: 20px;
+        }
+
+
+        /* =========================
+           CASE DES JEUX
+        ========================= */
+
+        .jeu {
+            padding: 15px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            background: #000;
+
+            border: 2px solid #444;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.7);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .jeu:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.9);
+        }
+
+
+        /* =========================
+           IMAGES
+        ========================= */
+
+        .jeu img {
+            width: 100%;
+            height: 160px;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+
+            display: block;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           TITRES
+        ========================= */
+
+        .jeu h2 {
+            margin: 10px 0;
+
+            font-size: 24px;
+        }
+
+        .jeu p {
+            min-height: 45px;
+
+            font-size: 16px;
+
+            line-height: 1.4;
+
+            color: white;
+        }
+
+
+        /* =========================
+           BOUTON JOUER
+        ========================= */
+
+        .jeu button {
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            background: #007bff;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s,
+                background 0.2s;
+        }
+
+        .jeu button:hover {
+            background: #00aaff;
+
+            transform: scale(1.05);
+        }
+
+
+        /* =========================
+           JEU 1 - CLICS
+        ========================= */
+
+        .jeu-clics {
+            background: #000;
+            border-color: #00aaff;
+        }
+
+        .jeu-clics h2 {
+            color: #00aaff;
+        }
+
+
+        /* =========================
+           JEU 2 - NOMBRE
+        ========================= */
+
+        .jeu-nombre {
+            background: #000;
+            border-color: #9b59b6;
+        }
+
+        .jeu-nombre h2 {
+            color: #c77dff;
+        }
+
+
+        /* =========================
+           JEU 3 - PIERRE FEUILLE CISEAUX
+        ========================= */
+
+        .jeu-pfc {
+            background: #000;
+            border-color: #ff9800;
+        }
+
+        .jeu-pfc h2 {
+            color: #ff9800;
+        }
+
+
+        /* =========================
+           JEU 4 - SNAKE
+        ========================= */
+
+        .jeu-snake {
+            background: #000;
+            border-color: #20c20e;
+        }
+
+        .jeu-snake h2 {
+            color: #35e51f;
+        }
+
+
+        /* =========================
+           JEU 5 - PONG
+        ========================= */
+
+        .jeu-pong {
+            background: linear-gradient(
+                135deg,
+                #111,
+                #003b66
+            );
+
+            border: 3px solid #00aaff;
+
+            box-shadow:
+                0 0 15px rgba(0, 170, 255, 0.4);
+        }
+
+        .jeu-pong h2 {
+            color: #00aaff;
+        }
+
+
+        /* =========================
+           BOUTON VOIR TOUS LES JEUX
+        ========================= */
+
+        .bouton-jeux {
+            text-align: center;
+
+            margin: 35px 0;
+        }
+
+        .bouton-jeux a {
+            text-decoration: none;
+        }
+
+        .bouton-jeux button {
+            padding: 14px 25px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #00aaff;
+
+            color: white;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .bouton-jeux button:hover {
+            background: #007bff;
+
+            transform: scale(1.05);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 12px 5px;
+            }
+
+            nav a {
+                font-size: 17px;
+                margin: 0 8px;
+            }
+
+
+            .accueil {
+                padding: 15px 8px;
+            }
+
+            .accueil h1 {
+                font-size: 34px;
+            }
+
+            .accueil > p {
+                font-size: 17px;
+            }
+
+
+            .liste-jeux {
+                width: 94%;
+
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+
+            .jeu {
+                padding: 12px;
+            }
+
+
+            .jeu img {
+                height: 180px;
+            }
+
+
+            .jeu h2 {
+                font-size: 23px;
+            }
+
+
+            .jeu p {
+                font-size: 16px;
+            }
+
+
+            .jeu button {
+                width: auto;
+
+                padding: 10px 18px;
+
+                font-size: 16px;
+            }
+
+
+            .bouton-jeux button {
+                font-size: 16px;
+
+                padding: 12px 20px;
+            }
+
+        }
+
+
+        /* =========================
+           PETIT TELEPHONE
+        ========================= */
+
+        @media (max-width: 380px) {
+
+            .accueil h1 {
+                font-size: 30px;
+            }
+
+            .accueil > p {
+                font-size: 15px;
+            }
+
+            .jeu img {
+                height: 150px;
+            }
+
+            .jeu h2 {
+                font-size: 21px;
+            }
+
+            .jeu button {
+                font-size: 15px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
     <nav>
-     <a href="index.html">Accueil</a>
-    <a href="liste-jeux.html">Jeux</a>
-</nav>
 
-    <p> GameZone 🎮</p>
+        <a href="index.html">
+            🏠 Accueil
+        </a>
 
-    <p>Bienvenue sur mon site de jeux</p>
+        <a href="liste-jeux.html">
+            🎮 Jeux
+        </a>
 
-    <div class="liste-jeux">
+    </nav>
 
-        <!-- Premier jeu -->
-        <div class="jeu jeu-clics">
 
-            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420" alt="Jeu vidéo">
+    <!-- =========================
+         ACCUEIL
+    ========================= -->
 
-            <h2>🎯 Jeu de clics</h2>
+    <main class="accueil">
 
-            <p>Clique le plus de fois possible en 30 secondes.</p>
+        <h1>
+            🎮 GameZone
+        </h1>
 
-            <a href="jeux.html">
-                <button>Jouer</button>
+        <p>
+            Bienvenue sur mon site de jeux !
+        </p>
+
+
+        <!-- =========================
+             LISTE DES JEUX
+        ========================= -->
+
+        <div class="liste-jeux">
+
+
+            <!-- =========================
+                 JEU 1
+            ========================= -->
+
+            <div class="jeu jeu-clics">
+
+                <img
+                    src="https://images.unsplash.com/photo-1511512578047-dfb367046420"
+                    alt="Jeu vidéo">
+
+                <h2>
+                    🎯 Jeu de clics
+                </h2>
+
+                <p>
+                    Clique le plus de fois possible
+                    en 30 secondes !
+                </p>
+
+                <a href="jeux.html">
+
+                    <button class="bouton-jeu">
+                        🎮 Jouer
+                    </button>
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 JEU 2
+            ========================= -->
+
+            <div class="jeu jeu-nombre">
+
+                <img
+                    src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf"
+                    alt="Jeu de nombre">
+
+                <h2>
+                    🎲 Devine le nombre
+                </h2>
+
+                <p>
+                    Trouve le nombre secret
+                    entre 1 et 10.
+                </p>
+
+                <a href="jeux2.html">
+
+                    <button>
+                        🎮 Jouer
+                    </button>
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 JEU 3
+            ========================= -->
+
+            <div class="jeu jeu-pfc">
+
+                <img
+                    src="https://cdn.aptoide.com/imgs/4/1/9/41932fac5597c23db8aae7fd1d074ccc_screen.jpg"
+                    alt="Pierre Feuille Ciseaux">
+
+                <h2>
+                    ✂️ Pierre-Feuille-Ciseaux
+                </h2>
+
+                <p>
+                    Bats l'ordinateur
+                    dans un duel !
+                </p>
+
+                <a href="jeux3.html">
+
+                    <button>
+                        🎮 Jouer
+                    </button>
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 JEU 4
+            ========================= -->
+
+            <div class="jeu jeu-snake">
+
+                <img
+                    src="https://arcadia-casino.ams3.cdn.digitaloceanspaces.com/images/covers/snake.png"
+                    alt="Jeu Snake">
+
+                <h2>
+                    🐍 Snake
+                </h2>
+
+                <p>
+                    Mange la nourriture et
+                    fais le meilleur score !
+                </p>
+
+                <a href="jeux4.html">
+
+                    <button>
+                        🎮 Jouer
+                    </button>
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 JEU 5
+            ========================= -->
+
+            <div class="jeu jeu-pong">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/83/Pong.png"
+                    alt="Jeu Pong">
+
+                <h2>
+                    🏓 Pong
+                </h2>
+
+                <p>
+                    Affronte l'ordinateur
+                    ou joue à deux !
+                </p>
+
+                <a href="jeux5.html">
+
+                    <button>
+                        🎮 Jouer
+                    </button>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             VOIR TOUS LES JEUX
+        ========================= -->
+
+        <div class="bouton-jeux">
+
+            <a href="liste-jeux.html">
+
+                <button>
+                    🎮 Voir tous les jeux
+                </button>
+
             </a>
 
         </div>
 
 
-        <!-- Deuxième jeu -->
-        <div class="jeu jeu-nombre">
+    </main>
 
-            <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf" alt="Jeu vidéo">
 
-            <h2>🎲 Devine le nombre</h2>
-
-            <p>Trouve le nombre secret entre 1 et 10.</p>
-
-            <a href="jeux2.html">
-                <button>Jouer</button>
-            </a>
-
-        </div>
-
-        <!-- Troisième jeu -->
-        <div class="jeu jeu-pfc">
-        <img src="https://cdn.aptoide.com/imgs/4/1/9/41932fac5597c23db8aae7fd1d074ccc_screen.jpg" alt="Pierre Feuille Ciseaux">
-
-            <h2>✂️ Pierre-Feuille-Ciseaux</h2>
-
-            <p>Bats l'ordinateur !</p>
-
-            <a href="jeux3.html">
-                <button>Jouer</button>
-            </a>
-
-    </div>
- <div class="jeu jeu-snake">
-    <img src="https://arcadia-casino.ams3.cdn.digitaloceanspaces.com/images/covers/snake.png"
-     alt="Jeu Snake">
-    <h2>🐍 Snake</h2>
-
-    <p>
-        Contrôle le serpent, mange la nourriture
-        et fais le meilleur score !
-    </p>
-
-    <a href="jeux4.html">
-        <button>🎮 Jouer</button>
-    </a>
-
-     </div> 
 </body>
 
 </html>

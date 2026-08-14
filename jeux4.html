@@ -1,822 +1,520 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <title>GameZone - Snake</title>
 
-<title>GameZone - Snake</title>
+    <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="style.css">
+    <style>
 
-<style>
-
-    /* =========================
-       SNAKE
-    ========================= */
-
-    .jeu-snake {
-        max-width: 600px;
-        margin: 20px auto;
-        text-align: center;
-    }
-
-
-    #jeu {
-        display: block;
-        width: min(90vw, 400px);
-        height: auto;
-        aspect-ratio: 1 / 1;
-
-        border: 5px solid black;
-        background-color: #eeeeee;
-
-        margin: 20px auto;
-
-        touch-action: none;
-    }
-
-
-    /* =========================
-       CONTRÔLES
-    ========================= */
-
-    .controles-snake {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        margin-top: 20px;
-
-        user-select: none;
-    }
-
-
-    .ligne-controles {
-        display: flex;
-        justify-content: center;
-    }
-
-
-    .controles-snake button {
-        width: 70px;
-        height: 60px;
-
-        margin: 5px;
-
-        font-size: 28px;
-
-        border-radius: 15px;
-
-        touch-action: manipulation;
-
-        -webkit-tap-highlight-color: transparent;
-    }
-
-
-    .controles-snake button:active {
-        transform: scale(0.90);
-    }
-
-
-    /* =========================
-       BOUTONS DU JEU
-    ========================= */
-
-    .boutons-jeu {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-
-        flex-wrap: wrap;
-
-        margin-top: 15px;
-    }
-
-
-    .boutons-jeu button {
-        font-size: 16px;
-        padding: 12px 18px;
-    }
-
-
-    /* =========================
-       MESSAGE
-    ========================= */
-
-    #message {
-        min-height: 25px;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 600px) {
-
-    #jeu {
-        width: 85vw;
-        max-width: 320px;
-        height: auto;
-        border-width: 4px;
-        margin: 15px auto;
-    }
-
-    .jeu-snake {
-        width: 100%;
-        padding: 10px 5px;
-        box-sizing: border-box;
-    }
-
-    .controles-snake button {
-        width: 65px;
-        height: 55px;
-        font-size: 26px;
-        margin: 3px;
-    }
-
-    .jeu-snake h2 {
-        font-size: 25px;
-    }
-
-    .jeu-snake p {
-        font-size: 15px;
-    }
-}
-
-    @media (max-width: 380px) {
-
-        .controles-snake button {
-            width: 62px;
-            height: 58px;
-
-            font-size: 25px;
+        body.page-jeu {
+            background-color: #111;
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
         }
 
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+            background-color: black;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #00aaff;
+        }
+
+        /* =========================
+           CONTENEUR
+        ========================= */
+
+        .jeu-snake {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+
+            text-align: center;
+
+            background-color: #1e1e1e;
+
+            border: 3px solid #20c20e;
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.5);
+
+            box-sizing: border-box;
+        }
+
+        /* =========================
+           TITRE
+        ========================= */
 
         .jeu-snake h2 {
-            font-size: 24px;
+            color: #35e51f;
+            font-size: 30px;
         }
 
+        /* =========================
+           TEXTE
+        ========================= */
+
+        .jeu-snake p {
+            color: white;
+            font-size: 17px;
+        }
+
+        /* =========================
+           RETOUR
+        ========================= */
+
+        .bouton-retour {
+            display: inline-block;
+
+            margin: 10px 0 15px 0;
+
+            padding: 10px 18px;
+
+            background-color: #007bff;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            transition: 0.2s;
+        }
+
+        .bouton-retour:hover {
+            background-color: #00aaff;
+            transform: scale(1.05);
+        }
+
+        /* =========================
+           TERRAIN
+        ========================= */
 
         #jeu {
-            width: 90vw;
+            display: block;
+
+            width: min(90vw, 400px);
+
+            height: auto;
+
+            aspect-ratio: 1 / 1;
+
+            border: 5px solid black;
+
+            background-color: #eeeeee;
+
+            margin: 20px auto;
+
+            touch-action: none;
+
+            box-sizing: border-box;
         }
 
-    }
+        /* =========================
+           SCORES
+        ========================= */
 
-</style>
+        .scores-snake {
+            display: flex;
 
+            justify-content: center;
+
+            gap: 30px;
+
+            flex-wrap: wrap;
+
+            margin: 15px 0;
+        }
+
+        .score-box {
+            background-color: #222;
+
+            border: 2px solid #444;
+
+            border-radius: 12px;
+
+            padding: 10px 20px;
+
+            min-width: 120px;
+        }
+
+        .score-box p {
+            margin: 5px;
+
+            font-size: 18px;
+        }
+
+        #score {
+            color: #35e51f;
+            font-weight: bold;
+        }
+
+        #meilleurScore {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .boutons-jeu {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+        }
+
+        .boutons-jeu button {
+            font-size: 16px;
+
+            padding: 12px 18px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background-color: #007bff;
+
+            color: white;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .boutons-jeu button:hover {
+            background-color: #00aaff;
+
+            transform: scale(1.05);
+        }
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        #message {
+            min-height: 25px;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #ff4444;
+        }
+
+        /* =========================
+           CONTROLES
+        ========================= */
+
+        .controles-snake {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            margin-top: 20px;
+
+            user-select: none;
+        }
+
+        .ligne-controles {
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .controles-snake button {
+            width: 70px;
+
+            height: 60px;
+
+            margin: 5px;
+
+            font-size: 28px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background-color: #007bff;
+
+            color: white;
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+
+            transition: 0.1s;
+        }
+
+        .controles-snake button:hover {
+            background-color: #00aaff;
+        }
+
+        .controles-snake button:active {
+            transform: scale(0.90);
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 12px 5px;
+            }
+
+            nav a {
+                font-size: 17px;
+                margin: 0 8px;
+            }
+
+            .jeu-snake {
+                width: 100%;
+                margin: 15px auto;
+                padding: 10px 5px;
+            }
+
+            .jeu-snake h2 {
+                font-size: 25px;
+            }
+
+            #jeu {
+                width: 85vw;
+                max-width: 320px;
+                border-width: 4px;
+            }
+
+            .controles-snake button {
+                width: 65px;
+                height: 55px;
+                font-size: 26px;
+                margin: 3px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body>
+
+<body class="page-jeu">
 
 
-<nav>
+    <!-- =========================
+         MENU
+    ========================= -->
 
-    <a href="index.html">
-        Accueil
-    </a>
+    <nav>
 
-    <a href="liste-jeux.html">
-        Jeux
-    </a>
-    <a href="liste-jeux.html">
-    <button>⬅️ Retour aux jeux</button>
-</a>
+        <a href="index.html">
+            🏠 Accueil
+        </a>
 
+        <a href="liste-jeux.html">
+            🎮 Jeux
+        </a>
 
-
-</nav>
-
+    </nav>
 
 
-<div class="jeu-snake">
+    <!-- =========================
+         SNAKE
+    ========================= -->
 
-    <h2>🐍 Snake</h2>
-    <a href="liste-jeux.html">
-    <button>⬅️ Retour aux jeux</button>
-</a>
+    <div class="jeu-snake">
 
-
-
-    <p>
-        🖥️ PC : ZQSD ou flèches
-    </p>
-
-    <p>
-        📱 Mobile : utilise les boutons
-    </p>
+        <h2>
+            🐍 Snake
+        </h2>
 
 
-    <canvas
-        id="jeu"
-        width="400"
-        height="400">
-    </canvas>
+        <a href="liste-jeux.html"
+           class="bouton-retour">
+
+            ⬅️ Retour aux jeux
+
+        </a>
 
 
-    <p>
-        🏆 Score :
-        <strong id="score">0</strong>
-    </p>
+        <p>
+            🖥️ PC : ZQSD ou flèches
+        </p>
+
+        <p>
+            📱 Mobile : utilise les boutons
+        </p>
 
 
-    <div class="boutons-jeu">
+        <!-- =========================
+             TERRAIN
+        ========================= -->
 
-        <button onclick="recommencer()">
-            🔄 Recommencer
-        </button>
-
-        <button
-            onclick="pauseJeu()"
-            id="boutonPause">
-            ⏸️ Pause
-        </button>
-
-    </div>
+        <canvas
+            id="jeu"
+            width="400"
+            height="400">
+        </canvas>
 
 
-    <p id="message"></p>
+        <!-- =========================
+             SCORES
+        ========================= -->
+
+        <div class="scores-snake">
+
+            <div class="score-box">
+
+                <p>
+                    🏆 Score
+                </p>
+
+                <p>
+                    <span id="score">0</span>
+                </p>
+
+            </div>
 
 
-    <!-- CONTRÔLES MOBILE -->
+            <div class="score-box">
 
-    <div class="controles-snake">
+                <p>
+                    👑 Meilleur score
+                </p>
 
-        <button
-            onclick="changerDirectionTactile('haut')"
-            aria-label="Haut">
-            ⬆️
-        </button>
+                <p>
+                    <span id="meilleurScore">0</span>
+                </p>
+
+            </div>
+
+        </div>
 
 
-        <div class="ligne-controles">
+        <!-- =========================
+             BOUTONS
+        ========================= -->
+
+        <div class="boutons-jeu">
+
+            <button onclick="recommencer()">
+                🔄 Recommencer
+            </button>
 
             <button
-                onclick="changerDirectionTactile('gauche')"
-                aria-label="Gauche">
-                ⬅️
+                onclick="pauseJeu()"
+                id="boutonPause">
+
+                ⏸️ Pause
+
+            </button>
+
+        </div>
+
+
+        <p id="message"></p>
+
+
+        <!-- =========================
+             CONTROLES MOBILE
+        ========================= -->
+
+        <div class="controles-snake">
+
+            <button
+                onclick="changerDirectionTactile('haut')">
+
+                ⬆️
+
             </button>
 
 
-            <button
-                onclick="changerDirectionTactile('bas')"
-                aria-label="Bas">
-                ⬇️
-            </button>
+            <div class="ligne-controles">
+
+                <button
+                    onclick="changerDirectionTactile('gauche')">
+
+                    ⬅️
+
+                </button>
 
 
-            <button
-                onclick="changerDirectionTactile('droite')"
-                aria-label="Droite">
-                ➡️
-            </button>
+                <button
+                    onclick="changerDirectionTactile('bas')">
+
+                    ⬇️
+
+                </button>
+
+
+                <button
+                    onclick="changerDirectionTactile('droite')">
+
+                    ➡️
+
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
 
-<script>
+    <script>
 
-    // =========================
-    // VARIABLES
-    // =========================
+        let canvas =
+            document.getElementById("jeu");
 
-    let canvas =
-        document.getElementById("jeu");
+        let contexte =
+            canvas.getContext("2d");
 
-    let contexte =
-        canvas.getContext("2d");
 
+        let tailleCase = 20;
 
-    let tailleCase = 20;
 
-
-    let serpent = [
-
-        { x: 200, y: 200 },
-
-        { x: 180, y: 200 },
-
-        { x: 160, y: 200 }
-
-    ];
-
-
-    let direction = "droite";
-
-
-    let nourriture = {
-        x: 300,
-        y: 200
-    };
-
-
-    let score = 0;
-
-
-    let jeuTermine = false;
-
-    let jeuEnPause = false;
-
-
-    // =========================
-    // CLAVIER
-    // =========================
-
-    document.addEventListener(
-        "keydown",
-        changerDirection
-    );
-
-
-    function changerDirection(event) {
-
-        const touche =
-            event.key.toLowerCase();
-
-
-        // Empêcher le défilement
-
-        if (
-
-            event.key === "ArrowUp" ||
-            event.key === "ArrowDown" ||
-            event.key === "ArrowLeft" ||
-            event.key === "ArrowRight"
-
-        ) {
-
-            event.preventDefault();
-
-        }
-
-
-        if (
-
-            (touche === "z" ||
-            event.key === "ArrowUp")
-
-            &&
-
-            direction !== "bas"
-
-        ) {
-
-            direction = "haut";
-
-        }
-
-
-        if (
-
-            (touche === "s" ||
-            event.key === "ArrowDown")
-
-            &&
-
-            direction !== "haut"
-
-        ) {
-
-            direction = "bas";
-
-        }
-
-
-        if (
-
-            (touche === "q" ||
-            event.key === "ArrowLeft")
-
-            &&
-
-            direction !== "droite"
-
-        ) {
-
-            direction = "gauche";
-
-        }
-
-
-        if (
-
-            (touche === "d" ||
-            event.key === "ArrowRight")
-
-            &&
-
-            direction !== "gauche"
-
-        ) {
-
-            direction = "droite";
-
-        }
-
-    }
-
-
-    // =========================
-    // CONTRÔLES TACTILES
-    // =========================
-
-    function changerDirectionTactile(
-        nouvelleDirection
-    ) {
-
-        if (
-
-            nouvelleDirection === "haut" &&
-            direction !== "bas"
-
-        ) {
-
-            direction = "haut";
-
-        }
-
-
-        if (
-
-            nouvelleDirection === "bas" &&
-            direction !== "haut"
-
-        ) {
-
-            direction = "bas";
-
-        }
-
-
-        if (
-
-            nouvelleDirection === "gauche" &&
-            direction !== "droite"
-
-        ) {
-
-            direction = "gauche";
-
-        }
-
-
-        if (
-
-            nouvelleDirection === "droite" &&
-            direction !== "gauche"
-
-        ) {
-
-            direction = "droite";
-
-        }
-
-    }
-
-
-    // =========================
-    // DESSIN
-    // =========================
-
-    function dessiner() {
-
-        contexte.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        // Fond
-
-        contexte.fillStyle = "#eeeeee";
-
-        contexte.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        // Serpent
-
-        for (
-            let i = 0;
-            i < serpent.length;
-            i++
-        ) {
-
-            contexte.fillStyle =
-                i === 0
-                    ? "#0b8f00"
-                    : "#21b51a";
-
-
-            contexte.fillRect(
-
-                serpent[i].x,
-
-                serpent[i].y,
-
-                tailleCase - 1,
-
-                tailleCase - 1
-
-            );
-
-        }
-
-
-        // Nourriture
-
-        contexte.fillStyle = "red";
-
-
-        contexte.fillRect(
-
-            nourriture.x,
-
-            nourriture.y,
-
-            tailleCase - 1,
-
-            tailleCase - 1
-
-        );
-
-    }
-
-
-    // =========================
-    // AVANCER
-    // =========================
-
-    function avancer() {
-
-        if (
-            jeuTermine ||
-            jeuEnPause
-        ) {
-
-            return;
-
-        }
-
-
-        let tete = {
-
-            x: serpent[0].x,
-
-            y: serpent[0].y
-
-        };
-
-
-        if (direction === "droite") {
-
-            tete.x += tailleCase;
-
-        }
-
-
-        if (direction === "gauche") {
-
-            tete.x -= tailleCase;
-
-        }
-
-
-        if (direction === "haut") {
-
-            tete.y -= tailleCase;
-
-        }
-
-
-        if (direction === "bas") {
-
-            tete.y += tailleCase;
-
-        }
-
-
-        // Traverser les bords
-
-        if (tete.x < 0) {
-
-            tete.x =
-                canvas.width - tailleCase;
-
-        }
-
-
-        if (tete.x >= canvas.width) {
-
-            tete.x = 0;
-
-        }
-
-
-        if (tete.y < 0) {
-
-            tete.y =
-                canvas.height - tailleCase;
-
-        }
-
-
-        if (tete.y >= canvas.height) {
-
-            tete.y = 0;
-
-        }
-
-
-        serpent.unshift(tete);
-
-
-        // Manger
-
-        if (
-
-            tete.x === nourriture.x &&
-            tete.y === nourriture.y
-
-        ) {
-
-            score++;
-
-
-            document.getElementById(
-                "score"
-            ).textContent = score;
-
-
-            nouvelleNourriture();
-
-        }
-
-        else {
-
-            serpent.pop();
-
-        }
-
-
-        // Collision avec le corps
-
-        for (
-
-            let i = 1;
-            i < serpent.length;
-            i++
-
-        ) {
-
-            if (
-
-                tete.x === serpent[i].x &&
-                tete.y === serpent[i].y
-
-            ) {
-
-                terminerJeu();
-
-                return;
-
-            }
-
-        }
-
-
-        dessiner();
-
-    }
-
-
-    // =========================
-    // NOURRITURE
-    // =========================
-
-    function nouvelleNourriture() {
-
-        nourriture.x =
-
-            Math.floor(
-
-                Math.random() *
-                (canvas.width / tailleCase)
-
-            ) * tailleCase;
-
-
-        nourriture.y =
-
-            Math.floor(
-
-                Math.random() *
-                (canvas.height / tailleCase)
-
-            ) * tailleCase;
-
-    }
-
-
-    // =========================
-    // GAME OVER
-    // =========================
-
-    function terminerJeu() {
-
-        jeuTermine = true;
-
-
-        document.getElementById(
-            "message"
-        ).textContent =
-
-            "💀 Game Over ! Score : "
-            + score;
-
-    }
-
-
-    // =========================
-    // PAUSE
-    // =========================
-
-    function pauseJeu() {
-
-        if (jeuTermine) {
-
-            return;
-
-        }
-
-
-        jeuEnPause =
-            !jeuEnPause;
-
-
-        let bouton =
-            document.getElementById(
-                "boutonPause"
-            );
-
-
-        if (jeuEnPause) {
-
-            bouton.textContent =
-                "▶️ Reprendre";
-
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "⏸️ Jeu en pause";
-
-        }
-
-        else {
-
-            bouton.textContent =
-                "⏸️ Pause";
-
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "";
-
-        }
-
-    }
-
-
-    // =========================
-    // RECOMMENCER
-    // =========================
-
-    function recommencer() {
-
-        serpent = [
+        let serpent = [
 
             { x: 200, y: 200 },
 
@@ -827,55 +525,621 @@
         ];
 
 
-        direction = "droite";
+        let direction = "droite";
 
 
-        score = 0;
+        let nourriture = {
+            x: 300,
+            y: 200
+        };
 
 
-        jeuTermine = false;
+        let score = 0;
 
-        jeuEnPause = false;
+
+        /* =========================
+           MEILLEUR SCORE
+        ========================= */
+
+        let meilleurScore =
+            Number(
+                localStorage.getItem("meilleurScoreSnake")
+            ) || 0;
 
 
         document.getElementById(
-            "score"
-        ).textContent = "0";
+            "meilleurScore"
+        ).textContent = meilleurScore;
 
 
-        document.getElementById(
-            "message"
-        ).textContent = "";
+        let jeuTermine = false;
+
+        let jeuEnPause = false;
 
 
-        document.getElementById(
-            "boutonPause"
-        ).textContent =
-            "⏸️ Pause";
+        /* =========================
+           CLAVIER
+        ========================= */
+
+        document.addEventListener(
+            "keydown",
+            changerDirection
+        );
 
 
-        nouvelleNourriture();
+        function changerDirection(event) {
 
+            const touche =
+                event.key.toLowerCase();
+
+
+            if (
+
+                event.key === "ArrowUp" ||
+                event.key === "ArrowDown" ||
+                event.key === "ArrowLeft" ||
+                event.key === "ArrowRight"
+
+            ) {
+
+                event.preventDefault();
+
+            }
+
+
+            if (
+
+                (
+                    touche === "z" ||
+                    event.key === "ArrowUp"
+                )
+
+                &&
+
+                direction !== "bas"
+
+            ) {
+
+                direction = "haut";
+
+            }
+
+
+            if (
+
+                (
+                    touche === "s" ||
+                    event.key === "ArrowDown"
+                )
+
+                &&
+
+                direction !== "haut"
+
+            ) {
+
+                direction = "bas";
+
+            }
+
+
+            if (
+
+                (
+                    touche === "q" ||
+                    event.key === "ArrowLeft"
+                )
+
+                &&
+
+                direction !== "droite"
+
+            ) {
+
+                direction = "gauche";
+
+            }
+
+
+            if (
+
+                (
+                    touche === "d" ||
+                    event.key === "ArrowRight"
+                )
+
+                &&
+
+                direction !== "gauche"
+
+            ) {
+
+                direction = "droite";
+
+            }
+
+        }
+
+
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
+
+        function changerDirectionTactile(
+            nouvelleDirection
+        ) {
+
+            if (
+
+                nouvelleDirection === "haut" &&
+                direction !== "bas"
+
+            ) {
+
+                direction = "haut";
+
+            }
+
+
+            if (
+
+                nouvelleDirection === "bas" &&
+                direction !== "haut"
+
+            ) {
+
+                direction = "bas";
+
+            }
+
+
+            if (
+
+                nouvelleDirection === "gauche" &&
+                direction !== "droite"
+
+            ) {
+
+                direction = "gauche";
+
+            }
+
+
+            if (
+
+                nouvelleDirection === "droite" &&
+                direction !== "gauche"
+
+            ) {
+
+                direction = "droite";
+
+            }
+
+        }
+
+
+        /* =========================
+           DESSIN
+        ========================= */
+
+        function dessiner() {
+
+            contexte.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            contexte.fillStyle = "#eeeeee";
+
+            contexte.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            /* SERPENT */
+
+            for (
+                let i = 0;
+                i < serpent.length;
+                i++
+            ) {
+
+                contexte.fillStyle =
+                    i === 0
+                        ? "#0b8f00"
+                        : "#21b51a";
+
+
+                contexte.fillRect(
+
+                    serpent[i].x,
+
+                    serpent[i].y,
+
+                    tailleCase - 1,
+
+                    tailleCase - 1
+
+                );
+
+            }
+
+
+            /* NOURRITURE */
+
+            contexte.fillStyle = "red";
+
+
+            contexte.fillRect(
+
+                nourriture.x,
+
+                nourriture.y,
+
+                tailleCase - 1,
+
+                tailleCase - 1
+
+            );
+
+        }
+
+
+        /* =========================
+           AVANCER
+        ========================= */
+
+        function avancer() {
+
+            if (
+                jeuTermine ||
+                jeuEnPause
+            ) {
+
+                return;
+
+            }
+
+
+            let tete = {
+
+                x: serpent[0].x,
+
+                y: serpent[0].y
+
+            };
+
+
+            if (direction === "droite") {
+
+                tete.x += tailleCase;
+
+            }
+
+
+            if (direction === "gauche") {
+
+                tete.x -= tailleCase;
+
+            }
+
+
+            if (direction === "haut") {
+
+                tete.y -= tailleCase;
+
+            }
+
+
+            if (direction === "bas") {
+
+                tete.y += tailleCase;
+
+            }
+
+
+            /* BORDS */
+
+            if (tete.x < 0) {
+
+                tete.x =
+                    canvas.width - tailleCase;
+
+            }
+
+
+            if (tete.x >= canvas.width) {
+
+                tete.x = 0;
+
+            }
+
+
+            if (tete.y < 0) {
+
+                tete.y =
+                    canvas.height - tailleCase;
+
+            }
+
+
+            if (tete.y >= canvas.height) {
+
+                tete.y = 0;
+
+            }
+
+
+            serpent.unshift(tete);
+
+
+            /* MANGER */
+
+            if (
+
+                tete.x === nourriture.x &&
+                tete.y === nourriture.y
+
+            ) {
+
+                score++;
+
+
+                document.getElementById(
+                    "score"
+                ).textContent = score;
+
+
+                /* =========================
+                   NOUVEAU MEILLEUR SCORE
+                ========================= */
+
+                if (score > meilleurScore) {
+
+                    meilleurScore = score;
+
+
+                    document.getElementById(
+                        "meilleurScore"
+                    ).textContent =
+                        meilleurScore;
+
+
+                    localStorage.setItem(
+                        "meilleurScoreSnake",
+                        meilleurScore
+                    );
+
+                }
+
+
+                nouvelleNourriture();
+
+            }
+
+            else {
+
+                serpent.pop();
+
+            }
+
+
+            /* COLLISION */
+
+            for (
+
+                let i = 1;
+
+                i < serpent.length;
+
+                i++
+
+            ) {
+
+                if (
+
+                    tete.x === serpent[i].x &&
+                    tete.y === serpent[i].y
+
+                ) {
+
+                    terminerJeu();
+
+                    return;
+
+                }
+
+            }
+
+
+            dessiner();
+
+        }
+
+
+        /* =========================
+           NOURRITURE
+        ========================= */
+
+        function nouvelleNourriture() {
+
+            nourriture.x =
+
+                Math.floor(
+
+                    Math.random() *
+                    (canvas.width / tailleCase)
+
+                ) * tailleCase;
+
+
+            nourriture.y =
+
+                Math.floor(
+
+                    Math.random() *
+                    (canvas.height / tailleCase)
+
+                ) * tailleCase;
+
+        }
+
+
+        /* =========================
+           GAME OVER
+        ========================= */
+
+        function terminerJeu() {
+
+            jeuTermine = true;
+
+
+            document.getElementById(
+                "message"
+            ).textContent =
+
+                "💀 Game Over ! Score : "
+                + score;
+
+
+            if (score === meilleurScore && score > 0) {
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+
+                    "👑 NOUVEAU RECORD ! Score : "
+                    + score;
+
+            }
+
+        }
+
+
+        /* =========================
+           PAUSE
+        ========================= */
+
+        function pauseJeu() {
+
+            if (jeuTermine) {
+
+                return;
+
+            }
+
+
+            jeuEnPause =
+                !jeuEnPause;
+
+
+            let bouton =
+                document.getElementById(
+                    "boutonPause"
+                );
+
+
+            if (jeuEnPause) {
+
+                bouton.textContent =
+                    "▶️ Reprendre";
+
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "⏸️ Jeu en pause";
+
+            }
+
+            else {
+
+                bouton.textContent =
+                    "⏸️ Pause";
+
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "";
+
+            }
+
+        }
+
+
+        /* =========================
+           RECOMMENCER
+        ========================= */
+
+        function recommencer() {
+
+            serpent = [
+
+                { x: 200, y: 200 },
+
+                { x: 180, y: 200 },
+
+                { x: 160, y: 200 }
+
+            ];
+
+
+            direction = "droite";
+
+
+            score = 0;
+
+
+            jeuTermine = false;
+
+            jeuEnPause = false;
+
+
+            document.getElementById(
+                "score"
+            ).textContent = "0";
+
+
+            document.getElementById(
+                "message"
+            ).textContent = "";
+
+
+            document.getElementById(
+                "boutonPause"
+            ).textContent =
+                "⏸️ Pause";
+
+
+            nouvelleNourriture();
+
+
+            dessiner();
+
+        }
+
+
+        /* =========================
+           LANCEMENT
+        ========================= */
 
         dessiner();
 
-    }
 
+        setInterval(
+            avancer,
+            120
+        );
 
-    // =========================
-    // LANCEMENT
-    // =========================
-
-    dessiner();
-
-
-    setInterval(
-        avancer,
-        120
-    );
-
-</script>
-
+    </script>
 
 </body>
 

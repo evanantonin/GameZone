@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone - Pong</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =========================
+           PAGE PONG
+        ========================= */
+
+        body {
+            margin: 0;
+            background: #111;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+            background-color: black;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #00aaff;
+        }
+
+
+        /* =========================
+           RETOUR AUX JEUX
+        ========================= */
+
+        .retour-jeux {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .retour-jeux button {
+            padding: 10px 18px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #333;
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .retour-jeux button:hover {
+            background: #007bff;
+            transform: scale(1.05);
+        }
+
+
+        /* =========================
+           CONTENEUR
+        ========================= */
+
+        .pong-container {
+            width: 95%;
+            max-width: 850px;
+
+            margin: 20px auto;
+
+            text-align: center;
+        }
+
+        .pong-container h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+
+            color: #00aaff;
+
+            text-shadow:
+                0 0 10px #00aaff,
+                0 0 20px #00aaff;
+        }
+
+        .instructions {
+            font-size: 17px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           MODES
+        ========================= */
+
+        .modes {
+            display: flex;
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 15px;
+        }
+
+        .modes button {
+            background: #333;
+
+            color: white;
+
+            border: 2px solid #555;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: 0.2s;
+        }
+
+        .modes button:hover {
+            background: #555;
+            transform: scale(1.03);
+        }
+
+        .modes button.actif {
+            background: #007bff;
+            border-color: #00aaff;
+
+            box-shadow:
+                0 0 12px
+                rgba(0, 170, 255, 0.7);
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .score-pong {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 60px;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin: 15px 0;
+        }
+
+        .meilleur-score {
+            font-size: 18px;
+            color: gold;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           CANVAS
+        ========================= */
+
+        #pong {
+            display: block;
+
+            width: min(92vw, 800px);
+
+            height: auto;
+
+            margin: 15px auto;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #202020,
+                    #050505
+                );
+
+            border: 4px solid white;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 15px #00aaff,
+                0 0 30px rgba(0, 170, 255, 0.4);
+
+            touch-action: none;
+        }
+
+
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .boutons-pong {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin: 15px;
+        }
+
+        .boutons-pong button {
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #007bff;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .boutons-pong button:hover {
+            background: #ff3030;
+
+            transform: scale(1.05);
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        #message {
+            min-height: 28px;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            color: gold;
+
+            text-shadow:
+                0 0 8px gold;
+        }
+
+
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
+
+        .controles-pong {
+            display: none;
+
+            margin-top: 15px;
+
+            user-select: none;
+        }
+
+        .controle-joueur {
+            margin: 15px;
+        }
+
+        .controle-joueur p {
+            margin: 5px;
+
+            font-weight: bold;
+
+            font-size: 18px;
+        }
+
+        .ligne-controle {
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .controles-pong button {
+            width: 75px;
+
+            height: 55px;
+
+            margin: 4px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #333;
+
+            color: white;
+
+            font-size: 25px;
+
+            touch-action: manipulation;
+
+            -webkit-tap-highlight-color: transparent;
+
+            transition: 0.1s;
+        }
+
+        .controles-pong button:active {
+            transform: scale(0.9);
+
+            background: #007bff;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 12px 5px;
+            }
+
+            nav a {
+                font-size: 17px;
+                margin: 0 8px;
+            }
+
+
+            .pong-container {
+                width: 100%;
+
+                margin-top: 10px;
+            }
+
+
+            .pong-container h1 {
+                font-size: 30px;
+            }
+
+
+            .instructions {
+                font-size: 14px;
+
+                padding: 0 10px;
+            }
+
+
+            .score-pong {
+                gap: 35px;
+
+                font-size: 22px;
+            }
+
+
+            .meilleur-score {
+                font-size: 16px;
+            }
+
+
+            #pong {
+                width: 94vw;
+
+                border-width: 3px;
+
+                border-radius: 8px;
+            }
+
+
+            .boutons-pong button {
+                padding: 12px 16px;
+
+                font-size: 15px;
+            }
+
+
+            .controles-pong {
+                display: block;
+            }
+
+
+            .retour-jeux button {
+                font-size: 15px;
+            }
+
+        }
+
+
+        /* =========================
+           PETITS TELEPHONES
+        ========================= */
+
+        @media (max-width: 380px) {
+
+            .pong-container h1 {
+                font-size: 26px;
+            }
+
+            .score-pong {
+                gap: 20px;
+
+                font-size: 20px;
+            }
+
+            .controles-pong button {
+                width: 65px;
+
+                height: 50px;
+
+                font-size: 22px;
+            }
+
+            #pong {
+                width: 92vw;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Accueil
+        </a>
+
+        <a href="liste-jeux.html">
+            🎮 Jeux
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         RETOUR
+    ========================= -->
+
+    <div class="retour-jeux">
+
+        <a href="liste-jeux.html">
+
+            <button>
+                🔙 Retour aux jeux
+            </button>
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         PONG
+    ========================= -->
+
+    <div class="pong-container">
+
+        <h1>
+            🏓 Pong
+        </h1>
+
+
+        <p class="instructions">
+
+            🎮 Contre l'ordinateur :
+            <strong>Z / S</strong>
+
+            <br>
+
+            👥 En mode 2 joueurs :
+            <strong>Z / S</strong>
+            et
+            <strong>↑ / ↓</strong>
+
+        </p>
+
+
+        <!-- =========================
+             MODES
+        ========================= -->
+
+        <div class="modes">
+
+            <button
+                id="modeOrdinateur"
+                class="actif"
+                onclick="choisirMode('ordinateur')">
+
+                🤖 Contre l'ordinateur
+
+            </button>
+
+
+            <button
+                id="modeDeuxJoueurs"
+                onclick="choisirMode('deuxJoueurs')">
+
+                👥 2 joueurs
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             SCORE
+        ========================= -->
+
+        <div class="score-pong">
+
+            <div>
+
+                🧑
+
+                <span id="scoreJoueur">
+                    0
+                </span>
+
+            </div>
+
+
+            <div>
+
+                🧑‍🤝‍🧑
+
+                <span id="scoreAdversaire">
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MEILLEUR SCORE -->
+
+        <div class="meilleur-score">
+
+            🏆 Meilleur score :
+
+            <span id="meilleurScore">
+                0
+            </span>
+
+        </div>
+
+
+        <!-- =========================
+             CANVAS
+        ========================= -->
+
+        <canvas
+            id="pong"
+            width="800"
+            height="450">
+        </canvas>
+
+
+        <!-- =========================
+             BOUTONS
+        ========================= -->
+
+        <div class="boutons-pong">
+
+            <button onclick="recommencer()">
+
+                🔄 Recommencer
+
+            </button>
+
+
+            <button
+                onclick="pauseJeu()"
+                id="boutonPause">
+
+                ⏸️ Pause
+
+            </button>
+
+        </div>
+
+
+        <p id="message"></p>
+
+
+        <!-- =========================
+             CONTROLES MOBILE
+        ========================= -->
+
+        <div class="controles-pong">
+
+
+            <!-- JOUEUR 1 -->
+
+            <div class="controle-joueur">
+
+                <p>
+                    🧑 Joueur 1
+                </p>
+
+
+                <div class="ligne-controle">
+
+                    <button
+                        onclick="toucheMobile('haut')">
+
+                        ⬆️
+
+                    </button>
+
+                </div>
+
+
+                <div class="ligne-controle">
+
+                    <button
+                        onclick="toucheMobile('bas')">
+
+                        ⬇️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- JOUEUR 2 -->
+
+            <div
+                class="controle-joueur"
+                id="controleJoueur2">
+
+                <p>
+                    🧑‍🤝‍🧑 Joueur 2
+                </p>
+
+
+                <div class="ligne-controle">
+
+                    <button
+                        onclick="toucheMobileJoueur2('haut')">
+
+                        ⬆️
+
+                    </button>
+
+                </div>
+
+
+                <div class="ligne-controle">
+
+                    <button
+                        onclick="toucheMobileJoueur2('bas')">
+
+                        ⬇️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+
+    /* =========================
+       CANVAS
+    ========================= */
+
+    const canvas =
+        document.getElementById("pong");
+
+    const contexte =
+        canvas.getContext("2d");
+
+
+    /* =========================
+       JOUEUR 1
+    ========================= */
+
+    let joueur = {
+
+        x: 20,
+
+        y: 175,
+
+        largeur: 15,
+
+        hauteur: 100,
+
+        vitesse: 7
+
+    };
+
+
+    /* =========================
+       JOUEUR 2 / ORDI
+    ========================= */
+
+    let adversaire = {
+
+        x: 765,
+
+        y: 175,
+
+        largeur: 15,
+
+        hauteur: 100,
+
+        vitesse: 5
+
+    };
+
+
+    /* =========================
+       BALLE
+    ========================= */
+
+    let balle = {
+
+        x: 400,
+
+        y: 225,
+
+        taille: 12,
+
+        vitesseX: 5,
+
+        vitesseY: 3
+
+    };
+
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    let scoreJoueur = 0;
+
+    let scoreAdversaire = 0;
+
+
+    let meilleurScore =
+        Number(
+            localStorage.getItem(
+                "meilleurScorePong"
+            )
+        ) || 0;
+
+
+    let mode = "ordinateur";
+
+    let jeuEnPause = false;
+
+    let jeuTermine = false;
+
+
+    let touches = {
+
+        haut: false,
+
+        bas: false,
+
+        haut2: false,
+
+        bas2: false
+
+    };
+
+
+    document.getElementById(
+        "meilleurScore"
+    ).textContent = meilleurScore;
+
+
+    /* =========================
+       CHOIX DU MODE
+    ========================= */
+
+    function choisirMode(nouveauMode) {
+
+        mode = nouveauMode;
+
+
+        document
+            .getElementById("modeOrdinateur")
+            .classList.remove("actif");
+
+
+        document
+            .getElementById("modeDeuxJoueurs")
+            .classList.remove("actif");
+
+
+        if (mode === "ordinateur") {
+
+            document
+                .getElementById("modeOrdinateur")
+                .classList.add("actif");
+
+
+            document
+                .getElementById("controleJoueur2")
+                .style.display = "none";
+
+
+        }
+
+        else {
+
+            document
+                .getElementById("modeDeuxJoueurs")
+                .classList.add("actif");
+
+
+            document
+                .getElementById("controleJoueur2")
+                .style.display = "block";
+
+        }
+
+
+        recommencer();
+
+    }
+
+
+    /* =========================
+       CLAVIER
+    ========================= */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            const touche =
+                event.key.toLowerCase();
+
+
+            /* Joueur 1 */
+
+            if (touche === "z") {
+
+                touches.haut = true;
+
+            }
+
+
+            if (touche === "s") {
+
+                touches.bas = true;
+
+            }
+
+
+            /* Joueur 2 */
+
+            if (event.key === "ArrowUp") {
+
+                touches.haut2 = true;
+
+                event.preventDefault();
+
+            }
+
+
+            if (event.key === "ArrowDown") {
+
+                touches.bas2 = true;
+
+                event.preventDefault();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keyup",
+        function(event) {
+
+            const touche =
+                event.key.toLowerCase();
+
+
+            if (touche === "z") {
+
+                touches.haut = false;
+
+            }
+
+
+            if (touche === "s") {
+
+                touches.bas = false;
+
+            }
+
+
+            if (event.key === "ArrowUp") {
+
+                touches.haut2 = false;
+
+            }
+
+
+            if (event.key === "ArrowDown") {
+
+                touches.bas2 = false;
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       CONTROLES MOBILE
+    ========================= */
+
+    function toucheMobile(direction) {
+
+        if (direction === "haut") {
+
+            joueur.y -= 30;
+
+        }
+
+
+        if (direction === "bas") {
+
+            joueur.y += 30;
+
+        }
+
+
+        limiterJoueur();
+
+    }
+
+
+    function toucheMobileJoueur2(direction) {
+
+        if (direction === "haut") {
+
+            adversaire.y -= 30;
+
+        }
+
+
+        if (direction === "bas") {
+
+            adversaire.y += 30;
+
+        }
+
+
+        limiterAdversaire();
+
+    }
+
+
+    /* =========================
+       LIMITES JOUEUR
+    ========================= */
+
+    function limiterJoueur() {
+
+        if (joueur.y < 0) {
+
+            joueur.y = 0;
+
+        }
+
+
+        if (
+            joueur.y + joueur.hauteur
+            > canvas.height
+        ) {
+
+            joueur.y =
+                canvas.height
+                - joueur.hauteur;
+
+        }
+
+    }
+
+
+    /* =========================
+       LIMITES ADVERSAIRE
+    ========================= */
+
+    function limiterAdversaire() {
+
+        if (adversaire.y < 0) {
+
+            adversaire.y = 0;
+
+        }
+
+
+        if (
+            adversaire.y + adversaire.hauteur
+            > canvas.height
+        ) {
+
+            adversaire.y =
+                canvas.height
+                - adversaire.hauteur;
+
+        }
+
+    }
+
+
+    /* =========================
+       DESSIN
+    ========================= */
+
+    function dessiner() {
+
+
+        /* Fond */
+
+        contexte.fillStyle = "#050505";
+
+        contexte.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        /* Ligne centrale */
+
+        contexte.setLineDash([
+            10,
+            15
+        ]);
+
+        contexte.strokeStyle = "#444";
+
+        contexte.lineWidth = 3;
+
+        contexte.beginPath();
+
+        contexte.moveTo(
+            canvas.width / 2,
+            0
+        );
+
+        contexte.lineTo(
+            canvas.width / 2,
+            canvas.height
+        );
+
+        contexte.stroke();
+
+        contexte.setLineDash([]);
+
+
+        /* Joueur 1 */
+
+        contexte.shadowBlur = 15;
+
+        contexte.shadowColor = "#00aaff";
+
+        contexte.fillStyle = "#00aaff";
+
+        contexte.fillRect(
+
+            joueur.x,
+
+            joueur.y,
+
+            joueur.largeur,
+
+            joueur.hauteur
+
+        );
+
+
+        /* Joueur 2 */
+
+        contexte.shadowColor = "#ff3030";
+
+        contexte.fillStyle = "#ff3030";
+
+        contexte.fillRect(
+
+            adversaire.x,
+
+            adversaire.y,
+
+            adversaire.largeur,
+
+            adversaire.hauteur
+
+        );
+
+
+        /* Balle */
+
+        contexte.shadowColor = "#ffffff";
+
+        contexte.fillStyle = "#ffffff";
+
+        contexte.beginPath();
+
+        contexte.arc(
+
+            balle.x,
+
+            balle.y,
+
+            balle.taille,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+        contexte.fill();
+
+        contexte.closePath();
+
+
+        contexte.shadowBlur = 0;
+
+    }
+
+
+    /* =========================
+       JOUEUR 1
+    ========================= */
+
+    function bougerJoueur() {
+
+        if (touches.haut) {
+
+            joueur.y -= joueur.vitesse;
+
+        }
+
+
+        if (touches.bas) {
+
+            joueur.y += joueur.vitesse;
+
+        }
+
+
+        limiterJoueur();
+
+    }
+
+
+    /* =========================
+       ORDINATEUR
+    ========================= */
+
+    function bougerOrdinateur() {
+
+        if (mode !== "ordinateur") {
+
+            return;
+
+        }
+
+
+        let centreRaquette =
+            adversaire.y
+            + adversaire.hauteur / 2;
+
+
+        if (
+            centreRaquette
+            < balle.y - 10
+        ) {
+
+            adversaire.y +=
+                adversaire.vitesse;
+
+        }
+
+
+        else if (
+            centreRaquette
+            > balle.y + 10
+        ) {
+
+            adversaire.y -=
+                adversaire.vitesse;
+
+        }
+
+
+        limiterAdversaire();
+
+    }
+
+
+    /* =========================
+       JOUEUR 2
+    ========================= */
+
+    function bougerJoueur2() {
+
+        if (mode !== "deuxJoueurs") {
+
+            return;
+
+        }
+
+
+        if (touches.haut2) {
+
+            adversaire.y -=
+                adversaire.vitesse;
+
+        }
+
+
+        if (touches.bas2) {
+
+            adversaire.y +=
+                adversaire.vitesse;
+
+        }
+
+
+        limiterAdversaire();
+
+    }
+
+
+    /* =========================
+       BALLE
+    ========================= */
+
+    function bougerBalle() {
+
+        balle.x += balle.vitesseX;
+
+        balle.y += balle.vitesseY;
+
+
+        /* Rebond haut */
+
+        if (
+            balle.y - balle.taille <= 0
+        ) {
+
+            balle.y =
+                balle.taille;
+
+            balle.vitesseY =
+                Math.abs(
+                    balle.vitesseY
+                );
+
+        }
+
+
+        /* Rebond bas */
+
+        if (
+            balle.y + balle.taille
+            >= canvas.height
+        ) {
+
+            balle.y =
+                canvas.height
+                - balle.taille;
+
+            balle.vitesseY =
+                -Math.abs(
+                    balle.vitesseY
+                );
+
+        }
+
+
+        /* =====================
+           COLLISION JOUEUR
+        ===================== */
+
+        if (
+
+            balle.x - balle.taille
+            <= joueur.x + joueur.largeur &&
+
+            balle.x + balle.taille
+            >= joueur.x &&
+
+            balle.y >= joueur.y &&
+
+            balle.y <=
+            joueur.y + joueur.hauteur
+
+        ) {
+
+            balle.x =
+                joueur.x
+                + joueur.largeur
+                + balle.taille;
+
+
+            balle.vitesseX =
+                Math.abs(
+                    balle.vitesseX
+                );
+
+
+            accelererBalle();
+
+        }
+
+
+        /* =====================
+           COLLISION JOUEUR 2
+        ===================== */
+
+        if (
+
+            balle.x + balle.taille
+            >= adversaire.x &&
+
+            balle.x - balle.taille
+            <=
+            adversaire.x
+            + adversaire.largeur &&
+
+            balle.y >= adversaire.y &&
+
+            balle.y <=
+            adversaire.y
+            + adversaire.hauteur
+
+        ) {
+
+            balle.x =
+                adversaire.x
+                - balle.taille;
+
+
+            balle.vitesseX =
+                -Math.abs(
+                    balle.vitesseX
+                );
+
+
+            accelererBalle();
+
+        }
+
+
+        /* =====================
+           SCORE ADVERSAIRE
+        ===================== */
+
+        if (balle.x < 0) {
+
+            scoreAdversaire++;
+
+            mettreAJourScore();
+
+            nouvelleManche();
+
+        }
+
+
+        /* =====================
+           SCORE JOUEUR
+        ===================== */
+
+        if (
+            balle.x > canvas.width
+        ) {
+
+            scoreJoueur++;
+
+            mettreAJourScore();
+
+            nouvelleManche();
+
+        }
+
+    }
+
+
+    /* =========================
+       ACCELERATION
+    ========================= */
+
+    function accelererBalle() {
+
+        let directionX =
+            balle.vitesseX > 0
+                ? 1
+                : -1;
+
+
+        let directionY =
+            balle.vitesseY > 0
+                ? 1
+                : -1;
+
+
+        let nouvelleVitesseX =
+            Math.abs(
+                balle.vitesseX
+            ) + 0.8;
+
+
+        let nouvelleVitesseY =
+            Math.abs(
+                balle.vitesseY
+            ) + 0.35;
+
+
+        nouvelleVitesseX =
+            Math.min(
+                nouvelleVitesseX,
+                15
+            );
+
+
+        nouvelleVitesseY =
+            Math.min(
+                nouvelleVitesseY,
+                9
+            );
+
+
+        balle.vitesseX =
+            nouvelleVitesseX
+            * directionX;
+
+
+        balle.vitesseY =
+            nouvelleVitesseY
+            * directionY;
+
+
+        /* Ordinateur plus rapide */
+
+        if (
+            mode === "ordinateur"
+        ) {
+
+            adversaire.vitesse =
+                Math.min(
+                    adversaire.vitesse
+                    + 0.25,
+                    9
+                );
+
+        }
+
+    }
+
+
+    /* =========================
+       NOUVELLE MANCHE
+    ========================= */
+
+    function nouvelleManche() {
+
+        balle.x =
+            canvas.width / 2;
+
+        balle.y =
+            canvas.height / 2;
+
+
+        balle.vitesseX =
+            Math.random() < 0.5
+                ? -5
+                : 5;
+
+
+        balle.vitesseY =
+            Math.random() * 4 - 2;
+
+
+        joueur.y =
+            canvas.height / 2
+            - joueur.hauteur / 2;
+
+
+        adversaire.y =
+            canvas.height / 2
+            - adversaire.hauteur / 2;
+
+
+        /* Victoire */
+
+        if (
+            scoreJoueur >= 10
+        ) {
+
+            gagnerPartie();
+
+        }
+
+
+        /* Défaite */
+
+        if (
+            scoreAdversaire >= 10
+        ) {
+
+            perdrePartie();
+
+        }
+
+    }
+
+
+    /* =========================
+       SCORE
+    ========================= */
+
+    function mettreAJourScore() {
+
+        document.getElementById(
+            "scoreJoueur"
+        ).textContent =
+            scoreJoueur;
+
+
+        document.getElementById(
+            "scoreAdversaire"
+        ).textContent =
+            scoreAdversaire;
+
+
+        /* Sauvegarde meilleur score */
+
+        if (
+            scoreJoueur
+            > meilleurScore
+        ) {
+
+            meilleurScore =
+                scoreJoueur;
+
+
+            localStorage.setItem(
+                "meilleurScorePong",
+                meilleurScore
+            );
+
+
+            document.getElementById(
+                "meilleurScore"
+            ).textContent =
+                meilleurScore;
+
+        }
+
+    }
+
+
+    /* =========================
+       VICTOIRE
+    ========================= */
+
+    function gagnerPartie() {
+
+        jeuTermine = true;
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "🏆 TU AS GAGNÉ !";
+
+
+        if (
+            scoreJoueur
+            > meilleurScore
+        ) {
+
+            meilleurScore =
+                scoreJoueur;
+
+
+            localStorage.setItem(
+                "meilleurScorePong",
+                meilleurScore
+            );
+
+
+            document.getElementById(
+                "meilleurScore"
+            ).textContent =
+                meilleurScore;
+
+        }
+
+    }
+
+
+    /* =========================
+       DEFAITE
+    ========================= */
+
+    function perdrePartie() {
+
+        jeuTermine = true;
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+
+            mode === "ordinateur"
+
+                ? "🤖 L'ordinateur a gagné !"
+
+                : "🧑‍🤝‍🧑 Joueur 2 a gagné !";
+
+    }
+
+
+    /* =========================
+       PAUSE
+    ========================= */
+
+    function pauseJeu() {
+
+        if (jeuTermine) {
+
+            return;
+
+        }
+
+
+        jeuEnPause =
+            !jeuEnPause;
+
+
+        const bouton =
+            document.getElementById(
+                "boutonPause"
+            );
+
+
+        if (jeuEnPause) {
+
+            bouton.textContent =
+                "▶️ Reprendre";
+
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "⏸️ Jeu en pause";
+
+        }
+
+        else {
+
+            bouton.textContent =
+                "⏸️ Pause";
+
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "";
+
+        }
+
+    }
+
+
+    /* =========================
+       RECOMMENCER
+    ========================= */
+
+    function recommencer() {
+
+        scoreJoueur = 0;
+
+        scoreAdversaire = 0;
+
+
+        jeuTermine = false;
+
+        jeuEnPause = false;
+
+
+        touches.haut = false;
+
+        touches.bas = false;
+
+        touches.haut2 = false;
+
+        touches.bas2 = false;
+
+
+        joueur.y =
+            canvas.height / 2
+            - joueur.hauteur / 2;
+
+
+        adversaire.y =
+            canvas.height / 2
+            - adversaire.hauteur / 2;
+
+
+        adversaire.vitesse = 5;
+
+
+        balle.x =
+            canvas.width / 2;
+
+        balle.y =
+            canvas.height / 2;
+
+
+        balle.vitesseX = 5;
+
+        balle.vitesseY = 3;
+
+
+        document.getElementById(
+            "scoreJoueur"
+        ).textContent = "0";
+
+
+        document.getElementById(
+            "scoreAdversaire"
+        ).textContent = "0";
+
+
+        document.getElementById(
+            "message"
+        ).textContent = "";
+
+
+        document.getElementById(
+            "boutonPause"
+        ).textContent =
+            "⏸️ Pause";
+
+    }
+
+
+    /* =========================
+       BOUCLE DU JEU
+    ========================= */
+
+    function boucle() {
+
+        if (
+            !jeuEnPause &&
+            !jeuTermine
+        ) {
+
+            bougerJoueur();
+
+            bougerOrdinateur();
+
+            bougerJoueur2();
+
+            bougerBalle();
+
+        }
+
+
+        dessiner();
+
+
+        requestAnimationFrame(
+            boucle
+        );
+
+    }
+
+
+    /* =========================
+       INITIALISATION
+    ========================= */
+
+    document.getElementById(
+        "controleJoueur2"
+    ).style.display = "none";
+
+
+    dessiner();
+
+    boucle();
+
+</script>
+
+
+</body>
+
+</html>

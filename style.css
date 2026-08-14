@@ -1,3 +1,6 @@
+/* =========================
+   STYLE GENERAL
+========================= */
 
 body {
     background-color: #f2f2f2;
@@ -5,7 +8,10 @@ body {
     margin: 20px;
 }
 
-/* TITRE */
+
+/* =========================
+   TITRE
+========================= */
 
 h1 {
     text-align: center;
@@ -14,7 +20,9 @@ h1 {
 }
 
 
-/* MENU */
+/* =========================
+   MENU
+========================= */
 
 nav {
     background-color: black;
@@ -34,7 +42,9 @@ nav a:hover {
 }
 
 
-/* GRILLE DES JEUX */
+/* =========================
+   GRILLE DES JEUX
+========================= */
 
 .liste-jeux {
     display: grid;
@@ -43,7 +53,9 @@ nav a:hover {
 }
 
 
-/* CASE DES JEUX */
+/* =========================
+   CASE DES JEUX
+========================= */
 
 .jeu {
     width: auto;
@@ -65,7 +77,9 @@ nav a:hover {
 }
 
 
-/* IMAGES DES JEUX */
+/* =========================
+   IMAGES DES JEUX
+========================= */
 
 .jeu img {
     width: 100%;
@@ -75,7 +89,9 @@ nav a:hover {
 }
 
 
-/* COULEURS DES JEUX */
+/* =========================
+   COULEURS DES JEUX
+========================= */
 
 .jeu-clics {
     background-color: lightblue;
@@ -86,7 +102,9 @@ nav a:hover {
 }
 
 
-/* BOUTONS */
+/* =========================
+   BOUTONS GENERAUX
+========================= */
 
 button {
     background-color: blue;
@@ -105,7 +123,36 @@ button:hover {
 }
 
 
-/* PIERRE FEUILLE CISEAUX */
+/* =========================
+   BOUTON JOUER DES CASES
+========================= */
+
+.bouton-jeu {
+    background-color: blue;
+    color: white;
+
+    font-size: 16px;
+
+    padding: 10px 18px;
+
+    width: auto;
+    height: auto;
+
+    min-width: 0;
+    min-height: 0;
+
+    border-radius: 10px;
+}
+
+.bouton-jeu:hover {
+    background-color: red;
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   PIERRE FEUILLE CISEAUX
+========================= */
 
 .jeu-pfc {
     background-color: #4a90e2;
@@ -125,7 +172,9 @@ button:hover {
 }
 
 
-/* SCORE */
+/* =========================
+   SCORE
+========================= */
 
 .score {
     font-size: 20px;
@@ -146,7 +195,9 @@ button:hover {
 }
 
 
-/* SNAKE */
+/* =========================
+   SNAKE
+========================= */
 
 .jeu-snake {
     background-color: #1e1e1e;
@@ -155,7 +206,9 @@ button:hover {
     padding: 25px;
     border-radius: 20px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .jeu-snake h2 {
@@ -188,7 +241,9 @@ button:hover {
 }
 
 
-/* TERRAIN SNAKE */
+/* =========================
+   TERRAIN SNAKE
+========================= */
 
 #jeu {
     border: 5px solid black;
@@ -197,14 +252,18 @@ button:hover {
 }
 
 
-/* BOUTON REJOUER */
+/* =========================
+   BOUTON REJOUER
+========================= */
 
 #rejouer {
     display: none;
 }
 
 
-/* IMAGE GENERALE */
+/* =========================
+   IMAGE GENERALE
+========================= */
 
 img {
     max-width: 100%;
@@ -212,7 +271,9 @@ img {
 }
 
 
-/* CONTROLES SNAKE */
+/* =========================
+   CONTROLES SNAKE
+========================= */
 
 .controles-snake {
     text-align: center;
@@ -227,34 +288,56 @@ img {
 }
 
 
-/* RESPONSIVE : TABLETTE */
+/* =========================
+   PONG
+========================= */
+
+.jeu-pong {
+    background: linear-gradient(
+        135deg,
+        #111,
+        #003b66
+    );
+
+    border: 3px solid #00aaff;
+
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.5);
+}
+
+.jeu-pong h2 {
+    color: #00aaff;
+}
+
+
+/* =========================
+   RESPONSIVE TABLETTE
+========================= */
 
 @media (max-width: 800px) {
+
     .liste-jeux {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 
-/* RESPONSIVE : TELEPHONE */
+/* =========================
+   RESPONSIVE TELEPHONE
+========================= */
 
 @media (max-width: 500px) {
+
     .liste-jeux {
         grid-template-columns: 1fr;
     }
-}
-@media (max-width: 600px) {
-
-    .jeu-clics button {
-        font-size: 30px;
-        width: 90%;
-        max-width: 350px;
-        height: 100px;
-    }
 
 }
+
+
 /* =========================
-   ACCUEIL - MOBILE
+   ACCUEIL MOBILE
 ========================= */
 
 @media (max-width: 600px) {
@@ -263,13 +346,17 @@ img {
         margin: 8px;
     }
 
-    /* Titre de l'accueil */
+
+    /* TITRE */
+
     h1 {
         font-size: 40px;
         line-height: 1.2;
     }
 
-    /* Menu */
+
+    /* MENU */
+
     nav {
         padding: 12px;
         text-align: center;
@@ -281,28 +368,98 @@ img {
         margin-right: 15px;
     }
 
-    /* Texte d'accueil */
+
+    /* TEXTE ACCUEIL */
+
     body > p {
         font-size: 18px;
         text-align: center;
     }
 
-    /* Boutons */
+
+    /* BOUTONS GENERAUX */
+
     button {
         font-size: 18px;
         padding: 14px 22px;
     }
 
-    /* Images de l'accueil */
+
+    /* IMAGES */
+
     img {
         max-width: 100%;
         height: auto;
     }
 
+
+    /* BOUTON JOUER */
+
+    .bouton-jeu {
+        font-size: 15px;
+
+        padding: 9px 16px;
+
+        width: auto;
+        height: auto;
+
+        min-width: 0;
+        min-height: 0;
+    }
+
 }
-.jeu-clics button {
-    font-size: 35px;
-    padding: 30px 70px;
-    min-width: 300px;
-    min-height: 100px;
+
+
+/* =========================
+   PETIT TELEPHONE
+========================= */
+
+@media (max-width: 380px) {
+
+    h1 {
+        font-size: 34px;
+    }
+
+    nav a {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .bouton-jeu {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+
+}
+/* =========================
+   FOND ACCUEIL
+========================= */
+
+body.accueil {
+    background-color: #111;
+    color: white;
+}
+
+body.accueil h1 {
+    color: #00aaff;
+}
+
+body.accueil p {
+    color: white;
+}/* =========================
+   FOND NOIR DES PAGES DE JEUX
+========================= */
+
+body.page-jeu {
+    background-color: #111;
+    color: white;
+    margin: 0;
+}
+
+body.page-jeu h1 {
+    color: #00aaff;
+}
+
+body.page-jeu p {
+    color: white;
 }
