@@ -1,22 +1,17 @@
-/* =====================================================
+/* =========================
    GAMEZONE - STYLE GENERAL
-===================================================== */
-
-* {
-    box-sizing: border-box;
-}
+========================= */
 
 body {
     background-color: #f2f2f2;
     font-family: Arial, sans-serif;
     margin: 20px;
-    color: #111;
 }
 
 
-/* =====================================================
-   TITRES
-===================================================== */
+/* =========================
+   TITRE
+========================= */
 
 h1 {
     text-align: center;
@@ -24,20 +19,15 @@ h1 {
     font-size: 60px;
 }
 
-h2 {
-    margin-top: 0;
-}
 
-
-/* =====================================================
+/* =========================
    MENU
-===================================================== */
+========================= */
 
 nav {
     background-color: black;
     padding: 15px;
     text-align: left;
-    border-radius: 10px;
 }
 
 nav a {
@@ -48,13 +38,13 @@ nav a {
 }
 
 nav a:hover {
-    color: #00aaff;
+    color: yellow;
 }
 
 
-/* =====================================================
+/* =========================
    GRILLE DES JEUX
-===================================================== */
+========================= */
 
 .liste-jeux {
     display: grid;
@@ -63,30 +53,23 @@ nav a:hover {
 }
 
 
-/* =====================================================
+/* =========================
    CASE DES JEUX
-===================================================== */
+========================= */
 
 .jeu {
     width: auto;
     padding: 20px;
-
     border: 2px solid black;
     border-radius: 15px;
-
     background-color: white;
-
-    box-shadow:
-        0 5px 10px rgba(0, 0, 0, 0.2);
-
+    box-sizing: border-box;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
 
 .jeu:hover {
-    transform: scale(1.03);
-
-    box-shadow:
-        0 10px 20px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
 }
 
 .jeu h2 {
@@ -94,74 +77,37 @@ nav a:hover {
 }
 
 
-/* =====================================================
+/* =========================
    IMAGES DES JEUX
-===================================================== */
+========================= */
 
 .jeu img {
     width: 100%;
     height: 180px;
-
     object-fit: cover;
-
     border-radius: 10px;
-
-    display: block;
 }
 
 
-/* =====================================================
+/* =========================
    COULEURS DES JEUX
-===================================================== */
+========================= */
 
 .jeu-clics {
-    background-color: #111;
-    border-color: #00aaff;
-    color: white;
+    background-color: lightblue;
 }
-
-.jeu-clics h2 {
-    color: #00aaff;
-}
-
 
 .jeu-nombre {
-    background-color: #111;
-    border-color: #9b59b6;
-    color: white;
+    background-color: lightgreen;
 }
-
-.jeu-nombre h2 {
-    color: #c77dff;
-}
-
 
 .jeu-pfc {
-    background-color: #111;
-    border-color: #ff9800;
-    color: white;
+    background-color: #4a90e2;
 }
-
-
-.jeu-pfc h2 {
-    color: #ff9800;
-}
-
 
 .jeu-snake {
-    background-color: #111;
-    border-color: #20c20e;
-    color: white;
+    background-color: #1e1e1e;
 }
-
-.jeu-snake h2 {
-    color: #35e51f;
-}
-
-
-/* =====================================================
-   PONG - CASE
-===================================================== */
 
 .jeu-pong {
     background: linear-gradient(
@@ -172,7 +118,158 @@ nav a:hover {
 
     border: 3px solid #00aaff;
 
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.5);
+}
+
+.jeu-pong h2 {
+    color: #00aaff;
+}
+
+
+/* =========================
+   BOUTONS GENERAUX
+========================= */
+
+button {
+    background-color: blue;
     color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: red;
+    transform: scale(1.1);
+}
+
+
+/* =========================
+   BOUTON JOUER
+========================= */
+
+.bouton-jeu {
+    background-color: blue;
+    color: white;
+    font-size: 16px;
+    padding: 10px 18px;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 10px;
+}
+
+.bouton-jeu:hover {
+    background-color: red;
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   SCORE
+========================= */
+
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px;
+    text-align: center;
+}
+
+.score p {
+    margin: 5px;
+}
+
+#resultat {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+/* =========================
+   SNAKE
+========================= */
+
+.jeu-snake {
+    background-color: #1e1e1e;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.jeu-snake h2 {
+    color: white;
+    font-size: 30px;
+}
+
+.jeu-snake p {
+    color: white;
+}
+
+.jeu-snake button {
+    padding: 10px 18px;
+    margin: 5px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.jeu-snake button:hover {
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   TERRAIN SNAKE
+========================= */
+
+#jeu {
+    border: 5px solid black;
+    display: block;
+    margin: 20px auto;
+}
+
+
+/* =========================
+   CONTROLES SNAKE
+========================= */
+
+.controles-snake {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.controles-snake button {
+    width: 60px;
+    height: 50px;
+    margin: 4px;
+    font-size: 22px;
+}
+
+
+/* =========================
+   PONG
+========================= */
+
+.jeu-pong {
+    background: linear-gradient(
+        135deg,
+        #111,
+        #003b66
+    );
+
+    border: 3px solid #00aaff;
 
     box-shadow:
         0 0 15px rgba(0, 170, 255, 0.5);
@@ -183,381 +280,109 @@ nav a:hover {
 }
 
 
-/* =====================================================
-   BOUTONS GENERAUX
-===================================================== */
-
-button {
-    background-color: blue;
-
-    color: white;
-
-    font-size: 16px;
-
-    border: none;
-
-    border-radius: 15px;
-
-    padding: 12px 20px;
-
-    cursor: pointer;
-
-    transition:
-        0.2s;
-}
-
-button:hover {
-    background-color: red;
-
-    transform: scale(1.05);
-}
-
-button:disabled {
-    background-color: #777;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-
-/* =====================================================
-   BOUTON JOUER DES CASES
-===================================================== */
-
-.bouton-jeu {
-    background-color: blue;
-
-    color: white;
-
-    font-size: 16px;
-
-    padding: 10px 18px;
-
-    width: auto;
-    height: auto;
-
-    min-width: 0;
-    min-height: 0;
-
-    border-radius: 10px;
-}
-
-.bouton-jeu:hover {
-    background-color: red;
-
-    transform: scale(1.05);
-}
-
-
-/* =====================================================
-   PAGE DES JEUX
-===================================================== */
-
-.page-jeu {
-    background-color: #111;
-    color: white;
-
-    min-height: 100vh;
-
-    margin: 0;
-
-    padding: 20px;
-
-    text-align: center;
-}
-
-.page-jeu h1 {
-    color: #00aaff;
-}
-
-.page-jeu p {
-    font-size: 18px;
-}
-
-
-/* =====================================================
-   BOUTON RETOUR AUX JEUX
-===================================================== */
-
-.page-jeu > a button,
-.jeu-snake > a button {
-    margin: 10px;
-}
-
-
-/* =====================================================
-   JEU DE CLICS
-===================================================== */
-
-#boutonJeu {
-    font-size: 25px;
-
-    padding: 20px 40px;
-
-    border-radius: 15px;
-
-    background-color: #007bff;
-}
-
-#boutonJeu:hover {
-    background-color: #00aaff;
-}
-
-#rejouer {
-    display: none;
-}
-
-
-/* =====================================================
-   SCORE
-===================================================== */
-
-.score {
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin: 20px;
-
-    text-align: center;
-}
-
-.score p {
-    margin: 5px;
-}
-
-#resultat {
-    font-size: 22px;
-
-    font-weight: bold;
-
-    margin-top: 20px;
-
-    text-align: center;
-}
-
-
-/* =====================================================
-   PIERRE FEUILLE CISEAUX
-===================================================== */
-
-.jeu-pfc {
-    max-width: 700px;
-
-    margin: 30px auto;
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    text-align: center;
-}
-
-.jeu-pfc button {
-    padding: 12px 20px;
-
-    margin: 5px;
-
-    border-radius: 10px;
-
-    font-size: 16px;
-}
-
-.jeu-pfc button:hover {
-    transform: scale(1.08);
-}
-
-.jeu-pfc h2 {
-    font-size: 30px;
-}
-
-
-/* =====================================================
-   HISTORIQUE PFC
-===================================================== */
-
-#historique {
-    list-style: none;
-
-    padding: 0;
-
-    max-height: 250px;
-
-    overflow-y: auto;
-}
-
-#historique li {
-    background-color: #222;
-
-    padding: 8px;
-
-    margin: 5px;
-
-    border-radius: 8px;
-}
-
-
-/* =====================================================
-   SNAKE
-===================================================== */
-
-.jeu-snake {
-    width: 100%;
-
-    max-width: 600px;
-
-    margin: 20px auto;
-
-    padding: 25px;
-
-    border-radius: 20px;
-
-    text-align: center;
-
-    background-color: #111;
-
-    color: white;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.5);
-}
-
-.jeu-snake h2 {
-    color: #35e51f;
-
-    font-size: 30px;
-}
-
-.jeu-snake p {
-    color: white;
-}
-
-
-/* =====================================================
-   TERRAIN SNAKE
-===================================================== */
-
-#jeu {
-    display: block;
-
-    width: min(90vw, 400px);
-
-    height: auto;
-
-    aspect-ratio: 1 / 1;
-
-    border: 5px solid black;
-
-    background-color: #eeeeee;
-
-    margin: 20px auto;
-
-    touch-action: none;
-}
-
-
-/* =====================================================
-   CONTROLES SNAKE
-===================================================== */
-
-.controles-snake {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    margin-top: 15px;
-
-    user-select: none;
-}
-
-.ligne-controles {
-    display: flex;
-
-    justify-content: center;
-}
-
-.controles-snake button {
-    width: 70px;
-
-    height: 60px;
-
-    margin: 5px;
-
-    font-size: 28px;
-
-    border-radius: 15px;
-
-    touch-action: manipulation;
-}
-
-.controles-snake button:active {
-    transform: scale(0.9);
-}
-
-
-/* =====================================================
-   BOUTONS SNAKE
-===================================================== */
-
-.boutons-jeu {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-
-    margin-top: 15px;
-}
-
-
-/* =====================================================
-   PONG - PAGE
-===================================================== */
+/* =========================
+   PAGE PONG
+========================= */
 
 .pong-container {
+    width: 95%;
     max-width: 900px;
-
-    margin: 20px auto;
-
-    padding: 20px;
-
-    background: #111;
-
-    border: 3px solid #00aaff;
-
-    border-radius: 20px;
-
+    margin: auto;
     text-align: center;
-
-    box-shadow:
-        0 0 25px rgba(0, 170, 255, 0.4);
 }
 
 .pong-container h1 {
     color: #00aaff;
-
-    font-size: 40px;
+    font-size: 45px;
+    margin: 20px;
 }
 
-.pong-container p {
+
+/* =========================
+   RETOUR PONG
+========================= */
+
+.retour {
+    margin-bottom: 15px;
+}
+
+.retour button {
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background-color: #007bff;
     color: white;
+    cursor: pointer;
+}
+
+.retour button:hover {
+    background-color: #00aaff;
+    transform: scale(1.05);
 }
 
 
-/* =====================================================
+/* =========================
+   CHOIX DU MODE
+========================= */
+
+.choix-mode {
+    margin: 20px 0;
+}
+
+.choix-mode button {
+    padding: 12px 20px;
+    margin: 5px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #007bff;
+    color: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+.choix-mode button:hover {
+    background-color: #00aaff;
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   SCORE PONG
+========================= */
+
+.score-pong {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    margin: 15px;
+}
+
+#scoreJoueur1 {
+    color: #00aaff;
+}
+
+#scoreJoueur2 {
+    color: #ff4444;
+}
+
+
+/* =========================
    TERRAIN PONG
-===================================================== */
+========================= */
 
 #pong {
     display: block;
 
     width: min(95vw, 800px);
-
     height: auto;
 
     margin: 20px auto;
@@ -568,225 +393,201 @@ button:disabled {
 
     border-radius: 10px;
 
-    touch-action: none;
+    box-shadow:
+        0 0 20px rgba(0, 170, 255, 0.5);
 }
 
 
-/* =====================================================
-   BOUTONS PONG
-===================================================== */
+/* =========================
+   MESSAGE PONG
+========================= */
 
-.pong-boutons {
-    display: flex;
+#message {
+    min-height: 30px;
 
-    justify-content: center;
+    font-size: 22px;
 
-    align-items: center;
+    font-weight: bold;
 
-    gap: 10px;
-
-    flex-wrap: wrap;
-
-    margin: 15px auto;
+    color: #00aaff;
 }
 
-.pong-boutons button {
-    padding: 12px 20px;
 
-    font-size: 16px;
+/* =========================
+   BOUTON REJOUER
+========================= */
+
+#boutonRejouer {
+    display: none;
+
+    padding: 12px 22px;
+
+    border: none;
 
     border-radius: 10px;
+
+    background-color: #00aaff;
+
+    color: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+#boutonRejouer:hover {
+    background-color: #007bff;
+    transform: scale(1.05);
 }
 
 
-/* =====================================================
-   MODES PONG
-===================================================== */
+/* =========================
+   CONTROLES MOBILE PONG
+========================= */
 
-.mode-pong {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-
-    margin: 15px;
-}
-
-.mode-pong button {
-    padding: 12px 20px;
-
-    font-size: 16px;
-
-    border-radius: 10px;
-}
-
-
-/* =====================================================
-   COMMANDES PONG MOBILE
-===================================================== */
-
-.controles-pong {
-    display: flex;
-
-    justify-content: space-between;
+.controles-mobile {
+    display: none;
 
     width: 100%;
 
-    max-width: 800px;
+    justify-content: space-between;
 
-    margin: 20px auto;
+    margin-top: 20px;
 
-    gap: 20px;
+    user-select: none;
+
+    -webkit-user-select: none;
 }
 
 
-/* Groupe joueur */
+/* =========================
+   JOUEUR 1
+========================= */
 
-.controles-joueur {
+.controle-joueur1 {
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
 
-    gap: 8px;
-
-    flex: 1;
+    width: 45%;
 }
 
-.controles-joueur h3 {
-    color: white;
+.controle-joueur1 h3 {
+    color: #00aaff;
+}
+
+
+/* =========================
+   JOUEUR 2
+========================= */
+
+.controle-joueur2 {
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    width: 45%;
+}
+
+.controle-joueur2 h3 {
+    color: #ff4444;
+}
+
+
+/* =========================
+   BOUTONS PONG MOBILE
+========================= */
+
+.controles-mobile button {
+    width: 70px;
+    height: 60px;
 
     margin: 5px;
-}
 
-
-/* Boutons des commandes */
-
-.controles-joueur button {
-    width: 70px;
-
-    height: 55px;
-
-    font-size: 25px;
-
-    border-radius: 12px;
-
-    touch-action: manipulation;
-}
-
-
-/* Joueur 1 */
-
-.controles-joueur1 {
-    border: 2px solid #00aaff;
-
-    padding: 10px;
+    border: none;
 
     border-radius: 15px;
-}
 
-.controles-joueur1 h3 {
-    color: #00aaff;
-}
+    font-size: 28px;
 
-
-/* Joueur 2 */
-
-.controles-joueur2 {
-    border: 2px solid #ff4444;
-
-    padding: 10px;
-
-    border-radius: 15px;
-}
-
-.controles-joueur2 h3 {
-    color: #ff4444;
-}
-
-
-/* =====================================================
-   COMMANDES PONG CACHÉES PAR DEFAUT
-===================================================== */
-
-.controles-pong {
-    display: none;
-}
-
-
-/*
-   Quand le mode 2 joueurs est actif,
-   ton JavaScript peut ajouter la classe
-   "mode-2-joueurs" au conteneur.
-*/
-
-.mode-2-joueurs .controles-pong {
-    display: flex;
-}
-
-
-/* =====================================================
-   SCORE PONG
-===================================================== */
-
-.score-pong {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 50px;
-
-    font-size: 25px;
-
-    font-weight: bold;
+    background-color: #333;
 
     color: white;
 
-    margin: 15px;
-}
+    cursor: pointer;
 
-.score-joueur1 {
-    color: #00aaff;
-}
+    /*
+       Important pour le téléphone :
+       évite que le navigateur
+       interprète l'appui comme
+       un défilement.
+    */
 
-.score-joueur2 {
-    color: #ff4444;
-}
+    touch-action: none;
 
+    -webkit-touch-callout: none;
 
-/* =====================================================
-   MESSAGE PONG
-===================================================== */
+    -webkit-user-select: none;
+    user-select: none;
 
-#messagePong {
-    color: white;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    min-height: 25px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* =====================================================
-   ACCUEIL
-===================================================== */
+/* =========================
+   APPUI SUR BOUTON
+========================= */
+
+.controles-mobile button:active {
+    transform: scale(0.90);
+
+    background-color: #555;
+}
+
+
+/* =========================
+   MODE 2 JOUEURS
+========================= */
+
+.mode-2-joueurs {
+    justify-content: space-between;
+}
+
+.mode-2-joueurs .controle-joueur1 {
+    display: flex;
+    width: 45%;
+}
+
+.mode-2-joueurs .controle-joueur2 {
+    display: flex;
+    width: 45%;
+}
+
+
+/* =========================
+   INSTRUCTIONS
+========================= */
+
+.instructions {
+    margin-top: 20px;
+
+    color: #ccc;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   FOND ACCUEIL
+========================= */
 
 body.accueil {
     background-color: #111;
-
     color: white;
-
-    min-height: 100vh;
-
-    margin: 0;
-
-    padding: 20px;
 }
 
 body.accueil h1 {
@@ -798,9 +599,9 @@ body.accueil p {
 }
 
 
-/* =====================================================
+/* =========================
    RESPONSIVE TABLETTE
-===================================================== */
+========================= */
 
 @media (max-width: 800px) {
 
@@ -808,16 +609,12 @@ body.accueil p {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    h1 {
-        font-size: 50px;
-    }
-
 }
 
 
-/* =====================================================
+/* =========================
    RESPONSIVE TELEPHONE
-===================================================== */
+========================= */
 
 @media (max-width: 600px) {
 
@@ -826,61 +623,33 @@ body.accueil p {
     }
 
 
+    /* TITRE */
+
+    h1 {
+        font-size: 40px;
+        line-height: 1.2;
+    }
+
+
     /* MENU */
 
     nav {
         padding: 12px;
-
         text-align: center;
-
         border-radius: 10px;
     }
 
     nav a {
         font-size: 17px;
-
         margin-right: 15px;
-    }
-
-
-    /* TITRES */
-
-    h1 {
-        font-size: 40px;
-
-        line-height: 1.2;
     }
 
 
     /* GRILLE */
 
     .liste-jeux {
-        width: 94%;
-
         grid-template-columns: 1fr;
-
         gap: 18px;
-    }
-
-
-    /* CASE */
-
-    .jeu {
-        padding: 12px;
-    }
-
-
-    /* IMAGES */
-
-    .jeu img {
-        height: 180px;
-    }
-
-
-    /* TITRES JEUX */
-
-    .jeu h2 {
-        font-size: 23px;
     }
 
 
@@ -888,117 +657,137 @@ body.accueil p {
 
     button {
         font-size: 18px;
-
         padding: 14px 22px;
     }
 
 
+    /* IMAGES */
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+
+    /* BOUTON JOUER */
+
     .bouton-jeu {
         font-size: 15px;
-
         padding: 9px 16px;
-
         width: auto;
-
         height: auto;
-
-        min-width: 0;
-
-        min-height: 0;
     }
 
 
-    /* =================================================
+    /* =====================
        PONG MOBILE
-    ================================================= */
-
-    #pong {
-        width: 95vw;
-
-        max-width: 500px;
-
-        border-width: 3px;
-    }
-
+    ===================== */
 
     .pong-container {
         width: 100%;
-
-        padding: 10px;
-
-        margin: 10px auto;
     }
 
 
     .pong-container h1 {
-        font-size: 30px;
+        font-size: 34px;
     }
 
 
     .score-pong {
-        gap: 30px;
-
-        font-size: 20px;
+        gap: 35px;
+        font-size: 21px;
     }
 
 
-    /*
-       Les commandes des deux joueurs
-       sont placées à gauche et à droite.
-    */
+    #pong {
+        width: 94vw;
+        border-width: 3px;
+    }
 
-    .controles-pong {
+
+    /* Afficher les commandes */
+
+    .controles-mobile {
+        display: flex;
+    }
+
+
+    /* Joueur 1 visible */
+
+    .controle-joueur1 {
+        display: flex;
+    }
+
+
+    /* Joueur 2 caché par défaut */
+
+    .controle-joueur2 {
+        display: none;
+    }
+
+
+    /* =====================
+       MODE 1 JOUEUR
+    ===================== */
+
+    .controles-mobile:not(.mode-2-joueurs) {
+        justify-content: center;
+    }
+
+    .controles-mobile:not(.mode-2-joueurs)
+    .controle-joueur1 {
         width: 100%;
+    }
 
+
+    /* =====================
+       MODE 2 JOUEURS
+    ===================== */
+
+    .mode-2-joueurs {
         display: flex;
 
-        justify-content: space-between;
+        justify-content:
+            space-between;
+    }
 
-        align-items: center;
+    .mode-2-joueurs
+    .controle-joueur1 {
+        display: flex;
+        width: 45%;
+    }
 
-        gap: 10px;
+    .mode-2-joueurs
+    .controle-joueur2 {
+        display: flex;
+        width: 45%;
     }
 
 
-    .controles-joueur {
-        flex: 0 0 45%;
+    /* Boutons téléphone */
 
-        padding: 8px;
+    .controles-mobile button {
+        width: 70px;
+        height: 60px;
+
+        font-size: 28px;
+
+        margin: 5px;
+
+        touch-action: none;
     }
 
 
-    .controles-joueur button {
-        width: 60px;
-
-        height: 50px;
-
-        font-size: 23px;
-    }
-
-
-    /*
-       Joueur 1 à gauche
-    */
-
-    .controles-joueur1 {
-        order: 1;
-    }
-
-
-    /*
-       Joueur 2 à droite
-    */
-
-    .controles-joueur2 {
-        order: 2;
+    .instructions {
+        font-size: 14px;
     }
 
 }
 
 
-/* =====================================================
+/* =========================
    PETIT TELEPHONE
-===================================================== */
+========================= */
 
 @media (max-width: 380px) {
 
@@ -1008,14 +797,12 @@ body.accueil p {
 
     nav a {
         font-size: 16px;
-
         margin-right: 10px;
     }
 
 
     .bouton-jeu {
         font-size: 14px;
-
         padding: 8px 14px;
     }
 
@@ -1023,26 +810,21 @@ body.accueil p {
     /* PONG */
 
     .pong-container h1 {
-        font-size: 26px;
+        font-size: 29px;
     }
+
 
     .score-pong {
         gap: 20px;
-
         font-size: 18px;
     }
 
 
-    .controles-joueur {
-        padding: 5px;
-    }
+    .controles-mobile button {
+        width: 60px;
+        height: 55px;
 
-    .controles-joueur button {
-        width: 55px;
-
-        height: 48px;
-
-        font-size: 21px;
+        font-size: 24px;
     }
 
 }

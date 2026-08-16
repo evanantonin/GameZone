@@ -169,6 +169,8 @@
 
             box-shadow:
                 0 0 20px rgba(0, 170, 255, 0.5);
+
+            touch-action: none;
         }
 
 
@@ -226,11 +228,13 @@
 
             width: 100%;
 
-            justify-content: center;
+            justify-content: space-between;
 
             margin-top: 20px;
 
             user-select: none;
+
+            -webkit-user-select: none;
         }
 
 
@@ -298,7 +302,13 @@
 
             cursor: pointer;
 
-            touch-action: manipulation;
+            touch-action: none;
+
+            user-select: none;
+
+            -webkit-user-select: none;
+
+            -webkit-touch-callout: none;
 
             -webkit-tap-highlight-color: transparent;
         }
@@ -307,6 +317,7 @@
 
             transform: scale(0.90);
 
+            background-color: #555;
         }
 
 
@@ -330,11 +341,8 @@
 
         .mode-2-joueurs {
 
-            display: flex;
-
             justify-content: space-between;
 
-            align-items: flex-start;
         }
 
         .mode-2-joueurs .controle-joueur1 {
@@ -390,11 +398,16 @@
             }
 
 
-            /* Afficher les contrôles */
-
             .controles-mobile {
 
                 display: flex;
+
+            }
+
+
+            .controle-joueur2 {
+
+                display: none;
 
             }
 
@@ -414,20 +427,10 @@
 
             .controles-mobile:not(
                 .mode-2-joueurs
-            ) .controle-joueur1 {
-
-                display: flex;
+            )
+            .controle-joueur1 {
 
                 width: 100%;
-
-            }
-
-
-            .controles-mobile:not(
-                .mode-2-joueurs
-            ) .controle-joueur2 {
-
-                display: none;
 
             }
 
@@ -442,9 +445,6 @@
 
                 justify-content:
                     space-between;
-
-                align-items:
-                    flex-start;
 
             }
 
@@ -502,22 +502,11 @@
 
             .controles-mobile button {
 
-                width: 58px;
+                width: 60px;
 
-                height: 52px;
+                height: 55px;
 
-                font-size: 23px;
-
-            }
-
-
-            .mode-2-joueurs
-            .controle-joueur1,
-
-            .mode-2-joueurs
-            .controle-joueur2 {
-
-                width: 48%;
+                font-size: 24px;
 
             }
 
@@ -689,7 +678,9 @@
 
 
                 <button
-                    onclick="monterJoueur1()">
+                    ontouchstart="demarrerMonterJoueur1(event)"
+                    ontouchend="arreterJoueur1(event)"
+                    ontouchcancel="arreterJoueur1(event)">
 
                     ⬆️
 
@@ -697,7 +688,9 @@
 
 
                 <button
-                    onclick="descendreJoueur1()">
+                    ontouchstart="demarrerDescendreJoueur1(event)"
+                    ontouchend="arreterJoueur1(event)"
+                    ontouchcancel="arreterJoueur1(event)">
 
                     ⬇️
 
@@ -720,7 +713,9 @@
 
 
                 <button
-                    onclick="monterJoueur2()">
+                    ontouchstart="demarrerMonterJoueur2(event)"
+                    ontouchend="arreterJoueur2(event)"
+                    ontouchcancel="arreterJoueur2(event)">
 
                     ⬆️
 
@@ -728,7 +723,9 @@
 
 
                 <button
-                    onclick="descendreJoueur2()">
+                    ontouchstart="demarrerDescendreJoueur2(event)"
+                    ontouchend="arreterJoueur2(event)"
+                    ontouchcancel="arreterJoueur2(event)">
 
                     ⬇️
 
@@ -843,6 +840,15 @@
 
 
         // =========================
+        // ACCELERATION
+        // =========================
+
+        const acceleration = 0.5;
+
+        const vitesseMax = 12;
+
+
+        // =========================
         // SCORES
         // =========================
 
@@ -863,7 +869,7 @@
 
 
         // =========================
-        // CLAVIER
+        // TOUCHES CLAVIER
         // =========================
 
         let touches = {};
@@ -879,11 +885,8 @@
 
 
                 if (
-                    event.key ===
-                        "ArrowUp" ||
-
-                    event.key ===
-                        "ArrowDown"
+                    event.key === "ArrowUp" ||
+                    event.key === "ArrowDown"
                 ) {
 
                     event.preventDefault();
@@ -907,6 +910,157 @@
 
 
         // =========================
+        // CONTROLES TACTILES
+        // =========================
+
+        let mouvementJoueur1 = null;
+
+        let mouvementJoueur2 = null;
+
+
+        // =========================
+        // JOUEUR 1 - MONTER
+        // =========================
+
+        function demarrerMonterJoueur1(event) {
+
+            event.preventDefault();
+
+            arreterJoueur1();
+
+
+            mouvementJoueur1 =
+                setInterval(function() {
+
+                    joueur1.y -=
+                        joueur1.vitesse * 1.5;
+
+                    limiterRaquette(joueur1);
+
+                }, 30);
+
+        }
+
+
+        // =========================
+        // JOUEUR 1 - DESCENDRE
+        // =========================
+
+        function demarrerDescendreJoueur1(event) {
+
+            event.preventDefault();
+
+            arreterJoueur1();
+
+
+            mouvementJoueur1 =
+                setInterval(function() {
+
+                    joueur1.y +=
+                        joueur1.vitesse * 1.5;
+
+                    limiterRaquette(joueur1);
+
+                }, 30);
+
+        }
+
+
+        // =========================
+        // ARRETER JOUEUR 1
+        // =========================
+
+        function arreterJoueur1(event) {
+
+            if (event) {
+
+                event.preventDefault();
+
+            }
+
+
+            clearInterval(
+                mouvementJoueur1
+            );
+
+
+            mouvementJoueur1 = null;
+
+        }
+
+
+        // =========================
+        // JOUEUR 2 - MONTER
+        // =========================
+
+        function demarrerMonterJoueur2(event) {
+
+            event.preventDefault();
+
+            arreterJoueur2();
+
+
+            mouvementJoueur2 =
+                setInterval(function() {
+
+                    joueur2.y -=
+                        joueur2.vitesse * 1.5;
+
+                    limiterRaquette(joueur2);
+
+                }, 30);
+
+        }
+
+
+        // =========================
+        // JOUEUR 2 - DESCENDRE
+        // =========================
+
+        function demarrerDescendreJoueur2(event) {
+
+            event.preventDefault();
+
+            arreterJoueur2();
+
+
+            mouvementJoueur2 =
+                setInterval(function() {
+
+                    joueur2.y +=
+                        joueur2.vitesse * 1.5;
+
+                    limiterRaquette(joueur2);
+
+                }, 30);
+
+        }
+
+
+        // =========================
+        // ARRETER JOUEUR 2
+        // =========================
+
+        function arreterJoueur2(event) {
+
+            if (event) {
+
+                event.preventDefault();
+
+            }
+
+
+            clearInterval(
+                mouvementJoueur2
+            );
+
+
+            mouvementJoueur2 = null;
+
+        }
+
+
+        // =========================
         // MODE 1 JOUEUR
         // =========================
 
@@ -927,6 +1081,11 @@
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            arreterJoueur1();
+
+            arreterJoueur2();
 
 
             document
@@ -981,6 +1140,11 @@
             reinitialiserBalle();
 
 
+            arreterJoueur1();
+
+            arreterJoueur2();
+
+
             document
                 .getElementById(
                     "controlesMobile"
@@ -1011,57 +1175,106 @@
 
 
         // =========================
-        // JOUEUR 1 MOBILE
+        // CONTROLES CLAVIER
         // =========================
 
-        function monterJoueur1() {
+        function controles() {
 
-            joueur1.y -=
-                joueur1.vitesse * 3;
 
-            limiterRaquette(
-                joueur1
-            );
+            // =====================
+            // JOUEUR 1
+            // =====================
+
+            if (touches["z"]) {
+
+                joueur1.y -=
+                    joueur1.vitesse;
+
+            }
+
+
+            if (touches["s"]) {
+
+                joueur1.y +=
+                    joueur1.vitesse;
+
+            }
+
+
+            // =====================
+            // JOUEUR 2
+            // =====================
+
+            if (mode === 2) {
+
+                if (touches["arrowup"]) {
+
+                    joueur2.y -=
+                        joueur2.vitesse;
+
+                }
+
+
+                if (touches["arrowdown"]) {
+
+                    joueur2.y +=
+                        joueur2.vitesse;
+
+                }
+
+            }
+
+
+            limiterRaquette(joueur1);
+
+            limiterRaquette(joueur2);
 
         }
 
 
-        function descendreJoueur1() {
-
-            joueur1.y +=
-                joueur1.vitesse * 3;
-
-            limiterRaquette(
-                joueur1
-            );
-
-        }
-
-
         // =========================
-        // JOUEUR 2 MOBILE
+        // ORDINATEUR
         // =========================
 
-        function monterJoueur2() {
+        function ordinateur() {
 
-            joueur2.y -=
-                joueur2.vitesse * 3;
+            if (mode !== 1) {
 
-            limiterRaquette(
-                joueur2
-            );
+                return;
 
-        }
+            }
 
 
-        function descendreJoueur2() {
+            let centreRaquette =
+                joueur2.y +
+                joueur2.hauteur / 2;
 
-            joueur2.y +=
-                joueur2.vitesse * 3;
 
-            limiterRaquette(
-                joueur2
-            );
+            if (
+                centreRaquette <
+                balle.y - 10
+            ) {
+
+                joueur2.y +=
+                    joueur2.vitesse *
+                    0.75;
+
+            }
+
+
+            if (
+                centreRaquette >
+                balle.y + 10
+            ) {
+
+                joueur2.y -=
+                    joueur2.vitesse *
+                    0.75;
+
+            }
+
+
+            limiterRaquette(joueur2);
 
         }
 
@@ -1099,129 +1312,6 @@
 
 
         // =========================
-        // CONTROLES CLAVIER
-        // =========================
-
-        function controles() {
-
-
-            // =====================
-            // JOUEUR 1
-            // =====================
-
-            if (
-                touches["z"]
-            ) {
-
-                joueur1.y -=
-                    joueur1.vitesse;
-
-            }
-
-
-            if (
-                touches["s"]
-            ) {
-
-                joueur1.y +=
-                    joueur1.vitesse;
-
-            }
-
-
-            // =====================
-            // JOUEUR 2
-            // =====================
-
-            if (
-                mode === 2
-            ) {
-
-                if (
-                    touches["arrowup"]
-                ) {
-
-                    joueur2.y -=
-                        joueur2.vitesse;
-
-                }
-
-
-                if (
-                    touches["arrowdown"]
-                ) {
-
-                    joueur2.y +=
-                        joueur2.vitesse;
-
-                }
-
-            }
-
-
-            limiterRaquette(
-                joueur1
-            );
-
-            limiterRaquette(
-                joueur2
-            );
-
-        }
-
-
-        // =========================
-        // ORDINATEUR
-        // =========================
-
-        function ordinateur() {
-
-            if (
-                mode !== 1
-            ) {
-
-                return;
-
-            }
-
-
-            let centreRaquette =
-                joueur2.y +
-                joueur2.hauteur / 2;
-
-
-            if (
-                centreRaquette <
-                balle.y - 10
-            ) {
-
-                joueur2.y +=
-                    joueur2.vitesse *
-                    0.75;
-
-            }
-
-
-            if (
-                centreRaquette >
-                balle.y + 10
-            ) {
-
-                joueur2.y -=
-                    joueur2.vitesse *
-                    0.75;
-
-            }
-
-
-            limiterRaquette(
-                joueur2
-            );
-
-        }
-
-
-        // =========================
         // REINITIALISER BALLE
         // =========================
 
@@ -1247,7 +1337,69 @@
 
 
         // =========================
-        // COLLISION
+        // ACCELERER LA BALLE
+        // =========================
+
+        function accelererBalle() {
+
+            // Accélération horizontale
+
+            if (
+                balle.vitesseX > 0
+            ) {
+
+                balle.vitesseX =
+                    Math.min(
+                        balle.vitesseX +
+                        acceleration,
+                        vitesseMax
+                    );
+
+            }
+
+            else {
+
+                balle.vitesseX =
+                    Math.max(
+                        balle.vitesseX -
+                        acceleration,
+                        -vitesseMax
+                    );
+
+            }
+
+
+            // Accélération verticale
+
+            if (
+                balle.vitesseY > 0
+            ) {
+
+                balle.vitesseY =
+                    Math.min(
+                        balle.vitesseY +
+                        0.1,
+                        vitesseMax
+                    );
+
+            }
+
+            else {
+
+                balle.vitesseY =
+                    Math.max(
+                        balle.vitesseY -
+                        0.1,
+                        -vitesseMax
+                    );
+
+            }
+
+        }
+
+
+        // =========================
+        // COLLISION RAQUETTE
         // =========================
 
         function collisionRaquette(
@@ -1290,59 +1442,7 @@
 
 
         // =========================
-        // ACCELERATION
-        // =========================
-
-        function accelererBalle() {
-
-            /*
-                La balle accélère de 8 %
-                à chaque rebond.
-            */
-
-            balle.vitesseX *= 1.08;
-
-            balle.vitesseY *= 1.08;
-
-
-            /*
-                Empêcher la balle de devenir
-                beaucoup trop rapide.
-            */
-
-            const vitesseMax = 14;
-
-
-            if (
-                Math.abs(balle.vitesseX)
-                > vitesseMax
-            ) {
-
-                balle.vitesseX =
-                    Math.sign(
-                        balle.vitesseX
-                    ) * vitesseMax;
-
-            }
-
-
-            if (
-                Math.abs(balle.vitesseY)
-                > vitesseMax
-            ) {
-
-                balle.vitesseY =
-                    Math.sign(
-                        balle.vitesseY
-                    ) * vitesseMax;
-
-            }
-
-        }
-
-
-        // =========================
-        // MISE À JOUR
+        // MISE À JOUR DU JEU
         // =========================
 
         function mettreAJour() {
@@ -1421,9 +1521,11 @@
                     joueur1.largeur +
                     balle.rayon;
 
+
                 balle.vitesseX *= -1;
 
-                // ⚡ ACCELERATION
+
+                // ACCELERATION
 
                 accelererBalle();
 
@@ -1445,9 +1547,11 @@
                     joueur2.x -
                     balle.rayon;
 
+
                 balle.vitesseX *= -1;
 
-                // ⚡ ACCELERATION
+
+                // ACCELERATION
 
                 accelererBalle();
 
@@ -1464,9 +1568,11 @@
 
                 score2++;
 
+
                 mettreAJourScore();
 
                 verifierVictoire();
+
 
                 if (!jeuTermine) {
 
@@ -1488,9 +1594,11 @@
 
                 score1++;
 
+
                 mettreAJourScore();
 
                 verifierVictoire();
+
 
                 if (!jeuTermine) {
 
@@ -1547,6 +1655,11 @@
                 ).style.display =
                     "inline-block";
 
+
+                arreterJoueur1();
+
+                arreterJoueur2();
+
             }
 
 
@@ -1573,7 +1686,7 @@
                     document.getElementById(
                         "message"
                     ).textContent =
-                        "🏆 🧑‍💻 JOUEUR 2 A GAGNÉ LA PARTIE ! 🏆";
+                        "🏆 🧑‍💻 JOUEUR 2 A GAGNÉ ! 🏆";
 
                 }
 
@@ -1582,6 +1695,11 @@
                     "boutonRejouer"
                 ).style.display =
                     "inline-block";
+
+
+                arreterJoueur1();
+
+                arreterJoueur2();
 
             }
 
@@ -1601,6 +1719,11 @@
             jeuTermine = false;
 
             jeuCommence = true;
+
+
+            arreterJoueur1();
+
+            arreterJoueur2();
 
 
             mettreAJourScore();
@@ -1627,6 +1750,7 @@
         // =========================
 
         function dessiner() {
+
 
             // =====================
             // FOND
@@ -1733,6 +1857,7 @@
                 Math.PI * 2
 
             );
+
 
             contexte.fillStyle =
                 "white";
