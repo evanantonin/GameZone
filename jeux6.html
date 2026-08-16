@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone - Space Invaders</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        body {
+            margin: 0;
+            background: #03030b;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+            background: #000;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #00d9ff;
+        }
+
+
+        /* =========================
+           CONTENEUR
+        ========================= */
+
+        .space-container {
+            width: 95%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           TITRE
+        ========================= */
+
+        h1 {
+            margin: 20px 0 10px;
+
+            color: #00d9ff;
+
+            font-size: 45px;
+
+            text-shadow:
+                0 0 8px #00d9ff,
+                0 0 20px #0077ff,
+                0 0 40px #0044ff;
+        }
+
+
+        /* =========================
+           RETOUR
+        ========================= */
+
+        .retour {
+            margin-bottom: 15px;
+        }
+
+        .retour button {
+            border: none;
+            border-radius: 10px;
+
+            padding: 10px 18px;
+
+            background: #075bff;
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        .retour button:hover {
+            background: #00aaff;
+            transform: scale(1.05);
+        }
+
+
+        /* =========================
+           INFORMATIONS
+        ========================= */
+
+        .infos {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 35px;
+
+            flex-wrap: wrap;
+
+            margin: 15px auto;
+
+            font-size: 19px;
+
+            font-weight: bold;
+        }
+
+        #score {
+            color: #00ff66;
+            text-shadow: 0 0 8px #00ff66;
+        }
+
+        #meilleurScore {
+            color: #ffd700;
+            text-shadow: 0 0 8px #ffd700;
+        }
+
+        #niveau {
+            color: #00d9ff;
+            text-shadow: 0 0 8px #00d9ff;
+        }
+
+        #vies {
+            color: #ff4444;
+            text-shadow: 0 0 8px #ff0000;
+        }
+
+
+        /* =========================
+           CANVAS
+        ========================= */
+
+        #jeuSpace {
+
+            display: block;
+
+            width: min(95vw, 800px);
+
+            height: auto;
+
+            margin: 15px auto;
+
+            background: #02020a;
+
+            border: 4px solid #00bfff;
+
+            border-radius: 15px;
+
+            box-shadow:
+
+                0 0 10px #00bfff,
+
+                0 0 30px rgba(0, 170, 255, 0.5),
+
+                0 0 70px rgba(0, 80, 255, 0.2);
+
+            cursor: crosshair;
+
+            touch-action: none;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        #message {
+
+            min-height: 30px;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            color: #00d9ff;
+
+            text-shadow:
+                0 0 8px #00aaff;
+        }
+
+
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .boutons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin: 15px;
+        }
+
+        .boutons button {
+
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #075bff;
+
+            color: white;
+
+            font-size: 17px;
+
+            cursor: pointer;
+        }
+
+        .boutons button:hover {
+
+            background: #00aaff;
+
+            transform: scale(1.05);
+        }
+
+        #boutonRejouer {
+            display: none;
+        }
+
+
+        /* =========================
+           COMMANDES
+        ========================= */
+
+        .commandes {
+
+            color: #aaa;
+
+            font-size: 15px;
+
+            margin: 15px;
+        }
+
+
+        /* =========================
+   CONTROLES MOBILE
+========================= */
+
+.controles-mobile {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 8px auto 0;
+    user-select: none;
+}
+
+.controles-mobile button {
+    width: 65px;
+    height: 55px;
+
+    border: none;
+    border-radius: 12px;
+
+    background-color: #222;
+    color: white;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.controles-mobile button:active {
+    transform: scale(0.9);
+    background-color: #444;
+}
+
+
+/* =========================
+   TELEPHONE
+========================= */
+
+@media (max-width: 600px) {
+
+    .controles-mobile {
+        display: flex;
+
+        /* Très proche de l'écran */
+        margin-top: 5px;
+
+        /* Évite qu'il soit trop large */
+        width: 100%;
+    }
+
+    .controles-mobile button {
+        width: 60px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+}
+
+
+/* =========================
+   PETIT TELEPHONE
+========================= */
+
+@media (max-width: 380px) {
+
+    .controles-mobile {
+        margin-top: 3px;
+        gap: 8px;
+    }
+
+    .controles-mobile button {
+        width: 55px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+}
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Accueil
+        </a>
+
+        <a href="liste-jeux.html">
+            🎮 Jeux
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         JEU
+    ========================= -->
+
+    <main class="space-container">
+
+
+        <h1>
+            👾 Space Invaders
+        </h1>
+
+
+        <div class="retour">
+
+            <a href="liste-jeux.html">
+
+                <button>
+                    ⬅️ Retour aux jeux
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+             INFORMATIONS
+        ========================= -->
+
+        <div class="infos">
+
+            <div>
+                🎯 Score :
+                <span id="score">0</span>
+            </div>
+
+            <div>
+                🏆 Meilleur :
+                <span id="meilleurScore">0</span>
+            </div>
+
+            <div>
+                🚀 Niveau :
+                <span id="niveau">1</span>
+            </div>
+
+            <div>
+                ❤️ Vies :
+                <span id="vies">3</span>
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CANVAS
+        ========================= -->
+
+        <canvas
+            id="jeuSpace"
+            width="800"
+            height="600">
+
+            Ton navigateur ne supporte pas
+            le canvas.
+
+        </canvas>
+
+
+        <p id="message">
+            🚀 Détruis les envahisseurs !
+        </p>
+
+
+        <!-- =========================
+             BOUTONS
+        ========================= -->
+
+        <div class="boutons">
+
+            <button
+                id="boutonPause"
+                onclick="pauseJeu()">
+
+                ⏸️ Pause
+
+            </button>
+
+
+            <button
+                id="boutonRejouer"
+                onclick="rejouer()">
+
+                🔄 Rejouer
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             COMMANDES
+        ========================= -->
+
+        <div class="commandes">
+
+            <p>
+                ⌨️ PC : Q / D ou ← / →
+            </p>
+
+            <p>
+                🖱️ Clic gauche ou ESPACE : tirer
+            </p>
+
+            <p>
+                📱 Téléphone : maintiens les boutons
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             CONTROLES MOBILE
+        ========================= -->
+
+        <div class="controles-mobile">
+
+            <button
+                id="gauche"
+                aria-label="Gauche">
+
+                ⬅️
+
+            </button>
+
+
+            <button
+                id="tirer"
+                aria-label="Tirer">
+
+                🔥
+
+            </button>
+
+
+            <button
+                id="droite"
+                aria-label="Droite">
+
+                ➡️
+
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+<script>
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("jeuSpace");
+
+const contexte =
+    canvas.getContext("2d");
+
+
+/* =====================================================
+   JOUEUR
+===================================================== */
+
+let joueur = {
+
+    x:
+        canvas.width / 2 - 35,
+
+    y:
+        canvas.height - 65,
+
+    largeur: 70,
+
+    hauteur: 30,
+
+    vitesse: 7
+
+};
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let balles = [];
+
+let ballesEnnemies = [];
+
+let ennemis = [];
+
+let explosions = [];
+
+let particules = [];
+
+let etoiles = [];
+
+
+let score = 0;
+
+let meilleurScore =
+    Number(
+        localStorage.getItem(
+            "meilleurScoreSpaceInvaders"
+        )
+    ) || 0;
+
+
+let niveau = 1;
+
+let vies = 3;
+
+let jeuEnPause = false;
+
+let jeuTermine = false;
+
+let jeuCommence = true;
+
+
+let directionEnnemis = 1;
+
+let vitesseEnnemis = 0.5;
+
+let tempsTirEnnemi = 0;
+
+let boss = null;
+
+let touches = {};
+
+
+/* =====================================================
+   MEILLEUR SCORE
+===================================================== */
+
+document.getElementById(
+    "meilleurScore"
+).textContent =
+    meilleurScore;
+
+
+/* =====================================================
+   ETOILES
+===================================================== */
+
+for (
+    let i = 0;
+    i < 100;
+    i++
+) {
+
+    etoiles.push({
+
+        x:
+            Math.random() *
+            canvas.width,
+
+        y:
+            Math.random() *
+            canvas.height,
+
+        taille:
+            Math.random() * 2 + 1,
+
+        vitesse:
+            Math.random() * 0.7 + 0.2
+
+    });
+
+}
+
+
+/* =====================================================
+   CLAVIER
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        touches[
+            event.key.toLowerCase()
+        ] = true;
+
+
+        if (
+            event.key === "ArrowLeft" ||
+            event.key === "ArrowRight"
+        ) {
+
+            event.preventDefault();
+
+        }
+
+
+        if (
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            tirer();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(event) {
+
+        touches[
+            event.key.toLowerCase()
+        ] = false;
+
+    }
+);
+
+
+/* =====================================================
+   CLIC GAUCHE
+===================================================== */
+
+canvas.addEventListener(
+    "mousedown",
+    function(event) {
+
+        if (
+            event.button === 0
+        ) {
+
+            tirer();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CREER ENNEMIS
+===================================================== */
+
+function creerEnnemis() {
+
+    ennemis = [];
+
+    boss = null;
+
+    directionEnnemis = 1;
+
+
+    let lignes =
+        Math.min(
+            3 +
+            Math.floor(
+                niveau / 2
+            ),
+            6
+        );
+
+
+    let colonnes =
+        Math.min(
+            7 +
+            Math.floor(
+                niveau / 2
+            ),
+            10
+        );
+
+
+    let espaceX = 70;
+
+    let espaceY = 50;
+
+
+    for (
+        let ligne = 0;
+        ligne < lignes;
+        ligne++
+    ) {
+
+        for (
+            let colonne = 0;
+            colonne < colonnes;
+            colonne++
+        ) {
+
+            ennemis.push({
+
+                x:
+                    70 +
+                    colonne * espaceX,
+
+                y:
+                    55 +
+                    ligne * espaceY,
+
+                largeur: 45,
+
+                hauteur: 30,
+
+                vie:
+                    niveau >= 3
+                        ? 2
+                        : 1,
+
+                type:
+                    ligne === 0
+                        ? "fort"
+                        : "normal"
+
+            });
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   CREER BOSS
+===================================================== */
+
+function creerBoss() {
+
+    boss = {
+
+        x:
+            canvas.width / 2 - 90,
+
+        y: 55,
+
+        largeur: 180,
+
+        hauteur: 65,
+
+        vie:
+            10 +
+            niveau * 3,
+
+        vieMax:
+            10 +
+            niveau * 3,
+
+        vitesse:
+            2.5 +
+            niveau * 0.2,
+
+        direction: 1
+
+    };
+
+}
+
+
+/* =====================================================
+   TIR
+===================================================== */
+
+function tirer() {
+
+    if (
+        jeuTermine ||
+        jeuEnPause
+    ) {
+
+        return;
+
+    }
+
+
+    balles.push({
+
+        x:
+            joueur.x +
+            joueur.largeur / 2 - 3,
+
+        y:
+            joueur.y - 10,
+
+        largeur: 6,
+
+        hauteur: 18,
+
+        vitesse: 10
+
+    });
+
+}
+
+
+/* =====================================================
+   TIR ENNEMI
+===================================================== */
+
+function tirerEnnemi() {
+
+    if (
+        ennemis.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    let ennemi =
+        ennemis[
+            Math.floor(
+                Math.random() *
+                ennemis.length
+            )
+        ];
+
+
+    ballesEnnemies.push({
+
+        x:
+            ennemi.x +
+            ennemi.largeur / 2,
+
+        y:
+            ennemi.y +
+            ennemi.hauteur,
+
+        largeur: 6,
+
+        hauteur: 15,
+
+        vitesse:
+            4 +
+            niveau * 0.3
+
+    });
+
+}
+
+
+/* =====================================================
+   TIR BOSS
+===================================================== */
+
+function tirerBoss() {
+
+    if (!boss) {
+        return;
+    }
+
+
+    ballesEnnemies.push({
+
+        x:
+            boss.x +
+            boss.largeur / 2,
+
+        y:
+            boss.y +
+            boss.hauteur,
+
+        largeur: 9,
+
+        hauteur: 22,
+
+        vitesse:
+            5 +
+            niveau * 0.3
+
+    });
+
+}
+
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+function controles() {
+
+    if (
+        jeuTermine ||
+        jeuEnPause
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        touches["q"] ||
+        touches["arrowleft"]
+    ) {
+
+        joueur.x -=
+            joueur.vitesse;
+
+    }
+
+
+    if (
+        touches["d"] ||
+        touches["arrowright"]
+    ) {
+
+        joueur.x +=
+            joueur.vitesse;
+
+    }
+
+
+    if (
+        joueur.x < 0
+    ) {
+
+        joueur.x = 0;
+
+    }
+
+
+    if (
+        joueur.x +
+        joueur.largeur >
+        canvas.width
+    ) {
+
+        joueur.x =
+            canvas.width -
+            joueur.largeur;
+
+    }
+
+}
+
+
+/* =====================================================
+   BOUGER ENNEMIS
+===================================================== */
+
+function bougerEnnemis() {
+
+    let bord = false;
+
+
+    for (
+        let ennemi of ennemis
+    ) {
+
+        ennemi.x +=
+            vitesseEnnemis *
+            directionEnnemis;
+
+
+        if (
+            ennemi.x <= 10 ||
+            ennemi.x +
+            ennemi.largeur >=
+            canvas.width - 10
+        ) {
+
+            bord = true;
+
+        }
+
+    }
+
+
+    if (bord) {
+
+        directionEnnemis *= -1;
+
+
+        for (
+            let ennemi of ennemis
+        ) {
+
+            ennemi.y += 20;
+
+        }
+
+    }
+
+
+    if (boss) {
+
+        boss.x +=
+            boss.vitesse *
+            boss.direction;
+
+
+        if (
+            boss.x <= 10 ||
+            boss.x +
+            boss.largeur >=
+            canvas.width - 10
+        ) {
+
+            boss.direction *= -1;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   BALLES
+===================================================== */
+
+function bougerBalles() {
+
+    for (
+        let i =
+            balles.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        balles[i].y -=
+            balles[i].vitesse;
+
+
+        if (
+            balles[i].y < -30
+        ) {
+
+            balles.splice(i, 1);
+
+        }
+
+    }
+
+}
+
+
+function bougerBallesEnnemies() {
+
+    for (
+        let i =
+            ballesEnnemies.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        ballesEnnemies[i].y +=
+            ballesEnnemies[i].vitesse;
+
+
+        if (
+            ballesEnnemies[i].y >
+            canvas.height
+        ) {
+
+            ballesEnnemies.splice(i, 1);
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   COLLISION
+===================================================== */
+
+function collision(a, b) {
+
+    return (
+
+        a.x <
+        b.x + b.largeur
+
+        &&
+
+        a.x + a.largeur >
+        b.x
+
+        &&
+
+        a.y <
+        b.y + b.hauteur
+
+        &&
+
+        a.y + a.hauteur >
+        b.y
+
+    );
+
+}
+
+
+/* =====================================================
+   PARTICULES
+===================================================== */
+
+function creerExplosion(
+    x,
+    y,
+    puissance = 1
+) {
+
+    explosions.push({
+
+        x: x,
+
+        y: y,
+
+        taille: 5,
+
+        vie:
+            20 * puissance
+
+    });
+
+
+    for (
+        let i = 0;
+        i < 15 * puissance;
+        i++
+    ) {
+
+        particules.push({
+
+            x: x,
+
+            y: y,
+
+            vx:
+                Math.random() *
+                6 - 3,
+
+            vy:
+                Math.random() *
+                6 - 3,
+
+            vie:
+                25 +
+                Math.random() * 20,
+
+            taille:
+                Math.random() * 4 + 2
+
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   COLLISIONS
+===================================================== */
+
+function verifierCollisions() {
+
+
+    /* =========================
+       TIRS → ENNEMIS
+    ========================= */
+
+    for (
+        let i =
+            balles.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        let balle =
+            balles[i];
+
+
+        let touche = false;
+
+
+        for (
+            let j =
+                ennemis.length - 1;
+            j >= 0;
+            j--
+        ) {
+
+            let ennemi =
+                ennemis[j];
+
+
+            if (
+                collision(
+                    balle,
+                    ennemi
+                )
+            ) {
+
+                ennemi.vie--;
+
+                balles.splice(
+                    i,
+                    1
+                );
+
+
+                creerExplosion(
+
+                    balle.x,
+
+                    balle.y,
+
+                    0.6
+
+                );
+
+
+                if (
+                    ennemi.vie <= 0
+                ) {
+
+                    ennemis.splice(
+                        j,
+                        1
+                    );
+
+
+                    ajouterScore(
+                        ennemi.type ===
+                        "fort"
+                            ? 20
+                            : 10
+                    );
+
+                }
+
+
+                touche = true;
+
+                break;
+
+            }
+
+        }
+
+
+        if (touche) {
+            continue;
+        }
+
+
+        /* =========================
+           TIR → BOSS
+        ========================= */
+
+        if (
+            boss &&
+            collision(
+                balle,
+                boss
+            )
+        ) {
+
+            boss.vie--;
+
+            balles.splice(
+                i,
+                1
+            );
+
+
+            creerExplosion(
+
+                balle.x,
+
+                balle.y,
+
+                0.8
+
+            );
+
+
+            if (
+                boss.vie <= 0
+            ) {
+
+                ajouterScore(
+                    100 * niveau
+                );
+
+
+                creerExplosion(
+
+                    boss.x +
+                    boss.largeur / 2,
+
+                    boss.y +
+                    boss.hauteur / 2,
+
+                    4
+
+                );
+
+
+                boss = null;
+
+
+                niveauSuivant();
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================
+       TIRS ENNEMIS → JOUEUR
+    ========================= */
+
+    for (
+        let i =
+            ballesEnnemies.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            collision(
+                ballesEnnemies[i],
+                joueur
+            )
+        ) {
+
+            ballesEnnemies.splice(
+                i,
+                1
+            );
+
+
+            perdreVie();
+
+        }
+
+    }
+
+
+    /* =========================
+       ENNEMIS → BAS
+    ========================= */
+
+    for (
+        let ennemi of ennemis
+    ) {
+
+        if (
+            ennemi.y +
+            ennemi.hauteur >=
+            joueur.y
+        ) {
+
+            terminerJeu();
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+function ajouterScore(points) {
+
+    score += points;
+
+
+    if (
+        score >
+        meilleurScore
+    ) {
+
+        meilleurScore =
+            score;
+
+
+        localStorage.setItem(
+
+            "meilleurScoreSpaceInvaders",
+
+            meilleurScore
+
+        );
+
+    }
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        score;
+
+
+    document.getElementById(
+        "meilleurScore"
+    ).textContent =
+        meilleurScore;
+
+}
+
+
+/* =====================================================
+   PERDRE VIE
+===================================================== */
+
+function perdreVie() {
+
+    vies--;
+
+
+    document.getElementById(
+        "vies"
+    ).textContent =
+        vies;
+
+
+    creerExplosion(
+
+        joueur.x +
+        joueur.largeur / 2,
+
+        joueur.y,
+
+        2
+
+    );
+
+
+    if (
+        vies <= 0
+    ) {
+
+        terminerJeu();
+
+        return;
+
+    }
+
+
+    joueur.x =
+        canvas.width / 2 -
+        joueur.largeur / 2;
+
+
+    ballesEnnemies = [];
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "💥 Attention ! Il te reste "
+        + vies
+        + " vie(s).";
+
+}
+
+
+/* =====================================================
+   NIVEAU SUIVANT
+===================================================== */
+
+function niveauSuivant() {
+
+    niveau++;
+
+
+    document.getElementById(
+        "niveau"
+    ).textContent =
+        niveau;
+
+
+    balles = [];
+
+    ballesEnnemies = [];
+
+
+    vitesseEnnemis =
+        0.5 +
+        niveau * 0.15;
+
+
+    if (
+        niveau % 3 === 0
+    ) {
+
+        creerBoss();
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "👹 BOSS ! Niveau "
+            + niveau
+            + " !";
+
+    }
+
+    else {
+
+        creerEnnemis();
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "🚀 Niveau "
+            + niveau
+            + " !";
+
+    }
+
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function terminerJeu() {
+
+    jeuTermine = true;
+
+    jeuCommence = false;
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "💀 GAME OVER ! Score : "
+        + score;
+
+
+    document.getElementById(
+        "boutonRejouer"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+function pauseJeu() {
+
+    if (
+        jeuTermine
+    ) {
+
+        return;
+
+    }
+
+
+    jeuEnPause =
+        !jeuEnPause;
+
+
+    const bouton =
+        document.getElementById(
+            "boutonPause"
+        );
+
+
+    if (
+        jeuEnPause
+    ) {
+
+        bouton.textContent =
+            "▶️ Reprendre";
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "⏸️ Jeu en pause";
+
+    }
+
+    else {
+
+        bouton.textContent =
+            "⏸️ Pause";
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "🔥 C'est reparti !";
+
+    }
+
+}
+
+
+/* =====================================================
+   REJOUER
+===================================================== */
+
+function rejouer() {
+
+    score = 0;
+
+    niveau = 1;
+
+    vies = 3;
+
+
+    jeuTermine = false;
+
+    jeuEnPause = false;
+
+    jeuCommence = true;
+
+
+    balles = [];
+
+    ballesEnnemies = [];
+
+    explosions = [];
+
+    particules = [];
+
+
+    joueur.x =
+        canvas.width / 2 -
+        joueur.largeur / 2;
+
+
+    vitesseEnnemis = 0.5;
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        "0";
+
+
+    document.getElementById(
+        "niveau"
+    ).textContent =
+        "1";
+
+
+    document.getElementById(
+        "vies"
+    ).textContent =
+        "3";
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "🚀 Nouvelle partie !";
+
+
+    document.getElementById(
+        "boutonRejouer"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).textContent =
+        "⏸️ Pause";
+
+
+    creerEnnemis();
+
+}
+
+
+/* =====================================================
+   ANIMATION PARTICULES
+===================================================== */
+
+function bougerParticules() {
+
+    for (
+        let i =
+            particules.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        let p =
+            particules[i];
+
+
+        p.x += p.vx;
+
+        p.y += p.vy;
+
+        p.vy += 0.05;
+
+        p.vie--;
+
+
+        if (
+            p.vie <= 0
+        ) {
+
+            particules.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   ANIMATION EXPLOSIONS
+===================================================== */
+
+function bougerExplosions() {
+
+    for (
+        let i =
+            explosions.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        explosions[i].taille += 2;
+
+        explosions[i].vie--;
+
+
+        if (
+            explosions[i].vie <= 0
+        ) {
+
+            explosions.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   ETOILES
+===================================================== */
+
+function bougerEtoiles() {
+
+    for (
+        let etoile of etoiles
+    ) {
+
+        etoile.y +=
+            etoile.vitesse;
+
+
+        if (
+            etoile.y >
+            canvas.height
+        ) {
+
+            etoile.y = 0;
+
+            etoile.x =
+                Math.random() *
+                canvas.width;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   DESSIN FOND
+===================================================== */
+
+function dessinerFond() {
+
+    contexte.fillStyle =
+        "#02020a";
+
+    contexte.fillRect(
+
+        0,
+
+        0,
+
+        canvas.width,
+
+        canvas.height
+
+    );
+
+
+    /* =========================
+       NEBULEUSE
+    ========================= */
+
+    let gradient =
+        contexte.createRadialGradient(
+
+            canvas.width / 2,
+
+            canvas.height / 2,
+
+            30,
+
+            canvas.width / 2,
+
+            canvas.height / 2,
+
+            500
+
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(0,70,150,0.25)"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+    );
+
+
+    contexte.fillStyle =
+        gradient;
+
+
+    contexte.fillRect(
+
+        0,
+
+        0,
+
+        canvas.width,
+
+        canvas.height
+
+    );
+
+
+    /* =========================
+       ETOILES
+    ========================= */
+
+    for (
+        let etoile of etoiles
+    ) {
+
+        contexte.fillStyle =
+            "white";
+
+
+        contexte.globalAlpha =
+            Math.random() * 0.5 + 0.5;
+
+
+        contexte.fillRect(
+
+            etoile.x,
+
+            etoile.y,
+
+            etoile.taille,
+
+            etoile.taille
+
+        );
+
+    }
+
+
+    contexte.globalAlpha = 1;
+
+}
+
+
+/* =====================================================
+   DESSIN JOUEUR
+===================================================== */
+
+function dessinerJoueur() {
+
+    let x = joueur.x;
+
+    let y = joueur.y;
+
+
+    /* Halo */
+
+    contexte.shadowBlur = 20;
+
+    contexte.shadowColor =
+        "#00ccff";
+
+
+    /* Corps */
+
+    contexte.fillStyle =
+        "#008cff";
+
+
+    contexte.beginPath();
+
+    contexte.moveTo(
+        x +
+        joueur.largeur / 2,
+        y - 18
+    );
+
+    contexte.lineTo(
+        x,
+        y +
+        joueur.hauteur
+    );
+
+    contexte.lineTo(
+        x +
+        joueur.largeur,
+        y +
+        joueur.hauteur
+    );
+
+    contexte.closePath();
+
+    contexte.fill();
+
+
+    /* Centre */
+
+    contexte.fillStyle =
+        "#bfffff";
+
+
+    contexte.beginPath();
+
+    contexte.moveTo(
+
+        x +
+        joueur.largeur / 2,
+
+        y - 8
+
+    );
+
+
+    contexte.lineTo(
+
+        x + 20,
+
+        y + 20
+
+    );
+
+
+    contexte.lineTo(
+
+        x +
+        joueur.largeur -
+        20,
+
+        y + 20
+
+    );
+
+
+    contexte.closePath();
+
+    contexte.fill();
+
+
+    /* Réacteur */
+
+    contexte.fillStyle =
+        "#00ffff";
+
+
+    contexte.fillRect(
+
+        x +
+        joueur.largeur / 2 -
+        6,
+
+        y +
+        joueur.hauteur,
+
+        12,
+
+        10
+
+    );
+
+
+    contexte.shadowBlur = 0;
+
+}
+
+
+/* =====================================================
+   DESSIN ENNEMI
+===================================================== */
+
+function dessinerEnnemi(
+    ennemi
+) {
+
+    let x = ennemi.x;
+
+    let y = ennemi.y;
+
+
+    let couleur =
+        ennemi.type === "fort"
+            ? "#ff1744"
+            : "#a020f0";
+
+
+    contexte.shadowBlur = 15;
+
+    contexte.shadowColor =
+        couleur;
+
+
+    /* Corps */
+
+    contexte.fillStyle =
+        couleur;
+
+
+    contexte.beginPath();
+
+    contexte.roundRect(
+
+        x,
+
+        y,
+
+        ennemi.largeur,
+
+        ennemi.hauteur,
+
+        8
+
+    );
+
+    contexte.fill();
+
+
+    /* Antennes */
+
+    contexte.strokeStyle =
+        couleur;
+
+    contexte.lineWidth = 3;
+
+
+    contexte.beginPath();
+
+    contexte.moveTo(
+        x + 10,
+        y
+    );
+
+    contexte.lineTo(
+        x + 4,
+        y - 10
+    );
+
+    contexte.moveTo(
+        x +
+        ennemi.largeur -
+        10,
+        y
+    );
+
+    contexte.lineTo(
+        x +
+        ennemi.largeur -
+        4,
+        y - 10
+    );
+
+    contexte.stroke();
+
+
+    /* Yeux */
+
+    contexte.fillStyle =
+        "#ffffff";
+
+
+    contexte.fillRect(
+
+        x + 9,
+
+        y + 9,
+
+        9,
+
+        9
+
+    );
+
+
+    contexte.fillRect(
+
+        x +
+        ennemi.largeur -
+        18,
+
+        y + 9,
+
+        9,
+
+        9
+
+    );
+
+
+    contexte.fillStyle =
+        "#111";
+
+
+    contexte.fillRect(
+
+        x + 12,
+
+        y + 12,
+
+        4,
+
+        4
+
+    );
+
+
+    contexte.fillRect(
+
+        x +
+        ennemi.largeur -
+        15,
+
+        y + 12,
+
+        4,
+
+        4
+
+    );
+
+
+    contexte.shadowBlur = 0;
+
+}
+
+
+/* =====================================================
+   DESSIN BOSS
+===================================================== */
+
+function dessinerBoss() {
+
+    if (!boss) {
+        return;
+    }
+
+
+    let x = boss.x;
+
+    let y = boss.y;
+
+
+    contexte.shadowBlur = 30;
+
+    contexte.shadowColor =
+        "#ff0044";
+
+
+    /* Corps */
+
+    contexte.fillStyle =
+        "#8b0038";
+
+
+    contexte.beginPath();
+
+    contexte.roundRect(
+
+        x,
+
+        y,
+
+        boss.largeur,
+
+        boss.hauteur,
+
+        18
+
+    );
+
+    contexte.fill();
+
+
+    /* Armure */
+
+    contexte.strokeStyle =
+        "#ff1744";
+
+    contexte.lineWidth = 4;
+
+
+    contexte.stroke();
+
+
+    /* Yeux */
+
+    contexte.fillStyle =
+        "#ffff00";
+
+
+    contexte.fillRect(
+
+        x + 35,
+
+        y + 20,
+
+        35,
+
+        15
+
+    );
+
+
+    contexte.fillRect(
+
+        x +
+        boss.largeur -
+        70,
+
+        y + 20,
+
+        35,
+
+        15
+
+    );
+
+
+    /* Centre */
+
+    contexte.fillStyle =
+        "#ff3333";
+
+
+    contexte.beginPath();
+
+    contexte.arc(
+
+        x +
+        boss.largeur / 2,
+
+        y + 32,
+
+        15,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+    contexte.fill();
+
+
+    /* Barre de vie */
+
+    contexte.shadowBlur = 0;
+
+
+    contexte.fillStyle =
+        "#222";
+
+
+    contexte.fillRect(
+
+        x,
+
+        y - 15,
+
+        boss.largeur,
+
+        8
+
+    );
+
+
+    contexte.fillStyle =
+        "#00ff44";
+
+
+    contexte.fillRect(
+
+        x,
+
+        y - 15,
+
+        boss.largeur *
+        (
+            boss.vie /
+            boss.vieMax
+        ),
+
+        8
+
+    );
+
+}
+
+
+/* =====================================================
+   DESSIN
+===================================================== */
+
+function dessiner() {
+
+    dessinerFond();
+
+
+    /* Joueur */
+
+    dessinerJoueur();
+
+
+    /* Tirs joueur */
+
+    for (
+        let balle of balles
+    ) {
+
+        contexte.shadowBlur = 15;
+
+        contexte.shadowColor =
+            "#00ffcc";
+
+        contexte.fillStyle =
+            "#00ffcc";
+
+
+        contexte.fillRect(
+
+            balle.x,
+
+            balle.y,
+
+            balle.largeur,
+
+            balle.hauteur
+
+        );
+
+    }
+
+
+    /* Tirs ennemis */
+
+    for (
+        let balle of ballesEnnemies
+    ) {
+
+        contexte.shadowBlur = 15;
+
+        contexte.shadowColor =
+            "#ff0033";
+
+        contexte.fillStyle =
+            "#ff3355";
+
+
+        contexte.fillRect(
+
+            balle.x,
+
+            balle.y,
+
+            balle.largeur,
+
+            balle.hauteur
+
+        );
+
+    }
+
+
+    /* Ennemis */
+
+    for (
+        let ennemi of ennemis
+    ) {
+
+        dessinerEnnemi(
+            ennemi
+        );
+
+    }
+
+
+    /* Boss */
+
+    dessinerBoss();
+
+
+    /* Explosions */
+
+    for (
+        let explosion of explosions
+    ) {
+
+        contexte.shadowBlur = 25;
+
+        contexte.shadowColor =
+            "#ff6600";
+
+
+        let gradient =
+            contexte.createRadialGradient(
+
+                explosion.x,
+
+                explosion.y,
+
+                0,
+
+                explosion.x,
+
+                explosion.y,
+
+                explosion.taille
+
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "#ffffff"
+        );
+
+
+        gradient.addColorStop(
+            0.3,
+            "#ffff00"
+        );
+
+
+        gradient.addColorStop(
+            0.7,
+            "#ff6600"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(255,0,0,0)"
+        );
+
+
+        contexte.fillStyle =
+            gradient;
+
+
+        contexte.beginPath();
+
+
+        contexte.arc(
+
+            explosion.x,
+
+            explosion.y,
+
+            explosion.taille,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        contexte.fill();
+
+    }
+
+
+    /* Particules */
+
+    contexte.shadowBlur = 0;
+
+
+    for (
+        let p of particules
+    ) {
+
+        contexte.fillStyle =
+            "#ffaa00";
+
+
+        contexte.globalAlpha =
+            Math.max(
+                0,
+                p.vie / 40
+            );
+
+
+        contexte.fillRect(
+
+            p.x,
+
+            p.y,
+
+            p.taille,
+
+            p.taille
+
+        );
+
+    }
+
+
+    contexte.globalAlpha = 1;
+
+}
+
+
+/* =====================================================
+   BOUCLE
+===================================================== */
+
+function boucle() {
+
+    if (
+        !jeuEnPause &&
+        !jeuTermine
+    ) {
+
+        controles();
+
+        bougerEnnemis();
+
+        bougerBalles();
+
+        bougerBallesEnnemies();
+
+        verifierCollisions();
+
+        bougerExplosions();
+
+        bougerParticules();
+
+        bougerEtoiles();
+
+
+        tempsTirEnnemi++;
+
+
+        let intervalle =
+            Math.max(
+
+                25,
+
+                100 -
+                niveau * 5
+
+            );
+
+
+        if (
+            tempsTirEnnemi >=
+            intervalle
+        ) {
+
+            tirerEnnemi();
+
+            tempsTirEnnemi = 0;
+
+        }
+
+
+        if (
+            boss &&
+            Math.random() < 0.02
+        ) {
+
+            tirerBoss();
+
+        }
+
+
+        /* Niveau suivant */
+
+        if (
+            ennemis.length === 0 &&
+            !boss
+        ) {
+
+            niveauSuivant();
+
+        }
+
+    }
+
+
+    dessiner();
+
+
+    requestAnimationFrame(
+        boucle
+    );
+
+}
+
+
+/* =====================================================
+   CONTROLES MOBILE
+===================================================== */
+
+function maintenirBouton(
+    bouton,
+    action
+) {
+
+    let intervalle = null;
+
+
+    function commencer(event) {
+
+        event.preventDefault();
+
+
+        action();
+
+
+        intervalle =
+            setInterval(
+                action,
+                40
+            );
+
+    }
+
+
+    function arreter(event) {
+
+        event.preventDefault();
+
+
+        clearInterval(
+            intervalle
+        );
+
+
+        intervalle = null;
+
+    }
+
+
+    bouton.addEventListener(
+        "touchstart",
+        commencer,
+        { passive: false }
+    );
+
+
+    bouton.addEventListener(
+        "touchend",
+        arreter,
+        { passive: false }
+    );
+
+
+    bouton.addEventListener(
+        "touchcancel",
+        arreter,
+        { passive: false }
+    );
+
+
+    bouton.addEventListener(
+        "mousedown",
+        commencer
+    );
+
+
+    bouton.addEventListener(
+        "mouseup",
+        arreter
+    );
+
+
+    bouton.addEventListener(
+        "mouseleave",
+        arreter
+    );
+
+}
+
+
+/* =====================================================
+   BOUTON GAUCHE
+===================================================== */
+
+maintenirBouton(
+
+    document.getElementById(
+        "gauche"
+    ),
+
+    function() {
+
+        joueur.x -=
+            joueur.vitesse * 1.5;
+
+
+        if (
+            joueur.x < 0
+        ) {
+
+            joueur.x = 0;
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   BOUTON DROITE
+===================================================== */
+
+maintenirBouton(
+
+    document.getElementById(
+        "droite"
+    ),
+
+    function() {
+
+        joueur.x +=
+            joueur.vitesse * 1.5;
+
+
+        if (
+            joueur.x +
+            joueur.largeur >
+            canvas.width
+        ) {
+
+            joueur.x =
+                canvas.width -
+                joueur.largeur;
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   BOUTON TIR
+===================================================== */
+
+maintenirBouton(
+
+    document.getElementById(
+        "tirer"
+    ),
+
+    function() {
+
+        tirer();
+
+    }
+
+);
+
+
+/* =====================================================
+   DEMARRAGE
+===================================================== */
+
+creerEnnemis();
+
+dessiner();
+
+boucle();
+
+
+</script>
+
+
+</body>
+
+</html>
