@@ -90,20 +90,54 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 
     <!-- =================================================
-         SCORE
+         MANCHES GAGNEES
     ================================================= -->
 
     <div class="scores">
 
+        <div>
+
+            🏆 Tes manches gagnées :
+
+            <strong>
+                <span id="manchesJoueur">0</span>
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            🤖 Manches ordinateur :
+
+            <strong>
+                <span id="manchesOrdinateur">0</span>
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SCORE DE LA MANCHE
+    ================================================= -->
+
+    <h2>
+
+        🎮 Manche actuelle
+
+    </h2>
+
+
+    <div class="scores">
 
         <div>
 
             👤 Toi :
 
             <strong>
-                <span id="scoreJoueur">
-                    0
-                </span>
+                <span id="scoreJoueur">0</span>
             </strong>
 
         </div>
@@ -114,33 +148,19 @@ if (!localStorage.getItem("pseudoGameZone")) {
             🤖 Ordinateur :
 
             <strong>
-                <span id="scoreOrdinateur">
-                    0
-                </span>
+                <span id="scoreOrdinateur">0</span>
             </strong>
 
         </div>
-
-
-        <div>
-
-            🏆 Meilleur score :
-
-            <strong>
-                <span id="meilleurScore">
-                    0
-                </span>
-            </strong>
-
-        </div>
-
 
     </div>
 
 
     <p>
 
-        🎯 Premier à <strong>5 points</strong> gagne !
+        🎯 Premier à
+        <strong>5 points</strong>
+        gagne la manche !
 
     </p>
 
@@ -214,20 +234,20 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 
     <!-- =================================================
-         REJOUER
+         NOUVELLE MANCHE
     ================================================= -->
 
     <button
 
-        id="boutonRejouer"
+        id="boutonNouvelleManche"
 
         class="bouton"
 
-        onclick="nouvellePartie()"
+        onclick="nouvelleManche()"
 
         style="display:none;">
 
-        🔄 Nouvelle partie
+        🔄 Nouvelle manche
 
     </button>
 
@@ -240,27 +260,24 @@ if (!localStorage.getItem("pseudoGameZone")) {
         id="zoneEnregistrement"
         style="display:none;">
 
-
         <h2>
 
-            🏆 Partie terminée !
+            🏆 Manche gagnée !
 
         </h2>
 
 
         <p>
 
-            Ton score :
+            Nombre total de manches gagnées :
 
             <strong>
 
-                <span id="scoreFinal">
+                <span id="manchesFinales">
                     0
                 </span>
 
             </strong>
-
-            points
 
         </p>
 
@@ -269,15 +286,14 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
             class="bouton"
 
-            onclick="enregistrerMeilleurScore()">
+            onclick="enregistrerManches()">
 
-            💾 Enregistrer le score
+            💾 Enregistrer mes manches
 
         </button>
 
 
         <p id="messageEnregistrement"></p>
-
 
     </section>
 
@@ -316,7 +332,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
                     </th>
 
                     <th>
-                        🎯 Score
+                        🏆 Manches gagnées
                     </th>
 
                 </tr>
@@ -387,7 +403,7 @@ const JEU = "jeux3";
    ELEMENTS
 ===================================================== */
 
-const pseudoJoueur =
+const pseudoJoueurElement =
     document.getElementById(
         "pseudoJoueur"
     );
@@ -405,9 +421,15 @@ const scoreOrdinateurElement =
     );
 
 
-const meilleurScoreElement =
+const manchesJoueurElement =
     document.getElementById(
-        "meilleurScore"
+        "manchesJoueur"
+    );
+
+
+const manchesOrdinateurElement =
+    document.getElementById(
+        "manchesOrdinateur"
     );
 
 
@@ -429,9 +451,9 @@ const message =
     );
 
 
-const boutonRejouer =
+const boutonNouvelleManche =
     document.getElementById(
-        "boutonRejouer"
+        "boutonNouvelleManche"
     );
 
 
@@ -441,9 +463,9 @@ const zoneEnregistrement =
     );
 
 
-const scoreFinal =
+const manchesFinales =
     document.getElementById(
-        "scoreFinal"
+        "manchesFinales"
     );
 
 
@@ -475,52 +497,79 @@ const pseudo =
     );
 
 
-if (pseudo) {
-
-    pseudoJoueur.textContent =
-        pseudo;
-
-}
+pseudoJoueurElement.textContent =
+    pseudo || "Joueur";
 
 
 /* =====================================================
    VARIABLES
 ===================================================== */
 
+/*
+   Score de la manche actuelle
+*/
+
 let scoreJoueur = 0;
 
 let scoreOrdinateur = 0;
 
-let meilleurScore =
-    Number(
-        localStorage.getItem(
-            "meilleurScoreJeux3"
-        )
-    ) || 0;
 
-let partieTerminee = false;
+/*
+   Nombre de manches gagnées
+*/
+
+let manchesGagneesJoueur = 0;
+
+let manchesGagneesOrdinateur = 0;
+
+
+/*
+   État de la manche
+*/
+
+let mancheTerminee = false;
+
+
+/*
+   Empêche plusieurs enregistrements
+*/
 
 let scoreEnregistre = false;
+
+
+/* =====================================================
+   AFFICHAGE INITIAL
+===================================================== */
+
+actualiserAffichage();
 
 
 /* =====================================================
    AFFICHAGE
 ===================================================== */
 
-scoreJoueurElement.textContent =
-    scoreJoueur;
+function actualiserAffichage() {
+
+    scoreJoueurElement.textContent =
+        scoreJoueur;
 
 
-scoreOrdinateurElement.textContent =
-    scoreOrdinateur;
+    scoreOrdinateurElement.textContent =
+        scoreOrdinateur;
 
 
-meilleurScoreElement.textContent =
-    meilleurScore;
+    manchesJoueurElement.textContent =
+        manchesGagneesJoueur;
+
+
+    manchesOrdinateurElement.textContent =
+        manchesGagneesOrdinateur;
+
+}
 
 
 /* =====================================================
-   CHOIX DE L'ORDINATEUR
+   CHOIX ORDINATEUR
 ===================================================== */
 
 function choixOrdinateur() {
@@ -528,9 +577,7 @@ function choixOrdinateur() {
     const choix = [
 
         "pierre",
-
         "feuille",
-
         "ciseaux"
 
     ];
@@ -549,7 +596,7 @@ function choixOrdinateur() {
 
 
 /* =====================================================
-   TRADUCTION DES CHOIX
+   AFFICHER CHOIX
 ===================================================== */
 
 function afficherChoix(choix) {
@@ -587,7 +634,12 @@ function afficherChoix(choix) {
 function jouer(choix) {
 
 
-    if (partieTerminee) {
+    /*
+       Si la manche est terminée,
+       on ne joue plus.
+    */
+
+    if (mancheTerminee) {
 
         return;
 
@@ -599,16 +651,12 @@ function jouer(choix) {
 
 
     choixJoueurElement.textContent =
-
         "👤 Ton choix : " +
-
         afficherChoix(choix);
 
 
     choixOrdinateurElement.textContent =
-
         "🤖 Choix ordinateur : " +
-
         afficherChoix(ordinateur);
 
 
@@ -621,14 +669,16 @@ function jouer(choix) {
         message.textContent =
             "🤝 Égalité !";
 
+        return;
+
     }
 
 
     /* =================================================
-       JOUEUR GAGNE
+       JOUEUR GAGNE LE POINT
     ================================================= */
 
-    else if (
+    if (
 
         (choix === "pierre" &&
             ordinateur === "ciseaux")
@@ -649,45 +699,15 @@ function jouer(choix) {
         scoreJoueur++;
 
 
-        scoreJoueurElement.textContent =
-            scoreJoueur;
-
-
         message.textContent =
             "🎉 Tu gagnes le point !";
 
-
-        /*
-           Nouveau meilleur score
-        */
-
-        if (
-            scoreJoueur > meilleurScore
-        ) {
-
-            meilleurScore =
-                scoreJoueur;
-
-
-            meilleurScoreElement.textContent =
-                meilleurScore;
-
-
-            localStorage.setItem(
-
-                "meilleurScoreJeux3",
-
-                meilleurScore
-
-            );
-
-        }
 
     }
 
 
     /* =================================================
-       ORDINATEUR GAGNE
+       ORDINATEUR GAGNE LE POINT
     ================================================= */
 
     else {
@@ -696,36 +716,35 @@ function jouer(choix) {
         scoreOrdinateur++;
 
 
-        scoreOrdinateurElement.textContent =
-            scoreOrdinateur;
-
-
         message.textContent =
             "🤖 L'ordinateur gagne le point !";
 
     }
 
 
+    actualiserAffichage();
+
+
     /* =================================================
-       FIN DE PARTIE
+       JOUEUR ARRIVE À 5
     ================================================= */
 
-    if (
-        scoreJoueur >= 5
-    ) {
+    if (scoreJoueur >= 5) {
 
-        terminerPartie(true);
+        terminerManche(true);
 
         return;
 
     }
 
 
-    if (
-        scoreOrdinateur >= 5
-    ) {
+    /* =================================================
+       ORDINATEUR ARRIVE À 5
+    ================================================= */
 
-        terminerPartie(false);
+    if (scoreOrdinateur >= 5) {
+
+        terminerManche(false);
 
         return;
 
@@ -735,17 +754,17 @@ function jouer(choix) {
 
 
 /* =====================================================
-   FIN DE PARTIE
+   TERMINER UNE MANCHE
 ===================================================== */
 
-function terminerPartie(joueurGagne) {
+function terminerManche(joueurGagne) {
 
 
-    partieTerminee =
+    mancheTerminee =
         true;
 
 
-    boutonRejouer.style.display =
+    boutonNouvelleManche.style.display =
         "inline-block";
 
 
@@ -753,62 +772,73 @@ function terminerPartie(joueurGagne) {
         "block";
 
 
-    scoreFinal.textContent =
-        scoreJoueur;
-
-
     if (joueurGagne) {
-
-        message.textContent =
-
-            "🏆 BRAVO ! Tu as gagné la partie !";
 
 
         /*
-           Enregistrer le meilleur score
-           automatiquement dans le localStorage.
+           UNE SEULE MANCHE GAGNÉE
+           = +1 manche pour le joueur
         */
 
-        if (
-            scoreJoueur > meilleurScore
-        ) {
+        manchesGagneesJoueur++;
 
-            meilleurScore =
-                scoreJoueur;
-
-
-            meilleurScoreElement.textContent =
-                meilleurScore;
-
-
-            localStorage.setItem(
-
-                "meilleurScoreJeux3",
-
-                meilleurScore
-
-            );
-
-        }
-
-    }
-
-    else {
 
         message.textContent =
 
-            "💀 Tu as perdu la partie !";
+            "🏆 Tu as gagné cette manche !";
+
+
+        message.textContent +=
+
+            " 🎉 Tu as maintenant " +
+
+            manchesGagneesJoueur +
+
+            " manche(s) gagnée(s).";
+
 
     }
+
+
+    else {
+
+
+        manchesGagneesOrdinateur++;
+
+
+        message.textContent =
+
+            "💀 L'ordinateur a gagné cette manche !";
+
+    }
+
+
+    actualiserAffichage();
+
+
+    manchesFinales.textContent =
+        manchesGagneesJoueur;
+
+
+    /*
+       Le score de la manche reste visible
+       jusqu'au clic sur Nouvelle manche.
+    */
 
 }
 
 
 /* =====================================================
-   NOUVELLE PARTIE
+   NOUVELLE MANCHE
 ===================================================== */
 
-function nouvellePartie() {
+function nouvelleManche() {
+
+
+    /*
+       IMPORTANT :
+       On ne remet PAS les manches gagnées à zéro.
+    */
 
 
     scoreJoueur =
@@ -819,7 +849,7 @@ function nouvellePartie() {
         0;
 
 
-    partieTerminee =
+    mancheTerminee =
         false;
 
 
@@ -827,12 +857,7 @@ function nouvellePartie() {
         false;
 
 
-    scoreJoueurElement.textContent =
-        "0";
-
-
-    scoreOrdinateurElement.textContent =
-        "0";
+    actualiserAffichage();
 
 
     choixJoueurElement.textContent =
@@ -844,10 +869,10 @@ function nouvellePartie() {
 
 
     message.textContent =
-        "🎮 Nouvelle partie !";
+        "🎮 Nouvelle manche !";
 
 
-    boutonRejouer.style.display =
+    boutonNouvelleManche.style.display =
         "none";
 
 
@@ -862,10 +887,10 @@ function nouvellePartie() {
 
 
 /* =====================================================
-   ENREGISTRER LE SCORE
+   ENREGISTRER LES MANCHES GAGNÉES
 ===================================================== */
 
-async function enregistrerMeilleurScore() {
+async function enregistrerManches() {
 
 
     if (!pseudo) {
@@ -878,10 +903,15 @@ async function enregistrerMeilleurScore() {
     }
 
 
-    if (scoreJoueur <= 0) {
+    /*
+       On ne peut enregistrer que si
+       le joueur a gagné au moins une manche.
+    */
+
+    if (manchesGagneesJoueur <= 0) {
 
         messageEnregistrement.textContent =
-            "⚠️ Ton score doit être supérieur à 0.";
+            "⚠️ Tu dois gagner au moins une manche.";
 
         return;
 
@@ -891,7 +921,7 @@ async function enregistrerMeilleurScore() {
     if (scoreEnregistre) {
 
         messageEnregistrement.textContent =
-            "ℹ️ Ce score a déjà été enregistré.";
+            "ℹ️ Ton résultat a déjà été enregistré.";
 
         return;
 
@@ -910,7 +940,7 @@ async function enregistrerMeilleurScore() {
 
 
         /* =================================================
-           RECHERCHER LE SCORE
+           RECHERCHER LE JOUEUR
         ================================================= */
 
         const {
@@ -961,7 +991,7 @@ async function enregistrerMeilleurScore() {
 
 
         /* =================================================
-           SCORE EXISTANT
+           JOUEUR EXISTANT
         ================================================= */
 
         if (
@@ -973,88 +1003,88 @@ async function enregistrerMeilleurScore() {
         ) {
 
 
-            const ancienScore =
+            const ancienNombreManches =
                 Number(
                     anciensScores[0].score
                 );
 
 
-            if (
+            /*
+               On ajoute les manches gagnées
+               à celles déjà enregistrées.
+            */
 
-                scoreJoueur >
-                ancienScore
+            const nouveauNombreManches =
 
-            ) {
+                ancienNombreManches +
 
-
-                const id =
-                    anciensScores[0].id;
-
-
-                const {
-
-                    error: erreurUpdate
-
-                } =
-
-                    await supabaseClient
-
-                        .from("scores")
-
-                        .update({
-
-                            score:
-                                scoreJoueur,
-
-                            date_creation:
-                                new Date()
-                                    .toISOString()
-
-                        })
-
-                        .eq(
-                            "id",
-                            id
-                        );
+                manchesGagneesJoueur;
 
 
-                if (erreurUpdate) {
+            const id =
+                anciensScores[0].id;
 
-                    console.error(
-                        erreurUpdate
+
+            const {
+
+                error: erreurUpdate
+
+            } =
+
+                await supabaseClient
+
+                    .from("scores")
+
+                    .update({
+
+                        score:
+                            nouveauNombreManches,
+
+                        date_creation:
+                            new Date()
+                                .toISOString()
+
+                    })
+
+                    .eq(
+                        "id",
+                        id
                     );
 
 
-                    scoreEnregistre =
-                        false;
+            if (erreurUpdate) {
+
+                console.error(
+                    erreurUpdate
+                );
 
 
-                    throw new Error(
-                        "Modification impossible."
-                    );
-
-                }
+                scoreEnregistre =
+                    false;
 
 
-                messageEnregistrement.textContent =
-
-                    "🏆 Nouveau record enregistré !";
-
-            }
-
-            else {
-
-                messageEnregistrement.textContent =
-
-                    "ℹ️ Ton ancien score est meilleur ou égal.";
+                throw new Error(
+                    "Modification impossible."
+                );
 
             }
+
+
+            messageEnregistrement.textContent =
+
+                "🏆 Résultat enregistré ! " +
+
+                "Tu as maintenant " +
+
+                nouveauNombreManches +
+
+                " manche(s) gagnée(s) au classement.";
 
         }
 
 
         /* =================================================
-           PREMIER SCORE
+           PREMIER ENREGISTREMENT
         ================================================= */
 
         else {
@@ -1076,7 +1106,7 @@ async function enregistrerMeilleurScore() {
                             pseudo,
 
                         score:
-                            scoreJoueur,
+                            manchesGagneesJoueur,
 
                         jeu:
                             JEU,
@@ -1108,7 +1138,11 @@ async function enregistrerMeilleurScore() {
 
             messageEnregistrement.textContent =
 
-                "✅ Score enregistré !";
+                "✅ " +
+
+                manchesGagneesJoueur +
+
+                " manche(s) gagnée(s) enregistrée(s) !";
 
         }
 
@@ -1213,7 +1247,7 @@ async function chargerClassement() {
 
 
         /* =================================================
-           AUCUN SCORE
+           AUCUN JOUEUR
         ================================================= */
 
         if (
@@ -1231,7 +1265,7 @@ async function chargerClassement() {
 
                     <td colspan="3">
 
-                        Aucun score pour ce jeu.
+                        Aucun joueur classé.
 
                     </td>
 
@@ -1250,7 +1284,7 @@ async function chargerClassement() {
 
 
         /* =================================================
-           AFFICHER
+           AFFICHAGE
         ================================================= */
 
         classementBody.innerHTML =
@@ -1271,33 +1305,29 @@ async function chargerClassement() {
                     );
 
 
+                /* POSITION */
+
                 const position =
                     document.createElement(
                         "td"
                     );
 
 
-                if (
-                    index === 0
-                ) {
+                if (index === 0) {
 
                     position.textContent =
                         "🥇";
 
                 }
 
-                else if (
-                    index === 1
-                ) {
+                else if (index === 1) {
 
                     position.textContent =
                         "🥈";
 
                 }
 
-                else if (
-                    index === 2
-                ) {
+                else if (index === 2) {
 
                     position.textContent =
                         "🥉";
@@ -1312,6 +1342,8 @@ async function chargerClassement() {
                 }
 
 
+                /* PSEUDO */
+
                 const pseudoCell =
                     document.createElement(
                         "td"
@@ -1322,13 +1354,15 @@ async function chargerClassement() {
                     joueur.pseudo;
 
 
-                const scoreCell =
+                /* MANCHES */
+
+                const manchesCell =
                     document.createElement(
                         "td"
                     );
 
 
-                scoreCell.textContent =
+                manchesCell.textContent =
                     joueur.score;
 
 
@@ -1343,7 +1377,7 @@ async function chargerClassement() {
 
 
                 ligne.appendChild(
-                    scoreCell
+                    manchesCell
                 );
 
 
@@ -1376,7 +1410,8 @@ async function chargerClassement() {
 
                 <td colspan="3">
 
-                    ❌ Impossible de charger le classement.
+                    ❌ Impossible de charger
+                    le classement.
 
                 </td>
 
@@ -1398,7 +1433,6 @@ async function chargerClassement() {
 ===================================================== */
 
 chargerClassement();
-
 
 </script>
 
