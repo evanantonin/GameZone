@@ -306,20 +306,21 @@ localStorage.getItem("pseudoGameZone");
 
 function afficherCompte() {
 
-    if (!pseudo) {
+    pseudo = localStorage.getItem("pseudoGameZone");
+
+    if (pseudo) {
+
+        zoneCreation.style.display = "none";
+        zoneCompte.style.display = "block";
+
+        pseudoAffiche.textContent = pseudo;
+
+    } else {
 
         zoneCreation.style.display = "block";
-
         zoneCompte.style.display = "none";
 
-        return;
     }
-
-    zoneCreation.style.display = "none";
-
-    zoneCompte.style.display = "block";
-
-    pseudoAffiche.textContent = pseudo;
 }
 
 
