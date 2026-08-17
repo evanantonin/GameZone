@@ -1670,3 +1670,235 @@ body.page-space {
         font-size: 24px;
     }
 }
+/* =====================================================
+   SNAKE - FOND GAMING
+===================================================== */
+
+.page-jeu {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 255, 120, 0.15), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(0, 150, 255, 0.15), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(120, 0, 255, 0.12), transparent 35%),
+        linear-gradient(135deg, #07130d, #050914, #09051a);
+
+    background-attachment: fixed;
+
+    color: white;
+}
+
+
+/* =====================================================
+   CONTENEUR DU JEU
+===================================================== */
+
+.page-jeu-snake {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    border: 1px solid rgba(0, 255, 120, 0.25);
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 0 30px rgba(0, 255, 120, 0.12),
+        0 0 80px rgba(0, 100, 255, 0.08);
+
+    backdrop-filter: blur(8px);
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   TITRE
+===================================================== */
+
+.page-jeu-snake h1 {
+    color: #00ff66;
+
+    text-shadow:
+        0 0 10px #00ff66,
+        0 0 25px rgba(0, 255, 102, 0.6);
+
+    font-size: 48px;
+}
+
+
+/* =====================================================
+   CANVAS SNAKE
+===================================================== */
+
+#jeu {
+    display: block;
+
+    margin: 25px auto;
+
+    background: white !important;
+
+    border: 4px solid #00ff66;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 15px #00ff66,
+        0 0 40px rgba(0, 255, 102, 0.35);
+}
+
+
+/* =====================================================
+   SCORES
+===================================================== */
+
+.scores-snake {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    flex-wrap: wrap;
+
+    margin: 20px 0;
+}
+
+.scores-snake p {
+    background: rgba(0, 0, 0, 0.45);
+
+    padding: 12px 25px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(0, 255, 102, 0.3);
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+#messageSnake {
+    min-height: 25px;
+
+    color: #00ff66;
+
+    font-weight: bold;
+
+    text-shadow: 0 0 10px #00ff66;
+}
+
+
+/* =====================================================
+   BOUTONS
+===================================================== */
+
+.boutons-snake button,
+.controles-snake button {
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 12px 20px;
+
+    margin: 5px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    background: #00aa44;
+
+    color: white;
+
+    box-shadow:
+        0 0 10px rgba(0, 255, 102, 0.35);
+
+    transition: 0.2s;
+}
+
+.boutons-snake button:hover,
+.controles-snake button:hover {
+    transform: scale(1.08);
+
+    background: #00dd55;
+
+    box-shadow:
+        0 0 20px #00ff66;
+}
+
+
+/* =====================================================
+   CLASSEMENT
+===================================================== */
+
+.classement {
+    margin-top: 40px;
+
+    padding: 25px;
+
+    background: rgba(0, 0, 0, 0.4);
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(0, 255, 102, 0.25);
+}
+
+.classement h2 {
+    color: #00ff66;
+
+    text-shadow: 0 0 10px #00ff66;
+}
+
+#tableauClassement {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+}
+
+#tableauClassement th,
+#tableauClassement td {
+    padding: 12px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#tableauClassement th {
+    color: #00ff66;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .page-jeu-snake {
+        margin: 15px;
+
+        padding: 15px;
+    }
+
+    .page-jeu-snake h1 {
+        font-size: 36px;
+    }
+
+    #jeu {
+        width: 90vw;
+        height: 90vw;
+
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .scores-snake {
+        gap: 10px;
+    }
+
+}
