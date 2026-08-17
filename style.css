@@ -1688,25 +1688,32 @@ body.page-space {
         font-size: 24px;
     }
 }
+/* =========================================================
+   SPACE INVADERS - CONTROLES MOBILE EN BAS DE L'ECRAN
+========================================================= */
+
 @media (max-width: 768px) {
 
-    .controles-mobile {
+    body.page-space .controles-mobile {
         position: fixed;
-        bottom: 15px;
+        bottom: 10px;
         left: 0;
+        right: 0;
         width: 100%;
-
+        margin: 0;
+        padding: 0;
         display: flex;
         justify-content: center;
-        gap: 25px;
-
-        z-index: 1000;
+        align-items: center;
+        gap: 20px;
+        z-index: 9999;
     }
 
-    .controles-mobile button {
+    body.page-space .controles-mobile button {
         width: 75px;
         height: 60px;
         font-size: 28px;
+        margin: 0;
     }
 
 }
