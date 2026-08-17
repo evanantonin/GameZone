@@ -14,6 +14,10 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             background: #03030b;
@@ -48,73 +52,12 @@
             margin: 20px 0 10px;
             color: #00d9ff;
             font-size: 45px;
+
             text-shadow:
                 0 0 8px #00d9ff,
                 0 0 20px #0077ff,
                 0 0 40px #0044ff;
         }
-
-        /* =========================
-           PSEUDO
-        ========================= */
-
-        #zonePseudo {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #0b0b20;
-            border: 2px solid #00bfff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
-        }
-
-        #zonePseudo h2 {
-            color: #00d9ff;
-        }
-
-        #pseudo {
-            width: 80%;
-            max-width: 300px;
-            padding: 12px;
-            border: 2px solid #00bfff;
-            border-radius: 10px;
-            background: #050510;
-            color: white;
-            font-size: 18px;
-            text-align: center;
-            outline: none;
-        }
-
-        #boutonPseudo {
-            margin-top: 12px;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            background: #075bff;
-            color: white;
-            font-size: 17px;
-            cursor: pointer;
-        }
-
-        #boutonPseudo:hover {
-            background: #00aaff;
-            transform: scale(1.05);
-        }
-
-        #pseudoConnecte {
-            display: none;
-            margin: 15px auto;
-            font-size: 18px;
-            color: #00ff66;
-        }
-
-        #nomJoueur {
-            color: #ffd700;
-        }
-
-        /* =========================
-           RETOUR
-        ========================= */
 
         .retour {
             margin-bottom: 15px;
@@ -130,49 +73,32 @@
             cursor: pointer;
         }
 
-        .retour button:hover {
-            background: #00aaff;
-            transform: scale(1.05);
-        }
-
-        /* =========================
-           INFOS
-        ========================= */
-
         .infos {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 35px;
+            gap: 30px;
             flex-wrap: wrap;
             margin: 15px auto;
-            font-size: 19px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         #score {
             color: #00ff66;
-            text-shadow: 0 0 8px #00ff66;
         }
 
         #meilleurScore {
             color: #ffd700;
-            text-shadow: 0 0 8px #ffd700;
         }
 
         #niveau {
             color: #00d9ff;
-            text-shadow: 0 0 8px #00d9ff;
         }
 
         #vies {
             color: #ff4444;
-            text-shadow: 0 0 8px #ff0000;
         }
-
-        /* =========================
-           CANVAS
-        ========================= */
 
         #jeuSpace {
             display: block;
@@ -187,8 +113,7 @@
 
             box-shadow:
                 0 0 10px #00bfff,
-                0 0 30px rgba(0, 170, 255, 0.5),
-                0 0 70px rgba(0, 80, 255, 0.2);
+                0 0 30px rgba(0, 170, 255, 0.5);
 
             cursor: crosshair;
             touch-action: none;
@@ -196,15 +121,10 @@
 
         #message {
             min-height: 30px;
-            font-size: 21px;
+            font-size: 20px;
             font-weight: bold;
             color: #00d9ff;
-            text-shadow: 0 0 8px #00aaff;
         }
-
-        /* =========================
-           BOUTONS
-        ========================= */
 
         .boutons {
             display: flex;
@@ -214,89 +134,96 @@
             margin: 15px;
         }
 
-        .boutons button {
-            padding: 12px 20px;
+        .boutons button,
+        .controles-mobile button {
             border: none;
             border-radius: 10px;
             background: #075bff;
             color: white;
-            font-size: 17px;
             cursor: pointer;
+        }
+
+        .boutons button {
+            padding: 12px 20px;
+            font-size: 17px;
         }
 
         .boutons button:hover {
             background: #00aaff;
-            transform: scale(1.05);
         }
 
         #boutonRejouer {
             display: none;
         }
 
-        /* =========================
-           CONTROLES MOBILE
-        ========================= */
-
         .commandes {
             color: #aaa;
             font-size: 15px;
-            margin: 15px;
         }
+
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
 
         .controles-mobile {
             display: none;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            margin: 5px auto 20px;
-            user-select: none;
+            margin: 10px auto 20px;
         }
 
         .controles-mobile button {
             width: 65px;
             height: 55px;
-
-            border: none;
-            border-radius: 12px;
-
-            background-color: #222;
-            color: white;
-
             font-size: 25px;
-            font-weight: bold;
-
-            cursor: pointer;
-
             touch-action: manipulation;
-
             -webkit-tap-highlight-color: transparent;
         }
 
         .controles-mobile button:active {
             transform: scale(0.9);
-            background-color: #444;
+            background: #00aaff;
+        }
+
+        /* =========================
+           COMPTE
+        ========================= */
+
+        .compte {
+            background: #080818;
+            border: 2px solid #075bff;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 500px;
+        }
+
+        .compte strong {
+            color: #00d9ff;
+        }
+
+        #pseudoAffiche {
+            color: #ffd700;
+            font-size: 20px;
         }
 
         /* =========================
            CLASSEMENT
         ========================= */
 
-        #classement {
+        .classement {
             max-width: 600px;
-            margin: 35px auto;
-            padding: 20px;
-
-            background: #08081a;
-
-            border: 2px solid #ffd700;
+            margin: 30px auto;
+            background: #080818;
+            border: 2px solid #00bfff;
             border-radius: 15px;
-
-            box-shadow:
-                0 0 20px rgba(255, 215, 0, 0.2);
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.2);
         }
 
-        #classement h2 {
-            color: #ffd700;
+        .classement h2 {
+            color: #00d9ff;
             margin-top: 0;
         }
 
@@ -316,13 +243,73 @@
             color: #00d9ff;
         }
 
-        #tableauScores td {
-            color: white;
+        #tableauScores tr:nth-child(1) td {
+            color: #ffd700;
+            font-weight: bold;
         }
 
-        .message-classement {
+        #tableauScores tr:nth-child(2) td {
+            color: #c0c0c0;
+        }
+
+        #tableauScores tr:nth-child(3) td {
+            color: #cd7f32;
+        }
+
+        .statut {
+            min-height: 25px;
             color: #aaa;
-            margin-top: 15px;
+            margin-top: 10px;
+        }
+
+        /* =========================
+           CREATION COMPTE
+        ========================= */
+
+        #zoneCreation {
+            background: #09091c;
+            border: 2px solid #00d9ff;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 500px;
+            margin: 25px auto;
+        }
+
+        #zoneCreation h2 {
+            color: #00d9ff;
+        }
+
+        #pseudoInput {
+            width: 80%;
+            max-width: 350px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #075bff;
+            background: #111;
+            color: white;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        #boutonCreerCompte {
+            margin-top: 12px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #075bff;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        #boutonCreerCompte:hover {
+            background: #00aaff;
+        }
+
+        #erreurPseudo {
+            color: #ff5555;
+            min-height: 25px;
+            margin-top: 10px;
         }
 
         /* =========================
@@ -345,8 +332,8 @@
             }
 
             .infos {
-                gap: 15px;
-                font-size: 16px;
+                gap: 12px;
+                font-size: 15px;
             }
 
             #jeuSpace {
@@ -358,41 +345,24 @@
                 display: flex;
             }
 
-            .controles-mobile button {
-                width: 60px;
-                height: 55px;
-                font-size: 24px;
+            .commandes {
+                font-size: 13px;
             }
 
-            #classement {
-                width: 90%;
-                box-sizing: border-box;
+            .classement {
+                width: 95%;
+                padding: 12px;
             }
 
-        }
-
-        @media (max-width: 380px) {
-
-            h1 {
-                font-size: 29px;
-            }
-
-            .infos {
-                gap: 10px;
+            #tableauScores th,
+            #tableauScores td {
+                padding: 8px 4px;
                 font-size: 14px;
             }
 
-            .controles-mobile {
-                margin-top: 3px;
-                gap: 8px;
+            #pseudoInput {
+                width: 90%;
             }
-
-            .controles-mobile button {
-                width: 55px;
-                height: 50px;
-                font-size: 22px;
-            }
-
         }
 
     </style>
@@ -425,43 +395,47 @@
 
 
     <!-- =========================
-         PSEUDO
-    ========================= -->
+         CREATION DU COMPTE
+    ========================== -->
 
-    <div id="zonePseudo">
+    <div id="zoneCreation">
 
         <h2>
-            👤 Choisis ton pseudo
+            👤 Crée ton pseudo
         </h2>
 
         <p>
-            Ton pseudo sera conservé sur cet appareil.
+            Ton pseudo sera mémorisé sur cet appareil.
         </p>
 
         <input
             type="text"
-            id="pseudo"
-            maxlength="15"
-            placeholder="Ton pseudo"
-        >
+            id="pseudoInput"
+            maxlength="20"
+            placeholder="Entre ton pseudo">
 
         <br>
 
-        <button
-            id="boutonPseudo"
-            onclick="creerPseudo()">
-
-            ✅ Commencer
-
+        <button id="boutonCreerCompte">
+            ✅ Créer mon compte
         </button>
+
+        <div id="erreurPseudo"></div>
 
     </div>
 
 
-    <div id="pseudoConnecte">
+    <!-- =========================
+         COMPTE
+    ========================== -->
+
+    <div
+        class="compte"
+        id="zoneCompte"
+        style="display:none;">
 
         👤 Joueur :
-        <strong id="nomJoueur"></strong>
+        <strong id="pseudoAffiche"></strong>
 
     </div>
 
@@ -478,6 +452,10 @@
 
     </div>
 
+
+    <!-- =========================
+         INFOS
+    ========================== -->
 
     <div class="infos">
 
@@ -504,6 +482,10 @@
     </div>
 
 
+    <!-- =========================
+         JEU
+    ========================== -->
+
     <canvas
         id="jeuSpace"
         width="800"
@@ -522,22 +504,19 @@
     <div class="boutons">
 
         <button
-            id="boutonPause"
-            onclick="pauseJeu()">
+            id="boutonPause">
 
             ⏸️ Pause
 
         </button>
 
-
         <button
-            id="boutonRejouer"
-            onclick="rejouer()">
+    id="boutonRejouer"
+    onclick="rejouer()">
 
-            🔄 Rejouer
+    🔄 Rejouer
 
-        </button>
-
+</button>
     </div>
 
 
@@ -552,7 +531,7 @@
         </p>
 
         <p>
-            📱 Téléphone : maintiens les flèches pour bouger
+            📱 Téléphone : maintiens les flèches
         </p>
 
         <p>
@@ -562,45 +541,35 @@
     </div>
 
 
+    <!-- =========================
+         CONTROLES MOBILE
+    ========================== -->
+
     <div class="controles-mobile">
 
-        <button
-            id="gauche"
-            aria-label="Gauche">
-
+        <button id="gauche">
             ⬅️
-
         </button>
 
-
-        <button
-            id="tirer"
-            aria-label="Tirer">
-
+        <button id="tirer">
             🔥
-
         </button>
 
-
-        <button
-            id="droite"
-            aria-label="Droite">
-
+        <button id="droite">
             ➡️
-
         </button>
 
     </div>
 
 
     <!-- =========================
-         TOP 10 MONDIAL
-    ========================= -->
+         TOP 10
+    ========================== -->
 
-    <section id="classement">
+    <section class="classement">
 
         <h2>
-            🌍 🏆 Top 10 mondial
+            🌍 🏆 TOP 10 MONDIAL
         </h2>
 
         <table id="tableauScores">
@@ -639,10 +608,13 @@
 
         </table>
 
-        <p
-            id="messageClassement"
-            class="message-classement">
-        </p>
+        <div
+            class="statut"
+            id="statutClassement">
+
+            🌍 Chargement du classement...
+
+        </div>
 
     </section>
 
@@ -652,7 +624,6 @@
 
 <script>
 
-
 /* =====================================================
    SUPABASE
 ===================================================== */
@@ -660,188 +631,275 @@
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
 
-const SUPABASE_API_KEY =
+const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
 /* =====================================================
-   PSEUDO
+   ELEMENTS HTML
 ===================================================== */
 
-let pseudoJoueur =
+const zoneCreation =
+    document.getElementById("zoneCreation");
+
+const zoneCompte =
+    document.getElementById("zoneCompte");
+
+const pseudoInput =
+    document.getElementById("pseudoInput");
+
+const pseudoAffiche =
+    document.getElementById("pseudoAffiche");
+
+const erreurPseudo =
+    document.getElementById("erreurPseudo");
+
+const boutonCreerCompte =
+    document.getElementById("boutonCreerCompte");
+
+const listeScores =
+    document.getElementById("listeScores");
+
+const statutClassement =
+    document.getElementById("statutClassement");
+
+
+/* =====================================================
+   COMPTE
+===================================================== */
+
+let pseudo =
     localStorage.getItem(
-        "pseudoGameZone"
+        "gamezonePseudo"
     );
 
+
+function afficherCompte() {
+
+    if (!pseudo) {
+
+        zoneCreation.style.display =
+            "block";
+
+        zoneCompte.style.display =
+            "none";
+
+        return;
+
+    }
+
+    zoneCreation.style.display =
+        "none";
+
+    zoneCompte.style.display =
+        "block";
+
+    pseudoAffiche.textContent =
+        pseudo;
+
+}
+
+
+/* =====================================================
+   CREATION DU COMPTE
+===================================================== */
+
+boutonCreerCompte.addEventListener(
+    "click",
+    async function() {
+
+        let nouveauPseudo =
+            pseudoInput.value.trim();
+
+
+        erreurPseudo.textContent =
+            "";
+
+
+        if (
+            nouveauPseudo.length < 2
+        ) {
+
+            erreurPseudo.textContent =
+                "❌ Le pseudo doit avoir au moins 2 caractères.";
+
+            return;
+
+        }
+
+
+        if (
+            nouveauPseudo.length > 20
+        ) {
+
+            erreurPseudo.textContent =
+                "❌ Le pseudo est trop long.";
+
+            return;
+
+        }
+
+
+        /*
+           On interdit les caractères
+           dangereux.
+        */
+
+        if (
+            !/^[a-zA-Z0-9À-ÿ _-]+$/.test(
+                nouveauPseudo
+            )
+        ) {
+
+            erreurPseudo.textContent =
+                "❌ Caractères non autorisés dans le pseudo.";
+
+            return;
+
+        }
+
+
+        boutonCreerCompte.disabled =
+            true;
+
+        boutonCreerCompte.textContent =
+            "⏳ Vérification...";
+
+
+        try {
+
+            /*
+               Vérifie si le pseudo existe
+               déjà dans Supabase.
+            */
+
+            const resultat =
+                await fetch(
+
+                    SUPABASE_URL +
+                    "/rest/v1/scores" +
+                    "?pseudo=eq." +
+                    encodeURIComponent(
+                        nouveauPseudo
+                    ) +
+                    "&select=pseudo" +
+                    "&limit=1",
+
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY
+
+                        }
+
+                    }
+
+                );
+
+
+            if (
+                !resultat.ok
+            ) {
+
+                throw new Error(
+                    "Erreur Supabase"
+                );
+
+            }
+
+
+            const donnees =
+                await resultat.json();
+
+
+            if (
+                donnees.length > 0
+            ) {
+
+                erreurPseudo.textContent =
+                    "❌ Ce pseudo existe déjà. Choisis-en un autre.";
+
+                boutonCreerCompte.disabled =
+                    false;
+
+                boutonCreerCompte.textContent =
+                    "✅ Créer mon compte";
+
+                return;
+
+            }
+
+
+            /*
+               Le pseudo est libre.
+               On le mémorise.
+            */
+
+            pseudo =
+                nouveauPseudo;
+
+
+            localStorage.setItem(
+                "gamezonePseudo",
+                pseudo
+            );
+
+
+            afficherCompte();
+
+
+            statutClassement.textContent =
+                "✅ Compte créé !";
+
+
+            chargerClassement();
+
+        }
+
+        catch (erreur) {
+
+            console.error(erreur);
+
+            erreurPseudo.textContent =
+                "❌ Impossible de contacter le classement.";
+
+        }
+
+
+        boutonCreerCompte.disabled =
+            false;
+
+        boutonCreerCompte.textContent =
+            "✅ Créer mon compte";
+
+    }
+);
+
+
+/* =====================================================
+   MEILLEUR SCORE LOCAL
+===================================================== */
 
 let meilleurScore =
     Number(
         localStorage.getItem(
-            "meilleurScoreSpaceInvaders_" +
-            (pseudoJoueur || "")
+            "meilleurScoreSpaceInvaders"
         )
     ) || 0;
 
 
-/* =====================================================
-   AFFICHER LE PSEUDO
-===================================================== */
-
-function chargerPseudo() {
-
-    if (
-        pseudoJoueur
-    ) {
-
-        document.getElementById(
-            "zonePseudo"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "pseudoConnecte"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "nomJoueur"
-        ).textContent =
-            pseudoJoueur;
-
-
-        document.getElementById(
-            "meilleurScore"
-        ).textContent =
-            meilleurScore;
-
-    }
-
-}
-
-
-function creerPseudo() {
-
-    const input =
-        document.getElementById(
-            "pseudo"
-        );
-
-
-    const pseudo =
-        input.value.trim();
-
-
-    if (
-        pseudo === ""
-    ) {
-
-        alert(
-            "Entre un pseudo."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        pseudo.length < 2
-    ) {
-
-        alert(
-            "Ton pseudo doit contenir au moins 2 caractères."
-        );
-
-        return;
-
-    }
-
-
-    /*
-       Si un pseudo existe déjà,
-       on empêche toute nouvelle
-       création.
-    */
-
-    if (
-        localStorage.getItem(
-            "pseudoGameZone"
-        )
-    ) {
-
-        alert(
-            "Un pseudo existe déjà sur cet appareil."
-        );
-
-        return;
-
-    }
-
-
-    pseudoJoueur =
-        pseudo;
-
-
-    localStorage.setItem(
-        "pseudoGameZone",
-        pseudoJoueur
-    );
-
-
-    localStorage.setItem(
-        "meilleurScoreSpaceInvaders_" +
-        pseudoJoueur,
-        "0"
-    );
-
-
-    meilleurScore = 0;
-
-
-    /*
-       DISPARITION DE LA SAISIE
-    */
-
-    document.getElementById(
-        "zonePseudo"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "pseudoConnecte"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "nomJoueur"
-    ).textContent =
-        pseudoJoueur;
-
-
-    document.getElementById(
-        "meilleurScore"
-    ).textContent =
-        "0";
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "🚀 Bienvenue " +
-        pseudoJoueur +
-        " !";
-
-
-    chargerClassement();
-
-}
-
-
-chargerPseudo();
+document.getElementById(
+    "meilleurScore"
+).textContent =
+    meilleurScore;
 
 
 /* =====================================================
@@ -854,9 +912,7 @@ const canvas =
     );
 
 const contexte =
-    canvas.getContext(
-        "2d"
-    );
+    canvas.getContext("2d");
 
 
 /* =====================================================
@@ -871,20 +927,17 @@ let joueur = {
     y:
         canvas.height - 65,
 
-    largeur:
-        70,
+    largeur: 70,
 
-    hauteur:
-        30,
+    hauteur: 30,
 
-    vitesse:
-        7
+    vitesse: 7
 
 };
 
 
 /* =====================================================
-   VARIABLES
+   VARIABLES DU JEU
 ===================================================== */
 
 let balles = [];
@@ -899,7 +952,6 @@ let particules = [];
 
 let etoiles = [];
 
-
 let score = 0;
 
 let niveau = 1;
@@ -909,9 +961,6 @@ let vies = 3;
 let jeuEnPause = false;
 
 let jeuTermine = false;
-
-let jeuCommence = true;
-
 
 let directionEnnemis = 1;
 
@@ -996,7 +1045,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   CLIC SOURIS
+   SOURIS
 ===================================================== */
 
 canvas.addEventListener(
@@ -1077,11 +1126,9 @@ function creerEnnemis() {
                     ligne *
                     espaceY,
 
-                largeur:
-                    45,
+                largeur: 45,
 
-                hauteur:
-                    30,
+                hauteur: 30,
 
                 vie:
                     niveau >= 3
@@ -1113,14 +1160,11 @@ function creerBoss() {
         x:
             canvas.width / 2 - 90,
 
-        y:
-            55,
+        y: 55,
 
-        largeur:
-            180,
+        largeur: 180,
 
-        hauteur:
-            65,
+        hauteur: 65,
 
         vie:
             10 +
@@ -1134,8 +1178,7 @@ function creerBoss() {
             2.5 +
             niveau * 0.2,
 
-        direction:
-            1
+        direction: 1
 
     };
 
@@ -1150,8 +1193,7 @@ function tirer() {
 
     if (
         jeuTermine ||
-        jeuEnPause ||
-        !pseudoJoueur
+        jeuEnPause
     ) {
 
         return;
@@ -1169,14 +1211,11 @@ function tirer() {
         y:
             joueur.y - 10,
 
-        largeur:
-            6,
+        largeur: 6,
 
-        hauteur:
-            18,
+        hauteur: 18,
 
-        vitesse:
-            10
+        vitesse: 10
 
     });
 
@@ -1217,11 +1256,9 @@ function tirerEnnemi() {
             ennemi.y +
             ennemi.hauteur,
 
-        largeur:
-            6,
+        largeur: 6,
 
-        hauteur:
-            15,
+        hauteur: 15,
 
         vitesse:
             4 +
@@ -1255,11 +1292,9 @@ function tirerBoss() {
             boss.y +
             boss.hauteur,
 
-        largeur:
-            9,
+        largeur: 9,
 
-        hauteur:
-            22,
+        hauteur: 22,
 
         vitesse:
             5 +
@@ -1509,14 +1544,11 @@ function creerExplosion(
 
     explosions.push({
 
-        x:
-            x,
+        x: x,
 
-        y:
-            y,
+        y: y,
 
-        taille:
-            5,
+        taille: 5,
 
         vie:
             20 * puissance
@@ -1532,11 +1564,9 @@ function creerExplosion(
 
         particules.push({
 
-            x:
-                x,
+            x: x,
 
-            y:
-                y,
+            y: y,
 
             vx:
                 Math.random() *
@@ -1548,12 +1578,10 @@ function creerExplosion(
 
             vie:
                 25 +
-                Math.random() *
-                20,
+                Math.random() * 20,
 
             taille:
-                Math.random() *
-                4 + 2
+                Math.random() * 4 + 2
 
         });
 
@@ -1567,6 +1595,7 @@ function creerExplosion(
 ===================================================== */
 
 function verifierCollisions() {
+
 
     for (
         let i =
@@ -1678,8 +1707,7 @@ function verifierCollisions() {
                 !niveauEnTransition
             ) {
 
-                niveauEnTransition =
-                    true;
+                niveauEnTransition = true;
 
 
                 ajouterScore(
@@ -1690,10 +1718,8 @@ function verifierCollisions() {
                 creerExplosion(
                     boss.x +
                     boss.largeur / 2,
-
                     boss.y +
                     boss.hauteur / 2,
-
                     4
                 );
 
@@ -1805,12 +1831,8 @@ function ajouterScore(points) {
 
 
         localStorage.setItem(
-
-            "meilleurScoreSpaceInvaders_" +
-            pseudoJoueur,
-
+            "meilleurScoreSpaceInvaders",
             meilleurScore
-
         );
 
     }
@@ -1831,450 +1853,6 @@ function ajouterScore(points) {
 
 
 /* =====================================================
-   FIN DE PARTIE
-===================================================== */
-
-async function terminerJeu() {
-
-    if (
-        jeuTermine
-    ) {
-
-        return;
-
-    }
-
-
-    jeuTermine = true;
-
-    jeuCommence = false;
-
-    niveauEnTransition = false;
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "💀 GAME OVER ! Score : " +
-        score;
-
-
-    document.getElementById(
-        "boutonRejouer"
-    ).style.display =
-        "inline-block";
-
-
-    document.getElementById(
-        "boutonPause"
-    ).style.display =
-        "none";
-
-
-    /*
-       ENVOI UNIQUEMENT SI
-       C'EST UN NOUVEAU RECORD
-    */
-
-    if (
-        pseudoJoueur &&
-        score > meilleurScoreAvantPartie
-    ) {
-
-        await envoyerScore(
-            score
-        );
-
-    }
-
-
-    chargerClassement();
-
-}
-
-
-/* =====================================================
-   MEMORISATION DU MEILLEUR SCORE
-===================================================== */
-
-let meilleurScoreAvantPartie =
-    meilleurScore;
-
-
-/* =====================================================
-   ENVOYER SCORE SUPABASE
-===================================================== */
-
-async function envoyerScore(
-    nouveauScore
-) {
-
-    if (
-        !pseudoJoueur
-    ) {
-
-        return;
-
-    }
-
-
-    try {
-
-        /*
-           On vérifie d'abord
-           le meilleur score actuel
-           sur Supabase.
-        */
-
-        const url =
-            SUPABASE_URL +
-            "/rest/v1/scores" +
-            "?select=score" +
-            "&pseudo=eq." +
-            encodeURIComponent(
-                pseudoJoueur
-            ) +
-            "&order=score.desc" +
-            "&limit=1";
-
-
-        const verification =
-            await fetch(
-                url,
-                {
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_API_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_API_KEY
-
-                    }
-                }
-            );
-
-
-        if (
-            !verification.ok
-        ) {
-
-            console.error(
-                "Erreur vérification Supabase"
-            );
-
-            return;
-
-        }
-
-
-        const anciensScores =
-            await verification.json();
-
-
-        /*
-           Si le serveur possède déjà
-           un score supérieur ou égal,
-           on n'envoie rien.
-        */
-
-        if (
-            anciensScores.length > 0 &&
-            Number(
-                anciensScores[0].score
-            ) >= nouveauScore
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-           Nouveau meilleur score :
-           on ajoute le score.
-        */
-
-        const reponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/scores",
-                {
-                    method: "POST",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_API_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_API_KEY,
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Prefer":
-                            "return=minimal"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            pseudo:
-                                pseudoJoueur,
-
-                            score:
-                                nouveauScore
-
-                        })
-
-                }
-            );
-
-
-        if (
-            !reponse.ok
-        ) {
-
-            console.error(
-                "Impossible d'envoyer le score."
-            );
-
-            return;
-
-        }
-
-
-        console.log(
-            "Nouveau record envoyé !"
-        );
-
-
-        chargerClassement();
-
-    }
-
-    catch (
-        erreur
-    ) {
-
-        console.error(
-            "Erreur Supabase :",
-            erreur
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   CLASSEMENT TOP 10
-===================================================== */
-
-async function chargerClassement() {
-
-    const liste =
-        document.getElementById(
-            "listeScores"
-        );
-
-
-    try {
-
-        const reponse =
-            await fetch(
-
-                SUPABASE_URL +
-                "/rest/v1/scores" +
-                "?select=pseudo,score" +
-                "&order=score.desc" +
-                "&limit=10",
-
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_API_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_API_KEY
-
-                    }
-
-                }
-
-            );
-
-
-        if (
-            !reponse.ok
-        ) {
-
-            throw new Error(
-                "Erreur Supabase"
-            );
-
-        }
-
-
-        const scores =
-            await reponse.json();
-
-
-        liste.innerHTML = "";
-
-
-        if (
-            scores.length === 0
-        ) {
-
-            liste.innerHTML = `
-
-                <tr>
-
-                    <td colspan="3">
-                        Aucun score pour le moment.
-                    </td>
-
-                </tr>
-
-            `;
-
-            return;
-
-        }
-
-
-        scores.forEach(
-            function(
-                joueurScore,
-                index
-            ) {
-
-                const ligne =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                let medaille = "";
-
-
-                if (
-                    index === 0
-                ) {
-
-                    medaille = "🥇";
-
-                }
-
-                else if (
-                    index === 1
-                ) {
-
-                    medaille = "🥈";
-
-                }
-
-                else if (
-                    index === 2
-                ) {
-
-                    medaille = "🥉";
-
-                }
-
-
-                ligne.innerHTML = `
-
-                    <td>
-                        ${medaille} ${index + 1}
-                    </td>
-
-                    <td>
-                        ${echapperHTML(
-                            joueurScore.pseudo
-                        )}
-                    </td>
-
-                    <td>
-                        ${Number(
-                            joueurScore.score
-                        )}
-                    </td>
-
-                `;
-
-
-                liste.appendChild(
-                    ligne
-                );
-
-            }
-        );
-
-    }
-
-    catch (
-        erreur
-    ) {
-
-        console.error(
-            erreur
-        );
-
-
-        liste.innerHTML = `
-
-            <tr>
-
-                <td colspan="3">
-                    ❌ Impossible de charger le classement.
-                </td>
-
-            </tr>
-
-        `;
-
-    }
-
-}
-
-
-/* =====================================================
-   SECURITE PSEUDO
-===================================================== */
-
-function echapperHTML(
-    texte
-) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        texte;
-
-
-    return div.innerHTML;
-
-}
-
-
-/* =====================================================
    PERDRE VIE
 ===================================================== */
 
@@ -2290,14 +1868,10 @@ function perdreVie() {
 
 
     creerExplosion(
-
         joueur.x +
         joueur.largeur / 2,
-
         joueur.y,
-
         2
-
     );
 
 
@@ -2323,9 +1897,9 @@ function perdreVie() {
     document.getElementById(
         "message"
     ).textContent =
-        "💥 Attention ! Il te reste " +
-        vies +
-        " vie(s).";
+        "💥 Attention ! Il te reste "
+        + vies
+        + " vie(s).";
 
 }
 
@@ -2346,10 +1920,6 @@ function niveauSuivant() {
 
 
     niveau++;
-
-
-    niveauEnTransition =
-        false;
 
 
     document.getElementById(
@@ -2378,9 +1948,9 @@ function niveauSuivant() {
         document.getElementById(
             "message"
         ).textContent =
-            "👹 BOSS ! Niveau " +
-            niveau +
-            " !";
+            "👹 BOSS ! Niveau "
+            + niveau
+            + " !";
 
     }
 
@@ -2392,11 +1962,59 @@ function niveauSuivant() {
         document.getElementById(
             "message"
         ).textContent =
-            "🚀 Niveau " +
-            niveau +
-            " !";
+            "🚀 Niveau "
+            + niveau
+            + " !";
 
     }
+
+}
+
+
+/* =====================================================
+   FIN DE PARTIE
+===================================================== */
+
+async function terminerJeu() {
+
+    if (
+        jeuTermine
+    ) {
+
+        return;
+
+    }
+
+
+    jeuTermine = true;
+
+    niveauEnTransition = false;
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "💀 GAME OVER ! Score : "
+        + score;
+
+
+    document.getElementById(
+        "boutonRejouer"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).style.display =
+        "none";
+
+
+    /*
+       ENVOI DU SCORE
+    */
+
+    await enregistrerMeilleurScore();
 
 }
 
@@ -2457,106 +2075,73 @@ function pauseJeu() {
 }
 
 
+document.getElementById(
+    "boutonPause"
+).addEventListener(
+    "click",
+    pauseJeu
+);
+
+
 /* =====================================================
    REJOUER
 ===================================================== */
 
 function rejouer() {
 
+    // Réinitialiser la partie
     score = 0;
-
     niveau = 1;
-
     vies = 3;
 
-
-    meilleurScoreAvantPartie =
-        meilleurScore;
-
-
     jeuTermine = false;
-
     jeuEnPause = false;
-
-    jeuCommence = true;
-
     niveauEnTransition = false;
 
-
     balles = [];
-
     ballesEnnemies = [];
-
     explosions = [];
-
     particules = [];
 
-
     boss = null;
-
 
     joueur.x =
         canvas.width / 2 -
         joueur.largeur / 2;
 
+    vitesseEnnemis = 0.5;
+    directionEnnemis = 1;
+    tempsTirEnnemi = 0;
 
-    vitesseEnnemis =
-        0.5;
+    // Remettre l'affichage à zéro
+    document.getElementById("score").textContent = "0";
 
+    document.getElementById("niveau").textContent = "1";
 
-    tempsTirEnnemi =
-        0;
+    document.getElementById("vies").textContent = "3";
 
-
-    document.getElementById(
-        "score"
-    ).textContent =
-        "0";
-
-
-    document.getElementById(
-        "niveau"
-    ).textContent =
-        "1";
-
-
-    document.getElementById(
-        "vies"
-    ).textContent =
-        "3";
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
+    document.getElementById("message").textContent =
         "🚀 Nouvelle partie !";
 
+    // Cacher le bouton Rejouer
+    document.getElementById("boutonRejouer").style.display = "none";
 
-    document.getElementById(
-        "boutonRejouer"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "boutonPause"
-    ).style.display =
+    // Afficher le bouton Pause
+    document.getElementById("boutonPause").style.display =
         "inline-block";
 
-
-    document.getElementById(
-        "boutonPause"
-    ).textContent =
+    document.getElementById("boutonPause").textContent =
         "⏸️ Pause";
 
-
+    // Recréer les ennemis
     creerEnnemis();
 
+    // Redessiner immédiatement
+    dessiner();
 }
 
-
 /* =====================================================
-   PARTICULES
+   ANIMATION
 ===================================================== */
 
 function bougerParticules() {
@@ -2597,10 +2182,6 @@ function bougerParticules() {
 }
 
 
-/* =====================================================
-   EXPLOSIONS
-===================================================== */
-
 function bougerExplosions() {
 
     for (
@@ -2631,10 +2212,6 @@ function bougerExplosions() {
 }
 
 
-/* =====================================================
-   ETOILES
-===================================================== */
-
 function bougerEtoiles() {
 
     for (
@@ -2664,7 +2241,7 @@ function bougerEtoiles() {
 
 
 /* =====================================================
-   FOND
+   DESSIN FOND
 ===================================================== */
 
 function dessinerFond() {
@@ -2672,35 +2249,22 @@ function dessinerFond() {
     contexte.fillStyle =
         "#02020a";
 
-
     contexte.fillRect(
-
         0,
-
         0,
-
         canvas.width,
-
         canvas.height
-
     );
 
 
     let gradient =
         contexte.createRadialGradient(
-
             canvas.width / 2,
-
             canvas.height / 2,
-
             30,
-
             canvas.width / 2,
-
             canvas.height / 2,
-
             500
-
         );
 
 
@@ -2721,15 +2285,10 @@ function dessinerFond() {
 
 
     contexte.fillRect(
-
         0,
-
         0,
-
         canvas.width,
-
         canvas.height
-
     );
 
 
@@ -2748,22 +2307,16 @@ function dessinerFond() {
 
 
         contexte.fillRect(
-
             etoile.x,
-
             etoile.y,
-
             etoile.taille,
-
             etoile.taille
-
         );
 
     }
 
 
-    contexte.globalAlpha =
-        1;
+    contexte.globalAlpha = 1;
 
 }
 
@@ -2774,20 +2327,15 @@ function dessinerFond() {
 
 function dessinerJoueur() {
 
-    let x =
-        joueur.x;
+    let x = joueur.x;
 
-    let y =
-        joueur.y;
+    let y = joueur.y;
 
 
-    contexte.shadowBlur =
-        20;
-
+    contexte.shadowBlur = 20;
 
     contexte.shadowColor =
         "#00ccff";
-
 
     contexte.fillStyle =
         "#008cff";
@@ -2795,40 +2343,26 @@ function dessinerJoueur() {
 
     contexte.beginPath();
 
-
     contexte.moveTo(
-
         x +
         joueur.largeur / 2,
-
         y - 18
-
     );
 
-
     contexte.lineTo(
-
         x,
-
         y +
         joueur.hauteur
-
     );
 
-
     contexte.lineTo(
-
         x +
         joueur.largeur,
-
         y +
         joueur.hauteur
-
     );
 
-
     contexte.closePath();
-
 
     contexte.fill();
 
@@ -2839,39 +2373,25 @@ function dessinerJoueur() {
 
     contexte.beginPath();
 
-
     contexte.moveTo(
-
         x +
         joueur.largeur / 2,
-
         y - 8
-
     );
 
-
     contexte.lineTo(
-
         x + 20,
-
         y + 20
-
     );
 
-
     contexte.lineTo(
-
         x +
         joueur.largeur -
         20,
-
         y + 20
-
     );
 
-
     contexte.closePath();
-
 
     contexte.fill();
 
@@ -2881,23 +2401,17 @@ function dessinerJoueur() {
 
 
     contexte.fillRect(
-
         x +
         joueur.largeur / 2 -
         6,
-
         y +
         joueur.hauteur,
-
         12,
-
         10
-
     );
 
 
-    contexte.shadowBlur =
-        0;
+    contexte.shadowBlur = 0;
 
 }
 
@@ -2910,27 +2424,16 @@ function dessinerEnnemi(
     ennemi
 ) {
 
-    let x =
-        ennemi.x;
-
-    let y =
-        ennemi.y;
-
-
     let couleur =
-        ennemi.type ===
-        "fort"
+        ennemi.type === "fort"
             ? "#ff1744"
             : "#a020f0";
 
 
-    contexte.shadowBlur =
-        15;
-
+    contexte.shadowBlur = 15;
 
     contexte.shadowColor =
         couleur;
-
 
     contexte.fillStyle =
         couleur;
@@ -2938,67 +2441,15 @@ function dessinerEnnemi(
 
     contexte.beginPath();
 
-
     contexte.roundRect(
-
-        x,
-
-        y,
-
+        ennemi.x,
+        ennemi.y,
         ennemi.largeur,
-
         ennemi.hauteur,
-
         8
-
     );
-
 
     contexte.fill();
-
-
-    contexte.strokeStyle =
-        couleur;
-
-
-    contexte.lineWidth =
-        3;
-
-
-    contexte.beginPath();
-
-
-    contexte.moveTo(
-        x + 10,
-        y
-    );
-
-
-    contexte.lineTo(
-        x + 4,
-        y - 10
-    );
-
-
-    contexte.moveTo(
-        x +
-        ennemi.largeur -
-        10,
-
-        y
-    );
-
-
-    contexte.lineTo(
-        x +
-        ennemi.largeur -
-        4,
-
-        y - 10
-    );
-
-
-    contexte.stroke();
 
 
     contexte.fillStyle =
@@ -3006,30 +2457,20 @@ function dessinerEnnemi(
 
 
     contexte.fillRect(
-
-        x + 9,
-
-        y + 9,
-
+        ennemi.x + 9,
+        ennemi.y + 9,
         9,
-
         9
-
     );
 
 
     contexte.fillRect(
-
-        x +
+        ennemi.x +
         ennemi.largeur -
         18,
-
-        y + 9,
-
+        ennemi.y + 9,
         9,
-
         9
-
     );
 
 
@@ -3038,35 +2479,24 @@ function dessinerEnnemi(
 
 
     contexte.fillRect(
-
-        x + 12,
-
-        y + 12,
-
+        ennemi.x + 12,
+        ennemi.y + 12,
         4,
-
         4
-
     );
 
 
     contexte.fillRect(
-
-        x +
+        ennemi.x +
         ennemi.largeur -
         15,
-
-        y + 12,
-
+        ennemi.y + 12,
         4,
-
         4
-
     );
 
 
-    contexte.shadowBlur =
-        0;
+    contexte.shadowBlur = 0;
 
 }
 
@@ -3084,20 +2514,10 @@ function dessinerBoss() {
     }
 
 
-    let x =
-        boss.x;
-
-    let y =
-        boss.y;
-
-
-    contexte.shadowBlur =
-        30;
-
+    contexte.shadowBlur = 30;
 
     contexte.shadowColor =
         "#ff0044";
-
 
     contexte.fillStyle =
         "#8b0038";
@@ -3105,21 +2525,13 @@ function dessinerBoss() {
 
     contexte.beginPath();
 
-
     contexte.roundRect(
-
-        x,
-
-        y,
-
+        boss.x,
+        boss.y,
         boss.largeur,
-
         boss.hauteur,
-
         18
-
     );
-
 
     contexte.fill();
 
@@ -3127,10 +2539,7 @@ function dessinerBoss() {
     contexte.strokeStyle =
         "#ff1744";
 
-
-    contexte.lineWidth =
-        4;
-
+    contexte.lineWidth = 4;
 
     contexte.stroke();
 
@@ -3140,30 +2549,20 @@ function dessinerBoss() {
 
 
     contexte.fillRect(
-
-        x + 35,
-
-        y + 20,
-
+        boss.x + 35,
+        boss.y + 20,
         35,
-
         15
-
     );
 
 
     contexte.fillRect(
-
-        x +
+        boss.x +
         boss.largeur -
         70,
-
-        y + 20,
-
+        boss.y + 20,
         35,
-
         15
-
     );
 
 
@@ -3173,28 +2572,19 @@ function dessinerBoss() {
 
     contexte.beginPath();
 
-
     contexte.arc(
-
-        x +
+        boss.x +
         boss.largeur / 2,
-
-        y + 32,
-
+        boss.y + 32,
         15,
-
         0,
-
         Math.PI * 2
-
     );
-
 
     contexte.fill();
 
 
-    contexte.shadowBlur =
-        0;
+    contexte.shadowBlur = 0;
 
 
     contexte.fillStyle =
@@ -3202,15 +2592,10 @@ function dessinerBoss() {
 
 
     contexte.fillRect(
-
-        x,
-
-        y - 15,
-
+        boss.x,
+        boss.y - 15,
         boss.largeur,
-
         8
-
     );
 
 
@@ -3219,19 +2604,14 @@ function dessinerBoss() {
 
 
     contexte.fillRect(
-
-        x,
-
-        y - 15,
-
+        boss.x,
+        boss.y - 15,
         boss.largeur *
         (
             boss.vie /
             boss.vieMax
         ),
-
         8
-
     );
 
 }
@@ -3245,7 +2625,6 @@ function dessiner() {
 
     dessinerFond();
 
-
     dessinerJoueur();
 
 
@@ -3253,28 +2632,20 @@ function dessiner() {
         let balle of balles
     ) {
 
-        contexte.shadowBlur =
-            15;
-
+        contexte.shadowBlur = 15;
 
         contexte.shadowColor =
             "#00ffcc";
-
 
         contexte.fillStyle =
             "#00ffcc";
 
 
         contexte.fillRect(
-
             balle.x,
-
             balle.y,
-
             balle.largeur,
-
             balle.hauteur
-
         );
 
     }
@@ -3284,28 +2655,20 @@ function dessiner() {
         let balle of ballesEnnemies
     ) {
 
-        contexte.shadowBlur =
-            15;
-
+        contexte.shadowBlur = 15;
 
         contexte.shadowColor =
             "#ff0033";
-
 
         contexte.fillStyle =
             "#ff3355";
 
 
         contexte.fillRect(
-
             balle.x,
-
             balle.y,
-
             balle.largeur,
-
             balle.hauteur
-
         );
 
     }
@@ -3329,9 +2692,7 @@ function dessiner() {
         let explosion of explosions
     ) {
 
-        contexte.shadowBlur =
-            25;
-
+        contexte.shadowBlur = 25;
 
         contexte.shadowColor =
             "#ff6600";
@@ -3339,19 +2700,12 @@ function dessiner() {
 
         let gradient =
             contexte.createRadialGradient(
-
                 explosion.x,
-
                 explosion.y,
-
                 0,
-
                 explosion.x,
-
                 explosion.y,
-
                 explosion.taille
-
             );
 
 
@@ -3360,18 +2714,15 @@ function dessiner() {
             "#ffffff"
         );
 
-
         gradient.addColorStop(
             0.3,
             "#ffff00"
         );
 
-
         gradient.addColorStop(
             0.7,
             "#ff6600"
         );
-
 
         gradient.addColorStop(
             1,
@@ -3385,29 +2736,20 @@ function dessiner() {
 
         contexte.beginPath();
 
-
         contexte.arc(
-
             explosion.x,
-
             explosion.y,
-
             explosion.taille,
-
             0,
-
             Math.PI * 2
-
         );
-
 
         contexte.fill();
 
     }
 
 
-    contexte.shadowBlur =
-        0;
+    contexte.shadowBlur = 0;
 
 
     for (
@@ -3426,28 +2768,22 @@ function dessiner() {
 
 
         contexte.fillRect(
-
             p.x,
-
             p.y,
-
             p.taille,
-
             p.taille
-
         );
 
     }
 
 
-    contexte.globalAlpha =
-        1;
+    contexte.globalAlpha = 1;
 
 }
 
 
 /* =====================================================
-   BOUCLE
+   BOUCLE DU JEU
 ===================================================== */
 
 function boucle() {
@@ -3479,12 +2815,9 @@ function boucle() {
 
         let intervalle =
             Math.max(
-
                 25,
-
                 100 -
                 niveau * 5
-
             );
 
 
@@ -3495,8 +2828,7 @@ function boucle() {
 
             tirerEnnemi();
 
-            tempsTirEnnemi =
-                0;
+            tempsTirEnnemi = 0;
 
         }
 
@@ -3535,7 +2867,7 @@ function boucle() {
 
 
 /* =====================================================
-   BOUTONS MOBILE
+   CONTROLES MOBILE
 ===================================================== */
 
 function maintenirBouton(
@@ -3543,16 +2875,12 @@ function maintenirBouton(
     action
 ) {
 
-    let intervalle =
-        null;
+    let intervalle = null;
 
 
-    function commencer(
-        event
-    ) {
+    function commencer(event) {
 
         event.preventDefault();
-
 
         action();
 
@@ -3566,9 +2894,7 @@ function maintenirBouton(
     }
 
 
-    function arreter(
-        event
-    ) {
+    function arreter(event) {
 
         event.preventDefault();
 
@@ -3578,8 +2904,7 @@ function maintenirBouton(
         );
 
 
-        intervalle =
-            null;
+        intervalle = null;
 
     }
 
@@ -3587,27 +2912,21 @@ function maintenirBouton(
     bouton.addEventListener(
         "touchstart",
         commencer,
-        {
-            passive: false
-        }
+        { passive: false }
     );
 
 
     bouton.addEventListener(
         "touchend",
         arreter,
-        {
-            passive: false
-        }
+        { passive: false }
     );
 
 
     bouton.addEventListener(
         "touchcancel",
         arreter,
-        {
-            passive: false
-        }
+        { passive: false }
     );
 
 
@@ -3654,8 +2973,7 @@ maintenirBouton(
 
 
         joueur.x -=
-            joueur.vitesse *
-            1.5;
+            joueur.vitesse * 1.5;
 
 
         if (
@@ -3694,8 +3012,7 @@ maintenirBouton(
 
 
         joueur.x +=
-            joueur.vitesse *
-            1.5;
+            joueur.vitesse * 1.5;
 
 
         if (
@@ -3729,9 +3046,7 @@ let tirDejaEffectue =
     false;
 
 
-function appuyerTir(
-    event
-) {
+function appuyerTir(event) {
 
     event.preventDefault();
 
@@ -3747,22 +3062,16 @@ function appuyerTir(
 
     tirer();
 
-
-    tirDejaEffectue =
-        true;
+    tirDejaEffectue = true;
 
 }
 
 
-function relacherTir(
-    event
-) {
+function relacherTir(event) {
 
     event.preventDefault();
 
-
-    tirDejaEffectue =
-        false;
+    tirDejaEffectue = false;
 
 }
 
@@ -3770,27 +3079,21 @@ function relacherTir(
 boutonTirer.addEventListener(
     "touchstart",
     appuyerTir,
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 
 boutonTirer.addEventListener(
     "touchend",
     relacherTir,
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 
 boutonTirer.addEventListener(
     "touchcancel",
     relacherTir,
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 
@@ -3806,33 +3109,483 @@ boutonTirer.addEventListener(
 );
 
 
-boutonTirer.addEventListener(
-    "mouseleave",
-    relacherTir
-);
+/* =====================================================
+   SUPABASE : ENREGISTRER LE MEILLEUR SCORE
+===================================================== */
+
+async function enregistrerMeilleurScore() {
+
+    if (!pseudo) {
+
+        console.log(
+            "Pas de pseudo."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        statutClassement.textContent =
+            "⏳ Enregistrement du score...";
+
+
+        /*
+           1. On cherche le score
+              actuel du pseudo.
+        */
+
+        const recherche =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/scores" +
+                "?pseudo=eq." +
+                encodeURIComponent(
+                    pseudo
+                ) +
+                "&select=id,pseudo,score" +
+                "&limit=1",
+
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
+
+                    }
+
+                }
+
+            );
+
+
+        if (
+            !recherche.ok
+        ) {
+
+            throw new Error(
+                "Impossible de récupérer le score."
+            );
+
+        }
+
+
+        const anciensScores =
+            await recherche.json();
+
+
+        /*
+           CAS 1 :
+           le pseudo n'existe pas.
+        */
+
+        if (
+            anciensScores.length === 0
+        ) {
+
+            const insertion =
+                await fetch(
+
+                    SUPABASE_URL +
+                    "/rest/v1/scores",
+
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY,
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Prefer":
+                                "return=minimal"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                pseudo:
+                                    pseudo,
+
+                                score:
+                                    score
+
+                            })
+
+                    }
+
+                );
+
+
+            if (
+                !insertion.ok
+            ) {
+
+                throw new Error(
+                    "Impossible d'ajouter le score."
+                );
+
+            }
+
+
+            statutClassement.textContent =
+                "🏆 Ton score a été ajouté au classement.";
+
+        }
+
+
+        /*
+           CAS 2 :
+           le pseudo existe.
+        */
+
+        else {
+
+            const ancienScore =
+                Number(
+                    anciensScores[0].score
+                );
+
+
+            /*
+               IMPORTANT :
+               On ne fait UPDATE
+               QUE si le nouveau score
+               est supérieur.
+            */
+
+            if (
+                score > ancienScore
+            ) {
+
+                const id =
+                    anciensScores[0].id;
+
+
+                const miseAJour =
+                    await fetch(
+
+                        SUPABASE_URL +
+                        "/rest/v1/scores" +
+                        "?id=eq." +
+                        encodeURIComponent(
+                            id
+                        ),
+
+                        {
+
+                            method: "PATCH",
+
+                            headers: {
+
+                                "apikey":
+                                    SUPABASE_KEY,
+
+                                "Authorization":
+                                    "Bearer " +
+                                    SUPABASE_KEY,
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Prefer":
+                                    "return=minimal"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    score:
+                                        score
+
+                                })
+
+                        }
+
+                    );
+
+
+                if (
+                    !miseAJour.ok
+                ) {
+
+                    throw new Error(
+                        "Impossible de mettre à jour le score."
+                    );
+
+                }
+
+
+                statutClassement.textContent =
+                    "🔥 Nouveau record ! Score mis à jour.";
+
+            }
+
+            else {
+
+                /*
+                   Le nouveau score est inférieur
+                   ou égal : ON NE TOUCHE PAS
+                   à Supabase.
+                */
+
+                statutClassement.textContent =
+                    "ℹ️ Ton ancien meilleur score reste "
+                    +
+                    ancienScore
+                    +
+                    " points.";
+
+            }
+
+        }
+
+
+        /*
+           Actualise le Top 10.
+        */
+
+        await chargerClassement();
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        statutClassement.textContent =
+            "❌ Erreur lors de l'enregistrement.";
+
+    }
+
+}
+
+
+/* =====================================================
+   SUPABASE : TOP 10
+===================================================== */
+
+async function chargerClassement() {
+
+    try {
+
+        const resultat =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/scores" +
+                "?select=pseudo,score" +
+                "&order=score.desc" +
+                "&limit=10",
+
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
+
+                    }
+
+                }
+
+            );
+
+
+        if (
+            !resultat.ok
+        ) {
+
+            throw new Error(
+                "Erreur classement"
+            );
+
+        }
+
+
+        const scores =
+            await resultat.json();
+
+
+        listeScores.innerHTML =
+            "";
+
+
+        if (
+            scores.length === 0
+        ) {
+
+            listeScores.innerHTML = `
+
+                <tr>
+
+                    <td colspan="3">
+                        Aucun score pour le moment.
+                    </td>
+
+                </tr>
+
+            `;
+
+            statutClassement.textContent =
+                "🌍 Aucun score enregistré.";
+
+            return;
+
+        }
+
+
+        scores.forEach(
+            function(
+                joueurScore,
+                index
+            ) {
+
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                ligne.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${echapperHTML(
+                            joueurScore.pseudo
+                        )}
+                    </td>
+
+                    <td>
+                        ${Number(
+                            joueurScore.score
+                        )}
+                    </td>
+
+                `;
+
+
+                listeScores.appendChild(
+                    ligne
+                );
+
+            }
+        );
+
+
+        statutClassement.textContent =
+            "🌍 Classement mondial actualisé.";
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        listeScores.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+                    ❌ Impossible de charger le classement.
+                </td>
+
+            </tr>
+
+        `;
+
+
+        statutClassement.textContent =
+            "❌ Erreur de connexion à Supabase.";
+
+    }
+
+}
+
+
+/* =====================================================
+   SECURITE AFFICHAGE PSEUDO
+===================================================== */
+
+function echapperHTML(
+    texte
+) {
+
+    return String(
+        texte
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
 
 
 /* =====================================================
    DEMARRAGE
 ===================================================== */
 
-meilleurScoreAvantPartie =
-    meilleurScore;
+afficherCompte();
 
-
-document.getElementById(
-    "meilleurScore"
-).textContent =
-    meilleurScore;
-
+chargerClassement();
 
 creerEnnemis();
 
 dessiner();
 
 boucle();
-
-chargerClassement();
 
 </script>
 
