@@ -417,10 +417,7 @@ async function() {
 
         pseudo = nouveauPseudo;
 
-        localStorage.setItem(
-            "gamezonePseudo",
-            pseudo
-        );
+        let pseudo = localStorage.getItem("pseudoGameZone");
 
         afficherCompte();
 
