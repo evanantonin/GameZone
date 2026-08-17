@@ -1688,3 +1688,25 @@ body.page-space {
         font-size: 24px;
     }
 }
+@media (max-width: 768px) {
+
+    .controles-mobile {
+        position: fixed;
+        bottom: 15px;
+        left: 0;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+
+        z-index: 1000;
+    }
+
+    .controles-mobile button {
+        width: 75px;
+        height: 60px;
+        font-size: 28px;
+    }
+
+}
