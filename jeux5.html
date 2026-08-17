@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -11,6 +12,9 @@
     <title>GameZone - Pong</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
 
@@ -96,6 +100,21 @@
 
 
         /* =========================
+           PSEUDO
+        ========================= */
+
+        .pseudo-joueur {
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        #pseudoJoueur {
+            color: #00aaff;
+            font-weight: bold;
+        }
+
+
+        /* =========================
            CHOIX DU MODE
         ========================= */
 
@@ -150,7 +169,7 @@
 
 
         /* =========================
-           TERRAIN PONG
+           TERRAIN
         ========================= */
 
         #pong {
@@ -223,7 +242,6 @@
         ========================= */
 
         .controles-mobile {
-
             display: none;
 
             width: 100%;
@@ -233,17 +251,11 @@
             margin-top: 20px;
 
             user-select: none;
-
             -webkit-user-select: none;
         }
 
 
-        /* =========================
-           JOUEUR 1
-        ========================= */
-
         .controle-joueur1 {
-
             display: flex;
 
             flex-direction: column;
@@ -258,12 +270,7 @@
         }
 
 
-        /* =========================
-           JOUEUR 2
-        ========================= */
-
         .controle-joueur2 {
-
             display: none;
 
             flex-direction: column;
@@ -278,12 +285,7 @@
         }
 
 
-        /* =========================
-           BOUTONS MOBILE
-        ========================= */
-
         .controles-mobile button {
-
             width: 70px;
 
             height: 60px;
@@ -305,19 +307,35 @@
             touch-action: none;
 
             user-select: none;
-
             -webkit-user-select: none;
 
             -webkit-touch-callout: none;
-
             -webkit-tap-highlight-color: transparent;
         }
 
         .controles-mobile button:active {
-
             transform: scale(0.90);
 
             background-color: #555;
+        }
+
+
+        /* =========================
+           MODE 2 JOUEURS
+        ========================= */
+
+        .mode-2-joueurs {
+            justify-content: space-between;
+        }
+
+        .mode-2-joueurs .controle-joueur1 {
+            display: flex;
+            width: 45%;
+        }
+
+        .mode-2-joueurs .controle-joueur2 {
+            display: flex;
+            width: 45%;
         }
 
 
@@ -326,7 +344,6 @@
         ========================= */
 
         .instructions {
-
             margin-top: 20px;
 
             color: #ccc;
@@ -336,27 +353,78 @@
 
 
         /* =========================
-           MODE 2 JOUEURS
+           CLASSEMENT
         ========================= */
 
-        .mode-2-joueurs {
+        .classement {
+            max-width: 700px;
 
-            justify-content: space-between;
+            margin: 45px auto;
 
+            padding: 25px;
+
+            background-color: #111;
+
+            border: 2px solid #00aaff;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 0 20px rgba(0, 170, 255, 0.25);
+
+            box-sizing: border-box;
         }
 
-        .mode-2-joueurs .controle-joueur1 {
+        .classement h2 {
+            color: #00aaff;
 
-            display: flex;
+            margin-top: 0;
 
-            width: 45%;
+            font-size: 28px;
         }
 
-        .mode-2-joueurs .controle-joueur2 {
+        .classement-info {
+            color: #ccc;
 
-            display: flex;
+            font-size: 15px;
+        }
 
-            width: 45%;
+        #tableauClassement {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 20px;
+        }
+
+        #tableauClassement th {
+            background-color: #007bff;
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: center;
+        }
+
+        #tableauClassement td {
+            padding: 12px;
+
+            border-bottom: 1px solid #444;
+
+            text-align: center;
+        }
+
+        #tableauClassement tr:hover {
+            background-color: #222;
+        }
+
+        #messageClassement {
+            margin-top: 15px;
+
+            font-size: 16px;
+
+            font-weight: bold;
         }
 
 
@@ -372,107 +440,78 @@
 
             nav a {
                 font-size: 17px;
-
                 margin: 0 8px;
             }
-
 
             h1 {
                 font-size: 34px;
             }
 
-
             .score-pong {
-
                 gap: 35px;
 
                 font-size: 21px;
             }
 
-
             #pong {
-
                 width: 94vw;
 
                 border-width: 3px;
             }
 
-
             .controles-mobile {
-
                 display: flex;
-
             }
 
-
-            .controle-joueur2 {
-
-                display: none;
-
-            }
-
-
-            /* =====================
-               MODE 1 JOUEUR
-            ===================== */
-
-            .controles-mobile:not(
-                .mode-2-joueurs
-            ) {
-
+            .controles-mobile:not(.mode-2-joueurs) {
                 justify-content: center;
-
             }
 
-
-            .controles-mobile:not(
-                .mode-2-joueurs
-            )
+            .controles-mobile:not(.mode-2-joueurs)
             .controle-joueur1 {
-
                 width: 100%;
-
             }
-
-
-            /* =====================
-               MODE 2 JOUEURS
-            ===================== */
 
             .mode-2-joueurs {
-
                 display: flex;
 
                 justify-content:
                     space-between;
-
             }
-
 
             .mode-2-joueurs
             .controle-joueur1 {
-
                 display: flex;
 
                 width: 45%;
-
             }
-
 
             .mode-2-joueurs
             .controle-joueur2 {
-
                 display: flex;
 
                 width: 45%;
-
             }
 
-
             .instructions {
+                font-size: 14px;
+            }
+
+            .classement {
+                margin: 35px 5px;
+
+                padding: 15px;
+            }
+
+            .classement h2 {
+                font-size: 22px;
+            }
+
+            #tableauClassement th,
+            #tableauClassement td {
+                padding: 8px;
 
                 font-size: 14px;
-
             }
 
         }
@@ -485,29 +524,21 @@
         @media (max-width: 380px) {
 
             h1 {
-
                 font-size: 29px;
-
             }
 
-
             .score-pong {
-
                 gap: 20px;
 
                 font-size: 18px;
-
             }
 
-
             .controles-mobile button {
-
                 width: 60px;
 
                 height: 55px;
 
                 font-size: 24px;
-
             }
 
         }
@@ -543,7 +574,6 @@
 
     <main class="pong-container">
 
-
         <h1>
             🏓 Pong
         </h1>
@@ -564,6 +594,21 @@
             </a>
 
         </div>
+
+
+        <!-- =========================
+             PSEUDO
+        ========================= -->
+
+        <p class="pseudo-joueur">
+
+            👤 Joueur :
+
+            <strong id="pseudoJoueur">
+                Chargement...
+            </strong>
+
+        </p>
 
 
         <!-- =========================
@@ -658,7 +703,7 @@
 
 
         <!-- =========================
-             CONTROLES TELEPHONE
+             CONTROLES MOBILE
         ========================= -->
 
         <div
@@ -666,9 +711,7 @@
             id="controlesMobile">
 
 
-            <!-- =====================
-                 JOUEUR 1
-            ====================== -->
+            <!-- JOUEUR 1 -->
 
             <div class="controle-joueur1">
 
@@ -699,9 +742,7 @@
             </div>
 
 
-            <!-- =====================
-                 JOUEUR 2
-            ====================== -->
+            <!-- JOUEUR 2 -->
 
             <div
                 class="controle-joueur2"
@@ -733,7 +774,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -752,15 +792,120 @@
         </div>
 
 
+        <!-- =========================
+             CLASSEMENT
+        ========================= -->
+
+        <section class="classement">
+
+            <h2>
+                🌍 🏆 TOP 10 - VICTOIRES CONTRE L'ORDINATEUR
+            </h2>
+
+            <p class="classement-info">
+                Seules les victoires en mode 🤖 1 Joueur
+                sont comptabilisées.
+            </p>
+
+
+            <table id="tableauClassement">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>👤 Pseudo</th>
+
+                        <th>🏆 Victoires</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="classementBody">
+
+                    <tr>
+
+                        <td colspan="3">
+                            ⏳ Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <p id="messageClassement"></p>
+
+        </section>
+
+
     </main>
 
 
     <script>
 
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
 
-        // =========================
-        // CANVAS
-        // =========================
+        const SUPABASE_URL =
+            "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+        const SUPABASE_ANON_KEY =
+            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        /* =====================================================
+           IDENTIFICATION DU JEU
+        ===================================================== */
+
+        const JEU = "pong";
+
+
+        /* =====================================================
+           PSEUDO
+        ===================================================== */
+
+        const pseudo =
+            localStorage.getItem(
+                "pseudoGameZone"
+            );
+
+
+        if (pseudo) {
+
+            document.getElementById(
+                "pseudoJoueur"
+            ).textContent = pseudo;
+
+        }
+
+        else {
+
+            document.getElementById(
+                "pseudoJoueur"
+            ).textContent =
+                "Aucun pseudo";
+
+        }
+
+
+        /* =====================================================
+           CANVAS
+        ===================================================== */
 
         const canvas =
             document.getElementById("pong");
@@ -769,9 +914,9 @@
             canvas.getContext("2d");
 
 
-        // =========================
-        // RAQUETTES
-        // =========================
+        /* =====================================================
+           RAQUETTES
+        ===================================================== */
 
         const largeurRaquette = 12;
 
@@ -818,9 +963,9 @@
         };
 
 
-        // =========================
-        // BALLE
-        // =========================
+        /* =====================================================
+           BALLE
+        ===================================================== */
 
         let balle = {
 
@@ -839,27 +984,27 @@
         };
 
 
-        // =========================
-        // ACCELERATION
-        // =========================
+        /* =====================================================
+           ACCELERATION
+        ===================================================== */
 
         const acceleration = 0.5;
 
         const vitesseMax = 12;
 
 
-        // =========================
-        // SCORES
-        // =========================
+        /* =====================================================
+           SCORES
+        ===================================================== */
 
         let score1 = 0;
 
         let score2 = 0;
 
 
-        // =========================
-        // MODE
-        // =========================
+        /* =====================================================
+           MODE
+        ===================================================== */
 
         let mode = null;
 
@@ -867,10 +1012,12 @@
 
         let jeuTermine = false;
 
+        let victoireEnregistree = false;
 
-        // =========================
-        // TOUCHES CLAVIER
-        // =========================
+
+        /* =====================================================
+           TOUCHES
+        ===================================================== */
 
         let touches = {};
 
@@ -909,18 +1056,14 @@
         );
 
 
-        // =========================
-        // CONTROLES TACTILES
-        // =========================
+        /* =====================================================
+           CONTROLES TACTILES
+        ===================================================== */
 
         let mouvementJoueur1 = null;
 
         let mouvementJoueur2 = null;
 
-
-        // =========================
-        // JOUEUR 1 - MONTER
-        // =========================
 
         function demarrerMonterJoueur1(event) {
 
@@ -942,10 +1085,6 @@
         }
 
 
-        // =========================
-        // JOUEUR 1 - DESCENDRE
-        // =========================
-
         function demarrerDescendreJoueur1(event) {
 
             event.preventDefault();
@@ -966,32 +1105,20 @@
         }
 
 
-        // =========================
-        // ARRETER JOUEUR 1
-        // =========================
-
         function arreterJoueur1(event) {
 
             if (event) {
-
                 event.preventDefault();
-
             }
-
 
             clearInterval(
                 mouvementJoueur1
             );
 
-
             mouvementJoueur1 = null;
 
         }
 
-
-        // =========================
-        // JOUEUR 2 - MONTER
-        // =========================
 
         function demarrerMonterJoueur2(event) {
 
@@ -1013,10 +1140,6 @@
         }
 
 
-        // =========================
-        // JOUEUR 2 - DESCENDRE
-        // =========================
-
         function demarrerDescendreJoueur2(event) {
 
             event.preventDefault();
@@ -1037,32 +1160,24 @@
         }
 
 
-        // =========================
-        // ARRETER JOUEUR 2
-        // =========================
-
         function arreterJoueur2(event) {
 
             if (event) {
-
                 event.preventDefault();
-
             }
-
 
             clearInterval(
                 mouvementJoueur2
             );
-
 
             mouvementJoueur2 = null;
 
         }
 
 
-        // =========================
-        // MODE 1 JOUEUR
-        // =========================
+        /* =====================================================
+           MODE 1 JOUEUR
+        ===================================================== */
 
         function modeUnJoueur() {
 
@@ -1071,6 +1186,8 @@
             jeuCommence = true;
 
             jeuTermine = false;
+
+            victoireEnregistree = false;
 
 
             score1 = 0;
@@ -1081,6 +1198,16 @@
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            joueur1.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
+
+
+            joueur2.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
 
 
             arreterJoueur1();
@@ -1117,9 +1244,9 @@
         }
 
 
-        // =========================
-        // MODE 2 JOUEURS
-        // =========================
+        /* =====================================================
+           MODE 2 JOUEURS
+        ===================================================== */
 
         function modeDeuxJoueurs() {
 
@@ -1128,6 +1255,8 @@
             jeuCommence = true;
 
             jeuTermine = false;
+
+            victoireEnregistree = false;
 
 
             score1 = 0;
@@ -1138,6 +1267,16 @@
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            joueur1.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
+
+
+            joueur2.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
 
 
             arreterJoueur1();
@@ -1174,16 +1313,11 @@
         }
 
 
-        // =========================
-        // CONTROLES CLAVIER
-        // =========================
+        /* =====================================================
+           CONTROLES CLAVIER
+        ===================================================== */
 
         function controles() {
-
-
-            // =====================
-            // JOUEUR 1
-            // =====================
 
             if (touches["z"]) {
 
@@ -1200,10 +1334,6 @@
 
             }
 
-
-            // =====================
-            // JOUEUR 2
-            // =====================
 
             if (mode === 2) {
 
@@ -1232,64 +1362,53 @@
         }
 
 
-        // =========================
-        // ORDINATEUR
-        // =========================
+        /* =====================================================
+           ORDINATEUR
+        ===================================================== */
 
         function ordinateur() {
 
-            if (mode !== 1) {
+    if (mode !== 1) {
+        return;
+    }
 
-                return;
+    let centreRaquette =
+        joueur2.y + joueur2.hauteur / 2;
 
-            }
+    /*
+       L'ordinateur ne suit la balle
+       que lorsqu'elle se rapproche.
+    */
 
+    if (balle.vitesseX > 0) {
 
-            let centreRaquette =
-                joueur2.y +
-                joueur2.hauteur / 2;
+        if (centreRaquette < balle.y - 30) {
 
-
-            if (
-                centreRaquette <
-                balle.y - 10
-            ) {
-
-                joueur2.y +=
-                    joueur2.vitesse *
-                    0.75;
-
-            }
-
-
-            if (
-                centreRaquette >
-                balle.y + 10
-            ) {
-
-                joueur2.y -=
-                    joueur2.vitesse *
-                    0.75;
-
-            }
-
-
-            limiterRaquette(joueur2);
+            joueur2.y += joueur2.vitesse * 0.55;
 
         }
 
+        if (centreRaquette > balle.y + 30) {
 
-        // =========================
-        // LIMITER RAQUETTE
-        // =========================
+            joueur2.y -= joueur2.vitesse * 0.55;
+
+        }
+
+    }
+
+    limiterRaquette(joueur2);
+
+}
+
+        /* =====================================================
+           LIMITER RAQUETTE
+        ===================================================== */
 
         function limiterRaquette(
             raquette
         ) {
 
-            if (
-                raquette.y < 0
-            ) {
+            if (raquette.y < 0) {
 
                 raquette.y = 0;
 
@@ -1311,9 +1430,9 @@
         }
 
 
-        // =========================
-        // REINITIALISER BALLE
-        // =========================
+        /* =====================================================
+           REINITIALISER BALLE
+        ===================================================== */
 
         function reinitialiserBalle() {
 
@@ -1336,17 +1455,13 @@
         }
 
 
-        // =========================
-        // ACCELERER LA BALLE
-        // =========================
+        /* =====================================================
+           ACCELERER BALLE
+        ===================================================== */
 
         function accelererBalle() {
 
-            // Accélération horizontale
-
-            if (
-                balle.vitesseX > 0
-            ) {
+            if (balle.vitesseX > 0) {
 
                 balle.vitesseX =
                     Math.min(
@@ -1369,11 +1484,7 @@
             }
 
 
-            // Accélération verticale
-
-            if (
-                balle.vitesseY > 0
-            ) {
+            if (balle.vitesseY > 0) {
 
                 balle.vitesseY =
                     Math.min(
@@ -1398,9 +1509,9 @@
         }
 
 
-        // =========================
-        // COLLISION RAQUETTE
-        // =========================
+        /* =====================================================
+           COLLISION RAQUETTE
+        ===================================================== */
 
         function collisionRaquette(
             raquette
@@ -1441,9 +1552,9 @@
         }
 
 
-        // =========================
-        // MISE À JOUR DU JEU
-        // =========================
+        /* =====================================================
+           MISE À JOUR
+        ===================================================== */
 
         function mettreAJour() {
 
@@ -1469,9 +1580,9 @@
                 balle.vitesseY;
 
 
-            // =====================
-            // MUR HAUT
-            // =====================
+            /* =========================
+               MUR HAUT
+            ========================= */
 
             if (
                 balle.y -
@@ -1486,9 +1597,9 @@
             }
 
 
-            // =====================
-            // MUR BAS
-            // =====================
+            /* =========================
+               MUR BAS
+            ========================= */
 
             if (
                 balle.y +
@@ -1505,15 +1616,13 @@
             }
 
 
-            // =====================
-            // JOUEUR 1
-            // =====================
+            /* =========================
+               JOUEUR 1
+            ========================= */
 
             if (
                 balle.vitesseX < 0 &&
-                collisionRaquette(
-                    joueur1
-                )
+                collisionRaquette(joueur1)
             ) {
 
                 balle.x =
@@ -1524,23 +1633,18 @@
 
                 balle.vitesseX *= -1;
 
-
-                // ACCELERATION
-
                 accelererBalle();
 
             }
 
 
-            // =====================
-            // JOUEUR 2
-            // =====================
+            /* =========================
+               JOUEUR 2
+            ========================= */
 
             if (
                 balle.vitesseX > 0 &&
-                collisionRaquette(
-                    joueur2
-                )
+                collisionRaquette(joueur2)
             ) {
 
                 balle.x =
@@ -1550,24 +1654,18 @@
 
                 balle.vitesseX *= -1;
 
-
-                // ACCELERATION
-
                 accelererBalle();
 
             }
 
 
-            // =====================
-            // POINT JOUEUR 2
-            // =====================
+            /* =========================
+               POINT JOUEUR 2
+            ========================= */
 
-            if (
-                balle.x < 0
-            ) {
+            if (balle.x < 0) {
 
                 score2++;
-
 
                 mettreAJourScore();
 
@@ -1583,9 +1681,9 @@
             }
 
 
-            // =====================
-            // POINT JOUEUR 1
-            // =====================
+            /* =========================
+               POINT JOUEUR 1
+            ========================= */
 
             if (
                 balle.x >
@@ -1593,7 +1691,6 @@
             ) {
 
                 score1++;
-
 
                 mettreAJourScore();
 
@@ -1611,9 +1708,9 @@
         }
 
 
-        // =========================
-        // SCORE
-        // =========================
+        /* =====================================================
+           SCORE
+        ===================================================== */
 
         function mettreAJourScore() {
 
@@ -1631,15 +1728,17 @@
         }
 
 
-        // =========================
-        // VICTOIRE
-        // =========================
+        /* =====================================================
+           VICTOIRE
+        ===================================================== */
 
         function verifierVictoire() {
 
-            if (
-                score1 >= 5
-            ) {
+            /* =========================
+               JOUEUR 1 GAGNE
+            ========================= */
+
+            if (score1 >= 5) {
 
                 jeuTermine = true;
 
@@ -1647,7 +1746,7 @@
                 document.getElementById(
                     "message"
                 ).textContent =
-                    "🏆 🧑 JOUEUR 1 A GAGNÉ ! 🏆";
+                    "🏆 🧑 TU AS GAGNÉ ! 🏆";
 
 
                 document.getElementById(
@@ -1660,19 +1759,36 @@
 
                 arreterJoueur2();
 
+
+                /* =========================
+                   CLASSEMENT UNIQUEMENT
+                   CONTRE ORDINATEUR
+                ========================= */
+
+                if (
+                    mode === 1 &&
+                    !victoireEnregistree
+                ) {
+
+                    victoireEnregistree = true;
+
+                    enregistrerVictoire();
+
+                }
+
             }
 
 
-            if (
-                score2 >= 5
-            ) {
+            /* =========================
+               JOUEUR 2 / ORDI GAGNE
+            ========================= */
+
+            if (score2 >= 5) {
 
                 jeuTermine = true;
 
 
-                if (
-                    mode === 1
-                ) {
+                if (mode === 1) {
 
                     document.getElementById(
                         "message"
@@ -1706,9 +1822,423 @@
         }
 
 
-        // =========================
-        // REJOUER
-        // =========================
+        /* =====================================================
+           ENREGISTRER UNE VICTOIRE
+        ===================================================== */
+
+        async function enregistrerVictoire() {
+
+            const pseudoActuel =
+                localStorage.getItem(
+                    "pseudoGameZone"
+                );
+
+
+            if (!pseudoActuel) {
+
+                document.getElementById(
+                    "message"
+                ).textContent +=
+                    " ⚠️ Aucun pseudo trouvé.";
+
+                return;
+
+            }
+
+
+            try {
+
+                /* =========================
+                   CHERCHER LE JOUEUR
+                ========================= */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .select(
+                            "pseudo,score,jeu"
+                        )
+
+                        .eq(
+                            "pseudo",
+                            pseudoActuel
+                        )
+
+                        .eq(
+                            "jeu",
+                            JEU
+                        )
+
+                        .limit(1);
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur recherche victoire :",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                /* =========================
+                   EXISTE DEJA
+                ========================= */
+
+                if (
+                    data &&
+                    data.length > 0
+                ) {
+
+                    const victoires =
+                        Number(
+                            data[0].score
+                        ) || 0;
+
+
+                    const {
+                        error:
+                            erreurUpdate
+                    } =
+                        await supabaseClient
+
+                            .from("scores")
+
+                            .update({
+
+                                score:
+                                    victoires + 1,
+
+                                date_creation:
+                                    new Date()
+                                        .toISOString()
+
+                            })
+
+                            .eq(
+                                "pseudo",
+                                pseudoActuel
+                            )
+
+                            .eq(
+                                "jeu",
+                                JEU
+                            );
+
+
+                    if (erreurUpdate) {
+
+                        console.error(
+                            "Erreur ajout victoire :",
+                            erreurUpdate
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+
+                /* =========================
+                   PREMIERE VICTOIRE
+                ========================= */
+
+                else {
+
+                    const {
+                        error:
+                            erreurInsertion
+                    } =
+                        await supabaseClient
+
+                            .from("scores")
+
+                            .insert({
+
+                                pseudo:
+                                    pseudoActuel,
+
+                                score:
+                                    1,
+
+                                jeu:
+                                    JEU,
+
+                                date_creation:
+                                    new Date()
+                                        .toISOString()
+
+                            });
+
+
+                    if (erreurInsertion) {
+
+                        console.error(
+                            "Erreur première victoire :",
+                            erreurInsertion
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+
+                /* =========================
+                   ACTUALISER CLASSEMENT
+                ========================= */
+
+                chargerClassement();
+
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur enregistrement victoire :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CHARGER CLASSEMENT
+        ===================================================== */
+
+        async function chargerClassement() {
+
+            const tbody =
+                document.getElementById(
+                    "classementBody"
+                );
+
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="3">
+                        ⏳ Chargement...
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .select(
+                            "pseudo,score,date_creation"
+                        )
+
+                        .eq(
+                            "jeu",
+                            JEU
+                        )
+
+                        .order(
+                            "score",
+                            {
+                                ascending: false
+                            }
+                        )
+
+                        .limit(10);
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur classement :",
+                        error
+                    );
+
+                    throw new Error(
+                        "Classement impossible."
+                    );
+
+                }
+
+
+                /* =========================
+                   AUCUNE VICTOIRE
+                ========================= */
+
+                if (
+                    !data ||
+                    data.length === 0
+                ) {
+
+                    tbody.innerHTML = `
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                🏆 Aucune victoire
+                                enregistrée pour le moment.
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                /* =========================
+                   AFFICHER
+                ========================= */
+
+                tbody.innerHTML = "";
+
+
+                data.forEach(
+                    function(
+                        joueur,
+                        index
+                    ) {
+
+                        const ligne =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        const position =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        if (index === 0) {
+
+                            position.textContent =
+                                "🥇";
+
+                        }
+
+                        else if (index === 1) {
+
+                            position.textContent =
+                                "🥈";
+
+                        }
+
+                        else if (index === 2) {
+
+                            position.textContent =
+                                "🥉";
+
+                        }
+
+                        else {
+
+                            position.textContent =
+                                index + 1;
+
+                        }
+
+
+                        const pseudoCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        pseudoCell.textContent =
+                            joueur.pseudo;
+
+
+                        const victoireCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        victoireCell.textContent =
+                            joueur.score;
+
+
+                        ligne.appendChild(
+                            position
+                        );
+
+                        ligne.appendChild(
+                            pseudoCell
+                        );
+
+                        ligne.appendChild(
+                            victoireCell
+                        );
+
+
+                        tbody.appendChild(
+                            ligne
+                        );
+
+                    }
+                );
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur classement :",
+                    erreur
+                );
+
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            ❌ Impossible de charger
+                            le classement.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REJOUER
+        ===================================================== */
 
         function rejouer() {
 
@@ -1720,6 +2250,8 @@
 
             jeuCommence = true;
 
+            victoireEnregistree = false;
+
 
             arreterJoueur1();
 
@@ -1729,6 +2261,16 @@
             mettreAJourScore();
 
             reinitialiserBalle();
+
+
+            joueur1.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
+
+
+            joueur2.y =
+                canvas.height / 2 -
+                hauteurRaquette / 2;
 
 
             document.getElementById(
@@ -1745,16 +2287,15 @@
         }
 
 
-        // =========================
-        // DESSIN
-        // =========================
+        /* =====================================================
+           DESSIN
+        ===================================================== */
 
         function dessiner() {
 
-
-            // =====================
-            // FOND
-            // =====================
+            /* =========================
+               FOND
+            ========================= */
 
             contexte.fillStyle =
                 "black";
@@ -1767,9 +2308,9 @@
             );
 
 
-            // =====================
-            // LIGNE CENTRALE
-            // =====================
+            /* =========================
+               LIGNE CENTRALE
+            ========================= */
 
             contexte.strokeStyle =
                 "#333";
@@ -1798,9 +2339,9 @@
             contexte.setLineDash([]);
 
 
-            // =====================
-            // JOUEUR 1
-            // =====================
+            /* =========================
+               JOUEUR 1
+            ========================= */
 
             contexte.fillStyle =
                 "#00aaff";
@@ -1818,9 +2359,9 @@
             );
 
 
-            // =====================
-            // JOUEUR 2
-            // =====================
+            /* =========================
+               JOUEUR 2
+            ========================= */
 
             contexte.fillStyle =
                 "#ff4444";
@@ -1838,9 +2379,9 @@
             );
 
 
-            // =====================
-            // BALLE
-            // =====================
+            /* =========================
+               BALLE
+            ========================= */
 
             contexte.beginPath();
 
@@ -1869,9 +2410,9 @@
         }
 
 
-        // =========================
-        // BOUCLE DU JEU
-        // =========================
+        /* =====================================================
+           BOUCLE
+        ===================================================== */
 
         function boucle() {
 
@@ -1886,18 +2427,19 @@
         }
 
 
-        // =========================
-        // DEMARRAGE
-        // =========================
+        /* =====================================================
+           DEMARRAGE
+        ===================================================== */
 
         dessiner();
 
         boucle();
 
+        chargerClassement();
 
     </script>
-
 
 </body>
 
 </html>
+```

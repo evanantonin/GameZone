@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -13,10 +13,12 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
 
         /* =========================
-           PAGE PIERRE FEUILLE CISEAUX
+           PAGE
         ========================= */
 
         .page-pfc {
@@ -24,22 +26,20 @@
             padding: 30px 15px;
         }
 
-
         .page-pfc h1 {
             color: #ff9800;
             font-size: 42px;
         }
 
-
         /* =========================
-           CASE DU JEU
+           JEU
         ========================= */
 
         .jeu-pfc {
             max-width: 700px;
             margin: 20px auto;
 
-            background: #222;
+            background: white;
 
             border: 2px solid #ff9800;
 
@@ -48,26 +48,24 @@
             border-radius: 20px;
 
             box-shadow:
-                0 0 20px rgba(255, 152, 0, 0.3);
+                0 0 20px rgba(255, 152, 0, 0.2);
         }
-
 
         .jeu-pfc h2 {
             color: #ff9800;
             font-size: 30px;
         }
 
-
         /* =========================
-           BOUTONS DU JEU
+           BOUTONS
         ========================= */
 
         .boutons-pfc {
             margin: 25px 0;
         }
 
-
-        .boutons-pfc button {
+        .boutons-pfc button,
+        #boutonRejouer {
             margin: 6px;
 
             padding: 14px 20px;
@@ -87,13 +85,33 @@
             transition: 0.2s;
         }
 
-
-        .boutons-pfc button:hover {
+        .boutons-pfc button:hover,
+        #boutonRejouer:hover {
             background: #ffb52e;
-
             transform: scale(1.05);
         }
 
+        .boutons-pfc button:disabled {
+            background: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* =========================
+           BOUTON REJOUER
+        ========================= */
+
+        #boutonRejouer {
+            background: #28a745;
+
+            display: none;
+
+            margin-top: 20px;
+        }
+
+        #boutonRejouer:hover {
+            background: #35c957;
+        }
 
         /* =========================
            CHOIX
@@ -101,10 +119,8 @@
 
         .choix {
             font-size: 20px;
-
             margin: 10px;
         }
-
 
         /* =========================
            SCORE
@@ -112,17 +128,13 @@
 
         .score {
             font-size: 22px;
-
             font-weight: bold;
-
             margin: 25px;
         }
-
 
         .score p {
             margin: 8px;
         }
-
 
         /* =========================
            RESULTAT
@@ -133,11 +145,10 @@
 
             font-weight: bold;
 
-            color: #ffd166;
+            color: #ff9800;
 
             min-height: 35px;
         }
-
 
         /* =========================
            HISTORIQUE
@@ -148,35 +159,110 @@
 
             text-align: left;
 
-            background: #111;
+            background: #f2f2f2;
 
             padding: 15px;
 
             border-radius: 12px;
         }
 
-
         .historique-container h3 {
             color: #ff9800;
-
             text-align: center;
         }
 
-
         #historique {
-            color: white;
-
+            color: #222;
             padding-left: 25px;
         }
-
 
         #historique li {
             margin: 6px 0;
         }
 
+        /* =========================
+           CLASSEMENT
+        ========================= */
+
+        .classement {
+            max-width: 700px;
+
+            margin: 30px auto;
+
+            background: white;
+
+            border: 2px solid #ff9800;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            color: #222;
+        }
+
+        .classement h2 {
+            color: #ff9800;
+
+            text-align: center;
+
+            margin-top: 0;
+        }
+
+        .classement table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+        }
+
+        .classement th,
+        .classement td {
+            padding: 10px;
+
+            border-bottom: 1px solid #ddd;
+
+            text-align: center;
+        }
+
+        .classement th {
+            color: #ff9800;
+        }
+
+        .classement tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        #messageClassement {
+            margin-top: 15px;
+
+            font-weight: bold;
+
+            min-height: 25px;
+        }
 
         /* =========================
-           RETOUR AUX JEUX
+           PSEUDO CONNECTÉ
+        ========================= */
+
+        .pseudo-connecte {
+            margin: 15px auto;
+
+            padding: 12px;
+
+            max-width: 400px;
+
+            background: #fff3cd;
+
+            border: 1px solid #ff9800;
+
+            border-radius: 10px;
+
+            font-size: 18px;
+        }
+
+        /* =========================
+           RETOUR
         ========================= */
 
         .retour-jeux {
@@ -197,13 +283,9 @@
             font-size: 16px;
         }
 
-
         .retour-jeux:hover {
             background: #555;
-
-            transform: scale(1.05);
         }
-
 
         /* =========================
            MOBILE
@@ -215,38 +297,40 @@
                 padding: 20px 8px;
             }
 
-
             .page-pfc h1 {
                 font-size: 32px;
             }
-
 
             .jeu-pfc {
                 padding: 20px 10px;
             }
 
-
             .jeu-pfc h2 {
                 font-size: 25px;
             }
 
-
             .boutons-pfc button {
                 width: 90%;
-
                 font-size: 17px;
-
                 padding: 14px;
             }
-
 
             .score {
                 font-size: 20px;
             }
 
-
             #resultat {
                 font-size: 21px;
+            }
+
+            .classement {
+                padding: 10px;
+            }
+
+            .classement th,
+            .classement td {
+                padding: 7px;
+                font-size: 14px;
             }
 
         }
@@ -277,18 +361,15 @@
 
 
     <!-- =========================
-         PAGE DU JEU
+         PAGE
     ========================= -->
 
     <main class="page-pfc">
-
 
         <h1>
             ✂️ Pierre Feuille Ciseaux
         </h1>
 
-
-        <!-- RETOUR -->
 
         <a
             href="liste-jeux.html"
@@ -300,16 +381,26 @@
 
 
         <!-- =========================
+             PSEUDO
+        ========================= -->
+
+        <div
+            class="pseudo-connecte"
+            id="pseudoConnecte">
+
+            👤 Chargement du pseudo...
+
+        </div>
+
+
+        <!-- =========================
              JEU
         ========================= -->
 
         <div class="jeu-pfc">
 
-
             <h2>
-                Pierre 🪨
-                Feuille 📄
-                Ciseaux ✂️
+                Premier à 5 gagne 🏆
             </h2>
 
 
@@ -318,6 +409,7 @@
             <div class="boutons-pfc">
 
                 <button
+                    id="boutonPierre"
                     onclick="jouer('pierre')">
 
                     🪨 Pierre
@@ -326,6 +418,7 @@
 
 
                 <button
+                    id="boutonFeuille"
                     onclick="jouer('feuille')">
 
                     📄 Feuille
@@ -334,6 +427,7 @@
 
 
                 <button
+                    id="boutonCiseaux"
                     onclick="jouer('ciseaux')">
 
                     ✂️ Ciseaux
@@ -370,9 +464,7 @@
                 <p>
 
                     🧑 Toi :
-                    <span id="scoreJoueur">
-                        0
-                    </span>
+                    <span id="scoreJoueur">0</span>
 
                 </p>
 
@@ -380,28 +472,27 @@
                 <p>
 
                     🤖 Ordinateur :
-                    <span id="scoreOrdinateur">
-                        0
-                    </span>
+                    <span id="scoreOrdinateur">0</span>
 
                 </p>
 
             </div>
 
 
-            <!-- RESET -->
-
-            <button
-                onclick="resetScore()">
-
-                🔄 Réinitialiser le score
-
-            </button>
-
-
             <!-- RESULTAT -->
 
             <p id="resultat"></p>
+
+
+            <!-- REJOUER -->
+
+            <button
+                id="boutonRejouer"
+                onclick="rejouer()">
+
+                🔄 Rejouer
+
+            </button>
 
 
             <!-- HISTORIQUE -->
@@ -412,23 +503,126 @@
                     📜 Historique
                 </h3>
 
-
                 <ul id="historique"></ul>
 
             </div>
 
+        </div>
+
+
+        <!-- =========================
+             CLASSEMENT
+        ========================= -->
+
+        <div class="classement">
+
+            <h2>
+                🌍 🏆 TOP 10 MONDIAL
+            </h2>
+
+            <p>
+                ✂️ Pierre Feuille Ciseaux
+            </p>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>👤 Pseudo</th>
+
+                        <th>🏆 Victoires</th>
+
+                        <th>📅 Date</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tableauClassement">
+
+                    <tr>
+
+                        <td colspan="4">
+                            Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <p id="messageClassement"></p>
 
         </div>
+
 
     </main>
 
 
     <script>
 
+        /* ==================================================
+           SUPABASE
+        ================================================== */
 
-        /* =========================
-           SCORES
-        ========================= */
+        const SUPABASE_URL =
+            "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+        const SUPABASE_ANON_KEY =
+            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        /* ==================================================
+           IDENTIFIANT DU JEU
+        ================================================== */
+
+        const JEU = "jeux3";
+
+
+        /* ==================================================
+           PSEUDO DU JOUEUR
+        ================================================== */
+
+        const pseudo =
+    localStorage.getItem("pseudoGameZone");
+
+        if (pseudo) {
+
+            document.getElementById(
+                "pseudoConnecte"
+            ).textContent =
+                "👤 Joueur : " + pseudo;
+
+        }
+
+        else {
+
+            document.getElementById(
+                "pseudoConnecte"
+            ).textContent =
+                "❌ Aucun pseudo trouvé sur le site.";
+
+        }
+
+
+        /* ==================================================
+           VARIABLES
+        ================================================== */
 
         let scoreJoueur = 0;
 
@@ -437,15 +631,50 @@
         let partieTerminee = false;
 
 
-        /* =========================
+        /* ==================================================
+           BOUTONS
+        ================================================== */
+
+        function activerBoutons() {
+
+            document.getElementById(
+                "boutonPierre"
+            ).disabled = false;
+
+            document.getElementById(
+                "boutonFeuille"
+            ).disabled = false;
+
+            document.getElementById(
+                "boutonCiseaux"
+            ).disabled = false;
+
+        }
+
+
+        function desactiverBoutons() {
+
+            document.getElementById(
+                "boutonPierre"
+            ).disabled = true;
+
+            document.getElementById(
+                "boutonFeuille"
+            ).disabled = true;
+
+            document.getElementById(
+                "boutonCiseaux"
+            ).disabled = true;
+
+        }
+
+
+        /* ==================================================
            JOUER
-        ========================= */
+        ================================================== */
 
         function jouer(choixJoueur) {
 
-
-            /* Empêcher de jouer
-               après la victoire */
 
             if (partieTerminee) {
 
@@ -454,20 +683,14 @@
             }
 
 
-            /* Choix possibles */
-
-            let choix = [
-
+            const choix = [
                 "pierre",
                 "feuille",
                 "ciseaux"
-
             ];
 
 
-            /* Choix ordinateur */
-
-            let choixOrdinateur =
+            const choixOrdinateur =
                 choix[
                     Math.floor(
                         Math.random() * 3
@@ -475,9 +698,7 @@
                 ];
 
 
-            /* Emojis */
-
-            let emojis = {
+            const emojis = {
 
                 pierre: "🪨 Pierre",
 
@@ -488,27 +709,21 @@
             };
 
 
-            /* Afficher choix joueur */
-
             document.getElementById(
                 "choixJoueur"
             ).textContent =
+                "🧑 Toi : " +
+                emojis[choixJoueur];
 
-                "🧑 Toi : "
-                + emojis[choixJoueur];
-
-
-            /* Afficher choix ordinateur */
 
             document.getElementById(
                 "choixOrdinateur"
             ).textContent =
+                "🤖 Ordinateur : " +
+                emojis[choixOrdinateur];
 
-                "🤖 Ordinateur : "
-                + emojis[choixOrdinateur];
 
-
-            let resultat = "";
+            let resultat;
 
 
             /* =========================
@@ -516,8 +731,7 @@
             ========================= */
 
             if (
-                choixJoueur ===
-                choixOrdinateur
+                choixJoueur === choixOrdinateur
             ) {
 
                 resultat =
@@ -533,33 +747,30 @@
             else if (
 
                 (
-                    choixJoueur === "pierre"
-                    &&
+                    choixJoueur === "pierre" &&
                     choixOrdinateur === "ciseaux"
                 )
 
                 ||
 
                 (
-                    choixJoueur === "feuille"
-                    &&
+                    choixJoueur === "feuille" &&
                     choixOrdinateur === "pierre"
                 )
 
                 ||
 
                 (
-                    choixJoueur === "ciseaux"
-                    &&
+                    choixJoueur === "ciseaux" &&
                     choixOrdinateur === "feuille"
                 )
 
             ) {
 
-                resultat =
-                    "🎉 Tu as gagné !";
-
                 scoreJoueur++;
+
+                resultat =
+                    "🎉 Tu as gagné la manche !";
 
             }
 
@@ -570,16 +781,16 @@
 
             else {
 
-                resultat =
-                    "😢 Tu as perdu !";
-
                 scoreOrdinateur++;
+
+                resultat =
+                    "😢 Tu as perdu la manche !";
 
             }
 
 
             /* =========================
-               SCORES
+               AFFICHER SCORE
             ========================= */
 
             document.getElementById(
@@ -594,10 +805,6 @@
                 scoreOrdinateur;
 
 
-            /* =========================
-               RESULTAT
-            ========================= */
-
             document.getElementById(
                 "resultat"
             ).textContent =
@@ -608,12 +815,11 @@
                HISTORIQUE
             ========================= */
 
-            let ligne =
+            const ligne =
                 document.createElement("li");
 
 
             ligne.textContent =
-
                 emojis[choixJoueur]
                 + " vs "
                 + emojis[choixOrdinateur]
@@ -627,48 +833,293 @@
 
 
             /* =========================
-               PREMIER A 5
+               VICTOIRE
             ========================= */
 
-            if (
-                scoreJoueur === 5
-            ) {
+            if (scoreJoueur >= 5) {
 
-                document.getElementById(
-                    "resultat"
-                ).textContent =
-
-                    "🏆 TU AS GAGNÉ LA PARTIE ! 🏆";
-
-
-                partieTerminee = true;
+                terminerPartie(
+                    true
+                );
 
             }
 
-
             else if (
-                scoreOrdinateur === 5
+                scoreOrdinateur >= 5
             ) {
 
-                document.getElementById(
-                    "resultat"
-                ).textContent =
-
-                    "🤖 L'ORDINATEUR A GAGNÉ LA PARTIE !";
-
-
-                partieTerminee = true;
+                terminerPartie(
+                    false
+                );
 
             }
 
         }
 
 
-        /* =========================
-           RESET
-        ========================= */
+        /* ==================================================
+           TERMINER PARTIE
+        ================================================== */
 
-        function resetScore() {
+        async function terminerPartie(
+            victoire
+        ) {
+
+            partieTerminee = true;
+
+            desactiverBoutons();
+
+
+            if (victoire) {
+
+                document.getElementById(
+                    "resultat"
+                ).textContent =
+                    "🏆 TU AS GAGNÉ LA PARTIE !";
+
+
+                await enregistrerVictoire();
+
+            }
+
+            else {
+
+                document.getElementById(
+                    "resultat"
+                ).textContent =
+                    "🤖 L'ORDINATEUR A GAGNÉ !";
+
+            }
+
+
+            document.getElementById(
+                "boutonRejouer"
+            ).style.display =
+                "inline-block";
+
+        }
+
+
+        /* ==================================================
+           ENREGISTRER LA VICTOIRE
+        ================================================== */
+
+        async function enregistrerVictoire() {
+
+
+            if (!pseudo) {
+
+                document.getElementById(
+                    "messageClassement"
+                ).textContent =
+                    "❌ Aucun pseudo trouvé sur le site.";
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "messageClassement"
+            ).textContent =
+                "⏳ Enregistrement de la victoire...";
+
+
+            try {
+
+                /*
+                 * On cherche si le joueur possède
+                 * déjà une ligne pour jeux3.
+                 */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .select(
+                            "pseudo,score,jeu"
+                        )
+
+                        .eq(
+                            "pseudo",
+                            pseudo
+                        )
+
+                        .eq(
+                            "jeu",
+                            JEU
+                        )
+                        .limit(1);
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur recherche :",
+                        error
+                    );
+
+                    document.getElementById(
+                        "messageClassement"
+                    ).textContent =
+                        "❌ Impossible de récupérer ton score.";
+
+                    return;
+
+                }
+
+
+                /* =========================
+                   SCORE EXISTANT
+                ========================= */
+
+                if (
+                    data &&
+                    data.length > 0
+                ) {
+
+                    const nouveauScore =
+                        Number(
+                            data[0].score
+                        ) + 1;
+
+
+                    const {
+                        error:
+                            erreurUpdate
+                    } =
+                        await supabaseClient
+
+                            .from("scores")
+
+                            .update({
+
+                                score:
+                                    nouveauScore,
+
+                                date_creation:
+                                    new Date()
+                                        .toISOString()
+
+                            })
+
+                            .eq(
+                                "pseudo",
+                                pseudo
+                            )
+
+                            .eq(
+                                "jeu",
+                                JEU
+                            );
+
+
+                    if (erreurUpdate) {
+
+                        console.error(
+                            "Erreur update :",
+                            erreurUpdate
+                        );
+
+                        document.getElementById(
+                            "messageClassement"
+                        ).textContent =
+                            "❌ Erreur lors de l'enregistrement.";
+
+                        return;
+
+                    }
+
+                }
+
+
+                /* =========================
+                   PREMIÈRE VICTOIRE
+                ========================= */
+
+                else {
+
+                    const {
+                        error:
+                            erreurInsert
+                    } =
+                        await supabaseClient
+
+                            .from("scores")
+
+                            .insert({
+
+                                pseudo:
+                                    pseudo,
+
+                                score:
+                                    1,
+
+                                jeu:
+                                    JEU,
+
+                                date_creation:
+                                    new Date()
+                                        .toISOString()
+
+                            });
+
+
+                    if (erreurInsert) {
+
+                        console.error(
+                            "Erreur insertion :",
+                            erreurInsert
+                        );
+
+                        document.getElementById(
+                            "messageClassement"
+                        ).textContent =
+                            "❌ Erreur lors de l'enregistrement.";
+
+                        return;
+
+                    }
+
+                }
+
+
+                document.getElementById(
+                    "messageClassement"
+                ).textContent =
+                    "✅ Victoire enregistrée !";
+
+
+                chargerClassement();
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur :",
+                    erreur
+                );
+
+                document.getElementById(
+                    "messageClassement"
+                ).textContent =
+                    "❌ Erreur lors de l'enregistrement.";
+
+            }
+
+        }
+
+
+        /* ==================================================
+           REJOUER
+        ================================================== */
+
+        function rejouer() {
 
 
             scoreJoueur = 0;
@@ -678,26 +1129,17 @@
             partieTerminee = false;
 
 
-            /* Scores */
-
             document.getElementById(
                 "scoreJoueur"
-            ).textContent = "0";
+            ).textContent =
+                "0";
 
 
             document.getElementById(
                 "scoreOrdinateur"
-            ).textContent = "0";
+            ).textContent =
+                "0";
 
-
-            /* Résultat */
-
-            document.getElementById(
-                "resultat"
-            ).textContent = "";
-
-
-            /* Choix */
 
             document.getElementById(
                 "choixJoueur"
@@ -711,16 +1153,275 @@
                 "🤖 Ordinateur : -";
 
 
-            /* Historique */
+            document.getElementById(
+                "resultat"
+            ).textContent =
+                "";
+
 
             document.getElementById(
                 "historique"
-            ).innerHTML = "";
+            ).innerHTML =
+                "";
+
+
+            document.getElementById(
+                "boutonRejouer"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "messageClassement"
+            ).textContent =
+                "";
+
+
+            activerBoutons();
 
         }
 
-    </script>
 
+        /* ==================================================
+           CLASSEMENT
+        ================================================== */
+
+        async function chargerClassement() {
+
+
+            const tableau =
+                document.getElementById(
+                    "tableauClassement"
+                );
+
+
+            tableau.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        ⏳ Chargement...
+                    </td>
+                </tr>
+            `;
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .select(
+                            "pseudo,score,date_creation"
+                        )
+
+                        .eq(
+                            "jeu",
+                            JEU
+                        )
+
+                        .order(
+                            "score",
+                            {
+                                ascending: false
+                            }
+                        )
+
+                        .limit(10);
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur classement :",
+                        error
+                    );
+
+                    tableau.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                ❌ Impossible de charger le classement.
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+
+                }
+
+
+                if (
+                    !data ||
+                    data.length === 0
+                ) {
+
+                    tableau.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                Aucun score pour Pierre Feuille Ciseaux.
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+
+                }
+
+
+                tableau.innerHTML = "";
+
+
+                data.forEach(
+                    function (
+                        joueur,
+                        index
+                    ) {
+
+                        const ligne =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        const position =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        if (index === 0) {
+
+                            position.textContent =
+                                "🥇";
+
+                        }
+
+                        else if (index === 1) {
+
+                            position.textContent =
+                                "🥈";
+
+                        }
+
+                        else if (index === 2) {
+
+                            position.textContent =
+                                "🥉";
+
+                        }
+
+                        else {
+
+                            position.textContent =
+                                index + 1;
+
+                        }
+
+
+                        const pseudoCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        pseudoCell.textContent =
+                            joueur.pseudo;
+
+
+                        const scoreCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        scoreCell.textContent =
+                            "🏆 " +
+                            joueur.score;
+
+
+                        const dateCell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        if (
+                            joueur.date_creation
+                        ) {
+
+                            dateCell.textContent =
+                                new Date(
+                                    joueur.date_creation
+                                ).toLocaleDateString(
+                                    "fr-FR"
+                                );
+
+                        }
+
+                        else {
+
+                            dateCell.textContent =
+                                "—";
+
+                        }
+
+
+                        ligne.appendChild(
+                            position
+                        );
+
+                        ligne.appendChild(
+                            pseudoCell
+                        );
+
+                        ligne.appendChild(
+                            scoreCell
+                        );
+
+                        ligne.appendChild(
+                            dateCell
+                        );
+
+
+                        tableau.appendChild(
+                            ligne
+                        );
+
+                    }
+                );
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur classement :",
+                    erreur
+                );
+
+                tableau.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            ❌ Impossible de charger le classement.
+                        </td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           CHARGEMENT INITIAL
+        ================================================== */
+
+        chargerClassement();
+
+    </script>
 
 </body>
 
