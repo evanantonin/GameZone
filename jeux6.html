@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0">
 
     <title>GameZone - Space Invaders</title>
 
@@ -48,64 +48,73 @@
             margin: 20px 0 10px;
             color: #00d9ff;
             font-size: 45px;
-
             text-shadow:
                 0 0 8px #00d9ff,
                 0 0 20px #0077ff,
                 0 0 40px #0044ff;
         }
 
-        .pseudo-zone {
-            background: #101020;
-            border: 2px solid #075bff;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 15px auto;
+        /* =========================
+           PSEUDO
+        ========================= */
+
+        #zonePseudo {
             max-width: 500px;
-            box-shadow: 0 0 15px rgba(0, 100, 255, 0.3);
+            margin: 20px auto;
+            padding: 20px;
+            background: #0b0b20;
+            border: 2px solid #00bfff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
         }
 
-        .pseudo-zone label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 18px;
-            font-weight: bold;
+        #zonePseudo h2 {
+            color: #00d9ff;
         }
 
         #pseudo {
             width: 80%;
-            max-width: 350px;
+            max-width: 300px;
             padding: 12px;
-            border: none;
+            border: 2px solid #00bfff;
             border-radius: 10px;
-            font-size: 17px;
+            background: #050510;
+            color: white;
+            font-size: 18px;
             text-align: center;
-            box-sizing: border-box;
-        }
-
-        #pseudo:focus {
-            outline: 2px solid #00d9ff;
+            outline: none;
         }
 
         #boutonPseudo {
-            margin-top: 10px;
-            padding: 10px 20px;
+            margin-top: 12px;
+            padding: 12px 20px;
             border: none;
             border-radius: 10px;
             background: #075bff;
             color: white;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
         }
 
         #boutonPseudo:hover {
             background: #00aaff;
+            transform: scale(1.05);
         }
 
-        #pseudoAffiche {
+        #pseudoConnecte {
+            display: none;
+            margin: 15px auto;
+            font-size: 18px;
             color: #00ff66;
-            font-weight: bold;
         }
+
+        #nomJoueur {
+            color: #ffd700;
+        }
+
+        /* =========================
+           RETOUR
+        ========================= */
 
         .retour {
             margin-bottom: 15px;
@@ -125,6 +134,10 @@
             background: #00aaff;
             transform: scale(1.05);
         }
+
+        /* =========================
+           INFOS
+        ========================= */
 
         .infos {
             display: flex;
@@ -157,6 +170,10 @@
             text-shadow: 0 0 8px #ff0000;
         }
 
+        /* =========================
+           CANVAS
+        ========================= */
+
         #jeuSpace {
             display: block;
             width: min(95vw, 800px);
@@ -181,12 +198,13 @@
             min-height: 30px;
             font-size: 21px;
             font-weight: bold;
-
             color: #00d9ff;
-
-            text-shadow:
-                0 0 8px #00aaff;
+            text-shadow: 0 0 8px #00aaff;
         }
+
+        /* =========================
+           BOUTONS
+        ========================= */
 
         .boutons {
             display: flex;
@@ -198,13 +216,10 @@
 
         .boutons button {
             padding: 12px 20px;
-
             border: none;
             border-radius: 10px;
-
             background: #075bff;
             color: white;
-
             font-size: 17px;
             cursor: pointer;
         }
@@ -218,6 +233,10 @@
             display: none;
         }
 
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
+
         .commandes {
             color: #aaa;
             font-size: 15px;
@@ -226,14 +245,10 @@
 
         .controles-mobile {
             display: none;
-
             justify-content: center;
             align-items: center;
-
             gap: 12px;
-
-            margin: 5px auto 0;
-
+            margin: 5px auto 20px;
             user-select: none;
         }
 
@@ -262,86 +277,57 @@
             background-color: #444;
         }
 
-        /* ================================
+        /* =========================
            CLASSEMENT
-        ================================= */
+        ========================= */
 
-        .classement {
-            margin: 35px auto;
+        #classement {
             max-width: 600px;
-            background: #101020;
-            border: 2px solid #00bfff;
-            border-radius: 15px;
+            margin: 35px auto;
             padding: 20px;
+
+            background: #08081a;
+
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+
             box-shadow:
-                0 0 15px rgba(0, 170, 255, 0.3);
+                0 0 20px rgba(255, 215, 0, 0.2);
         }
 
-        .classement h2 {
+        #classement h2 {
             color: #ffd700;
             margin-top: 0;
-            text-shadow: 0 0 10px #ffd700;
         }
 
-        #messageClassement {
-            color: #aaa;
-            margin: 10px;
-        }
-
-        .tableau-scores {
+        #tableauScores {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
-        .tableau-scores th,
-        .tableau-scores td {
+        #tableauScores th,
+        #tableauScores td {
             padding: 10px;
             border-bottom: 1px solid #333;
         }
 
-        .tableau-scores th {
+        #tableauScores th {
             color: #00d9ff;
-            font-size: 17px;
         }
 
-        .tableau-scores td {
-            font-size: 16px;
-        }
-
-        .tableau-scores tr:nth-child(1) td {
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        .tableau-scores tr:nth-child(2) td {
-            color: #c0c0c0;
-        }
-
-        .tableau-scores tr:nth-child(3) td {
-            color: #cd7f32;
-        }
-
-        .mon-score {
-            margin-top: 15px;
-            color: #00ff66;
-            font-weight: bold;
-        }
-
-        #boutonActualiser {
-            margin-top: 15px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 10px;
-            background: #075bff;
+        #tableauScores td {
             color: white;
-            cursor: pointer;
-            font-size: 15px;
         }
 
-        #boutonActualiser:hover {
-            background: #00aaff;
+        .message-classement {
+            color: #aaa;
+            margin-top: 15px;
         }
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 600px) {
 
@@ -370,8 +356,6 @@
 
             .controles-mobile {
                 display: flex;
-                margin-top: 5px;
-                width: 100%;
             }
 
             .controles-mobile button {
@@ -380,16 +364,9 @@
                 font-size: 24px;
             }
 
-            .classement {
+            #classement {
                 width: 90%;
                 box-sizing: border-box;
-                padding: 12px;
-            }
-
-            .tableau-scores th,
-            .tableau-scores td {
-                padding: 8px 4px;
-                font-size: 14px;
             }
 
         }
@@ -422,7 +399,9 @@
 
 </head>
 
+
 <body>
+
 
 <nav>
 
@@ -439,39 +418,50 @@
 
 <main class="space-container">
 
+
     <h1>
         👾 Space Invaders
     </h1>
 
 
-    <!-- ================================
+    <!-- =========================
          PSEUDO
-    ================================= -->
+    ========================= -->
 
-    <div class="pseudo-zone">
+    <div id="zonePseudo">
 
-        <label for="pseudo">
-            👤 Ton pseudo
-        </label>
+        <h2>
+            👤 Choisis ton pseudo
+        </h2>
+
+        <p>
+            Ton pseudo sera conservé sur cet appareil.
+        </p>
 
         <input
             type="text"
             id="pseudo"
-            maxlength="20"
-            placeholder="Entre ton pseudo">
+            maxlength="15"
+            placeholder="Ton pseudo"
+        >
 
         <br>
 
-        <button id="boutonPseudo">
-            ✅ Valider le pseudo
+        <button
+            id="boutonPseudo"
+            onclick="creerPseudo()">
+
+            ✅ Commencer
+
         </button>
 
-        <p>
-            Joueur :
-            <span id="pseudoAffiche">
-                Aucun pseudo
-            </span>
-        </p>
+    </div>
+
+
+    <div id="pseudoConnecte">
+
+        👤 Joueur :
+        <strong id="nomJoueur"></strong>
 
     </div>
 
@@ -603,21 +593,17 @@
     </div>
 
 
-    <!-- ================================
-         CLASSEMENT MONDIAL
-    ================================= -->
+    <!-- =========================
+         TOP 10 MONDIAL
+    ========================= -->
 
-    <section class="classement">
+    <section id="classement">
 
         <h2>
-            🌍 🏆 TOP 10 MONDIAL
+            🌍 🏆 Top 10 mondial
         </h2>
 
-        <p id="messageClassement">
-            Chargement du classement...
-        </p>
-
-        <table class="tableau-scores">
+        <table id="tableauScores">
 
             <thead>
 
@@ -639,28 +625,24 @@
 
             </thead>
 
-            <tbody id="tableauScores">
+            <tbody id="listeScores">
+
+                <tr>
+
+                    <td colspan="3">
+                        Chargement...
+                    </td>
+
+                </tr>
 
             </tbody>
 
         </table>
 
-
-        <p class="mon-score">
-
-            🏆 Ton meilleur score :
-            <span id="meilleurScoreClassement">
-                0
-            </span>
-
+        <p
+            id="messageClassement"
+            class="message-classement">
         </p>
-
-
-        <button id="boutonActualiser">
-
-            🔄 Actualiser le classement
-
-        </button>
 
     </section>
 
@@ -670,112 +652,102 @@
 
 <script>
 
+
 /* =====================================================
    SUPABASE
 ===================================================== */
 
-/*
-   URL de ton projet Supabase
-*/
-
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
 
-
-/*
-   Clé publishable / anon
-
-   Elle peut être utilisée dans le navigateur
-   si les règles RLS sont correctement configurées.
-*/
-
-const SUPABASE_KEY =
+const SUPABASE_API_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
-
-
-/*
-   Table utilisée :
-   scores
-
-   Colonnes nécessaires :
-   pseudo
-   score
-*/
 
 
 /* =====================================================
    PSEUDO
 ===================================================== */
 
-let pseudo =
+let pseudoJoueur =
     localStorage.getItem(
         "pseudoGameZone"
-    ) || "";
-
-
-const champPseudo =
-    document.getElementById(
-        "pseudo"
     );
 
 
-const pseudoAffiche =
-    document.getElementById(
-        "pseudoAffiche"
-    );
+let meilleurScore =
+    Number(
+        localStorage.getItem(
+            "meilleurScoreSpaceInvaders_" +
+            (pseudoJoueur || "")
+        )
+    ) || 0;
 
 
-/*
-   Afficher le pseudo déjà enregistré
-*/
+/* =====================================================
+   AFFICHER LE PSEUDO
+===================================================== */
 
-if (pseudo) {
+function chargerPseudo() {
 
-    champPseudo.value =
-        pseudo;
+    if (
+        pseudoJoueur
+    ) {
 
-    pseudoAffiche.textContent =
-        pseudo;
+        document.getElementById(
+            "zonePseudo"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "pseudoConnecte"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "nomJoueur"
+        ).textContent =
+            pseudoJoueur;
+
+
+        document.getElementById(
+            "meilleurScore"
+        ).textContent =
+            meilleurScore;
+
+    }
 
 }
 
 
-/* =====================================================
-   VALIDATION DU PSEUDO
-===================================================== */
+function creerPseudo() {
 
-document.getElementById(
-    "boutonPseudo"
-).addEventListener(
-    "click",
-    enregistrerPseudo
-);
+    const input =
+        document.getElementById(
+            "pseudo"
+        );
 
 
-champPseudo.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            enregistrerPseudo();
-
-        }
-
-    }
-);
-
-
-function enregistrerPseudo() {
-
-    let nouveauPseudo =
-        champPseudo.value.trim();
+    const pseudo =
+        input.value.trim();
 
 
     if (
-        nouveauPseudo.length < 2
+        pseudo === ""
+    ) {
+
+        alert(
+            "Entre un pseudo."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        pseudo.length < 2
     ) {
 
         alert(
@@ -787,18 +759,81 @@ function enregistrerPseudo() {
     }
 
 
-    pseudo =
-        nouveauPseudo;
+    /*
+       Si un pseudo existe déjà,
+       on empêche toute nouvelle
+       création.
+    */
+
+    if (
+        localStorage.getItem(
+            "pseudoGameZone"
+        )
+    ) {
+
+        alert(
+            "Un pseudo existe déjà sur cet appareil."
+        );
+
+        return;
+
+    }
+
+
+    pseudoJoueur =
+        pseudo;
 
 
     localStorage.setItem(
         "pseudoGameZone",
-        pseudo
+        pseudoJoueur
     );
 
 
-    pseudoAffiche.textContent =
-        pseudo;
+    localStorage.setItem(
+        "meilleurScoreSpaceInvaders_" +
+        pseudoJoueur,
+        "0"
+    );
+
+
+    meilleurScore = 0;
+
+
+    /*
+       DISPARITION DE LA SAISIE
+    */
+
+    document.getElementById(
+        "zonePseudo"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "pseudoConnecte"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "nomJoueur"
+    ).textContent =
+        pseudoJoueur;
+
+
+    document.getElementById(
+        "meilleurScore"
+    ).textContent =
+        "0";
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "🚀 Bienvenue " +
+        pseudoJoueur +
+        " !";
 
 
     chargerClassement();
@@ -806,28 +841,7 @@ function enregistrerPseudo() {
 }
 
 
-/* =====================================================
-   MEILLEUR SCORE PERSONNEL
-===================================================== */
-
-let meilleurScore =
-    Number(
-        localStorage.getItem(
-            "meilleurScoreSpaceInvaders"
-        )
-    ) || 0;
-
-
-document.getElementById(
-    "meilleurScore"
-).textContent =
-    meilleurScore;
-
-
-document.getElementById(
-    "meilleurScoreClassement"
-).textContent =
-    meilleurScore;
+chargerPseudo();
 
 
 /* =====================================================
@@ -839,9 +853,10 @@ const canvas =
         "jeuSpace"
     );
 
-
 const contexte =
-    canvas.getContext("2d");
+    canvas.getContext(
+        "2d"
+    );
 
 
 /* =====================================================
@@ -856,11 +871,14 @@ let joueur = {
     y:
         canvas.height - 65,
 
-    largeur: 70,
+    largeur:
+        70,
 
-    hauteur: 30,
+    hauteur:
+        30,
 
-    vitesse: 7
+    vitesse:
+        7
 
 };
 
@@ -904,7 +922,6 @@ let tempsTirEnnemi = 0;
 let boss = null;
 
 let touches = {};
-
 
 let niveauEnTransition = false;
 
@@ -979,7 +996,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   CLIC SUR CANVAS
+   CLIC SOURIS
 ===================================================== */
 
 canvas.addEventListener(
@@ -1052,15 +1069,19 @@ function creerEnnemis() {
 
                 x:
                     70 +
-                    colonne * espaceX,
+                    colonne *
+                    espaceX,
 
                 y:
                     55 +
-                    ligne * espaceY,
+                    ligne *
+                    espaceY,
 
-                largeur: 45,
+                largeur:
+                    45,
 
-                hauteur: 30,
+                hauteur:
+                    30,
 
                 vie:
                     niveau >= 3
@@ -1092,11 +1113,14 @@ function creerBoss() {
         x:
             canvas.width / 2 - 90,
 
-        y: 55,
+        y:
+            55,
 
-        largeur: 180,
+        largeur:
+            180,
 
-        hauteur: 65,
+        hauteur:
+            65,
 
         vie:
             10 +
@@ -1110,7 +1134,8 @@ function creerBoss() {
             2.5 +
             niveau * 0.2,
 
-        direction: 1
+        direction:
+            1
 
     };
 
@@ -1118,14 +1143,15 @@ function creerBoss() {
 
 
 /* =====================================================
-   TIR JOUEUR
+   TIR
 ===================================================== */
 
 function tirer() {
 
     if (
         jeuTermine ||
-        jeuEnPause
+        jeuEnPause ||
+        !pseudoJoueur
     ) {
 
         return;
@@ -1137,16 +1163,20 @@ function tirer() {
 
         x:
             joueur.x +
-            joueur.largeur / 2 - 3,
+            joueur.largeur / 2 -
+            3,
 
         y:
             joueur.y - 10,
 
-        largeur: 6,
+        largeur:
+            6,
 
-        hauteur: 18,
+        hauteur:
+            18,
 
-        vitesse: 10
+        vitesse:
+            10
 
     });
 
@@ -1187,9 +1217,11 @@ function tirerEnnemi() {
             ennemi.y +
             ennemi.hauteur,
 
-        largeur: 6,
+        largeur:
+            6,
 
-        hauteur: 15,
+        hauteur:
+            15,
 
         vitesse:
             4 +
@@ -1223,9 +1255,11 @@ function tirerBoss() {
             boss.y +
             boss.hauteur,
 
-        largeur: 9,
+        largeur:
+            9,
 
-        hauteur: 22,
+        hauteur:
+            22,
 
         vitesse:
             5 +
@@ -1370,7 +1404,7 @@ function bougerEnnemis() {
 
 
 /* =====================================================
-   BOUGER BALLES
+   BALLES
 ===================================================== */
 
 function bougerBalles() {
@@ -1475,11 +1509,14 @@ function creerExplosion(
 
     explosions.push({
 
-        x: x,
+        x:
+            x,
 
-        y: y,
+        y:
+            y,
 
-        taille: 5,
+        taille:
+            5,
 
         vie:
             20 * puissance
@@ -1495,9 +1532,11 @@ function creerExplosion(
 
         particules.push({
 
-            x: x,
+            x:
+                x,
 
-            y: y,
+            y:
+                y,
 
             vx:
                 Math.random() *
@@ -1509,10 +1548,12 @@ function creerExplosion(
 
             vie:
                 25 +
-                Math.random() * 20,
+                Math.random() *
+                20,
 
             taille:
-                Math.random() * 4 + 2
+                Math.random() *
+                4 + 2
 
         });
 
@@ -1526,7 +1567,6 @@ function creerExplosion(
 ===================================================== */
 
 function verifierCollisions() {
-
 
     for (
         let i =
@@ -1650,8 +1690,10 @@ function verifierCollisions() {
                 creerExplosion(
                     boss.x +
                     boss.largeur / 2,
+
                     boss.y +
                     boss.hauteur / 2,
+
                     4
                 );
 
@@ -1753,12 +1795,6 @@ function ajouterScore(points) {
     score += points;
 
 
-    /*
-       Le meilleur score personnel
-       est conservé uniquement sur
-       cet appareil.
-    */
-
     if (
         score >
         meilleurScore
@@ -1769,8 +1805,12 @@ function ajouterScore(points) {
 
 
         localStorage.setItem(
-            "meilleurScoreSpaceInvaders",
+
+            "meilleurScoreSpaceInvaders_" +
+            pseudoJoueur,
+
             meilleurScore
+
         );
 
     }
@@ -1787,44 +1827,90 @@ function ajouterScore(points) {
     ).textContent =
         meilleurScore;
 
-
-    document.getElementById(
-        "meilleurScoreClassement"
-    ).textContent =
-        meilleurScore;
-
 }
 
 
 /* =====================================================
-   ENREGISTRER LE SCORE ONLINE
+   FIN DE PARTIE
 ===================================================== */
 
-async function envoyerScoreOnline() {
+async function terminerJeu() {
 
-    /*
-       Pas de pseudo :
-       on ne fait rien.
-    */
-
-    if (!pseudo) {
-
-        console.log(
-            "Aucun pseudo : score non envoyé."
-        );
+    if (
+        jeuTermine
+    ) {
 
         return;
 
     }
 
 
+    jeuTermine = true;
+
+    jeuCommence = false;
+
+    niveauEnTransition = false;
+
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "💀 GAME OVER ! Score : " +
+        score;
+
+
+    document.getElementById(
+        "boutonRejouer"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).style.display =
+        "none";
+
+
     /*
-       Score nul :
-       inutile de l'envoyer.
+       ENVOI UNIQUEMENT SI
+       C'EST UN NOUVEAU RECORD
     */
 
     if (
-        score <= 0
+        pseudoJoueur &&
+        score > meilleurScoreAvantPartie
+    ) {
+
+        await envoyerScore(
+            score
+        );
+
+    }
+
+
+    chargerClassement();
+
+}
+
+
+/* =====================================================
+   MEMORISATION DU MEILLEUR SCORE
+===================================================== */
+
+let meilleurScoreAvantPartie =
+    meilleurScore;
+
+
+/* =====================================================
+   ENVOYER SCORE SUPABASE
+===================================================== */
+
+async function envoyerScore(
+    nouveauScore
+) {
+
+    if (
+        !pseudoJoueur
     ) {
 
         return;
@@ -1835,32 +1921,37 @@ async function envoyerScoreOnline() {
     try {
 
         /*
-           On récupère tous les scores
-           du pseudo actuel.
+           On vérifie d'abord
+           le meilleur score actuel
+           sur Supabase.
         */
 
-        const urlRecherche =
+        const url =
             SUPABASE_URL +
             "/rest/v1/scores" +
-            "?select=pseudo,score" +
+            "?select=score" +
             "&pseudo=eq." +
-            encodeURIComponent(pseudo);
+            encodeURIComponent(
+                pseudoJoueur
+            ) +
+            "&order=score.desc" +
+            "&limit=1";
 
 
-        const recherche =
+        const verification =
             await fetch(
-                urlRecherche,
+                url,
                 {
                     method: "GET",
 
                     headers: {
 
                         "apikey":
-                            SUPABASE_KEY,
+                            SUPABASE_API_KEY,
 
                         "Authorization":
                             "Bearer " +
-                            SUPABASE_KEY
+                            SUPABASE_API_KEY
 
                     }
                 }
@@ -1868,72 +1959,34 @@ async function envoyerScoreOnline() {
 
 
         if (
-            !recherche.ok
+            !verification.ok
         ) {
 
-            throw new Error(
-                "Impossible de récupérer ton ancien score."
+            console.error(
+                "Erreur vérification Supabase"
             );
+
+            return;
 
         }
 
 
         const anciensScores =
-            await recherche.json();
+            await verification.json();
 
 
         /*
-           On cherche le meilleur score
-           déjà présent pour ce pseudo.
-        */
-
-        let meilleurOnline = 0;
-
-
-        for (
-            const ligne of anciensScores
-        ) {
-
-            const ancienScore =
-                Number(
-                    ligne.score
-                ) || 0;
-
-
-            if (
-                ancienScore >
-                meilleurOnline
-            ) {
-
-                meilleurOnline =
-                    ancienScore;
-
-            }
-
-        }
-
-
-        /*
-           CORRECTION PRINCIPALE :
-
-           Si le nouveau score est inférieur
-           ou égal au meilleur score online,
-           ON N'ENVOIE RIEN.
+           Si le serveur possède déjà
+           un score supérieur ou égal,
+           on n'envoie rien.
         */
 
         if (
-            score <=
-            meilleurOnline
+            anciensScores.length > 0 &&
+            Number(
+                anciensScores[0].score
+            ) >= nouveauScore
         ) {
-
-            console.log(
-                "Score non envoyé : il n'est pas meilleur."
-            );
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "💾 Ton score n'est pas meilleur que ton record online.";
 
             return;
 
@@ -1941,11 +1994,11 @@ async function envoyerScoreOnline() {
 
 
         /*
-           Nouveau record :
-           on l'ajoute.
+           Nouveau meilleur score :
+           on ajoute le score.
         */
 
-        const ajout =
+        const reponse =
             await fetch(
                 SUPABASE_URL +
                 "/rest/v1/scores",
@@ -1955,11 +2008,11 @@ async function envoyerScoreOnline() {
                     headers: {
 
                         "apikey":
-                            SUPABASE_KEY,
+                            SUPABASE_API_KEY,
 
                         "Authorization":
                             "Bearer " +
-                            SUPABASE_KEY,
+                            SUPABASE_API_KEY,
 
                         "Content-Type":
                             "application/json",
@@ -1973,32 +2026,26 @@ async function envoyerScoreOnline() {
                         JSON.stringify({
 
                             pseudo:
-                                pseudo,
+                                pseudoJoueur,
 
                             score:
-                                score
+                                nouveauScore
 
                         })
 
-                    }
-                );
+                }
+            );
 
 
         if (
-            !ajout.ok
+            !reponse.ok
         ) {
 
-            const erreur =
-                await ajout.text();
-
             console.error(
-                "Erreur Supabase :",
-                erreur
-            );
-
-            throw new Error(
                 "Impossible d'envoyer le score."
             );
+
+            return;
 
         }
 
@@ -2008,32 +2055,221 @@ async function envoyerScoreOnline() {
         );
 
 
-        document.getElementById(
-            "message"
-        ).textContent =
-            "🌍 Nouveau record envoyé au classement !";
-
-
-        /*
-           Actualiser le Top 10
-        */
-
         chargerClassement();
 
     }
 
-    catch (erreur) {
+    catch (
+        erreur
+    ) {
+
+        console.error(
+            "Erreur Supabase :",
+            erreur
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CLASSEMENT TOP 10
+===================================================== */
+
+async function chargerClassement() {
+
+    const liste =
+        document.getElementById(
+            "listeScores"
+        );
+
+
+    try {
+
+        const reponse =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/scores" +
+                "?select=pseudo,score" +
+                "&order=score.desc" +
+                "&limit=10",
+
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_API_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_API_KEY
+
+                    }
+
+                }
+
+            );
+
+
+        if (
+            !reponse.ok
+        ) {
+
+            throw new Error(
+                "Erreur Supabase"
+            );
+
+        }
+
+
+        const scores =
+            await reponse.json();
+
+
+        liste.innerHTML = "";
+
+
+        if (
+            scores.length === 0
+        ) {
+
+            liste.innerHTML = `
+
+                <tr>
+
+                    <td colspan="3">
+                        Aucun score pour le moment.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        scores.forEach(
+            function(
+                joueurScore,
+                index
+            ) {
+
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                let medaille = "";
+
+
+                if (
+                    index === 0
+                ) {
+
+                    medaille = "🥇";
+
+                }
+
+                else if (
+                    index === 1
+                ) {
+
+                    medaille = "🥈";
+
+                }
+
+                else if (
+                    index === 2
+                ) {
+
+                    medaille = "🥉";
+
+                }
+
+
+                ligne.innerHTML = `
+
+                    <td>
+                        ${medaille} ${index + 1}
+                    </td>
+
+                    <td>
+                        ${echapperHTML(
+                            joueurScore.pseudo
+                        )}
+                    </td>
+
+                    <td>
+                        ${Number(
+                            joueurScore.score
+                        )}
+                    </td>
+
+                `;
+
+
+                liste.appendChild(
+                    ligne
+                );
+
+            }
+        );
+
+    }
+
+    catch (
+        erreur
+    ) {
 
         console.error(
             erreur
         );
 
-        document.getElementById(
-            "message"
-        ).textContent =
-            "⚠️ Score non envoyé au classement online.";
+
+        liste.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+                    ❌ Impossible de charger le classement.
+                </td>
+
+            </tr>
+
+        `;
 
     }
+
+}
+
+
+/* =====================================================
+   SECURITE PSEUDO
+===================================================== */
+
+function echapperHTML(
+    texte
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        texte;
+
+
+    return div.innerHTML;
 
 }
 
@@ -2054,10 +2290,14 @@ function perdreVie() {
 
 
     creerExplosion(
+
         joueur.x +
         joueur.largeur / 2,
+
         joueur.y,
+
         2
+
     );
 
 
@@ -2083,9 +2323,9 @@ function perdreVie() {
     document.getElementById(
         "message"
     ).textContent =
-        "💥 Attention ! Il te reste "
-        + vies
-        + " vie(s).";
+        "💥 Attention ! Il te reste " +
+        vies +
+        " vie(s).";
 
 }
 
@@ -2138,9 +2378,9 @@ function niveauSuivant() {
         document.getElementById(
             "message"
         ).textContent =
-            "👹 BOSS ! Niveau "
-            + niveau
-            + " !";
+            "👹 BOSS ! Niveau " +
+            niveau +
+            " !";
 
     }
 
@@ -2152,66 +2392,11 @@ function niveauSuivant() {
         document.getElementById(
             "message"
         ).textContent =
-            "🚀 Niveau "
-            + niveau
-            + " !";
+            "🚀 Niveau " +
+            niveau +
+            " !";
 
     }
-
-}
-
-
-/* =====================================================
-   GAME OVER
-===================================================== */
-
-function terminerJeu() {
-
-    if (
-        jeuTermine
-    ) {
-
-        return;
-
-    }
-
-
-    jeuTermine =
-        true;
-
-
-    jeuCommence =
-        false;
-
-
-    niveauEnTransition =
-        false;
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "💀 GAME OVER ! Score : "
-        + score;
-
-
-    document.getElementById(
-        "boutonRejouer"
-    ).style.display =
-        "inline-block";
-
-
-    document.getElementById(
-        "boutonPause"
-    ).style.display =
-        "none";
-
-
-    /*
-       ENVOI ONLINE UNE SEULE FOIS
-    */
-
-    envoyerScoreOnline();
 
 }
 
@@ -2285,17 +2470,17 @@ function rejouer() {
     vies = 3;
 
 
-    jeuTermine =
-        false;
+    meilleurScoreAvantPartie =
+        meilleurScore;
 
-    jeuEnPause =
-        false;
 
-    jeuCommence =
-        true;
+    jeuTermine = false;
 
-    niveauEnTransition =
-        false;
+    jeuEnPause = false;
+
+    jeuCommence = true;
+
+    niveauEnTransition = false;
 
 
     balles = [];
@@ -2467,7 +2652,6 @@ function bougerEtoiles() {
 
             etoile.y = 0;
 
-
             etoile.x =
                 Math.random() *
                 canvas.width;
@@ -2480,7 +2664,7 @@ function bougerEtoiles() {
 
 
 /* =====================================================
-   DESSIN FOND
+   FOND
 ===================================================== */
 
 function dessinerFond() {
@@ -2490,10 +2674,15 @@ function dessinerFond() {
 
 
     contexte.fillRect(
+
         0,
+
         0,
+
         canvas.width,
+
         canvas.height
+
     );
 
 
@@ -2501,11 +2690,15 @@ function dessinerFond() {
         contexte.createRadialGradient(
 
             canvas.width / 2,
+
             canvas.height / 2,
+
             30,
 
             canvas.width / 2,
+
             canvas.height / 2,
+
             500
 
         );
@@ -2528,10 +2721,15 @@ function dessinerFond() {
 
 
     contexte.fillRect(
+
         0,
+
         0,
+
         canvas.width,
+
         canvas.height
+
     );
 
 
@@ -2545,14 +2743,18 @@ function dessinerFond() {
 
         contexte.globalAlpha =
             Math.random() *
-            0.5 + 0.5;
+            0.5 +
+            0.5;
 
 
         contexte.fillRect(
 
             etoile.x,
+
             etoile.y,
+
             etoile.taille,
+
             etoile.taille
 
         );
@@ -2605,9 +2807,12 @@ function dessinerJoueur() {
 
 
     contexte.lineTo(
+
         x,
+
         y +
         joueur.hauteur
+
     );
 
 
@@ -2623,6 +2828,7 @@ function dessinerJoueur() {
 
 
     contexte.closePath();
+
 
     contexte.fill();
 
@@ -2645,8 +2851,11 @@ function dessinerJoueur() {
 
 
     contexte.lineTo(
+
         x + 20,
+
         y + 20
+
     );
 
 
@@ -2662,6 +2871,7 @@ function dessinerJoueur() {
 
 
     contexte.closePath();
+
 
     contexte.fill();
 
@@ -2708,7 +2918,8 @@ function dessinerEnnemi(
 
 
     let couleur =
-        ennemi.type === "fort"
+        ennemi.type ===
+        "fort"
             ? "#ff1744"
             : "#a020f0";
 
@@ -2731,9 +2942,13 @@ function dessinerEnnemi(
     contexte.roundRect(
 
         x,
+
         y,
+
         ennemi.largeur,
+
         ennemi.hauteur,
+
         8
 
     );
@@ -2766,24 +2981,20 @@ function dessinerEnnemi(
 
 
     contexte.moveTo(
-
         x +
         ennemi.largeur -
         10,
 
         y
-
     );
 
 
     contexte.lineTo(
-
         x +
         ennemi.largeur -
         4,
 
         y - 10
-
     );
 
 
@@ -2795,10 +3006,15 @@ function dessinerEnnemi(
 
 
     contexte.fillRect(
+
         x + 9,
+
         y + 9,
+
         9,
+
         9
+
     );
 
 
@@ -2811,6 +3027,7 @@ function dessinerEnnemi(
         y + 9,
 
         9,
+
         9
 
     );
@@ -2821,10 +3038,15 @@ function dessinerEnnemi(
 
 
     contexte.fillRect(
+
         x + 12,
+
         y + 12,
+
         4,
+
         4
+
     );
 
 
@@ -2837,6 +3059,7 @@ function dessinerEnnemi(
         y + 12,
 
         4,
+
         4
 
     );
@@ -2886,9 +3109,13 @@ function dessinerBoss() {
     contexte.roundRect(
 
         x,
+
         y,
+
         boss.largeur,
+
         boss.hauteur,
+
         18
 
     );
@@ -2913,10 +3140,15 @@ function dessinerBoss() {
 
 
     contexte.fillRect(
+
         x + 35,
+
         y + 20,
+
         35,
+
         15
+
     );
 
 
@@ -2929,6 +3161,7 @@ function dessinerBoss() {
         y + 20,
 
         35,
+
         15
 
     );
@@ -2971,8 +3204,11 @@ function dessinerBoss() {
     contexte.fillRect(
 
         x,
+
         y - 15,
+
         boss.largeur,
+
         8
 
     );
@@ -2985,6 +3221,7 @@ function dessinerBoss() {
     contexte.fillRect(
 
         x,
+
         y - 15,
 
         boss.largeur *
@@ -3031,8 +3268,11 @@ function dessiner() {
         contexte.fillRect(
 
             balle.x,
+
             balle.y,
+
             balle.largeur,
+
             balle.hauteur
 
         );
@@ -3059,8 +3299,11 @@ function dessiner() {
         contexte.fillRect(
 
             balle.x,
+
             balle.y,
+
             balle.largeur,
+
             balle.hauteur
 
         );
@@ -3098,11 +3341,15 @@ function dessiner() {
             contexte.createRadialGradient(
 
                 explosion.x,
+
                 explosion.y,
+
                 0,
 
                 explosion.x,
+
                 explosion.y,
+
                 explosion.taille
 
             );
@@ -3142,9 +3389,13 @@ function dessiner() {
         contexte.arc(
 
             explosion.x,
+
             explosion.y,
+
             explosion.taille,
+
             0,
+
             Math.PI * 2
 
         );
@@ -3177,8 +3428,11 @@ function dessiner() {
         contexte.fillRect(
 
             p.x,
+
             p.y,
+
             p.taille,
+
             p.taille
 
         );
@@ -3241,7 +3495,8 @@ function boucle() {
 
             tirerEnnemi();
 
-            tempsTirEnnemi = 0;
+            tempsTirEnnemi =
+                0;
 
         }
 
@@ -3280,7 +3535,7 @@ function boucle() {
 
 
 /* =====================================================
-   CONTROLES MOBILE
+   BOUTONS MOBILE
 ===================================================== */
 
 function maintenirBouton(
@@ -3288,10 +3543,13 @@ function maintenirBouton(
     action
 ) {
 
-    let intervalle = null;
+    let intervalle =
+        null;
 
 
-    function commencer(event) {
+    function commencer(
+        event
+    ) {
 
         event.preventDefault();
 
@@ -3308,7 +3566,9 @@ function maintenirBouton(
     }
 
 
-    function arreter(event) {
+    function arreter(
+        event
+    ) {
 
         event.preventDefault();
 
@@ -3318,7 +3578,8 @@ function maintenirBouton(
         );
 
 
-        intervalle = null;
+        intervalle =
+            null;
 
     }
 
@@ -3393,7 +3654,8 @@ maintenirBouton(
 
 
         joueur.x -=
-            joueur.vitesse * 1.5;
+            joueur.vitesse *
+            1.5;
 
 
         if (
@@ -3432,7 +3694,8 @@ maintenirBouton(
 
 
         joueur.x +=
-            joueur.vitesse * 1.5;
+            joueur.vitesse *
+            1.5;
 
 
         if (
@@ -3466,7 +3729,9 @@ let tirDejaEffectue =
     false;
 
 
-function appuyerTir(event) {
+function appuyerTir(
+    event
+) {
 
     event.preventDefault();
 
@@ -3489,7 +3754,9 @@ function appuyerTir(event) {
 }
 
 
-function relacherTir(event) {
+function relacherTir(
+    event
+) {
 
     event.preventDefault();
 
@@ -3546,304 +3813,18 @@ boutonTirer.addEventListener(
 
 
 /* =====================================================
-   CLASSEMENT MONDIAL
-===================================================== */
-
-async function chargerClassement() {
-
-    const message =
-        document.getElementById(
-            "messageClassement"
-        );
-
-
-    const tableau =
-        document.getElementById(
-            "tableauScores"
-        );
-
-
-    message.textContent =
-        "⏳ Chargement...";
-
-
-    tableau.innerHTML =
-        "";
-
-
-    try {
-
-        /*
-           On récupère les scores.
-        */
-
-        const url =
-            SUPABASE_URL +
-            "/rest/v1/scores" +
-            "?select=pseudo,score" +
-            "&order=score.desc";
-
-
-        const reponse =
-            await fetch(
-                url,
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY
-
-                    }
-
-                }
-            );
-
-
-        if (
-            !reponse.ok
-        ) {
-
-            throw new Error(
-                "Erreur de lecture Supabase"
-            );
-
-        }
-
-
-        const donnees =
-            await reponse.json();
-
-
-        /*
-           IMPORTANT :
-
-           On élimine les doublons de pseudo
-           dans le classement.
-
-           Si un joueur a par exemple :
-
-           Evan 100
-           Evan 500
-           Evan 300
-
-           le classement ne gardera que :
-
-           Evan 500
-        */
-
-        const meilleursParPseudo =
-            {};
-
-
-        for (
-            const ligne of donnees
-        ) {
-
-            const nom =
-                String(
-                    ligne.pseudo || ""
-                ).trim();
-
-
-            const points =
-                Number(
-                    ligne.score
-                ) || 0;
-
-
-            if (!nom) {
-
-                continue;
-
-            }
-
-
-            if (
-                !meilleursParPseudo[nom] ||
-                points >
-                meilleursParPseudo[nom]
-            ) {
-
-                meilleursParPseudo[nom] =
-                    points;
-
-            }
-
-        }
-
-
-        /*
-           Transformer en tableau
-        */
-
-        const classement =
-            Object.entries(
-                meilleursParPseudo
-            ).map(
-                function([nom, points]) {
-
-                    return {
-
-                        pseudo:
-                            nom,
-
-                        score:
-                            points
-
-                    };
-
-                }
-            );
-
-
-        /*
-           Trier du meilleur
-           au moins bon.
-        */
-
-        classement.sort(
-            function(a, b) {
-
-                return b.score -
-                       a.score;
-
-            }
-        );
-
-
-        /*
-           Garder uniquement
-           les 10 meilleurs.
-        */
-
-        const top10 =
-            classement.slice(
-                0,
-                10
-            );
-
-
-        /*
-           Afficher
-        */
-
-        if (
-            top10.length === 0
-        ) {
-
-            message.textContent =
-                "🏆 Aucun score pour le moment.";
-
-            return;
-
-        }
-
-
-        message.textContent =
-            "🌍 Les 10 meilleurs joueurs";
-
-
-        top10.forEach(
-            function(joueurClassement, index) {
-
-                const ligne =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                const position =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                const nom =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                const points =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                position.textContent =
-                    index + 1;
-
-
-                nom.textContent =
-                    joueurClassement.pseudo;
-
-
-                points.textContent =
-                    joueurClassement.score;
-
-
-                ligne.appendChild(
-                    position
-                );
-
-
-                ligne.appendChild(
-                    nom
-                );
-
-
-                ligne.appendChild(
-                    points
-                );
-
-
-                tableau.appendChild(
-                    ligne
-                );
-
-            }
-        );
-
-
-    }
-
-    catch (erreur) {
-
-        console.error(
-            erreur
-        );
-
-
-        message.textContent =
-            "❌ Impossible de charger le classement.";
-
-    }
-
-}
-
-
-/* =====================================================
-   BOUTON ACTUALISER
-===================================================== */
-
-document.getElementById(
-    "boutonActualiser"
-).addEventListener(
-    "click",
-    chargerClassement
-);
-
-
-/* =====================================================
    DEMARRAGE
 ===================================================== */
+
+meilleurScoreAvantPartie =
+    meilleurScore;
+
+
+document.getElementById(
+    "meilleurScore"
+).textContent =
+    meilleurScore;
+
 
 creerEnnemis();
 
@@ -3851,15 +3832,10 @@ dessiner();
 
 boucle();
 
-
-/*
-   Charger le classement
-   dès l'ouverture de la page.
-*/
-
 chargerClassement();
 
 </script>
+
 
 </body>
 
