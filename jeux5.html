@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -16,17 +15,25 @@
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    
-
 </head>
 
 
-<body class="page-pong"></body>
-<script>
-    if (!localStorage.getItem("pseudoGameZone")) {
-        window.location.href = "index.html";
-    }
-</script>
+<body class="page-pong">
+
+
+    <!-- =========================
+         PROTECTION
+    ========================= -->
+
+    <script>
+
+        if (!localStorage.getItem("pseudoGameZone")) {
+
+            window.location.href = "index.html";
+
+        }
+
+    </script>
 
 
     <!-- =========================
@@ -173,7 +180,8 @@
 
         <button
             id="boutonRejouer"
-            onclick="rejouer()">
+            onclick="rejouer()"
+            style="display:none;">
 
             🔄 Rejouer
 
@@ -189,7 +197,9 @@
             id="controlesMobile">
 
 
-            <!-- JOUEUR 1 -->
+            <!-- =========================
+                 JOUEUR 1
+            ========================= -->
 
             <div class="controle-joueur1">
 
@@ -199,9 +209,13 @@
 
 
                 <button
+                    type="button"
                     ontouchstart="demarrerMonterJoueur1(event)"
                     ontouchend="arreterJoueur1(event)"
-                    ontouchcancel="arreterJoueur1(event)">
+                    ontouchcancel="arreterJoueur1(event)"
+                    onmousedown="demarrerMonterJoueur1(event)"
+                    onmouseup="arreterJoueur1(event)"
+                    onmouseleave="arreterJoueur1(event)">
 
                     ⬆️
 
@@ -209,9 +223,13 @@
 
 
                 <button
+                    type="button"
                     ontouchstart="demarrerDescendreJoueur1(event)"
                     ontouchend="arreterJoueur1(event)"
-                    ontouchcancel="arreterJoueur1(event)">
+                    ontouchcancel="arreterJoueur1(event)"
+                    onmousedown="demarrerDescendreJoueur1(event)"
+                    onmouseup="arreterJoueur1(event)"
+                    onmouseleave="arreterJoueur1(event)">
 
                     ⬇️
 
@@ -220,7 +238,9 @@
             </div>
 
 
-            <!-- JOUEUR 2 -->
+            <!-- =========================
+                 JOUEUR 2
+            ========================= -->
 
             <div
                 class="controle-joueur2"
@@ -232,9 +252,13 @@
 
 
                 <button
+                    type="button"
                     ontouchstart="demarrerMonterJoueur2(event)"
                     ontouchend="arreterJoueur2(event)"
-                    ontouchcancel="arreterJoueur2(event)">
+                    ontouchcancel="arreterJoueur2(event)"
+                    onmousedown="demarrerMonterJoueur2(event)"
+                    onmouseup="arreterJoueur2(event)"
+                    onmouseleave="arreterJoueur2(event)">
 
                     ⬆️
 
@@ -242,9 +266,13 @@
 
 
                 <button
+                    type="button"
                     ontouchstart="demarrerDescendreJoueur2(event)"
                     ontouchend="arreterJoueur2(event)"
-                    ontouchcancel="arreterJoueur2(event)">
+                    ontouchcancel="arreterJoueur2(event)"
+                    onmousedown="demarrerDescendreJoueur2(event)"
+                    onmouseup="arreterJoueur2(event)"
+                    onmouseleave="arreterJoueur2(event)">
 
                     ⬇️
 
@@ -281,8 +309,10 @@
             </h2>
 
             <p class="classement-info">
-                Seules les victoires en mode 🤖 1 Joueur
-                sont comptabilisées.
+
+                Seules les victoires en mode 🤖
+                1 Joueur sont comptabilisées.
+
             </p>
 
 
@@ -335,6 +365,7 @@
         const SUPABASE_URL =
             "https://pxgymcwpbesqyjochwgd.supabase.co";
 
+
         const SUPABASE_ANON_KEY =
             "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
@@ -371,15 +402,6 @@
 
         }
 
-        else {
-
-            document.getElementById(
-                "pseudoJoueur"
-            ).textContent =
-                "Aucun pseudo";
-
-        }
-
 
         /* =====================================================
            CANVAS
@@ -387,6 +409,7 @@
 
         const canvas =
             document.getElementById("pong");
+
 
         const contexte =
             canvas.getContext("2d");
@@ -545,13 +568,19 @@
 
         function demarrerMonterJoueur1(event) {
 
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
 
             arreterJoueur1();
 
 
             mouvementJoueur1 =
                 setInterval(function() {
+
+                    if (!jeuCommence || jeuTermine) {
+                        return;
+                    }
 
                     joueur1.y -=
                         joueur1.vitesse * 1.5;
@@ -565,13 +594,19 @@
 
         function demarrerDescendreJoueur1(event) {
 
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
 
             arreterJoueur1();
 
 
             mouvementJoueur1 =
                 setInterval(function() {
+
+                    if (!jeuCommence || jeuTermine) {
+                        return;
+                    }
 
                     joueur1.y +=
                         joueur1.vitesse * 1.5;
@@ -600,13 +635,19 @@
 
         function demarrerMonterJoueur2(event) {
 
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
 
             arreterJoueur2();
 
 
             mouvementJoueur2 =
                 setInterval(function() {
+
+                    if (!jeuCommence || jeuTermine) {
+                        return;
+                    }
 
                     joueur2.y -=
                         joueur2.vitesse * 1.5;
@@ -620,13 +661,19 @@
 
         function demarrerDescendreJoueur2(event) {
 
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
 
             arreterJoueur2();
 
 
             mouvementJoueur2 =
                 setInterval(function() {
+
+                    if (!jeuCommence || jeuTermine) {
+                        return;
+                    }
 
                     joueur2.y +=
                         joueur2.vitesse * 1.5;
@@ -846,45 +893,52 @@
 
         function ordinateur() {
 
-    if (mode !== 1) {
-        return;
-    }
+            if (mode !== 1) {
+                return;
+            }
 
-    let centreRaquette =
-        joueur2.y + joueur2.hauteur / 2;
 
-    /*
-       L'ordinateur ne suit la balle
-       que lorsqu'elle se rapproche.
-    */
+            const centreRaquette =
+                joueur2.y +
+                joueur2.hauteur / 2;
 
-    if (balle.vitesseX > 0) {
 
-        if (centreRaquette < balle.y - 30) {
+            if (balle.vitesseX > 0) {
 
-            joueur2.y += joueur2.vitesse * 0.55;
+                if (
+                    centreRaquette <
+                    balle.y - 30
+                ) {
+
+                    joueur2.y +=
+                        joueur2.vitesse * 0.55;
+
+                }
+
+
+                if (
+                    centreRaquette >
+                    balle.y + 30
+                ) {
+
+                    joueur2.y -=
+                        joueur2.vitesse * 0.55;
+
+                }
+
+            }
+
+
+            limiterRaquette(joueur2);
 
         }
 
-        if (centreRaquette > balle.y + 30) {
-
-            joueur2.y -= joueur2.vitesse * 0.55;
-
-        }
-
-    }
-
-    limiterRaquette(joueur2);
-
-}
 
         /* =====================================================
            LIMITER RAQUETTE
         ===================================================== */
 
-        function limiterRaquette(
-            raquette
-        ) {
+        function limiterRaquette(raquette) {
 
             if (raquette.y < 0) {
 
@@ -916,6 +970,7 @@
 
             balle.x =
                 canvas.width / 2;
+
 
             balle.y =
                 canvas.height / 2;
@@ -991,9 +1046,7 @@
            COLLISION RAQUETTE
         ===================================================== */
 
-        function collisionRaquette(
-            raquette
-        ) {
+        function collisionRaquette(raquette) {
 
             return (
 
@@ -1031,7 +1084,7 @@
 
 
         /* =====================================================
-           MISE À JOUR
+           MISE A JOUR
         ===================================================== */
 
         function mettreAJour() {
@@ -1053,6 +1106,7 @@
 
             balle.x +=
                 balle.vitesseX;
+
 
             balle.y +=
                 balle.vitesseY;
@@ -1213,7 +1267,7 @@
         function verifierVictoire() {
 
             /* =========================
-               JOUEUR 1 GAGNE
+               JOUEUR 1
             ========================= */
 
             if (score1 >= 5) {
@@ -1238,11 +1292,6 @@
                 arreterJoueur2();
 
 
-                /* =========================
-                   CLASSEMENT UNIQUEMENT
-                   CONTRE ORDINATEUR
-                ========================= */
-
                 if (
                     mode === 1 &&
                     !victoireEnregistree
@@ -1258,7 +1307,7 @@
 
 
             /* =========================
-               JOUEUR 2 / ORDI GAGNE
+               JOUEUR 2 / ORDI
             ========================= */
 
             if (score2 >= 5) {
@@ -1301,7 +1350,7 @@
 
 
         /* =====================================================
-           ENREGISTRER UNE VICTOIRE
+           ENREGISTRER VICTOIRE
         ===================================================== */
 
         async function enregistrerVictoire() {
@@ -1314,21 +1363,12 @@
 
             if (!pseudoActuel) {
 
-                document.getElementById(
-                    "message"
-                ).textContent +=
-                    " ⚠️ Aucun pseudo trouvé.";
-
                 return;
 
             }
 
 
             try {
-
-                /* =========================
-                   CHERCHER LE JOUEUR
-                ========================= */
 
                 const {
                     data,
@@ -1358,7 +1398,7 @@
                 if (error) {
 
                     console.error(
-                        "Erreur recherche victoire :",
+                        "Erreur recherche :",
                         error
                     );
 
@@ -1368,7 +1408,7 @@
 
 
                 /* =========================
-                   EXISTE DEJA
+                   SCORE EXISTANT
                 ========================= */
 
                 if (
@@ -1415,7 +1455,7 @@
                     if (erreurUpdate) {
 
                         console.error(
-                            "Erreur ajout victoire :",
+                            "Erreur update :",
                             erreurUpdate
                         );
 
@@ -1461,7 +1501,7 @@
                     if (erreurInsertion) {
 
                         console.error(
-                            "Erreur première victoire :",
+                            "Erreur insertion :",
                             erreurInsertion
                         );
 
@@ -1472,19 +1512,14 @@
                 }
 
 
-                /* =========================
-                   ACTUALISER CLASSEMENT
-                ========================= */
-
-                chargerClassement();
-
+                await chargerClassement();
 
             }
 
             catch (erreur) {
 
                 console.error(
-                    "Erreur enregistrement victoire :",
+                    "Erreur enregistrement :",
                     erreur
                 );
 
@@ -1561,10 +1596,6 @@
                 }
 
 
-                /* =========================
-                   AUCUNE VICTOIRE
-                ========================= */
-
                 if (
                     !data ||
                     data.length === 0
@@ -1589,10 +1620,6 @@
 
                 }
 
-
-                /* =========================
-                   AFFICHER
-                ========================= */
 
                 tbody.innerHTML = "";
 
@@ -1778,6 +1805,7 @@
             contexte.fillStyle =
                 "black";
 
+
             contexte.fillRect(
                 0,
                 0,
@@ -1793,7 +1821,9 @@
             contexte.strokeStyle =
                 "#333";
 
+
             contexte.lineWidth = 3;
+
 
             contexte.setLineDash(
                 [10, 10]
@@ -1802,17 +1832,21 @@
 
             contexte.beginPath();
 
+
             contexte.moveTo(
                 canvas.width / 2,
                 0
             );
+
 
             contexte.lineTo(
                 canvas.width / 2,
                 canvas.height
             );
 
+
             contexte.stroke();
+
 
             contexte.setLineDash([]);
 
@@ -1823,6 +1857,7 @@
 
             contexte.fillStyle =
                 "#00aaff";
+
 
             contexte.fillRect(
 
@@ -1844,6 +1879,7 @@
             contexte.fillStyle =
                 "#ff4444";
 
+
             contexte.fillRect(
 
                 joueur2.x,
@@ -1863,6 +1899,7 @@
 
             contexte.beginPath();
 
+
             contexte.arc(
 
                 balle.x,
@@ -1881,7 +1918,9 @@
             contexte.fillStyle =
                 "white";
 
+
             contexte.fill();
+
 
             contexte.closePath();
 
@@ -1917,7 +1956,7 @@
 
     </script>
 
+
 </body>
 
 </html>
-

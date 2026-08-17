@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -13,1100 +12,1396 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    
 
 </head>
 
 
 <body class="page-jeu">
-    <script>
-    if (!localStorage.getItem("pseudoGameZone")) {
-        window.location.href = "index.html";
-    }
+
+
+<!-- =====================================================
+     PROTECTION
+===================================================== -->
+
+<script>
+
+if (!localStorage.getItem("pseudoGameZone")) {
+
+    window.location.href = "index.html";
+
+}
+
 </script>
 
 
-    <!-- =========================
-         MENU
-    ========================= -->
+<!-- =====================================================
+     MENU
+===================================================== -->
 
-    <nav>
+<nav>
 
-        <a href="index.html">
-            🏠 Accueil
-        </a>
+    <a href="index.html">
+        🏠 Accueil
+    </a>
 
-        <a href="liste-jeux.html">
-            🎮 Jeux
-        </a>
+    <a href="liste-jeux.html">
+        🎮 Jeux
+    </a>
 
-    </nav>
-
-
-    <!-- =========================
-         PAGE
-    ========================= -->
-
-    <main class="page-pfc">
-
-        <h1>
-            ✂️ Pierre Feuille Ciseaux
-        </h1>
+</nav>
 
 
-        <a
-            href="liste-jeux.html"
-            class="retour-jeux">
+<!-- =====================================================
+     JEU
+===================================================== -->
 
-            ⬅️ Retour aux jeux
-
-        </a>
+<main class="page-pfc">
 
 
-        <!-- =========================
-             PSEUDO
-        ========================= -->
+    <h1>
+        ✊ Pierre Feuille Ciseaux ✂️
+    </h1>
 
-        <div
-            class="pseudo-connecte"
-            id="pseudoConnecte">
 
-            👤 Chargement du pseudo...
+    <a
+        href="liste-jeux.html"
+        class="retour-jeux">
+
+        ⬅️ Retour aux jeux
+
+    </a>
+
+
+    <!-- =================================================
+         JOUEUR
+    ================================================= -->
+
+    <p>
+
+        👤 Joueur :
+
+        <strong id="pseudoJoueur">
+            Chargement...
+        </strong>
+
+    </p>
+
+
+    <!-- =================================================
+         SCORE
+    ================================================= -->
+
+    <div class="scores">
+
+
+        <div>
+
+            👤 Toi :
+
+            <strong>
+                <span id="scoreJoueur">
+                    0
+                </span>
+            </strong>
 
         </div>
 
 
-        <!-- =========================
-             JEU
-        ========================= -->
+        <div>
 
-        <div class="jeu-pfc">
+            🤖 Ordinateur :
 
-            <h2>
-                Premier à 5 gagne 🏆
-            </h2>
-
-
-            <!-- BOUTONS -->
-
-            <div class="boutons-pfc">
-
-                <button
-                    id="boutonPierre"
-                    onclick="jouer('pierre')">
-
-                    🪨 Pierre
-
-                </button>
-
-
-                <button
-                    id="boutonFeuille"
-                    onclick="jouer('feuille')">
-
-                    📄 Feuille
-
-                </button>
-
-
-                <button
-                    id="boutonCiseaux"
-                    onclick="jouer('ciseaux')">
-
-                    ✂️ Ciseaux
-
-                </button>
-
-            </div>
-
-
-            <!-- CHOIX -->
-
-            <p
-                id="choixJoueur"
-                class="choix">
-
-                🧑 Toi : -
-
-            </p>
-
-
-            <p
-                id="choixOrdinateur"
-                class="choix">
-
-                🤖 Ordinateur : -
-
-            </p>
-
-
-            <!-- SCORE -->
-
-            <div class="score">
-
-                <p>
-
-                    🧑 Toi :
-                    <span id="scoreJoueur">0</span>
-
-                </p>
-
-
-                <p>
-
-                    🤖 Ordinateur :
-                    <span id="scoreOrdinateur">0</span>
-
-                </p>
-
-            </div>
-
-
-            <!-- RESULTAT -->
-
-            <p id="resultat"></p>
-
-
-            <!-- REJOUER -->
-
-            <button
-                id="boutonRejouer"
-                onclick="rejouer()">
-
-                🔄 Rejouer
-
-            </button>
-
-
-            <!-- HISTORIQUE -->
-
-            <div class="historique-container">
-
-                <h3>
-                    📜 Historique
-                </h3>
-
-                <ul id="historique"></ul>
-
-            </div>
+            <strong>
+                <span id="scoreOrdinateur">
+                    0
+                </span>
+            </strong>
 
         </div>
 
 
-        <!-- =========================
-             CLASSEMENT
-        ========================= -->
+        <div>
 
-        <div class="classement">
+            🏆 Meilleur score :
 
-            <h2>
-                🌍 🏆 TOP 10 MONDIAL
-            </h2>
-
-            <p>
-                ✂️ Pierre Feuille Ciseaux
-            </p>
-
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>👤 Pseudo</th>
-
-                        <th>🏆 Victoires</th>
-
-                        <th>📅 Date</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="tableauClassement">
-
-                    <tr>
-
-                        <td colspan="4">
-                            Chargement...
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-
-            <p id="messageClassement"></p>
+            <strong>
+                <span id="meilleurScore">
+                    0
+                </span>
+            </strong>
 
         </div>
 
 
-    </main>
+    </div>
 
 
-    <script>
+    <p>
 
-        /* ==================================================
-           SUPABASE
-        ================================================== */
+        🎯 Premier à <strong>5 points</strong> gagne !
 
-        const SUPABASE_URL =
-            "https://pxgymcwpbesqyjochwgd.supabase.co";
+    </p>
 
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
+    <!-- =================================================
+         CHOIX
+    ================================================= -->
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+    <div class="choix-pfc">
 
 
-        /* ==================================================
-           IDENTIFIANT DU JEU
-        ================================================== */
+        <button
+            class="bouton"
+            onclick="jouer('pierre')">
 
-        const JEU = "jeux3";
+            ✊ Pierre
 
+        </button>
 
-        /* ==================================================
-           PSEUDO DU JOUEUR
-        ================================================== */
 
-        const pseudo =
-    localStorage.getItem("pseudoGameZone");
+        <button
+            class="bouton"
+            onclick="jouer('feuille')">
 
-        if (pseudo) {
+            📄 Feuille
 
-            document.getElementById(
-                "pseudoConnecte"
-            ).textContent =
-                "👤 Joueur : " + pseudo;
+        </button>
 
-        }
 
-        else {
+        <button
+            class="bouton"
+            onclick="jouer('ciseaux')">
 
-            document.getElementById(
-                "pseudoConnecte"
-            ).textContent =
-                "❌ Aucun pseudo trouvé sur le site.";
+            ✂️ Ciseaux
 
-        }
+        </button>
 
 
-        /* ==================================================
-           VARIABLES
-        ================================================== */
+    </div>
 
-        let scoreJoueur = 0;
 
-        let scoreOrdinateur = 0;
+    <!-- =================================================
+         RESULTAT
+    ================================================= -->
 
-        let partieTerminee = false;
+    <div class="resultat-pfc">
 
 
-        /* ==================================================
-           BOUTONS
-        ================================================== */
+        <p id="choixJoueur">
 
-        function activerBoutons() {
+            👤 Ton choix : -
 
-            document.getElementById(
-                "boutonPierre"
-            ).disabled = false;
+        </p>
 
-            document.getElementById(
-                "boutonFeuille"
-            ).disabled = false;
 
-            document.getElementById(
-                "boutonCiseaux"
-            ).disabled = false;
+        <p id="choixOrdinateur">
 
-        }
+            🤖 Choix ordinateur : -
 
+        </p>
 
-        function desactiverBoutons() {
 
-            document.getElementById(
-                "boutonPierre"
-            ).disabled = true;
+        <p id="message">
 
-            document.getElementById(
-                "boutonFeuille"
-            ).disabled = true;
+            Choisis ton coup !
 
-            document.getElementById(
-                "boutonCiseaux"
-            ).disabled = true;
+        </p>
 
-        }
 
+    </div>
 
-        /* ==================================================
-           JOUER
-        ================================================== */
 
-        function jouer(choixJoueur) {
+    <!-- =================================================
+         REJOUER
+    ================================================= -->
 
+    <button
 
-            if (partieTerminee) {
+        id="boutonRejouer"
 
-                return;
+        class="bouton"
 
-            }
+        onclick="nouvellePartie()"
 
+        style="display:none;">
 
-            const choix = [
-                "pierre",
-                "feuille",
-                "ciseaux"
-            ];
+        🔄 Nouvelle partie
 
+    </button>
 
-            const choixOrdinateur =
-                choix[
-                    Math.floor(
-                        Math.random() * 3
-                    )
-                ];
 
+    <!-- =================================================
+         ENREGISTREMENT
+    ================================================= -->
 
-            const emojis = {
+    <section
+        id="zoneEnregistrement"
+        style="display:none;">
 
-                pierre: "🪨 Pierre",
 
-                feuille: "📄 Feuille",
+        <h2>
 
-                ciseaux: "✂️ Ciseaux"
+            🏆 Partie terminée !
 
-            };
+        </h2>
 
 
-            document.getElementById(
-                "choixJoueur"
-            ).textContent =
-                "🧑 Toi : " +
-                emojis[choixJoueur];
+        <p>
 
+            Ton score :
 
-            document.getElementById(
-                "choixOrdinateur"
-            ).textContent =
-                "🤖 Ordinateur : " +
-                emojis[choixOrdinateur];
+            <strong>
 
+                <span id="scoreFinal">
+                    0
+                </span>
 
-            let resultat;
+            </strong>
 
+            points
 
-            /* =========================
-               EGALITE
-            ========================= */
+        </p>
 
-            if (
-                choixJoueur === choixOrdinateur
-            ) {
 
-                resultat =
-                    "🤝 Égalité !";
+        <button
 
-            }
+            class="bouton"
 
+            onclick="enregistrerMeilleurScore()">
 
-            /* =========================
-               JOUEUR GAGNE
-            ========================= */
+            💾 Enregistrer le score
 
-            else if (
+        </button>
 
-                (
-                    choixJoueur === "pierre" &&
-                    choixOrdinateur === "ciseaux"
-                )
 
-                ||
+        <p id="messageEnregistrement"></p>
 
-                (
-                    choixJoueur === "feuille" &&
-                    choixOrdinateur === "pierre"
-                )
 
-                ||
+    </section>
 
-                (
-                    choixJoueur === "ciseaux" &&
-                    choixOrdinateur === "feuille"
-                )
 
-            ) {
+    <!-- =================================================
+         CLASSEMENT
+    ================================================= -->
 
-                scoreJoueur++;
+    <section class="classement">
 
-                resultat =
-                    "🎉 Tu as gagné la manche !";
 
-            }
+        <h2>
 
+            🌍 🏆 TOP 10 MONDIAL
 
-            /* =========================
-               ORDINATEUR GAGNE
-            ========================= */
+            <br>
 
-            else {
+            ✊ Pierre Feuille Ciseaux ✂️
 
-                scoreOrdinateur++;
+        </h2>
 
-                resultat =
-                    "😢 Tu as perdu la manche !";
 
-            }
+        <table>
 
 
-            /* =========================
-               AFFICHER SCORE
-            ========================= */
+            <thead>
 
-            document.getElementById(
-                "scoreJoueur"
-            ).textContent =
+                <tr>
+
+                    <th>
+                        #
+                    </th>
+
+                    <th>
+                        👤 Pseudo
+                    </th>
+
+                    <th>
+                        🎯 Score
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="classementBody">
+
+                <tr>
+
+                    <td colspan="3">
+
+                        ⏳ Chargement...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+
+        </table>
+
+
+        <p id="messageClassement"></p>
+
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+
+        SUPABASE_URL,
+
+        SUPABASE_ANON_KEY
+
+    );
+
+
+/* =====================================================
+   IDENTIFICATION DU JEU
+===================================================== */
+
+const JEU = "jeux3";
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const pseudoJoueur =
+    document.getElementById(
+        "pseudoJoueur"
+    );
+
+
+const scoreJoueurElement =
+    document.getElementById(
+        "scoreJoueur"
+    );
+
+
+const scoreOrdinateurElement =
+    document.getElementById(
+        "scoreOrdinateur"
+    );
+
+
+const meilleurScoreElement =
+    document.getElementById(
+        "meilleurScore"
+    );
+
+
+const choixJoueurElement =
+    document.getElementById(
+        "choixJoueur"
+    );
+
+
+const choixOrdinateurElement =
+    document.getElementById(
+        "choixOrdinateur"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const boutonRejouer =
+    document.getElementById(
+        "boutonRejouer"
+    );
+
+
+const zoneEnregistrement =
+    document.getElementById(
+        "zoneEnregistrement"
+    );
+
+
+const scoreFinal =
+    document.getElementById(
+        "scoreFinal"
+    );
+
+
+const messageEnregistrement =
+    document.getElementById(
+        "messageEnregistrement"
+    );
+
+
+const classementBody =
+    document.getElementById(
+        "classementBody"
+    );
+
+
+const messageClassement =
+    document.getElementById(
+        "messageClassement"
+    );
+
+
+/* =====================================================
+   PSEUDO
+===================================================== */
+
+const pseudo =
+    localStorage.getItem(
+        "pseudoGameZone"
+    );
+
+
+if (pseudo) {
+
+    pseudoJoueur.textContent =
+        pseudo;
+
+}
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let scoreJoueur = 0;
+
+let scoreOrdinateur = 0;
+
+let meilleurScore =
+    Number(
+        localStorage.getItem(
+            "meilleurScoreJeux3"
+        )
+    ) || 0;
+
+let partieTerminee = false;
+
+let scoreEnregistre = false;
+
+
+/* =====================================================
+   AFFICHAGE
+===================================================== */
+
+scoreJoueurElement.textContent =
+    scoreJoueur;
+
+
+scoreOrdinateurElement.textContent =
+    scoreOrdinateur;
+
+
+meilleurScoreElement.textContent =
+    meilleurScore;
+
+
+/* =====================================================
+   CHOIX DE L'ORDINATEUR
+===================================================== */
+
+function choixOrdinateur() {
+
+    const choix = [
+
+        "pierre",
+
+        "feuille",
+
+        "ciseaux"
+
+    ];
+
+
+    const hasard =
+        Math.floor(
+            Math.random() *
+            choix.length
+        );
+
+
+    return choix[hasard];
+
+}
+
+
+/* =====================================================
+   TRADUCTION DES CHOIX
+===================================================== */
+
+function afficherChoix(choix) {
+
+    if (choix === "pierre") {
+
+        return "✊ Pierre";
+
+    }
+
+
+    if (choix === "feuille") {
+
+        return "📄 Feuille";
+
+    }
+
+
+    if (choix === "ciseaux") {
+
+        return "✂️ Ciseaux";
+
+    }
+
+
+    return "-";
+
+}
+
+
+/* =====================================================
+   JOUER
+===================================================== */
+
+function jouer(choix) {
+
+
+    if (partieTerminee) {
+
+        return;
+
+    }
+
+
+    const ordinateur =
+        choixOrdinateur();
+
+
+    choixJoueurElement.textContent =
+
+        "👤 Ton choix : " +
+
+        afficherChoix(choix);
+
+
+    choixOrdinateurElement.textContent =
+
+        "🤖 Choix ordinateur : " +
+
+        afficherChoix(ordinateur);
+
+
+    /* =================================================
+       ÉGALITÉ
+    ================================================= */
+
+    if (choix === ordinateur) {
+
+        message.textContent =
+            "🤝 Égalité !";
+
+    }
+
+
+    /* =================================================
+       JOUEUR GAGNE
+    ================================================= */
+
+    else if (
+
+        (choix === "pierre" &&
+            ordinateur === "ciseaux")
+
+        ||
+
+        (choix === "feuille" &&
+            ordinateur === "pierre")
+
+        ||
+
+        (choix === "ciseaux" &&
+            ordinateur === "feuille")
+
+    ) {
+
+
+        scoreJoueur++;
+
+
+        scoreJoueurElement.textContent =
+            scoreJoueur;
+
+
+        message.textContent =
+            "🎉 Tu gagnes le point !";
+
+
+        /*
+           Nouveau meilleur score
+        */
+
+        if (
+            scoreJoueur > meilleurScore
+        ) {
+
+            meilleurScore =
                 scoreJoueur;
 
 
-            document.getElementById(
-                "scoreOrdinateur"
-            ).textContent =
-                scoreOrdinateur;
+            meilleurScoreElement.textContent =
+                meilleurScore;
 
 
-            document.getElementById(
-                "resultat"
-            ).textContent =
-                resultat;
+            localStorage.setItem(
+
+                "meilleurScoreJeux3",
+
+                meilleurScore
+
+            );
+
+        }
+
+    }
 
 
-            /* =========================
-               HISTORIQUE
-            ========================= */
+    /* =================================================
+       ORDINATEUR GAGNE
+    ================================================= */
 
-            const ligne =
-                document.createElement("li");
-
-
-            ligne.textContent =
-                emojis[choixJoueur]
-                + " vs "
-                + emojis[choixOrdinateur]
-                + " → "
-                + resultat;
+    else {
 
 
-            document.getElementById(
-                "historique"
-            ).appendChild(ligne);
+        scoreOrdinateur++;
 
 
-            /* =========================
-               VICTOIRE
-            ========================= */
+        scoreOrdinateurElement.textContent =
+            scoreOrdinateur;
 
-            if (scoreJoueur >= 5) {
 
-                terminerPartie(
-                    true
-                );
+        message.textContent =
+            "🤖 L'ordinateur gagne le point !";
 
-            }
+    }
 
-            else if (
-                scoreOrdinateur >= 5
-            ) {
 
-                terminerPartie(
-                    false
-                );
+    /* =================================================
+       FIN DE PARTIE
+    ================================================= */
 
-            }
+    if (
+        scoreJoueur >= 5
+    ) {
+
+        terminerPartie(true);
+
+        return;
+
+    }
+
+
+    if (
+        scoreOrdinateur >= 5
+    ) {
+
+        terminerPartie(false);
+
+        return;
+
+    }
+
+}
+
+
+/* =====================================================
+   FIN DE PARTIE
+===================================================== */
+
+function terminerPartie(joueurGagne) {
+
+
+    partieTerminee =
+        true;
+
+
+    boutonRejouer.style.display =
+        "inline-block";
+
+
+    zoneEnregistrement.style.display =
+        "block";
+
+
+    scoreFinal.textContent =
+        scoreJoueur;
+
+
+    if (joueurGagne) {
+
+        message.textContent =
+
+            "🏆 BRAVO ! Tu as gagné la partie !";
+
+
+        /*
+           Enregistrer le meilleur score
+           automatiquement dans le localStorage.
+        */
+
+        if (
+            scoreJoueur > meilleurScore
+        ) {
+
+            meilleurScore =
+                scoreJoueur;
+
+
+            meilleurScoreElement.textContent =
+                meilleurScore;
+
+
+            localStorage.setItem(
+
+                "meilleurScoreJeux3",
+
+                meilleurScore
+
+            );
+
+        }
+
+    }
+
+    else {
+
+        message.textContent =
+
+            "💀 Tu as perdu la partie !";
+
+    }
+
+}
+
+
+/* =====================================================
+   NOUVELLE PARTIE
+===================================================== */
+
+function nouvellePartie() {
+
+
+    scoreJoueur =
+        0;
+
+
+    scoreOrdinateur =
+        0;
+
+
+    partieTerminee =
+        false;
+
+
+    scoreEnregistre =
+        false;
+
+
+    scoreJoueurElement.textContent =
+        "0";
+
+
+    scoreOrdinateurElement.textContent =
+        "0";
+
+
+    choixJoueurElement.textContent =
+        "👤 Ton choix : -";
+
+
+    choixOrdinateurElement.textContent =
+        "🤖 Choix ordinateur : -";
+
+
+    message.textContent =
+        "🎮 Nouvelle partie !";
+
+
+    boutonRejouer.style.display =
+        "none";
+
+
+    zoneEnregistrement.style.display =
+        "none";
+
+
+    messageEnregistrement.textContent =
+        "";
+
+}
+
+
+/* =====================================================
+   ENREGISTRER LE SCORE
+===================================================== */
+
+async function enregistrerMeilleurScore() {
+
+
+    if (!pseudo) {
+
+        messageEnregistrement.textContent =
+            "❌ Aucun pseudo trouvé.";
+
+        return;
+
+    }
+
+
+    if (scoreJoueur <= 0) {
+
+        messageEnregistrement.textContent =
+            "⚠️ Ton score doit être supérieur à 0.";
+
+        return;
+
+    }
+
+
+    if (scoreEnregistre) {
+
+        messageEnregistrement.textContent =
+            "ℹ️ Ce score a déjà été enregistré.";
+
+        return;
+
+    }
+
+
+    scoreEnregistre =
+        true;
+
+
+    messageEnregistrement.textContent =
+        "⏳ Enregistrement...";
+
+
+    try {
+
+
+        /* =================================================
+           RECHERCHER LE SCORE
+        ================================================= */
+
+        const {
+
+            data: anciensScores,
+
+            error: erreurRecherche
+
+        } =
+
+            await supabaseClient
+
+                .from("scores")
+
+                .select(
+                    "id,pseudo,score,jeu"
+                )
+
+                .eq(
+                    "pseudo",
+                    pseudo
+                )
+
+                .eq(
+                    "jeu",
+                    JEU
+                )
+
+                .limit(1);
+
+
+        if (erreurRecherche) {
+
+            console.error(
+                erreurRecherche
+            );
+
+
+            scoreEnregistre =
+                false;
+
+
+            throw new Error(
+                "Recherche impossible."
+            );
 
         }
 
 
-        /* ==================================================
-           TERMINER PARTIE
-        ================================================== */
+        /* =================================================
+           SCORE EXISTANT
+        ================================================= */
 
-        async function terminerPartie(
-            victoire
+        if (
+
+            anciensScores &&
+
+            anciensScores.length > 0
+
         ) {
 
-            partieTerminee = true;
 
-            desactiverBoutons();
-
-
-            if (victoire) {
-
-                document.getElementById(
-                    "resultat"
-                ).textContent =
-                    "🏆 TU AS GAGNÉ LA PARTIE !";
+            const ancienScore =
+                Number(
+                    anciensScores[0].score
+                );
 
 
-                await enregistrerVictoire();
+            if (
+
+                scoreJoueur >
+                ancienScore
+
+            ) {
+
+
+                const id =
+                    anciensScores[0].id;
+
+
+                const {
+
+                    error: erreurUpdate
+
+                } =
+
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .update({
+
+                            score:
+                                scoreJoueur,
+
+                            date_creation:
+                                new Date()
+                                    .toISOString()
+
+                        })
+
+                        .eq(
+                            "id",
+                            id
+                        );
+
+
+                if (erreurUpdate) {
+
+                    console.error(
+                        erreurUpdate
+                    );
+
+
+                    scoreEnregistre =
+                        false;
+
+
+                    throw new Error(
+                        "Modification impossible."
+                    );
+
+                }
+
+
+                messageEnregistrement.textContent =
+
+                    "🏆 Nouveau record enregistré !";
 
             }
 
             else {
 
-                document.getElementById(
-                    "resultat"
-                ).textContent =
-                    "🤖 L'ORDINATEUR A GAGNÉ !";
+                messageEnregistrement.textContent =
+
+                    "ℹ️ Ton ancien score est meilleur ou égal.";
 
             }
-
-
-            document.getElementById(
-                "boutonRejouer"
-            ).style.display =
-                "inline-block";
 
         }
 
 
-        /* ==================================================
-           ENREGISTRER LA VICTOIRE
-        ================================================== */
+        /* =================================================
+           PREMIER SCORE
+        ================================================= */
 
-        async function enregistrerVictoire() {
+        else {
 
 
-            if (!pseudo) {
+            const {
 
-                document.getElementById(
-                    "messageClassement"
-                ).textContent =
-                    "❌ Aucun pseudo trouvé sur le site.";
+                error: erreurInsertion
 
-                return;
+            } =
 
-            }
+                await supabaseClient
 
+                    .from("scores")
 
-            document.getElementById(
-                "messageClassement"
-            ).textContent =
-                "⏳ Enregistrement de la victoire...";
+                    .insert({
 
+                        pseudo:
+                            pseudo,
 
-            try {
+                        score:
+                            scoreJoueur,
 
-                /*
-                 * On cherche si le joueur possède
-                 * déjà une ligne pour jeux3.
-                 */
+                        jeu:
+                            JEU,
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
+                        date_creation:
+                            new Date()
+                                .toISOString()
 
-                        .from("scores")
+                    });
 
-                        .select(
-                            "pseudo,score,jeu"
-                        )
 
-                        .eq(
-                            "pseudo",
-                            pseudo
-                        )
-
-                        .eq(
-                            "jeu",
-                            JEU
-                        )
-                        .limit(1);
-
-
-                if (error) {
-
-                    console.error(
-                        "Erreur recherche :",
-                        error
-                    );
-
-                    document.getElementById(
-                        "messageClassement"
-                    ).textContent =
-                        "❌ Impossible de récupérer ton score.";
-
-                    return;
-
-                }
-
-
-                /* =========================
-                   SCORE EXISTANT
-                ========================= */
-
-                if (
-                    data &&
-                    data.length > 0
-                ) {
-
-                    const nouveauScore =
-                        Number(
-                            data[0].score
-                        ) + 1;
-
-
-                    const {
-                        error:
-                            erreurUpdate
-                    } =
-                        await supabaseClient
-
-                            .from("scores")
-
-                            .update({
-
-                                score:
-                                    nouveauScore,
-
-                                date_creation:
-                                    new Date()
-                                        .toISOString()
-
-                            })
-
-                            .eq(
-                                "pseudo",
-                                pseudo
-                            )
-
-                            .eq(
-                                "jeu",
-                                JEU
-                            );
-
-
-                    if (erreurUpdate) {
-
-                        console.error(
-                            "Erreur update :",
-                            erreurUpdate
-                        );
-
-                        document.getElementById(
-                            "messageClassement"
-                        ).textContent =
-                            "❌ Erreur lors de l'enregistrement.";
-
-                        return;
-
-                    }
-
-                }
-
-
-                /* =========================
-                   PREMIÈRE VICTOIRE
-                ========================= */
-
-                else {
-
-                    const {
-                        error:
-                            erreurInsert
-                    } =
-                        await supabaseClient
-
-                            .from("scores")
-
-                            .insert({
-
-                                pseudo:
-                                    pseudo,
-
-                                score:
-                                    1,
-
-                                jeu:
-                                    JEU,
-
-                                date_creation:
-                                    new Date()
-                                        .toISOString()
-
-                            });
-
-
-                    if (erreurInsert) {
-
-                        console.error(
-                            "Erreur insertion :",
-                            erreurInsert
-                        );
-
-                        document.getElementById(
-                            "messageClassement"
-                        ).textContent =
-                            "❌ Erreur lors de l'enregistrement.";
-
-                        return;
-
-                    }
-
-                }
-
-
-                document.getElementById(
-                    "messageClassement"
-                ).textContent =
-                    "✅ Victoire enregistrée !";
-
-
-                chargerClassement();
-
-            }
-
-            catch (erreur) {
+            if (erreurInsertion) {
 
                 console.error(
-                    "Erreur :",
-                    erreur
+                    erreurInsertion
                 );
 
-                document.getElementById(
-                    "messageClassement"
-                ).textContent =
-                    "❌ Erreur lors de l'enregistrement.";
+
+                scoreEnregistre =
+                    false;
+
+
+                throw new Error(
+                    "Insertion impossible."
+                );
 
             }
 
-        }
 
+            messageEnregistrement.textContent =
 
-        /* ==================================================
-           REJOUER
-        ================================================== */
-
-        function rejouer() {
-
-
-            scoreJoueur = 0;
-
-            scoreOrdinateur = 0;
-
-            partieTerminee = false;
-
-
-            document.getElementById(
-                "scoreJoueur"
-            ).textContent =
-                "0";
-
-
-            document.getElementById(
-                "scoreOrdinateur"
-            ).textContent =
-                "0";
-
-
-            document.getElementById(
-                "choixJoueur"
-            ).textContent =
-                "🧑 Toi : -";
-
-
-            document.getElementById(
-                "choixOrdinateur"
-            ).textContent =
-                "🤖 Ordinateur : -";
-
-
-            document.getElementById(
-                "resultat"
-            ).textContent =
-                "";
-
-
-            document.getElementById(
-                "historique"
-            ).innerHTML =
-                "";
-
-
-            document.getElementById(
-                "boutonRejouer"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "messageClassement"
-            ).textContent =
-                "";
-
-
-            activerBoutons();
+                "✅ Score enregistré !";
 
         }
 
 
-        /* ==================================================
-           CLASSEMENT
-        ================================================== */
-
-        async function chargerClassement() {
+        await chargerClassement();
 
 
-            const tableau =
-                document.getElementById(
-                    "tableauClassement"
-                );
+    }
+
+    catch (erreur) {
 
 
-            tableau.innerHTML = `
+        console.error(
+            erreur
+        );
+
+
+        scoreEnregistre =
+            false;
+
+
+        messageEnregistrement.textContent =
+
+            "❌ Erreur lors de l'enregistrement.";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLASSEMENT TOP 10
+===================================================== */
+
+async function chargerClassement() {
+
+
+    classementBody.innerHTML = `
+
+        <tr>
+
+            <td colspan="3">
+
+                ⏳ Chargement...
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+
+        const {
+
+            data,
+
+            error
+
+        } =
+
+            await supabaseClient
+
+                .from("scores")
+
+                .select(
+                    "pseudo,score"
+                )
+
+                .eq(
+                    "jeu",
+                    JEU
+                )
+
+                .order(
+
+                    "score",
+
+                    {
+                        ascending: false
+                    }
+
+                )
+
+                .limit(10);
+
+
+        if (error) {
+
+            console.error(
+                error
+            );
+
+
+            throw new Error(
+                "Classement impossible."
+            );
+
+        }
+
+
+        /* =================================================
+           AUCUN SCORE
+        ================================================= */
+
+        if (
+
+            !data ||
+
+            data.length === 0
+
+        ) {
+
+
+            classementBody.innerHTML = `
+
                 <tr>
-                    <td colspan="4">
-                        ⏳ Chargement...
+
+                    <td colspan="3">
+
+                        Aucun score pour ce jeu.
+
                     </td>
+
                 </tr>
+
             `;
 
 
-            try {
+            messageClassement.textContent =
+                "🌍 Aucun score pour le moment.";
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
 
-                        .from("scores")
-
-                        .select(
-                            "pseudo,score,date_creation"
-                        )
-
-                        .eq(
-                            "jeu",
-                            JEU
-                        )
-
-                        .order(
-                            "score",
-                            {
-                                ascending: false
-                            }
-                        )
-
-                        .limit(10);
-
-
-                if (error) {
-
-                    console.error(
-                        "Erreur classement :",
-                        error
-                    );
-
-                    tableau.innerHTML = `
-                        <tr>
-                            <td colspan="4">
-                                ❌ Impossible de charger le classement.
-                            </td>
-                        </tr>
-                    `;
-
-                    return;
-
-                }
-
-
-                if (
-                    !data ||
-                    data.length === 0
-                ) {
-
-                    tableau.innerHTML = `
-                        <tr>
-                            <td colspan="4">
-                                Aucun score pour Pierre Feuille Ciseaux.
-                            </td>
-                        </tr>
-                    `;
-
-                    return;
-
-                }
-
-
-                tableau.innerHTML = "";
-
-
-                data.forEach(
-                    function (
-                        joueur,
-                        index
-                    ) {
-
-                        const ligne =
-                            document.createElement(
-                                "tr"
-                            );
-
-
-                        const position =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        if (index === 0) {
-
-                            position.textContent =
-                                "🥇";
-
-                        }
-
-                        else if (index === 1) {
-
-                            position.textContent =
-                                "🥈";
-
-                        }
-
-                        else if (index === 2) {
-
-                            position.textContent =
-                                "🥉";
-
-                        }
-
-                        else {
-
-                            position.textContent =
-                                index + 1;
-
-                        }
-
-
-                        const pseudoCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        pseudoCell.textContent =
-                            joueur.pseudo;
-
-
-                        const scoreCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        scoreCell.textContent =
-                            "🏆 " +
-                            joueur.score;
-
-
-                        const dateCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        if (
-                            joueur.date_creation
-                        ) {
-
-                            dateCell.textContent =
-                                new Date(
-                                    joueur.date_creation
-                                ).toLocaleDateString(
-                                    "fr-FR"
-                                );
-
-                        }
-
-                        else {
-
-                            dateCell.textContent =
-                                "—";
-
-                        }
-
-
-                        ligne.appendChild(
-                            position
-                        );
-
-                        ligne.appendChild(
-                            pseudoCell
-                        );
-
-                        ligne.appendChild(
-                            scoreCell
-                        );
-
-                        ligne.appendChild(
-                            dateCell
-                        );
-
-
-                        tableau.appendChild(
-                            ligne
-                        );
-
-                    }
-                );
-
-            }
-
-            catch (erreur) {
-
-                console.error(
-                    "Erreur classement :",
-                    erreur
-                );
-
-                tableau.innerHTML = `
-                    <tr>
-                        <td colspan="4">
-                            ❌ Impossible de charger le classement.
-                        </td>
-                    </tr>
-                `;
-
-            }
+            return;
 
         }
 
 
-        /* ==================================================
-           CHARGEMENT INITIAL
-        ================================================== */
+        /* =================================================
+           AFFICHER
+        ================================================= */
 
-        chargerClassement();
+        classementBody.innerHTML =
+            "";
 
-    </script>
+
+        data.forEach(
+
+            function(
+                joueur,
+                index
+            ) {
+
+
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const position =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                if (
+                    index === 0
+                ) {
+
+                    position.textContent =
+                        "🥇";
+
+                }
+
+                else if (
+                    index === 1
+                ) {
+
+                    position.textContent =
+                        "🥈";
+
+                }
+
+                else if (
+                    index === 2
+                ) {
+
+                    position.textContent =
+                        "🥉";
+
+                }
+
+                else {
+
+                    position.textContent =
+                        index + 1;
+
+                }
+
+
+                const pseudoCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                pseudoCell.textContent =
+                    joueur.pseudo;
+
+
+                const scoreCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                scoreCell.textContent =
+                    joueur.score;
+
+
+                ligne.appendChild(
+                    position
+                );
+
+
+                ligne.appendChild(
+                    pseudoCell
+                );
+
+
+                ligne.appendChild(
+                    scoreCell
+                );
+
+
+                classementBody.appendChild(
+                    ligne
+                );
+
+            }
+
+        );
+
+
+        messageClassement.textContent =
+            "🌍 Classement actualisé.";
+
+
+    }
+
+    catch (erreur) {
+
+
+        console.error(
+            erreur
+        );
+
+
+        classementBody.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+
+                    ❌ Impossible de charger le classement.
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        messageClassement.textContent =
+            "❌ Erreur lors du chargement.";
+
+    }
+
+}
+
+
+/* =====================================================
+   DÉMARRAGE
+===================================================== */
+
+chargerClassement();
+
+
+</script>
+
 
 </body>
 

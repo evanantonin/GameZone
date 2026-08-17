@@ -15,250 +15,237 @@
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    
-
 </head>
 
 
 <body class="page-jeu">
-    <script>
-    if (!localStorage.getItem("pseudoGameZone")) {
-        window.location.href = "index.html";
-    }
+
+
+<script>
+
+/* =====================================================
+   PROTECTION DU JEU
+   Si aucun compte n'est connecté,
+   retour automatique à l'accueil.
+===================================================== */
+
+if (!localStorage.getItem("pseudoGameZone")) {
+
+    window.location.href = "index.html";
+
+}
+
 </script>
 
 
-    <!-- =========================
-         MENU
-    ========================= -->
+<!-- =====================================================
+     MENU
+===================================================== -->
 
-    <nav>
+<nav>
 
-        <a href="index.html">
-            🏠 Accueil
-        </a>
+    <a href="index.html">
+        🏠 Accueil
+    </a>
 
-        <a href="liste-jeux.html">
-            🎮 Jeux
-        </a>
+    <a href="liste-jeux.html">
+        🎮 Jeux
+    </a>
 
-    </nav>
-
-
-    <!-- =========================
-         SNAKE
-    ========================= -->
-
-    <div class="jeu-snake">
-
-        <h2>
-            🐍 Snake
-        </h2>
+</nav>
 
 
-        <a href="liste-jeux.html"
-           class="bouton-retour">
+<!-- =====================================================
+     JEU
+===================================================== -->
 
-            ⬅️ Retour aux jeux
-
-        </a>
+<main class="page-jeu-snake">
 
 
-        <!-- =========================
-             PSEUDO
-        ========================= -->
+    <h1>
+        🐍 Snake
+    </h1>
 
-        <div class="pseudo-joueur">
 
-            👤 Joueur :
+    <a
+        href="liste-jeux.html"
+        class="retour-jeux">
 
-            <span id="pseudoJoueur">
-                Chargement...
-            </span>
+        ⬅️ Retour aux jeux
 
-        </div>
+    </a>
+
+
+    <!-- =================================================
+         PSEUDO
+    ================================================= -->
+
+    <p>
+
+        👤 Joueur :
+
+        <strong id="pseudoJoueur">
+            Chargement...
+        </strong>
+
+    </p>
+
+
+    <!-- =================================================
+         SCORES
+    ================================================= -->
+
+    <div class="scores-snake">
+
+        <p>
+
+            🎯 Score :
+
+            <strong>
+                <span id="score">0</span>
+            </strong>
+
+        </p>
 
 
         <p>
-            🖥️ PC : ZQSD ou flèches
+
+            🏆 Meilleur score :
+
+            <strong>
+                <span id="meilleurScore">0</span>
+            </strong>
+
         </p>
-
-        <p>
-            📱 Mobile : utilise les boutons
-        </p>
-
-
-        <!-- =========================
-             TERRAIN
-        ========================= -->
-
-        <canvas
-            id="jeu"
-            width="400"
-            height="400">
-        </canvas>
-
-
-        <!-- =========================
-             SCORES
-        ========================= -->
-
-        <div class="scores-snake">
-
-            <div class="score-box">
-
-                <p>
-                    🏆 Score
-                </p>
-
-                <p>
-                    <span id="score">
-                        0
-                    </span>
-                </p>
-
-            </div>
-
-
-            <div class="score-box">
-
-                <p>
-                    👑 Meilleur score
-                </p>
-
-                <p>
-                    <span id="meilleurScore">
-                        0
-                    </span>
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             BOUTONS
-        ========================= -->
-
-        <div class="boutons-jeu">
-
-            <button onclick="recommencer()">
-
-                🔄 Recommencer
-
-            </button>
-
-
-            <button
-                onclick="pauseJeu()"
-                id="boutonPause">
-
-                ⏸️ Pause
-
-            </button>
-
-
-            <button
-                onclick="rejouer()"
-                id="boutonRejouer">
-
-                🔄 Rejouer
-
-            </button>
-
-        </div>
-
-
-        <!-- =========================
-             MESSAGE
-        ========================= -->
-
-        <p id="message"></p>
-
-
-        <!-- =========================
-             ENREGISTRER LE SCORE
-        ========================= -->
-
-        <div id="zoneEnregistrement">
-
-            <h3>
-                🏆 Enregistrer ton score
-            </h3>
-
-            <p>
-                👤 Pseudo :
-                <strong id="pseudoAffiche"></strong>
-            </p>
-
-            <p>
-                🎯 Score :
-                <strong id="scoreFinal"></strong>
-            </p>
-
-            <button
-                id="enregistrerScore"
-                onclick="enregistrerMeilleurScore()">
-
-                💾 Enregistrer le score
-
-            </button>
-
-            <p id="messageEnregistrement"></p>
-
-        </div>
-
-
-        <!-- =========================
-             CONTROLES MOBILE
-        ========================= -->
-
-        <div class="controles-snake">
-
-            <button
-                onclick="changerDirectionTactile('haut')">
-
-                ⬆️
-
-            </button>
-
-
-            <div class="ligne-controles">
-
-                <button
-                    onclick="changerDirectionTactile('gauche')">
-
-                    ⬅️
-
-                </button>
-
-
-                <button
-                    onclick="changerDirectionTactile('bas')">
-
-                    ⬇️
-
-                </button>
-
-
-                <button
-                    onclick="changerDirectionTactile('droite')">
-
-                    ➡️
-
-                </button>
-
-            </div>
-
-        </div>
 
     </div>
 
 
-    <!-- =========================
+    <!-- =================================================
+         CANVAS
+    ================================================= -->
+
+    <canvas
+        id="jeu"
+        width="400"
+        height="400">
+
+    </canvas>
+
+
+    <p id="messageSnake"></p>
+
+
+    <!-- =================================================
+         BOUTONS
+    ================================================= -->
+
+    <div class="boutons-snake">
+
+        <button
+            id="boutonPause"
+            onclick="pauseJeu()">
+
+            ⏸️ Pause
+
+        </button>
+
+
+        <button
+            onclick="recommencer()">
+
+            🔄 Recommencer
+
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         CONTRÔLES MOBILE
+    ================================================= -->
+
+    <div class="controles-snake">
+
+
+        <button
+            onclick="changerDirection('haut')">
+
+            ⬆️
+
+        </button>
+
+
+        <div>
+
+            <button
+                onclick="changerDirection('gauche')">
+
+                ⬅️
+
+            </button>
+
+
+            <button
+                onclick="changerDirection('bas')">
+
+                ⬇️
+
+            </button>
+
+
+            <button
+                onclick="changerDirection('droite')">
+
+                ➡️
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         ENREGISTREMENT
+    ================================================= -->
+
+    <div
+        id="zoneEnregistrement"
+        style="display:none;">
+
+        <h2>
+            🏆 Enregistrer ton score
+        </h2>
+
+
+        <p>
+
+            👤 Pseudo :
+
+            <strong id="pseudoAffiche"></strong>
+
+        </p>
+
+
+        <button
+            id="enregistrerScore"
+            onclick="enregistrerMeilleurScore()">
+
+            💾 Enregistrer le score
+
+        </button>
+
+
+        <p id="messageEnregistrement"></p>
+
+    </div>
+
+
+    <!-- =================================================
          CLASSEMENT
-    ========================= -->
+    ================================================= -->
 
     <section class="classement">
 
@@ -273,11 +260,17 @@
 
                 <tr>
 
-                    <th>#</th>
+                    <th>
+                        #
+                    </th>
 
-                    <th>👤 Pseudo</th>
+                    <th>
+                        👤 Pseudo
+                    </th>
 
-                    <th>🐍 Score</th>
+                    <th>
+                        🎯 Score
+                    </th>
 
                 </tr>
 
@@ -302,945 +295,953 @@
         <p
             id="messageClassement"
             class="message-classement">
+
         </p>
+
 
     </section>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================= -->
-
-    <script>
+</main>
 
 
-        /* =====================================================
-           SUPABASE
-        ===================================================== */
+<script>
 
-        const SUPABASE_URL =
-            "https://pxgymcwpbesqyjochwgd.supabase.co";
+/* =====================================================
+   SUPABASE
+===================================================== */
 
-
-        const SUPABASE_ANON_KEY =
-            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+const SUPABASE_URL =
+    "https://pxgymcwpbesqyjochwgd.supabase.co";
 
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+const SUPABASE_ANON_KEY =
+    "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
-        /* =====================================================
-           IDENTIFICATION DU JEU
-        ===================================================== */
-
-        const JEU = "jeux4";
-
-
-        /* =====================================================
-           PSEUDO
-        ===================================================== */
-
-        const pseudo =
-            localStorage.getItem(
-                "pseudoGameZone"
-            );
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
 
 
-        if (pseudo) {
+/* =====================================================
+   IDENTIFICATION DU JEU
+===================================================== */
 
-            document.getElementById(
-                "pseudoJoueur"
-            ).textContent =
-                pseudo;
+const JEU = "jeux4";
 
 
-            document.getElementById(
-                "pseudoAffiche"
-            ).textContent =
-                pseudo;
+/* =====================================================
+   PSEUDO
+===================================================== */
+
+const pseudo =
+    localStorage.getItem(
+        "pseudoGameZone"
+    );
+
+
+document.getElementById(
+    "pseudoJoueur"
+).textContent =
+    pseudo;
+
+
+document.getElementById(
+    "pseudoAffiche"
+).textContent =
+    pseudo;
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("jeu");
+
+
+const ctx =
+    canvas.getContext("2d");
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+const tailleCase = 20;
+
+
+const nombreCases =
+    canvas.width / tailleCase;
+
+
+/* =====================================================
+   SERPENT
+===================================================== */
+
+let serpent = [
+
+    {
+        x: 200,
+        y: 200
+    },
+
+    {
+        x: 180,
+        y: 200
+    },
+
+    {
+        x: 160,
+        y: 200
+    }
+
+];
+
+
+let direction =
+    "droite";
+
+
+let prochaineDirection =
+    "droite";
+
+
+/* =====================================================
+   NOURRITURE
+===================================================== */
+
+let nourriture = {
+
+    x: 300,
+    y: 200
+
+};
+
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+let score = 0;
+
+
+let meilleurScore =
+    Number(
+        localStorage.getItem(
+            "meilleurScoreJeux4"
+        )
+    ) || 0;
+
+
+document.getElementById(
+    "meilleurScore"
+).textContent =
+    meilleurScore;
+
+
+/* =====================================================
+   ÉTAT DU JEU
+===================================================== */
+
+let jeuTermine = false;
+
+
+let jeuEnPause = false;
+
+
+let intervalleJeu = null;
+
+
+let scoreEnregistre = false;
+
+
+/* =====================================================
+   NOUVELLE NOURRITURE
+===================================================== */
+
+function nouvelleNourriture() {
+
+    let positionValide = false;
+
+
+    while (!positionValide) {
+
+        nourriture.x =
+            Math.floor(
+                Math.random() * nombreCases
+            ) * tailleCase;
+
+
+        nourriture.y =
+            Math.floor(
+                Math.random() * nombreCases
+            ) * tailleCase;
+
+
+        positionValide = true;
+
+
+        for (
+            let partie of serpent
+        ) {
+
+            if (
+                partie.x === nourriture.x &&
+                partie.y === nourriture.y
+            ) {
+
+                positionValide = false;
+
+                break;
+
+            }
 
         }
 
-        else {
+    }
 
-            document.getElementById(
-                "pseudoJoueur"
-            ).textContent =
-                "Aucun pseudo";
+}
 
 
-            document.getElementById(
-                "pseudoAffiche"
-            ).textContent =
-                "Aucun pseudo";
+/* =====================================================
+   DESSIN
+===================================================== */
+
+function dessiner() {
+
+    /* Fond */
+
+    ctx.fillStyle = "#111";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* Nourriture */
+
+    ctx.fillStyle = "red";
+
+    ctx.fillRect(
+        nourriture.x,
+        nourriture.y,
+        tailleCase,
+        tailleCase
+    );
+
+
+    /* Serpent */
+
+    serpent.forEach(
+        function(partie, index) {
+
+            if (index === 0) {
+
+                ctx.fillStyle = "#00ff00";
+
+            }
+
+            else {
+
+                ctx.fillStyle = "#00aa00";
+
+            }
+
+
+            ctx.fillRect(
+                partie.x,
+                partie.y,
+                tailleCase,
+                tailleCase
+            );
+
+
+            ctx.strokeStyle = "#111";
+
+            ctx.strokeRect(
+                partie.x,
+                partie.y,
+                tailleCase,
+                tailleCase
+            );
 
         }
+    );
+
+}
 
 
-        /* =====================================================
-           CANVAS
-        ===================================================== */
+/* =====================================================
+   DÉPLACEMENT
+===================================================== */
 
-        const canvas =
-            document.getElementById("jeu");
+function avancer() {
 
+    if (
+        jeuTermine ||
+        jeuEnPause
+    ) {
 
-        const contexte =
-            canvas.getContext("2d");
+        return;
 
-
-        const tailleCase = 20;
-
-
-        /* =====================================================
-           VARIABLES SNAKE
-        ===================================================== */
-
-        let serpent = [
-
-            { x: 200, y: 200 },
-
-            { x: 180, y: 200 },
-
-            { x: 160, y: 200 }
-
-        ];
+    }
 
 
-        let direction = "droite";
+    direction =
+        prochaineDirection;
 
 
-        let nourriture = {
-
-            x: 300,
-
-            y: 200
-
+    const tete =
+        {
+            x: serpent[0].x,
+            y: serpent[0].y
         };
 
 
-        let score = 0;
+    /* Déplacement */
+
+    if (
+        direction === "haut"
+    ) {
+
+        tete.y -= tailleCase;
+
+    }
 
 
-        let meilleurScore =
-            Number(
-                localStorage.getItem(
-                    "meilleurScoreSnake"
-                )
-            ) || 0;
+    if (
+        direction === "bas"
+    ) {
+
+        tete.y += tailleCase;
+
+    }
 
 
-        let jeuTermine = false;
+    if (
+        direction === "gauche"
+    ) {
+
+        tete.x -= tailleCase;
+
+    }
 
 
-        let jeuEnPause = false;
+    if (
+        direction === "droite"
+    ) {
+
+        tete.x += tailleCase;
+
+    }
 
 
-        let scoreEnregistre = false;
+    /* =================================================
+       PASSAGE À TRAVERS LES BORDS
+    ================================================= */
+
+    if (
+        tete.x < 0
+    ) {
+
+        tete.x =
+            canvas.width -
+            tailleCase;
+
+    }
 
 
-        /* =====================================================
-           AFFICHER MEILLEUR SCORE
-        ===================================================== */
+    if (
+        tete.x >= canvas.width
+    ) {
 
-        document.getElementById(
-            "meilleurScore"
-        ).textContent =
-            meilleurScore;
+        tete.x = 0;
 
-
-        /* =====================================================
-           CLAVIER
-        ===================================================== */
-
-        document.addEventListener(
-            "keydown",
-            changerDirection
-        );
+    }
 
 
-        function changerDirection(event) {
+    if (
+        tete.y < 0
+    ) {
 
-            const touche =
-                event.key.toLowerCase();
+        tete.y =
+            canvas.height -
+            tailleCase;
 
-
-            if (
-
-                event.key === "ArrowUp" ||
-                event.key === "ArrowDown" ||
-                event.key === "ArrowLeft" ||
-                event.key === "ArrowRight"
-
-            ) {
-
-                event.preventDefault();
-
-            }
+    }
 
 
-            if (
+    if (
+        tete.y >= canvas.height
+    ) {
 
-                (
-                    touche === "z" ||
-                    event.key === "ArrowUp"
-                )
+        tete.y = 0;
 
-                &&
-
-                direction !== "bas"
-
-            ) {
-
-                direction = "haut";
-
-            }
+    }
 
 
-            if (
+    /* =================================================
+       COLLISION AVEC SOI-MÊME
+    ================================================= */
 
-                (
-                    touche === "s" ||
-                    event.key === "ArrowDown"
-                )
+    for (
+        let i = 0;
+        i < serpent.length;
+        i++
+    ) {
 
-                &&
-
-                direction !== "haut"
-
-            ) {
-
-                direction = "bas";
-
-            }
-
-
-            if (
-
-                (
-                    touche === "q" ||
-                    event.key === "ArrowLeft"
-                )
-
-                &&
-
-                direction !== "droite"
-
-            ) {
-
-                direction = "gauche";
-
-            }
-
-
-            if (
-
-                (
-                    touche === "d" ||
-                    event.key === "ArrowRight"
-                )
-
-                &&
-
-                direction !== "gauche"
-
-            ) {
-
-                direction = "droite";
-
-            }
-
-        }
-
-
-        /* =====================================================
-           CONTROLES MOBILE
-        ===================================================== */
-
-        function changerDirectionTactile(
-            nouvelleDirection
+        if (
+            tete.x === serpent[i].x &&
+            tete.y === serpent[i].y
         ) {
 
-            if (jeuTermine || jeuEnPause) {
+            terminerJeu();
 
-                return;
-
-            }
-
-
-            if (
-
-                nouvelleDirection === "haut" &&
-                direction !== "bas"
-
-            ) {
-
-                direction = "haut";
-
-            }
-
-
-            if (
-
-                nouvelleDirection === "bas" &&
-                direction !== "haut"
-
-            ) {
-
-                direction = "bas";
-
-            }
-
-
-            if (
-
-                nouvelleDirection === "gauche" &&
-                direction !== "droite"
-
-            ) {
-
-                direction = "gauche";
-
-            }
-
-
-            if (
-
-                nouvelleDirection === "droite" &&
-                direction !== "gauche"
-
-            ) {
-
-                direction = "droite";
-
-            }
+            return;
 
         }
 
+    }
 
-        /* =====================================================
-           DESSIN
-        ===================================================== */
 
-        function dessiner() {
+    /* Ajouter la tête */
 
-            contexte.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+    serpent.unshift(
+        tete
+    );
 
 
-            contexte.fillStyle =
-                "#eeeeee";
+    /* =================================================
+       MANGER
+    ================================================= */
 
+    if (
+        tete.x === nourriture.x &&
+        tete.y === nourriture.y
+    ) {
 
-            contexte.fillRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+        score++;
 
 
-            /* =========================
-               SERPENT
-            ========================= */
+        document.getElementById(
+            "score"
+        ).textContent =
+            score;
 
-            for (
-                let i = 0;
-                i < serpent.length;
-                i++
-            ) {
 
-                contexte.fillStyle =
-                    i === 0
-                        ? "#0b8f00"
-                        : "#21b51a";
+        /* Nouveau meilleur score */
 
+        if (
+            score > meilleurScore
+        ) {
 
-                contexte.fillRect(
-
-                    serpent[i].x,
-
-                    serpent[i].y,
-
-                    tailleCase - 1,
-
-                    tailleCase - 1
-
-                );
-
-            }
-
-
-            /* =========================
-               NOURRITURE
-            ========================= */
-
-            contexte.fillStyle =
-                "red";
-
-
-            contexte.fillRect(
-
-                nourriture.x,
-
-                nourriture.y,
-
-                tailleCase - 1,
-
-                tailleCase - 1
-
-            );
-
-        }
-
-
-        /* =====================================================
-           AVANCER
-        ===================================================== */
-
-        function avancer() {
-
-            if (
-
-                jeuTermine ||
-                jeuEnPause
-
-            ) {
-
-                return;
-
-            }
-
-
-            let tete = {
-
-                x: serpent[0].x,
-
-                y: serpent[0].y
-
-            };
-
-
-            /* =========================
-               DIRECTION
-            ========================= */
-
-            if (direction === "droite") {
-
-                tete.x += tailleCase;
-
-            }
-
-
-            if (direction === "gauche") {
-
-                tete.x -= tailleCase;
-
-            }
-
-
-            if (direction === "haut") {
-
-                tete.y -= tailleCase;
-
-            }
-
-
-            if (direction === "bas") {
-
-                tete.y += tailleCase;
-
-            }
-
-
-            /* =========================
-               TRAVERSER LES BORDS
-            ========================= */
-
-            if (tete.x < 0) {
-
-                tete.x =
-                    canvas.width - tailleCase;
-
-            }
-
-
-            if (tete.x >= canvas.width) {
-
-                tete.x = 0;
-
-            }
-
-
-            if (tete.y < 0) {
-
-                tete.y =
-                    canvas.height - tailleCase;
-
-            }
-
-
-            if (tete.y >= canvas.height) {
-
-                tete.y = 0;
-
-            }
-
-
-            serpent.unshift(tete);
-
-
-            /* =========================
-               MANGER
-            ========================= */
-
-            if (
-
-                tete.x === nourriture.x &&
-                tete.y === nourriture.y
-
-            ) {
-
-                score++;
-
-
-                document.getElementById(
-                    "score"
-                ).textContent =
-                    score;
-
-
-                /* =========================
-                   NOUVEAU RECORD LOCAL
-                ========================= */
-
-                if (score > meilleurScore) {
-
-                    meilleurScore =
-                        score;
-
-
-                    document.getElementById(
-                        "meilleurScore"
-                    ).textContent =
-                        meilleurScore;
-
-
-                    localStorage.setItem(
-                        "meilleurScoreSnake",
-                        meilleurScore
-                    );
-
-                }
-
-
-                nouvelleNourriture();
-
-            }
-
-            else {
-
-                serpent.pop();
-
-            }
-
-
-            /* =========================
-               COLLISION AVEC LE CORPS
-            ========================= */
-
-            for (
-
-                let i = 1;
-
-                i < serpent.length;
-
-                i++
-
-            ) {
-
-                if (
-
-                    tete.x === serpent[i].x &&
-                    tete.y === serpent[i].y
-
-                ) {
-
-                    terminerJeu();
-
-                    return;
-
-                }
-
-            }
-
-
-            dessiner();
-
-        }
-
-
-        /* =====================================================
-           NOURRITURE
-        ===================================================== */
-
-        function nouvelleNourriture() {
-
-            let positionValide =
-                false;
-
-
-            while (!positionValide) {
-
-                nourriture.x =
-                    Math.floor(
-                        Math.random() *
-                        (canvas.width / tailleCase)
-                    ) * tailleCase;
-
-
-                nourriture.y =
-                    Math.floor(
-                        Math.random() *
-                        (canvas.height / tailleCase)
-                    ) * tailleCase;
-
-
-                positionValide =
-                    !serpent.some(
-                        function(partie) {
-
-                            return (
-
-                                partie.x ===
-                                nourriture.x
-
-                                &&
-
-                                partie.y ===
-                                nourriture.y
-
-                            );
-
-                        }
-                    );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           GAME OVER
-        ===================================================== */
-
-        function terminerJeu() {
-
-            jeuTermine = true;
-
-
-            document.getElementById(
-                "boutonPause"
-            ).disabled = true;
-
-
-            document.getElementById(
-                "boutonRejouer"
-            ).style.display =
-                "inline-block";
-
-
-            document.getElementById(
-                "zoneEnregistrement"
-            ).style.display =
-                "block";
-
-
-            document.getElementById(
-                "scoreFinal"
-            ).textContent =
+            meilleurScore =
                 score;
 
 
-            if (
+            document.getElementById(
+                "meilleurScore"
+            ).textContent =
+                meilleurScore;
 
-                score === meilleurScore &&
-                score > 0
 
-            ) {
-
-                document.getElementById(
-                    "message"
-                ).textContent =
-                    "👑 NOUVEAU RECORD ! Score : "
-                    + score;
-
-            }
-
-            else {
-
-                document.getElementById(
-                    "message"
-                ).textContent =
-                    "💀 Game Over ! Score : "
-                    + score;
-
-            }
+            localStorage.setItem(
+                "meilleurScoreJeux4",
+                meilleurScore
+            );
 
         }
 
 
-        /* =====================================================
-           PAUSE
-        ===================================================== */
+        nouvelleNourriture();
 
-        function pauseJeu() {
+    }
 
-            if (jeuTermine) {
+    else {
 
-                return;
+        serpent.pop();
 
-            }
+    }
 
 
-            jeuEnPause =
-                !jeuEnPause;
+    dessiner();
+
+}
 
 
-            const bouton =
-                document.getElementById(
-                    "boutonPause"
-                );
+/* =====================================================
+   CHANGER DIRECTION
+===================================================== */
+
+function changerDirection(
+    nouvelleDirection
+) {
 
 
-            if (jeuEnPause) {
+    if (
+        nouvelleDirection === "haut" &&
+        direction !== "bas"
+    ) {
 
-                bouton.textContent =
-                    "▶️ Reprendre";
+        prochaineDirection =
+            "haut";
 
-
-                document.getElementById(
-                    "message"
-                ).textContent =
-                    "⏸️ Jeu en pause";
-
-            }
-
-            else {
-
-                bouton.textContent =
-                    "⏸️ Pause";
+    }
 
 
-                document.getElementById(
-                    "message"
-                ).textContent =
-                    "";
+    if (
+        nouvelleDirection === "bas" &&
+        direction !== "haut"
+    ) {
 
-            }
+        prochaineDirection =
+            "bas";
+
+    }
+
+
+    if (
+        nouvelleDirection === "gauche" &&
+        direction !== "droite"
+    ) {
+
+        prochaineDirection =
+            "gauche";
+
+    }
+
+
+    if (
+        nouvelleDirection === "droite" &&
+        direction !== "gauche"
+    ) {
+
+        prochaineDirection =
+            "droite";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLAVIER
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const touche =
+            event.key.toLowerCase();
+
+
+        if (
+            touche === "z" ||
+            touche === "arrowup"
+        ) {
+
+            changerDirection("haut");
+
+            event.preventDefault();
 
         }
 
 
-        /* =====================================================
-           RECOMMENCER
-        ===================================================== */
+        else if (
+            touche === "s" ||
+            touche === "arrowdown"
+        ) {
 
-        function recommencer() {
+            changerDirection("bas");
 
-            clearInterval(intervalle);
+            event.preventDefault();
 
-
-            serpent = [
-
-                { x: 200, y: 200 },
-
-                { x: 180, y: 200 },
-
-                { x: 160, y: 200 }
-
-            ];
+        }
 
 
-            direction = "droite";
+        else if (
+            touche === "q" ||
+            touche === "arrowleft"
+        ) {
+
+            changerDirection("gauche");
+
+            event.preventDefault();
+
+        }
 
 
-            score = 0;
+        else if (
+            touche === "d" ||
+            touche === "arrowright"
+        ) {
+
+            changerDirection("droite");
+
+            event.preventDefault();
+
+        }
 
 
-            jeuTermine = false;
+        /* Espace = pause */
+
+        else if (
+            event.code === "Space"
+        ) {
+
+            pauseJeu();
+
+            event.preventDefault();
+
+        }
+
+    }
+);
 
 
-            jeuEnPause = false;
+/* =====================================================
+   PAUSE
+===================================================== */
+
+function pauseJeu() {
+
+    if (jeuTermine) {
+
+        return;
+
+    }
 
 
-            scoreEnregistre = false;
+    jeuEnPause =
+        !jeuEnPause;
 
 
-            document.getElementById(
-                "score"
-            ).textContent =
-                "0";
+    const bouton =
+        document.getElementById(
+            "boutonPause"
+        );
 
 
-            document.getElementById(
-                "message"
-            ).textContent =
-                "";
+    const message =
+        document.getElementById(
+            "messageSnake"
+        );
 
 
-            document.getElementById(
-                "boutonPause"
-            ).textContent =
-                "⏸️ Pause";
+    if (jeuEnPause) {
+
+        bouton.textContent =
+            "▶️ Reprendre";
 
 
-            document.getElementById(
-                "boutonPause"
-            ).disabled =
+        message.textContent =
+            "⏸️ Jeu en pause";
+
+    }
+
+    else {
+
+        bouton.textContent =
+            "⏸️ Pause";
+
+
+        message.textContent =
+            "";
+
+    }
+
+}
+
+
+/* =====================================================
+   FIN DU JEU
+===================================================== */
+
+function terminerJeu() {
+
+    jeuTermine =
+        true;
+
+
+    clearInterval(
+        intervalleJeu
+    );
+
+
+    document.getElementById(
+        "messageSnake"
+    ).textContent =
+        "💥 Game Over ! Score : " +
+        score;
+
+
+    document.getElementById(
+        "zoneEnregistrement"
+    ).style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   RECOMMENCER
+===================================================== */
+
+function recommencer() {
+
+    clearInterval(
+        intervalleJeu
+    );
+
+
+    serpent = [
+
+        {
+            x: 200,
+            y: 200
+        },
+
+        {
+            x: 180,
+            y: 200
+        },
+
+        {
+            x: 160,
+            y: 200
+        }
+
+    ];
+
+
+    direction =
+        "droite";
+
+
+    prochaineDirection =
+        "droite";
+
+
+    score = 0;
+
+
+    jeuTermine =
+        false;
+
+
+    jeuEnPause =
+        false;
+
+
+    scoreEnregistre =
+        false;
+
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        "0";
+
+
+    document.getElementById(
+        "messageSnake"
+    ).textContent =
+        "";
+
+
+    document.getElementById(
+        "boutonPause"
+    ).textContent =
+        "⏸️ Pause";
+
+
+    document.getElementById(
+        "zoneEnregistrement"
+    ).style.display =
+        "none";
+
+
+    nouvelleNourriture();
+
+
+    dessiner();
+
+
+    demarrerJeu();
+
+}
+
+
+/* =====================================================
+   DÉMARRER LE JEU
+===================================================== */
+
+function demarrerJeu() {
+
+    clearInterval(
+        intervalleJeu
+    );
+
+
+    intervalleJeu =
+        setInterval(
+            avancer,
+            120
+        );
+
+}
+
+
+/* =====================================================
+   ENREGISTRER LE MEILLEUR SCORE
+===================================================== */
+
+async function enregistrerMeilleurScore() {
+
+    const message =
+        document.getElementById(
+            "messageEnregistrement"
+        );
+
+
+    const pseudoActuel =
+        localStorage.getItem(
+            "pseudoGameZone"
+        );
+
+
+    if (!pseudoActuel) {
+
+        message.textContent =
+            "❌ Aucun compte trouvé.";
+
+        return;
+
+    }
+
+
+    if (score <= 0) {
+
+        message.textContent =
+            "⚠️ Ton score doit être supérieur à 0.";
+
+        return;
+
+    }
+
+
+    if (scoreEnregistre) {
+
+        message.textContent =
+            "ℹ️ Ce score a déjà été enregistré.";
+
+        return;
+
+    }
+
+
+    scoreEnregistre =
+        true;
+
+
+    message.textContent =
+        "⏳ Enregistrement...";
+
+
+    try {
+
+
+        /* =================================================
+           RECHERCHER LE SCORE
+        ================================================= */
+
+        const {
+            data: ancienScore,
+            error: erreurRecherche
+        } =
+            await supabaseClient
+
+                .from("scores")
+
+                .select(
+                    "pseudo,score,jeu"
+                )
+
+                .eq(
+                    "pseudo",
+                    pseudoActuel
+                )
+
+                .eq(
+                    "jeu",
+                    JEU
+                )
+
+                .limit(1);
+
+
+        if (erreurRecherche) {
+
+            console.error(
+                erreurRecherche
+            );
+
+            scoreEnregistre =
                 false;
 
-
-            document.getElementById(
-                "boutonRejouer"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "zoneEnregistrement"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "messageEnregistrement"
-            ).textContent =
-                "";
-
-
-            nouvelleNourriture();
-
-
-            dessiner();
-
-
-            intervalle =
-                setInterval(
-                    avancer,
-                    120
-                );
+            throw new Error(
+                "Recherche impossible."
+            );
 
         }
 
 
-        /* =====================================================
-           REJOUER
-        ===================================================== */
+        /* =================================================
+           SCORE EXISTANT
+        ================================================= */
 
-        function rejouer() {
+        if (
+            ancienScore &&
+            ancienScore.length > 0
+        ) {
 
-            recommencer();
 
-        }
-
-
-        /* =====================================================
-           ENREGISTRER LE MEILLEUR SCORE
-        ===================================================== */
-
-        async function enregistrerMeilleurScore() {
-
-            const message =
-                document.getElementById(
-                    "messageEnregistrement"
+            const scoreExistant =
+                Number(
+                    ancienScore[0].score
                 );
 
 
-            const pseudoActuel =
-                localStorage.getItem(
-                    "pseudoGameZone"
-                );
+            if (
+                score > scoreExistant
+            ) {
 
-
-            /* =========================
-               VÉRIFIER PSEUDO
-            ========================= */
-
-            if (!pseudoActuel) {
-
-                message.textContent =
-                    "❌ Aucun pseudo trouvé. Retourne à l'accueil.";
-
-                return;
-
-            }
-
-
-            /* =========================
-               VÉRIFIER SCORE
-            ========================= */
-
-            if (score <= 0) {
-
-                message.textContent =
-                    "⚠️ Ton score doit être supérieur à 0.";
-
-                return;
-
-            }
-
-
-            /* =========================
-               EMPÊCHER DOUBLE CLIC
-            ========================= */
-
-            if (scoreEnregistre) {
-
-                message.textContent =
-                    "ℹ️ Ce score a déjà été enregistré.";
-
-                return;
-
-            }
-
-
-            scoreEnregistre = true;
-
-
-            message.textContent =
-                "⏳ Enregistrement...";
-
-
-            try {
-
-                /* =========================
-                   CHERCHER LE SCORE EXISTANT
-                ========================= */
 
                 const {
-
-                    data: ancienScore,
-
-                    error: erreurRecherche
-
+                    error: erreurUpdate
                 } =
-
                     await supabaseClient
 
                         .from("scores")
 
-                        .select(
-                            "pseudo,score,jeu"
-                        )
+                        .update({
+
+                            score:
+                                score,
+
+                            date_creation:
+                                new Date()
+                                    .toISOString()
+
+                        })
 
                         .eq(
                             "pseudo",
@@ -1250,225 +1251,192 @@
                         .eq(
                             "jeu",
                             JEU
-                        )
-
-                        .limit(1);
+                        );
 
 
-                if (erreurRecherche) {
+                if (erreurUpdate) {
 
                     console.error(
-                        "Erreur recherche :",
-                        erreurRecherche
+                        erreurUpdate
                     );
-
 
                     scoreEnregistre =
                         false;
 
-
-                    message.textContent =
-                        "❌ Impossible de rechercher ton score.";
-
-                    return;
+                    throw new Error(
+                        "Modification impossible."
+                    );
 
                 }
-
-
-                /* =========================
-                   SCORE EXISTANT
-                ========================= */
-
-                if (
-
-                    ancienScore &&
-                    ancienScore.length > 0
-
-                ) {
-
-                    const scoreExistant =
-                        Number(
-                            ancienScore[0].score
-                        );
-
-
-                    /* =========================
-                       MEILLEUR SCORE
-                    ========================= */
-
-                    if (
-
-                        score >
-                        scoreExistant
-
-                    ) {
-
-                        const {
-
-                            error: erreurUpdate
-
-                        } =
-
-                            await supabaseClient
-
-                                .from("scores")
-
-                                .update({
-
-                                    score:
-                                        score,
-
-                                    date_creation:
-                                        new Date()
-                                            .toISOString()
-
-                                })
-
-                                .eq(
-                                    "pseudo",
-                                    pseudoActuel
-                                )
-
-                                .eq(
-                                    "jeu",
-                                    JEU
-                                );
-
-
-                        if (erreurUpdate) {
-
-                            console.error(
-                                "Erreur update :",
-                                erreurUpdate
-                            );
-
-
-                            scoreEnregistre =
-                                false;
-
-
-                            message.textContent =
-                                "❌ Impossible de mettre à jour le score.";
-
-                            return;
-
-                        }
-
-
-                        message.textContent =
-                            "🏆 Nouveau record enregistré !";
-
-                    }
-
-                    else {
-
-                        message.textContent =
-                            "ℹ️ Ton ancien score est meilleur ou égal.";
-
-                    }
-
-                }
-
-
-                /* =========================
-                   PREMIER SCORE
-                ========================= */
-
-                else {
-
-                    const {
-
-                        error: erreurInsertion
-
-                    } =
-
-                        await supabaseClient
-
-                            .from("scores")
-
-                            .insert({
-
-                                pseudo:
-                                    pseudoActuel,
-
-                                score:
-                                    score,
-
-                                jeu:
-                                    JEU,
-
-                                date_creation:
-                                    new Date()
-                                        .toISOString()
-
-                            });
-
-
-                    if (erreurInsertion) {
-
-                        console.error(
-                            "Erreur insertion :",
-                            erreurInsertion
-                        );
-
-
-                        scoreEnregistre =
-                            false;
-
-
-                        message.textContent =
-                            "❌ Impossible d'enregistrer le score.";
-
-                        return;
-
-                    }
-
-
-                    message.textContent =
-                        "✅ Score enregistré !";
-
-                }
-
-
-                /* =========================
-                   ACTUALISER CLASSEMENT
-                ========================= */
-
-                await chargerClassement();
-
-            }
-
-            catch (erreur) {
-
-                console.error(
-                    "Erreur :",
-                    erreur
-                );
-
-
-                scoreEnregistre =
-                    false;
 
 
                 message.textContent =
-                    "❌ Erreur lors de l'enregistrement.";
+                    "🏆 Nouveau record enregistré !";
+
+            }
+
+            else {
+
+                message.textContent =
+                    "ℹ️ Ton ancien score est meilleur ou égal.";
 
             }
 
         }
 
 
-        /* =====================================================
-           CHARGER CLASSEMENT
-        ===================================================== */
+        /* =================================================
+           PREMIER SCORE
+        ================================================= */
 
-        async function chargerClassement() {
+        else {
 
-            const tbody =
-                document.getElementById(
-                    "classementBody"
+
+            const {
+                error: erreurInsertion
+            } =
+                await supabaseClient
+
+                    .from("scores")
+
+                    .insert({
+
+                        pseudo:
+                            pseudoActuel,
+
+                        score:
+                            score,
+
+                        jeu:
+                            JEU,
+
+                        date_creation:
+                            new Date()
+                                .toISOString()
+
+                    });
+
+
+            if (erreurInsertion) {
+
+                console.error(
+                    erreurInsertion
                 );
 
+                scoreEnregistre =
+                    false;
+
+                throw new Error(
+                    "Insertion impossible."
+                );
+
+            }
+
+
+            message.textContent =
+                "✅ Score enregistré !";
+
+        }
+
+
+        await chargerClassement();
+
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        scoreEnregistre =
+            false;
+
+
+        message.textContent =
+            "❌ Erreur lors de l'enregistrement.";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLASSEMENT TOP 10
+===================================================== */
+
+async function chargerClassement() {
+
+    const tbody =
+        document.getElementById(
+            "classementBody"
+        );
+
+
+    tbody.innerHTML = `
+
+        <tr>
+
+            <td colspan="3">
+
+                ⏳ Chargement...
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+
+                .from("scores")
+
+                .select(
+                    "pseudo,score,date_creation"
+                )
+
+                .eq(
+                    "jeu",
+                    JEU
+                )
+
+                .order(
+                    "score",
+                    {
+                        ascending: false
+                    }
+                )
+
+                .limit(10);
+
+
+        if (error) {
+
+            console.error(
+                error
+            );
+
+            throw new Error(
+                "Classement impossible."
+            );
+
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
 
             tbody.innerHTML = `
 
@@ -1476,7 +1444,7 @@
 
                     <td colspan="3">
 
-                        ⏳ Chargement...
+                        Aucun score pour Snake.
 
                     </td>
 
@@ -1484,231 +1452,155 @@
 
             `;
 
-
-            try {
-
-                const {
-
-                    data,
-                    error
-
-                } =
-
-                    await supabaseClient
-
-                        .from("scores")
-
-                        .select(
-                            "pseudo,score,date_creation"
-                        )
-
-                        .eq(
-                            "jeu",
-                            JEU
-                        )
-
-                        .order(
-                            "score",
-                            {
-                                ascending: false
-                            }
-                        )
-
-                        .limit(10);
-
-
-                if (error) {
-
-                    console.error(
-                        "Erreur classement :",
-                        error
-                    );
-
-
-                    throw new Error(
-                        "Classement impossible."
-                    );
-
-                }
-
-
-                /* =========================
-                   AUCUN SCORE
-                ========================= */
-
-                if (
-
-                    !data ||
-                    data.length === 0
-
-                ) {
-
-                    tbody.innerHTML = `
-
-                        <tr>
-
-                            <td colspan="3">
-
-                                Aucun score pour Snake.
-
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                    return;
-
-                }
-
-
-                /* =========================
-                   AFFICHER
-                ========================= */
-
-                tbody.innerHTML = "";
-
-
-                data.forEach(
-                    function(
-                        joueur,
-                        index
-                    ) {
-
-                        const ligne =
-                            document.createElement(
-                                "tr"
-                            );
-
-
-                        const position =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        if (index === 0) {
-
-                            position.textContent =
-                                "🥇";
-
-                        }
-
-                        else if (index === 1) {
-
-                            position.textContent =
-                                "🥈";
-
-                        }
-
-                        else if (index === 2) {
-
-                            position.textContent =
-                                "🥉";
-
-                        }
-
-                        else {
-
-                            position.textContent =
-                                index + 1;
-
-                        }
-
-
-                        const pseudoCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        pseudoCell.textContent =
-                            joueur.pseudo;
-
-
-                        const scoreCell =
-                            document.createElement(
-                                "td"
-                            );
-
-
-                        scoreCell.textContent =
-                            "🐍 " +
-                            joueur.score;
-
-
-                        ligne.appendChild(
-                            position
-                        );
-
-
-                        ligne.appendChild(
-                            pseudoCell
-                        );
-
-
-                        ligne.appendChild(
-                            scoreCell
-                        );
-
-
-                        tbody.appendChild(
-                            ligne
-                        );
-
-                    }
-                );
-
-            }
-
-            catch (erreur) {
-
-                console.error(
-                    "Erreur :",
-                    erreur
-                );
-
-
-                tbody.innerHTML = `
-
-                    <tr>
-
-                        <td colspan="3">
-
-                            ❌ Impossible de charger le classement.
-
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
+            return;
 
         }
 
 
-        /* =====================================================
-           LANCEMENT
-        ===================================================== */
-
-        dessiner();
+        tbody.innerHTML =
+            "";
 
 
-        let intervalle =
-            setInterval(
-                avancer,
-                120
-            );
+        data.forEach(
+            function(
+                joueur,
+                index
+            ) {
 
 
-        /* =====================================================
-           CLASSEMENT AU CHARGEMENT
-        ===================================================== */
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
 
-        chargerClassement();
 
-    </script>
+                const position =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                if (
+                    index === 0
+                ) {
+
+                    position.textContent =
+                        "🥇";
+
+                }
+
+                else if (
+                    index === 1
+                ) {
+
+                    position.textContent =
+                        "🥈";
+
+                }
+
+                else if (
+                    index === 2
+                ) {
+
+                    position.textContent =
+                        "🥉";
+
+                }
+
+                else {
+
+                    position.textContent =
+                        index + 1;
+
+                }
+
+
+                const pseudoCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                pseudoCell.textContent =
+                    joueur.pseudo;
+
+
+                const scoreCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                scoreCell.textContent =
+                    joueur.score;
+
+
+                ligne.appendChild(
+                    position
+                );
+
+
+                ligne.appendChild(
+                    pseudoCell
+                );
+
+
+                ligne.appendChild(
+                    scoreCell
+                );
+
+
+                tbody.appendChild(
+                    ligne
+                );
+
+            }
+        );
+
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+
+                    ❌ Impossible de charger
+                    le classement.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+nouvelleNourriture();
+
+dessiner();
+
+demarrerJeu();
+
+chargerClassement();
+
+</script>
+
 
 </body>
 

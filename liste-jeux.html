@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
     <title>GameZone - Jeux</title>
 
@@ -14,163 +14,363 @@
 
     <style>
 
-        /* =========================
-           PAGE JEUX
-        ========================= */
+        /* ==================================================
+           PAGE
+        ================================================== */
 
         body {
+
             margin: 0;
+
+            min-height: 100vh;
+
             font-family: Arial, sans-serif;
-            background: #111;
+
+            background:
+                radial-gradient(circle at top, #182848, #050816 70%);
+
             color: white;
+
         }
 
 
-        /* =========================
+        /* ==================================================
            MENU
-        ========================= */
+        ================================================== */
 
         nav {
-            background-color: black;
-            padding: 15px;
-            text-align: center;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 35px;
+
+            padding: 18px;
+
+            background: rgba(0, 0, 0, 0.75);
+
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.5);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
         }
+
 
         nav a {
+
             color: white;
+
             text-decoration: none;
-            margin: 0 15px;
-            font-size: 20px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+
         }
+
 
         nav a:hover {
-            color: #00aaff;
+
+            color: #00eaff;
+
+            transform: scale(1.08);
+
         }
 
 
-        /* =========================
+        /* ==================================================
            TITRE
-        ========================= */
+        ================================================== */
 
-        .page-jeux {
+        h1 {
+
             text-align: center;
-            padding: 25px 15px;
-        }
 
-        .page-jeux h1 {
-            font-size: 42px;
-            color: #00aaff;
+            font-size: clamp(42px, 7vw, 75px);
+
+            margin-top: 50px;
+
             margin-bottom: 10px;
+
+            color: white;
+
+            text-shadow:
+                0 0 10px #00eaff,
+                0 0 25px #00eaff,
+                0 0 45px #0066ff;
+
         }
 
-        .page-jeux > p {
-            font-size: 18px;
-            margin-bottom: 30px;
+
+        .sous-titre {
+
+            text-align: center;
+
+            font-size: 22px;
+
+            color: #b9c7ff;
+
+            margin-bottom: 50px;
+
         }
 
 
-        /* =========================
-           LISTE
-        ========================= */
+        /* ==================================================
+           GRILLE
+        ================================================== */
 
         .liste-jeux {
-            width: 95%;
-            max-width: 1200px;
+
+            width: min(1200px, 92%);
+
             margin: auto;
 
             display: grid;
 
             grid-template-columns:
-                repeat(auto-fit, minmax(240px, 1fr));
+                repeat(3, 1fr);
 
-            gap: 20px;
+            gap: 30px;
+
+            padding-bottom: 50px;
+
         }
 
 
-        /* =========================
-           CASE JEU
-        ========================= */
+        /* ==================================================
+           CARTES
+        ================================================== */
 
         .jeu {
-            padding: 15px;
 
-            border-radius: 15px;
+            position: relative;
 
-            background: #222;
+            min-height: 230px;
 
-            border: 2px solid #444;
+            padding: 28px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.12),
+                    rgba(255,255,255,0.04)
+                );
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.45);
+
+            backdrop-filter: blur(10px);
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.3s,
+                box-shadow 0.3s,
+                border-color 0.3s;
+
+        }
+
+
+        .jeu::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+
+            height: 150px;
+
+            border-radius: 50%;
+
+            top: -70px;
+
+            right: -70px;
+
+            background: rgba(255,255,255,0.12);
+
+        }
+
+
+        .jeu:hover {
+
+            transform:
+                translateY(-10px)
+                scale(1.02);
+
+            box-shadow:
+                0 20px 45px rgba(0,0,0,0.65);
+
+            border-color: rgba(255,255,255,0.5);
+
+        }
+
+
+        /* ==================================================
+           COULEURS DES JEUX
+        ================================================== */
+
+        .jeu:nth-child(1) {
+
+            border-top: 4px solid #00eaff;
+
+        }
+
+
+        .jeu:nth-child(2) {
+
+            border-top: 4px solid #ffd000;
+
+        }
+
+
+        .jeu:nth-child(3) {
+
+            border-top: 4px solid #ff4fd8;
+
+        }
+
+
+        .jeu:nth-child(4) {
+
+            border-top: 4px solid #00ff88;
+
+        }
+
+
+        .jeu:nth-child(5) {
+
+            border-top: 4px solid #ff4444;
+
+        }
+
+
+        .jeu:nth-child(6) {
+
+            border-top: 4px solid #a855ff;
+
+        }
+
+
+        /* ==================================================
+           TITRES DES CARTES
+        ================================================== */
+
+        .jeu h2 {
+
+            margin-top: 0;
+
+            font-size: 27px;
+
+            color: white;
+
+        }
+
+
+        .jeu p {
+
+            color: #c9d2ef;
+
+            font-size: 17px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* ==================================================
+           BOUTONS
+        ================================================== */
+
+        .jeu a {
+
+            text-decoration: none;
+
+        }
+
+
+        .jeu button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0066ff,
+                    #00c6ff
+                );
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .jeu button:hover {
+
+            transform: scale(1.04);
+
+            box-shadow:
+                0 0 20px rgba(0,200,255,0.7);
+
+        }
+
+
+        /* ==================================================
+           RETOUR
+        ================================================== */
+
+        .retour {
 
             text-align: center;
 
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.5);
+            padding-bottom: 50px;
 
-            transition:
-                transform 0.2s,
-                box-shadow 0.2s;
-        }
-
-        .jeu:hover {
-            transform: translateY(-5px);
-
-            box-shadow:
-                0 10px 25px rgba(0, 0, 0, 0.7);
         }
 
 
-        /* =========================
-           IMAGES
-        ========================= */
+        .retour button {
 
-        .jeu img {
-            width: 100%;
-            height: 160px;
+            padding: 14px 25px;
 
-            object-fit: cover;
-
-            border-radius: 10px;
-
-            display: block;
-
-            margin-bottom: 15px;
-        }
-
-
-        /* =========================
-           TITRES
-        ========================= */
-
-        .jeu h2 {
-            margin: 10px 0;
-
-            font-size: 24px;
-        }
-
-        .jeu p {
-            min-height: 45px;
-
-            font-size: 16px;
-
-            line-height: 1.4;
-        }
-
-
-        /* =========================
-           BOUTON
-        ========================= */
-
-        .jeu a {
-            text-decoration: none;
-        }
-
-        .jeu button {
             border: none;
 
-            padding: 12px 25px;
+            border-radius: 12px;
 
-            border-radius: 10px;
-
-            background: #007bff;
+            background: #222b45;
 
             color: white;
 
@@ -178,212 +378,85 @@
 
             cursor: pointer;
 
-            transition:
-                transform 0.2s,
-                background 0.2s;
+            transition: 0.3s;
+
         }
 
-        .jeu button:hover {
-            background: #00aaff;
+
+        .retour button:hover {
+
+            background: #33446d;
 
             transform: scale(1.05);
+
         }
 
 
-        /* =========================
-           COULEURS
-        ========================= */
+        /* ==================================================
+           TELEPHONE
+        ================================================== */
 
-        .jeu-clics {
-            border-color: #00aaff;
+        @media (max-width: 900px) {
+
+            .liste-jeux {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
         }
 
-        .jeu-clics h2 {
-            color: #00aaff;
-        }
-
-
-        .jeu-nombre {
-            border-color: #9b59b6;
-        }
-
-        .jeu-nombre h2 {
-            color: #c77dff;
-        }
-
-
-        .jeu-pfc {
-            border-color: #ff9800;
-        }
-
-        .jeu-pfc h2 {
-            color: #ff9800;
-        }
-
-
-        .jeu-snake {
-            border-color: #20c20e;
-        }
-
-        .jeu-snake h2 {
-            color: #35e51f;
-        }
-
-
-        /* =========================
-           PONG
-        ========================= */
-
-        .jeu-pong {
-            background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #003b66
-                );
-
-            border: 3px solid #00aaff;
-
-            box-shadow:
-                0 0 15px
-                rgba(0, 170, 255, 0.4);
-        }
-
-        .jeu-pong h2 {
-            color: #00aaff;
-        }
-
-
-        /* =========================
-           RETOUR ACCUEIL
-        ========================= */
-
-        .retour-accueil {
-            text-align: center;
-
-            margin: 35px 0;
-        }
-
-        .retour-accueil a {
-            text-decoration: none;
-        }
-
-        .retour-accueil button {
-            padding: 14px 25px;
-
-            border: none;
-
-            border-radius: 12px;
-
-            background: #333;
-
-            color: white;
-
-            font-size: 18px;
-
-            cursor: pointer;
-        }
-
-        .retour-accueil button:hover {
-            background: #007bff;
-
-            transform: scale(1.05);
-        }
-
-
-        /* =========================
-           MOBILE
-        ========================= */
 
         @media (max-width: 600px) {
 
             nav {
-                padding: 12px 5px;
+
+                gap: 18px;
+
             }
+
 
             nav a {
-                font-size: 17px;
-                margin: 0 8px;
+
+                font-size: 15px;
+
             }
 
 
-            .page-jeux {
-                padding: 15px 8px;
+            h1 {
+
+                margin-top: 35px;
+
             }
 
-            .page-jeux h1 {
-                font-size: 34px;
-            }
 
-            .page-jeux > p {
-                font-size: 16px;
+            .sous-titre {
+
+                font-size: 18px;
+
+                margin-bottom: 30px;
+
             }
 
 
             .liste-jeux {
-                width: 94%;
 
                 grid-template-columns: 1fr;
 
-                gap: 18px;
+                width: 90%;
+
+                gap: 20px;
+
             }
 
 
             .jeu {
-                padding: 12px;
-            }
 
+                min-height: 210px;
 
-            .jeu img {
-                height: 180px;
-            }
+                padding: 23px;
 
-
-            .jeu h2 {
-                font-size: 23px;
-            }
-
-
-            .jeu p {
-                font-size: 16px;
-            }
-
-
-            .jeu button {
-                width: 90%;
-
-                padding: 14px;
-
-                font-size: 18px;
-            }
-
-        }
-
-
-        /* =========================
-           PETIT TELEPHONE
-        ========================= */
-
-        @media (max-width: 380px) {
-
-            .page-jeux h1 {
-                font-size: 30px;
-            }
-
-            .page-jeux > p {
-                font-size: 15px;
-            }
-
-            .jeu img {
-                height: 150px;
-            }
-
-            .jeu h2 {
-                font-size: 21px;
-            }
-
-            .jeu button {
-                font-size: 16px;
             }
 
         }
@@ -394,16 +467,26 @@
 
 
 <body>
+
+
+    <!-- ==================================================
+         PROTECTION
+    ================================================== -->
+
     <script>
-    if (!localStorage.getItem("pseudoGameZone")) {
-        window.location.href = "index.html";
-    }
-</script>
+
+        if (!localStorage.getItem("pseudoGameZone")) {
+
+            window.location.href = "index.html";
+
+        }
+
+    </script>
 
 
-    <!-- =========================
+    <!-- ==================================================
          MENU
-    ========================= -->
+    ================================================== -->
 
     <nav>
 
@@ -418,209 +501,192 @@
     </nav>
 
 
-    <!-- =========================
-         PAGE
-    ========================= -->
+    <!-- ==================================================
+         TITRE
+    ================================================== -->
 
-    <main class="page-jeux">
+    <h1>
+        🎮 GAMEZONE
+    </h1>
 
-        <h1>
-            🎮 Tous mes jeux
-        </h1>
-
-        <p>
-            Choisis un jeu et amuse-toi !
-        </p>
+    <p class="sous-titre">
+        Choisis ton jeu et tente de battre les meilleurs scores 🏆
+    </p>
 
 
-        <!-- =========================
-             LISTE DES JEUX
-        ========================= -->
+    <!-- ==================================================
+         JEUX
+    ================================================== -->
 
-        <div class="liste-jeux">
+    <main class="liste-jeux">
 
 
-            <!-- =====================
-                 JEU 1
-            ====================== -->
+        <!-- JEU 1 -->
 
-            <div class="jeu jeu-clics">
+        <div class="jeu">
 
-               <img
-    src="https://images.openai.com/static-rsc-4/hZ6v0ehkHWUqPIssgDwd5TVx9nGYe-ZVLvxj9gTrksnkRlvru6zPvHRsnAxMJLIhlS5bAF7VSA-P90WerprwemXOVQSm5H31ga78sVKVTH6WjKVJixGrz8KgPCRKE8PIAlfR-obr3-MYtb9swQjFnLCWj-L-Fu90YlVKoxgIlc9-etHKlHq6PVA3INW5701J?purpose=fullsize"
-    alt="Jeu de clics">
+            <div>
+
                 <h2>
-                    🎯 Jeu de clics
+                    🖱️ Jeu de clics
                 </h2>
 
                 <p>
-                    Clique le plus de fois possible
-                    en 30 secondes.
+                    Clique le plus vite possible pendant
+                    30 secondes et bats ton record !
                 </p>
-
-                <a href="jeux.html">
-
-                    <button>
-                        🎮 Jouer
-                    </button>
-
-                </a>
 
             </div>
 
+            <a href="jeux.html">
 
-            <!-- =====================
-                 JEU 2
-            ====================== -->
+                <button>
+                    🎮 Jouer
+                </button>
 
-            <div class="jeu jeu-nombre">
+            </a>
 
-                <img
-    src="https://d2kn23ptf6cnl9.cloudfront.net/thumbnail/guess-a-number.png"
-    alt="Devine le nombre">
+        </div>
+
+
+
+        <!-- JEU 2 -->
+
+        <div class="jeu">
+
+            <div>
+
                 <h2>
-                    🎲 Devine le nombre
+                    🎯 Jeu 2
                 </h2>
 
                 <p>
-                    Trouve le nombre secret
-                    entre 1 et 10.
+                    Relève le défi et essaie de dépasser
+                    ton meilleur score.
                 </p>
-
-                <a href="jeux2.html">
-
-                    <button>
-                        🎮 Jouer
-                    </button>
-
-                </a>
 
             </div>
 
+            <a href="jeux2.html">
 
-            <!-- =====================
-                 JEU 3
-            ====================== -->
+                <button>
+                    🎮 Jouer
+                </button>
 
-            <div class="jeu jeu-pfc">
+            </a>
 
-                <img
-                    src="https://cdn.aptoide.com/imgs/4/1/9/41932fac5597c23db8aae7fd1d074ccc_screen.jpg"
-                    alt="Pierre Feuille Ciseaux">
+        </div>
+
+
+
+        <!-- JEU 3 -->
+
+        <div class="jeu">
+
+            <div>
 
                 <h2>
-                    ✂️ Pierre-Feuille-Ciseaux
+                    ✊ Pierre Feuille Ciseaux
                 </h2>
 
                 <p>
-                    Bats l'ordinateur
-                    dans un duel !
+                    Affronte l'ordinateur.
+                    Le premier à 5 points gagne !
                 </p>
-
-                <a href="jeux3.html">
-
-                    <button>
-                        🎮 Jouer
-                    </button>
-
-                </a>
 
             </div>
 
+            <a href="jeux3.html">
 
-            <!-- =====================
-                 JEU 4
-            ====================== -->
+                <button>
+                    🎮 Jouer
+                </button>
 
-            <div class="jeu jeu-snake">
+            </a>
 
-                <img
-                    src="https://arcadia-casino.ams3.cdn.digitaloceanspaces.com/images/covers/snake.png"
-                    alt="Jeu Snake">
+        </div>
+
+
+
+        <!-- JEU 4 -->
+
+        <div class="jeu">
+
+            <div>
 
                 <h2>
                     🐍 Snake
                 </h2>
 
                 <p>
-                    Mange la nourriture
-                    et fais le meilleur score !
+                    Mange les pommes, grandis et
+                    réalise le meilleur score possible.
                 </p>
-
-                <a href="jeux4.html">
-
-                    <button>
-                        🎮 Jouer
-                    </button>
-
-                </a>
 
             </div>
 
+            <a href="jeux4.html">
 
-            <!-- =====================
-                 JEU 5
-            ====================== -->
+                <button>
+                    🎮 Jouer
+                </button>
 
-            <div class="jeu jeu-pong">
+            </a>
 
-               <img
-    src="https://raxiss.com/images/resized/540x405-pong1.jpg"
-    alt="Pong classique">
+        </div>
+
+
+
+        <!-- JEU 5 -->
+
+        <div class="jeu">
+
+            <div>
+
                 <h2>
                     🏓 Pong
                 </h2>
 
                 <p>
-                    Affronte l'ordinateur
-                    ou joue à deux !
+                    Affronte l'ordinateur ou défie
+                    un autre joueur !
                 </p>
 
-                <a href="jeux5.html">
-
-                    <button>
-                        🎮 Jouer
-                    </button>
-
-                </a>
-
             </div>
-            <div class="jeu jeu-space">
 
-    <img src="https://imgs.crazygames.com/games/space-invaders/cover_16x9-1714708168967.png?metadata=none&quality=100&width=1200&height=630&fit=crop" alt="Space Invaders">
-    <h2>
-        👾 Space Invaders
-    </h2>
+            <a href="jeux5.html">
 
-    <p>
-        Détruis les aliens et fais
-        le meilleur score !
-    </p>
+                <button>
+                    🎮 Jouer
+                </button>
 
-    <a href="jeux6.html">
-
-        <button>
-            🎮 Jouer
-        </button>
-
-    </a>
-
-</div>
-
+            </a>
 
         </div>
 
 
-        <!-- =========================
-             RETOUR ACCUEIL
-        ========================= -->
 
-        <div class="retour-accueil">
+        <!-- JEU 6 -->
 
-            <a href="index.html">
+        <div class="jeu">
+
+            <div>
+
+                <h2>
+                    👾 Space Invaders
+                </h2>
+
+                <p>
+                    Détruis les envahisseurs,
+                    bats les boss et fais exploser ton score !
+                </p>
+
+            </div>
+
+            <a href="jeux6.html">
 
                 <button>
-                    🔙 Retour à l'accueil
+                    🎮 Jouer
                 </button>
 
             </a>
@@ -629,6 +695,23 @@
 
 
     </main>
+
+
+    <!-- ==================================================
+         RETOUR
+    ================================================== -->
+
+    <div class="retour">
+
+        <a href="index.html">
+
+            <button>
+                🏠 Retour à l'accueil
+            </button>
+
+        </a>
+
+    </div>
 
 
 </body>

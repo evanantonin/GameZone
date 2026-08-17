@@ -12,243 +12,308 @@
 
 <link rel="stylesheet" href="style.css">
 
-
 </head>
 
-<body class="page-space"></body>
+
+<body class="page-space">
+
+
+<!-- =========================================================
+     PROTECTION
+========================================================= -->
+
 <script>
-    if (!localStorage.getItem("pseudoGameZone")) {
-        window.location.href = "index.html";
-    }
+
+if (!localStorage.getItem("pseudoGameZone")) {
+
+    window.location.href = "index.html";
+
+}
+
 </script>
+
+
+<!-- =========================================================
+     MENU
+========================================================= -->
 
 <nav>
 
-<a href="index.html">🏠 Accueil</a>
+    <a href="index.html">
+        🏠 Accueil
+    </a>
 
-<a href="liste-jeux.html">🎮 Jeux</a>
+    <a href="liste-jeux.html">
+        🎮 Jeux
+    </a>
 
 </nav>
 
+
+<!-- =========================================================
+     CONTENU
+========================================================= -->
+
 <main class="container">
 
-<h1>👾 Space Invaders</h1>
+
+<h1>
+    👾 Space Invaders
+</h1>
 
 
-<!-- ==============================
-     CREATION COMPTE
-============================== -->
+<!-- =========================================================
+     PSEUDO
+========================================================= -->
 
-<div id="zoneCreation">
+<p class="pseudo-joueur">
 
-<h2>👤 Crée ton pseudo</h2>
+    👤 Joueur :
 
-<p>
-Ton pseudo sera mémorisé sur cet appareil.
+    <strong id="pseudoAffiche">
+        Chargement...
+    </strong>
+
 </p>
 
-<input
-    type="text"
-    id="pseudoInput"
-    maxlength="20"
-    placeholder="Entre ton pseudo">
 
-<br>
-
-<button id="boutonCreerCompte">
-✅ Créer mon compte
-</button>
-
-<div id="erreurPseudo"></div>
-
-</div>
-
-
-<!-- ==============================
-     COMPTE
-============================== -->
-
-<div
-    class="compte"
-    id="zoneCompte"
-    style="display:none;">
-
-👤 Joueur :
-<strong id="pseudoAffiche"></strong>
-
-</div>
-
+<!-- =========================================================
+     RETOUR
+========================================================= -->
 
 <div>
 
-<a href="liste-jeux.html">
+    <a href="liste-jeux.html">
 
-<button style="padding:10px 18px;">
-⬅️ Retour aux jeux
-</button>
+        <button style="padding:10px 18px;">
 
-</a>
+            ⬅️ Retour aux jeux
+
+        </button>
+
+    </a>
 
 </div>
 
 
-<!-- ==============================
+<!-- =========================================================
      INFORMATIONS
-============================== -->
+========================================================= -->
 
 <div class="infos">
 
-<div>
-🎯 Score :
-<span id="score">0</span>
+    <div>
+
+        🎯 Score :
+
+        <span id="score">
+            0
+        </span>
+
+    </div>
+
+
+    <div>
+
+        🏆 Meilleur :
+
+        <span id="meilleurScore">
+            0
+        </span>
+
+    </div>
+
+
+    <div>
+
+        🚀 Niveau :
+
+        <span id="niveau">
+            1
+        </span>
+
+    </div>
+
+
+    <div>
+
+        ❤️ Vies :
+
+        <span id="vies">
+            3
+        </span>
+
+    </div>
+
 </div>
 
-<div>
-🏆 Meilleur :
-<span id="meilleurScore">0</span>
-</div>
 
-<div>
-🚀 Niveau :
-<span id="niveau">1</span>
-</div>
-
-<div>
-❤️ Vies :
-<span id="vies">3</span>
-</div>
-
-</div>
-
-
-<!-- ==============================
+<!-- =========================================================
      JEU
-============================== -->
+========================================================= -->
 
 <canvas
     id="jeuSpace"
     width="800"
     height="600">
 
-Ton navigateur ne supporte pas le canvas.
+    Ton navigateur ne supporte pas le canvas.
 
 </canvas>
 
 
 <p id="message">
-🚀 Détruis les envahisseurs !
+
+    🚀 Détruis les envahisseurs !
+
 </p>
 
+
+<!-- =========================================================
+     BOUTONS
+========================================================= -->
 
 <div class="boutons">
 
-<button id="boutonPause">
-⏸️ Pause
-</button>
+    <button id="boutonPause">
 
-<button
-    id="boutonRejouer"
-    onclick="rejouer()">
+        ⏸️ Pause
 
-🔄 Rejouer
+    </button>
 
-</button>
+
+    <button
+        id="boutonRejouer"
+        onclick="rejouer()">
+
+        🔄 Rejouer
+
+    </button>
 
 </div>
 
+
+<!-- =========================================================
+     COMMANDES
+========================================================= -->
 
 <div class="commandes">
 
-<p>
-⌨️ PC : Q / D ou ← / →
-</p>
+    <p>
 
-<p>
-🖱️ Clic gauche : tirer
-</p>
+        ⌨️ PC : Q / D ou ← / →
 
-<p>
-📱 Téléphone : utilise les boutons
-</p>
+    </p>
+
+
+    <p>
+
+        🖱️ Clic gauche : tirer
+
+    </p>
+
+
+    <p>
+
+        📱 Téléphone : utilise les boutons
+
+    </p>
 
 </div>
 
 
-<!-- ==============================
+<!-- =========================================================
      CONTROLES MOBILE
-============================== -->
+========================================================= -->
 
 <div class="controles-mobile">
 
-<button id="gauche">
-⬅️
-</button>
+    <button id="gauche">
 
-<button id="tirer">
-🔥
-</button>
+        ⬅️
 
-<button id="droite">
-➡️
-</button>
+    </button>
+
+
+    <button id="tirer">
+
+        🔥
+
+    </button>
+
+
+    <button id="droite">
+
+        ➡️
+
+    </button>
 
 </div>
 
 
-<!-- ==============================
+<!-- =========================================================
      CLASSEMENT
-============================== -->
+========================================================= -->
 
 <section class="classement">
 
-<h2>
-🌍 🏆 TOP 10 MONDIAL - SPACE INVADERS
-</h2>
+    <h2>
 
-<table id="tableauScores">
+        🌍 🏆 TOP 10 MONDIAL - SPACE INVADERS
 
-<thead>
+    </h2>
 
-<tr>
 
-<th>#</th>
+    <table id="tableauScores">
 
-<th>👤 Pseudo</th>
+        <thead>
 
-<th>🎯 Score</th>
+            <tr>
 
-</tr>
+                <th>#</th>
 
-</thead>
+                <th>👤 Pseudo</th>
 
-<tbody id="listeScores">
+                <th>🎯 Score</th>
 
-<tr>
+            </tr>
 
-<td colspan="3">
-Chargement...
-</td>
+        </thead>
 
-</tr>
 
-</tbody>
+        <tbody id="listeScores">
 
-</table>
+            <tr>
 
-<div
-    class="statut"
-    id="statutClassement">
+                <td colspan="3">
 
-🌍 Chargement du classement...
+                    Chargement...
 
-</div>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <div
+        class="statut"
+        id="statutClassement">
+
+        🌍 Chargement du classement...
+
+    </div>
 
 </section>
+
 
 </main>
 
 
 <script>
+
 
 /* =========================================================
    SUPABASE
@@ -262,11 +327,9 @@ const SUPABASE_KEY =
 
 
 /*
-    IMPORTANT
+    IDENTIFICATION DU JEU
 
-    La colonne "jeu" est de type TEXT.
-
-    Space Invaders = "6"
+    Space Invaders = jeu 6
 */
 
 const JEU_ID = "6";
@@ -276,58 +339,38 @@ const JEU_ID = "6";
    ELEMENTS
 ========================================================= */
 
-const zoneCreation =
-document.getElementById("zoneCreation");
-
-const zoneCompte =
-document.getElementById("zoneCompte");
-
-const pseudoInput =
-document.getElementById("pseudoInput");
-
 const pseudoAffiche =
-document.getElementById("pseudoAffiche");
-
-const boutonCreerCompte =
-document.getElementById("boutonCreerCompte");
-
-const erreurPseudo =
-document.getElementById("erreurPseudo");
+document.getElementById(
+    "pseudoAffiche"
+);
 
 const listeScores =
-document.getElementById("listeScores");
+document.getElementById(
+    "listeScores"
+);
 
 const statutClassement =
-document.getElementById("statutClassement");
+document.getElementById(
+    "statutClassement"
+);
 
 
 /* =========================================================
    PSEUDO
 ========================================================= */
 
-let pseudo =
-localStorage.getItem("pseudoGameZone");
+const pseudo =
+localStorage.getItem(
+    "pseudoGameZone"
+);
 
 
-function afficherCompte() {
+if (pseudo) {
 
-    pseudo = localStorage.getItem("pseudoGameZone");
+    pseudoAffiche.textContent =
+    pseudo;
 
-    if (pseudo) {
-
-        zoneCreation.style.display = "none";
-        zoneCompte.style.display = "block";
-
-        pseudoAffiche.textContent = pseudo;
-
-    } else {
-
-        zoneCreation.style.display = "block";
-        zoneCompte.style.display = "none";
-
-    }
 }
-
 
 
 /* =========================================================
@@ -341,6 +384,7 @@ Number(
     )
 ) || 0;
 
+
 document.getElementById(
     "meilleurScore"
 ).textContent =
@@ -352,10 +396,14 @@ meilleurScore;
 ========================================================= */
 
 const canvas =
-document.getElementById("jeuSpace");
+document.getElementById(
+    "jeuSpace"
+);
 
 const contexte =
-canvas.getContext("2d");
+canvas.getContext(
+    "2d"
+);
 
 
 /* =========================================================
@@ -364,15 +412,20 @@ canvas.getContext("2d");
 
 let joueur = {
 
-    x: canvas.width / 2 - 35,
+    x:
+    canvas.width / 2 - 35,
 
-    y: canvas.height - 65,
+    y:
+    canvas.height - 65,
 
-    largeur: 70,
+    largeur:
+    70,
 
-    hauteur: 30,
+    hauteur:
+    30,
 
-    vitesse: 7
+    vitesse:
+    7
 
 };
 
@@ -420,7 +473,11 @@ let niveauEnTransition = false;
    ETOILES
 ========================================================= */
 
-for (let i = 0; i < 100; i++) {
+for (
+    let i = 0;
+    i < 100;
+    i++
+) {
 
     etoiles.push({
 
@@ -448,33 +505,37 @@ for (let i = 0; i < 100; i++) {
 ========================================================= */
 
 document.addEventListener(
-"keydown",
-function(event) {
+    "keydown",
+    function(event) {
 
-    touches[
-        event.key.toLowerCase()
-    ] = true;
+        touches[
+            event.key.toLowerCase()
+        ] = true;
 
-    if (
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight"
-    ) {
 
-        event.preventDefault();
+        if (
+            event.key === "ArrowLeft" ||
+            event.key === "ArrowRight"
+        ) {
+
+            event.preventDefault();
+
+        }
+
     }
-
-});
+);
 
 
 document.addEventListener(
-"keyup",
-function(event) {
+    "keyup",
+    function(event) {
 
-    touches[
-        event.key.toLowerCase()
-    ] = false;
+        touches[
+            event.key.toLowerCase()
+        ] = false;
 
-});
+    }
+);
 
 
 /* =========================================================
@@ -482,15 +543,17 @@ function(event) {
 ========================================================= */
 
 canvas.addEventListener(
-"mousedown",
-function(event) {
+    "mousedown",
+    function(event) {
 
-    if (event.button === 0) {
+        if (event.button === 0) {
 
-        tirer();
+            tirer();
+
+        }
+
     }
-
-});
+);
 
 
 /* =========================================================
@@ -505,11 +568,13 @@ function creerEnnemis() {
 
     directionEnnemis = 1;
 
+
     const lignes =
     Math.min(
         3 + Math.floor(niveau / 2),
         6
     );
+
 
     const colonnes =
     Math.min(
@@ -517,9 +582,11 @@ function creerEnnemis() {
         10
     );
 
+
     const espaceX = 70;
 
     const espaceY = 50;
+
 
     for (
         let ligne = 0;
@@ -536,17 +603,25 @@ function creerEnnemis() {
             ennemis.push({
 
                 x:
-                70 + colonne * espaceX,
+                70 +
+                colonne *
+                espaceX,
 
                 y:
-                55 + ligne * espaceY,
+                55 +
+                ligne *
+                espaceY,
 
-                largeur: 45,
+                largeur:
+                45,
 
-                hauteur: 30,
+                hauteur:
+                30,
 
                 vie:
-                niveau >= 3 ? 2 : 1,
+                niveau >= 3
+                ? 2
+                : 1,
 
                 type:
                 ligne === 0
@@ -573,11 +648,14 @@ function creerBoss() {
         x:
         canvas.width / 2 - 90,
 
-        y: 55,
+        y:
+        55,
 
-        largeur: 180,
+        largeur:
+        180,
 
-        hauteur: 65,
+        hauteur:
+        65,
 
         vie:
         10 + niveau * 3,
@@ -588,7 +666,8 @@ function creerBoss() {
         vitesse:
         2.5 + niveau * 0.2,
 
-        direction: 1
+        direction:
+        1
 
     };
 
@@ -605,8 +684,11 @@ function tirer() {
         jeuTermine ||
         jeuEnPause
     ) {
+
         return;
+
     }
+
 
     balles.push({
 
@@ -617,11 +699,14 @@ function tirer() {
         y:
         joueur.y - 10,
 
-        largeur: 6,
+        largeur:
+        6,
 
-        hauteur: 18,
+        hauteur:
+        18,
 
-        vitesse: 10
+        vitesse:
+        10
 
     });
 
@@ -634,9 +719,14 @@ function tirer() {
 
 function tirerEnnemi() {
 
-    if (ennemis.length === 0) {
+    if (
+        ennemis.length === 0
+    ) {
+
         return;
+
     }
+
 
     const ennemi =
     ennemis[
@@ -645,6 +735,7 @@ function tirerEnnemi() {
             ennemis.length
         )
     ];
+
 
     ballesEnnemies.push({
 
@@ -656,9 +747,11 @@ function tirerEnnemi() {
         ennemi.y +
         ennemi.hauteur,
 
-        largeur: 6,
+        largeur:
+        6,
 
-        hauteur: 15,
+        hauteur:
+        15,
 
         vitesse:
         4 + niveau * 0.3
@@ -675,8 +768,11 @@ function tirerEnnemi() {
 function tirerBoss() {
 
     if (!boss) {
+
         return;
+
     }
+
 
     ballesEnnemies.push({
 
@@ -688,9 +784,11 @@ function tirerBoss() {
         boss.y +
         boss.hauteur,
 
-        largeur: 9,
+        largeur:
+        9,
 
-        hauteur: 22,
+        hauteur:
+        22,
 
         vitesse:
         5 + niveau * 0.3
@@ -710,8 +808,11 @@ function controles() {
         jeuTermine ||
         jeuEnPause
     ) {
+
         return;
+
     }
+
 
     if (
         touches["q"] ||
@@ -720,7 +821,9 @@ function controles() {
 
         joueur.x -=
         joueur.vitesse;
+
     }
+
 
     if (
         touches["d"] ||
@@ -729,11 +832,16 @@ function controles() {
 
         joueur.x +=
         joueur.vitesse;
+
     }
 
+
     if (joueur.x < 0) {
+
         joueur.x = 0;
+
     }
+
 
     if (
         joueur.x +
@@ -744,6 +852,7 @@ function controles() {
         joueur.x =
         canvas.width -
         joueur.largeur;
+
     }
 
 }
@@ -757,33 +866,45 @@ function bougerEnnemis() {
 
     let bord = false;
 
-    for (const ennemi of ennemis) {
+
+    for (
+        const ennemi of ennemis
+    ) {
 
         ennemi.x +=
         vitesseEnnemis *
         directionEnnemis;
 
+
         if (
             ennemi.x <= 10 ||
-            ennemi.x + ennemi.largeur >=
+            ennemi.x +
+            ennemi.largeur >=
             canvas.width - 10
         ) {
 
             bord = true;
+
         }
 
     }
+
 
     if (bord) {
 
         directionEnnemis *= -1;
 
-        for (const ennemi of ennemis) {
+
+        for (
+            const ennemi of ennemis
+        ) {
 
             ennemi.y += 20;
+
         }
 
     }
+
 
     if (boss) {
 
@@ -791,13 +912,16 @@ function bougerEnnemis() {
         boss.vitesse *
         boss.direction;
 
+
         if (
             boss.x <= 10 ||
-            boss.x + boss.largeur >=
+            boss.x +
+            boss.largeur >=
             canvas.width - 10
         ) {
 
             boss.direction *= -1;
+
         }
 
     }
@@ -820,9 +944,16 @@ function bougerBalles() {
         balles[i].y -=
         balles[i].vitesse;
 
-        if (balles[i].y < -30) {
 
-            balles.splice(i, 1);
+        if (
+            balles[i].y < -30
+        ) {
+
+            balles.splice(
+                i,
+                1
+            );
+
         }
 
     }
@@ -833,7 +964,8 @@ function bougerBalles() {
 function bougerBallesEnnemies() {
 
     for (
-        let i = ballesEnnemies.length - 1;
+        let i =
+        ballesEnnemies.length - 1;
         i >= 0;
         i--
     ) {
@@ -841,12 +973,17 @@ function bougerBallesEnnemies() {
         ballesEnnemies[i].y +=
         ballesEnnemies[i].vitesse;
 
+
         if (
             ballesEnnemies[i].y >
             canvas.height
         ) {
 
-            ballesEnnemies.splice(i, 1);
+            ballesEnnemies.splice(
+                i,
+                1
+            );
+
         }
 
     }
@@ -908,6 +1045,7 @@ function creerExplosion(
 
     });
 
+
     for (
         let i = 0;
         i < 15 * puissance;
@@ -927,7 +1065,8 @@ function creerExplosion(
             Math.random() * 6 - 3,
 
             vie:
-            25 + Math.random() * 20,
+            25 +
+            Math.random() * 20,
 
             taille:
             Math.random() * 4 + 2
@@ -951,25 +1090,37 @@ function verifierCollisions() {
         i--
     ) {
 
-        const balle = balles[i];
+        const balle =
+        balles[i];
 
         let touche = false;
 
+
         for (
-            let j = ennemis.length - 1;
+            let j =
+            ennemis.length - 1;
             j >= 0;
             j--
         ) {
 
-            const ennemi = ennemis[j];
+            const ennemi =
+            ennemis[j];
+
 
             if (
-                collision(balle, ennemi)
+                collision(
+                    balle,
+                    ennemi
+                )
             ) {
 
                 ennemi.vie--;
 
-                balles.splice(i, 1);
+                balles.splice(
+                    i,
+                    1
+                );
+
 
                 creerExplosion(
                     balle.x,
@@ -977,36 +1128,59 @@ function verifierCollisions() {
                     0.6
                 );
 
-                if (ennemi.vie <= 0) {
 
-                    ennemis.splice(j, 1);
+                if (
+                    ennemi.vie <= 0
+                ) {
+
+                    ennemis.splice(
+                        j,
+                        1
+                    );
+
 
                     ajouterScore(
+
                         ennemi.type === "fort"
                         ? 20
                         : 10
+
                     );
+
                 }
+
 
                 touche = true;
 
                 break;
+
             }
 
         }
 
+
         if (touche) {
+
             continue;
+
         }
+
 
         if (
             boss &&
-            collision(balle, boss)
+            collision(
+                balle,
+                boss
+            )
         ) {
 
             boss.vie--;
 
-            balles.splice(i, 1);
+            balles.splice(
+                i,
+                1
+            );
+
 
             creerExplosion(
                 balle.x,
@@ -1014,31 +1188,40 @@ function verifierCollisions() {
                 0.8
             );
 
+
             if (
                 boss.vie <= 0 &&
                 !niveauEnTransition
             ) {
 
-                niveauEnTransition = true;
+                niveauEnTransition =
+                true;
+
 
                 ajouterScore(
                     100 * niveau
                 );
 
+
                 creerExplosion(
                     boss.x +
                     boss.largeur / 2,
+
                     boss.y +
                     boss.hauteur / 2,
+
                     4
                 );
 
+
                 boss = null;
+
 
                 document.getElementById(
                     "message"
                 ).textContent =
                 "💥 BOSS DÉTRUIT !";
+
 
                 setTimeout(
                     function() {
@@ -1049,9 +1232,12 @@ function verifierCollisions() {
                             false;
 
                             return;
+
                         }
 
+
                         niveauSuivant();
+
 
                         niveauEnTransition =
                         false;
@@ -1068,7 +1254,8 @@ function verifierCollisions() {
 
 
     for (
-        let i = ballesEnnemies.length - 1;
+        let i =
+        ballesEnnemies.length - 1;
         i >= 0;
         i--
     ) {
@@ -1080,15 +1267,22 @@ function verifierCollisions() {
             )
         ) {
 
-            ballesEnnemies.splice(i, 1);
+            ballesEnnemies.splice(
+                i,
+                1
+            );
+
 
             perdreVie();
+
         }
 
     }
 
 
-    for (const ennemi of ennemis) {
+    for (
+        const ennemi of ennemis
+    ) {
 
         if (
             ennemi.y +
@@ -1099,6 +1293,7 @@ function verifierCollisions() {
             terminerJeu();
 
             return;
+
         }
 
     }
@@ -1114,9 +1309,14 @@ function ajouterScore(points) {
 
     score += points;
 
-    if (score > meilleurScore) {
 
-        meilleurScore = score;
+    if (
+        score > meilleurScore
+    ) {
+
+        meilleurScore =
+        score;
+
 
         localStorage.setItem(
             "meilleurScoreSpaceInvaders",
@@ -1125,13 +1325,17 @@ function ajouterScore(points) {
 
     }
 
+
     document.getElementById(
         "score"
-    ).textContent = score;
+    ).textContent =
+    score;
+
 
     document.getElementById(
         "meilleurScore"
-    ).textContent = meilleurScore;
+    ).textContent =
+    meilleurScore;
 
 }
 
@@ -1144,29 +1348,41 @@ function perdreVie() {
 
     vies--;
 
+
     document.getElementById(
         "vies"
-    ).textContent = vies;
+    ).textContent =
+    vies;
+
 
     creerExplosion(
         joueur.x +
         joueur.largeur / 2,
+
         joueur.y,
+
         2
     );
 
-    if (vies <= 0) {
+
+    if (
+        vies <= 0
+    ) {
 
         terminerJeu();
 
         return;
+
     }
+
 
     joueur.x =
     canvas.width / 2 -
     joueur.largeur / 2;
 
+
     ballesEnnemies = [];
+
 
     document.getElementById(
         "message"
@@ -1185,25 +1401,37 @@ function perdreVie() {
 function niveauSuivant() {
 
     if (jeuTermine) {
+
         return;
+
     }
+
 
     niveau++;
 
+
     document.getElementById(
         "niveau"
-    ).textContent = niveau;
+    ).textContent =
+    niveau;
+
 
     balles = [];
 
     ballesEnnemies = [];
 
-    vitesseEnnemis =
-    0.5 + niveau * 0.15;
 
-    if (niveau % 3 === 0) {
+    vitesseEnnemis =
+    0.5 +
+    niveau * 0.15;
+
+
+    if (
+        niveau % 3 === 0
+    ) {
 
         creerBoss();
+
 
         document.getElementById(
             "message"
@@ -1212,9 +1440,12 @@ function niveauSuivant() {
         + niveau
         + " !";
 
-    } else {
+    }
+
+    else {
 
         creerEnnemis();
+
 
         document.getElementById(
             "message"
@@ -1222,6 +1453,7 @@ function niveauSuivant() {
         "🚀 Niveau "
         + niveau
         + " !";
+
     }
 
 }
@@ -1234,12 +1466,17 @@ function niveauSuivant() {
 async function terminerJeu() {
 
     if (jeuTermine) {
+
         return;
+
     }
+
 
     jeuTermine = true;
 
-    niveauEnTransition = false;
+    niveauEnTransition =
+    false;
+
 
     document.getElementById(
         "message"
@@ -1247,15 +1484,18 @@ async function terminerJeu() {
     "💀 GAME OVER ! Score : "
     + score;
 
+
     document.getElementById(
         "boutonRejouer"
     ).style.display =
     "inline-block";
 
+
     document.getElementById(
         "boutonPause"
     ).style.display =
     "none";
+
 
     await enregistrerMeilleurScore();
 
@@ -1269,35 +1509,46 @@ async function terminerJeu() {
 function pauseJeu() {
 
     if (jeuTermine) {
+
         return;
+
     }
 
-    jeuEnPause = !jeuEnPause;
+
+    jeuEnPause =
+    !jeuEnPause;
+
 
     const bouton =
     document.getElementById(
         "boutonPause"
     );
 
+
     if (jeuEnPause) {
 
         bouton.textContent =
         "▶️ Reprendre";
+
 
         document.getElementById(
             "message"
         ).textContent =
         "⏸️ Jeu en pause";
 
-    } else {
+    }
+
+    else {
 
         bouton.textContent =
         "⏸️ Pause";
+
 
         document.getElementById(
             "message"
         ).textContent =
         "🔥 C'est reparti !";
+
     }
 
 }
@@ -1339,47 +1590,65 @@ function rejouer() {
 
     boss = null;
 
+
     joueur.x =
     canvas.width / 2 -
     joueur.largeur / 2;
 
-    vitesseEnnemis = 0.5;
 
-    directionEnnemis = 1;
+    vitesseEnnemis =
+    0.5;
 
-    tempsTirEnnemi = 0;
+
+    directionEnnemis =
+    1;
+
+
+    tempsTirEnnemi =
+    0;
+
 
     document.getElementById(
         "score"
-    ).textContent = "0";
+    ).textContent =
+    "0";
+
 
     document.getElementById(
         "niveau"
-    ).textContent = "1";
+    ).textContent =
+    "1";
+
 
     document.getElementById(
         "vies"
-    ).textContent = "3";
+    ).textContent =
+    "3";
+
 
     document.getElementById(
         "message"
     ).textContent =
     "🚀 Nouvelle partie !";
 
+
     document.getElementById(
         "boutonRejouer"
     ).style.display =
     "none";
+
 
     document.getElementById(
         "boutonPause"
     ).style.display =
     "inline-block";
 
+
     document.getElementById(
         "boutonPause"
     ).textContent =
     "⏸️ Pause";
+
 
     creerEnnemis();
 
@@ -1393,12 +1662,15 @@ function rejouer() {
 function bougerParticules() {
 
     for (
-        let i = particules.length - 1;
+        let i =
+        particules.length - 1;
         i >= 0;
         i--
     ) {
 
-        const p = particules[i];
+        const p =
+        particules[i];
+
 
         p.x += p.vx;
 
@@ -1408,9 +1680,16 @@ function bougerParticules() {
 
         p.vie--;
 
-        if (p.vie <= 0) {
 
-            particules.splice(i, 1);
+        if (
+            p.vie <= 0
+        ) {
+
+            particules.splice(
+                i,
+                1
+            );
+
         }
 
     }
@@ -1425,7 +1704,8 @@ function bougerParticules() {
 function bougerExplosions() {
 
     for (
-        let i = explosions.length - 1;
+        let i =
+        explosions.length - 1;
         i >= 0;
         i--
     ) {
@@ -1434,11 +1714,16 @@ function bougerExplosions() {
 
         explosions[i].vie--;
 
+
         if (
             explosions[i].vie <= 0
         ) {
 
-            explosions.splice(i, 1);
+            explosions.splice(
+                i,
+                1
+            );
+
         }
 
     }
@@ -1452,9 +1737,13 @@ function bougerExplosions() {
 
 function bougerEtoiles() {
 
-    for (const etoile of etoiles) {
+    for (
+        const etoile of etoiles
+    ) {
 
-        etoile.y += etoile.vitesse;
+        etoile.y +=
+        etoile.vitesse;
+
 
         if (
             etoile.y >
@@ -1463,9 +1752,11 @@ function bougerEtoiles() {
 
             etoile.y = 0;
 
+
             etoile.x =
             Math.random() *
             canvas.width;
+
         }
 
     }
@@ -1482,6 +1773,7 @@ function dessinerFond() {
     contexte.fillStyle =
     "#02020a";
 
+
     contexte.fillRect(
         0,
         0,
@@ -1489,13 +1781,19 @@ function dessinerFond() {
         canvas.height
     );
 
-    for (const etoile of etoiles) {
+
+    for (
+        const etoile of etoiles
+    ) {
 
         contexte.fillStyle =
         "white";
 
+
         contexte.globalAlpha =
-        Math.random() * 0.5 + 0.5;
+        Math.random() *
+        0.5 + 0.5;
+
 
         contexte.fillRect(
             etoile.x,
@@ -1503,9 +1801,12 @@ function dessinerFond() {
             etoile.taille,
             etoile.taille
         );
+
     }
 
-    contexte.globalAlpha = 1;
+
+    contexte.globalAlpha =
+    1;
 
 }
 
@@ -1516,64 +1817,97 @@ function dessinerFond() {
 
 function dessinerJoueur() {
 
-    const x = joueur.x;
+    const x =
+    joueur.x;
 
-    const y = joueur.y;
+    const y =
+    joueur.y;
 
-    contexte.shadowBlur = 20;
+
+    contexte.shadowBlur =
+    20;
+
 
     contexte.shadowColor =
     "#00ccff";
 
+
     contexte.fillStyle =
     "#008cff";
 
+
     contexte.beginPath();
 
+
     contexte.moveTo(
-        x + joueur.largeur / 2,
+        x +
+        joueur.largeur / 2,
+
         y - 18
     );
 
-    contexte.lineTo(
-        x,
-        y + joueur.hauteur
-    );
 
     contexte.lineTo(
-        x + joueur.largeur,
-        y + joueur.hauteur
+        x,
+
+        y +
+        joueur.hauteur
     );
+
+
+    contexte.lineTo(
+        x +
+        joueur.largeur,
+
+        y +
+        joueur.hauteur
+    );
+
 
     contexte.closePath();
 
+
     contexte.fill();
+
 
     contexte.fillStyle =
     "#bfffff";
 
+
     contexte.beginPath();
 
+
     contexte.moveTo(
-        x + joueur.largeur / 2,
+        x +
+        joueur.largeur / 2,
+
         y - 8
     );
 
+
     contexte.lineTo(
         x + 20,
+
         y + 20
     );
 
+
     contexte.lineTo(
-        x + joueur.largeur - 20,
+        x +
+        joueur.largeur - 20,
+
         y + 20
     );
+
 
     contexte.closePath();
 
+
     contexte.fill();
 
-    contexte.shadowBlur = 0;
+
+    contexte.shadowBlur =
+    0;
 
 }
 
@@ -1589,15 +1923,21 @@ function dessinerEnnemi(ennemi) {
     ? "#ff1744"
     : "#a020f0";
 
-    contexte.shadowBlur = 15;
+
+    contexte.shadowBlur =
+    15;
+
 
     contexte.shadowColor =
     couleur;
 
+
     contexte.fillStyle =
     couleur;
 
+
     contexte.beginPath();
+
 
     contexte.roundRect(
         ennemi.x,
@@ -1607,10 +1947,13 @@ function dessinerEnnemi(ennemi) {
         8
     );
 
+
     contexte.fill();
+
 
     contexte.fillStyle =
     "#ffffff";
+
 
     contexte.fillRect(
         ennemi.x + 9,
@@ -1619,15 +1962,20 @@ function dessinerEnnemi(ennemi) {
         9
     );
 
+
     contexte.fillRect(
         ennemi.x +
         ennemi.largeur - 18,
+
         ennemi.y + 9,
+
         9,
         9
     );
 
-    contexte.shadowBlur = 0;
+
+    contexte.shadowBlur =
+    0;
 
 }
 
@@ -1639,18 +1987,26 @@ function dessinerEnnemi(ennemi) {
 function dessinerBoss() {
 
     if (!boss) {
+
         return;
+
     }
 
-    contexte.shadowBlur = 30;
+
+    contexte.shadowBlur =
+    30;
+
 
     contexte.shadowColor =
     "#ff0044";
 
+
     contexte.fillStyle =
     "#8b0038";
 
+
     contexte.beginPath();
+
 
     contexte.roundRect(
         boss.x,
@@ -1660,17 +2016,24 @@ function dessinerBoss() {
         18
     );
 
+
     contexte.fill();
+
 
     contexte.strokeStyle =
     "#ff1744";
 
-    contexte.lineWidth = 4;
+
+    contexte.lineWidth =
+    4;
+
 
     contexte.stroke();
 
+
     contexte.fillStyle =
     "#ffff00";
+
 
     contexte.fillRect(
         boss.x + 35,
@@ -1679,18 +2042,25 @@ function dessinerBoss() {
         15
     );
 
+
     contexte.fillRect(
         boss.x +
         boss.largeur - 70,
+
         boss.y + 20,
+
         35,
         15
     );
 
-    contexte.shadowBlur = 0;
+
+    contexte.shadowBlur =
+    0;
+
 
     contexte.fillStyle =
     "#222";
+
 
     contexte.fillRect(
         boss.x,
@@ -1699,14 +2069,21 @@ function dessinerBoss() {
         8
     );
 
+
     contexte.fillStyle =
     "#00ff44";
+
 
     contexte.fillRect(
         boss.x,
         boss.y - 15,
+
         boss.largeur *
-        (boss.vie / boss.vieMax),
+        (
+            boss.vie /
+            boss.vieMax
+        ),
+
         8
     );
 
@@ -1721,12 +2098,17 @@ function dessiner() {
 
     dessinerFond();
 
+
     dessinerJoueur();
 
-    for (const balle of balles) {
+
+    for (
+        const balle of balles
+    ) {
 
         contexte.fillStyle =
         "#00ffcc";
+
 
         contexte.fillRect(
             balle.x,
@@ -1734,7 +2116,9 @@ function dessiner() {
             balle.largeur,
             balle.hauteur
         );
+
     }
+
 
     for (
         const balle of ballesEnnemies
@@ -1743,27 +2127,41 @@ function dessiner() {
         contexte.fillStyle =
         "#ff3355";
 
+
         contexte.fillRect(
             balle.x,
             balle.y,
             balle.largeur,
             balle.hauteur
         );
+
     }
 
-    for (const ennemi of ennemis) {
 
-        dessinerEnnemi(ennemi);
+    for (
+        const ennemi of ennemis
+    ) {
+
+        dessinerEnnemi(
+            ennemi
+        );
+
     }
+
 
     dessinerBoss();
 
-    for (const explosion of explosions) {
+
+    for (
+        const explosion of explosions
+    ) {
 
         contexte.fillStyle =
         "#ff6600";
 
+
         contexte.beginPath();
+
 
         contexte.arc(
             explosion.x,
@@ -1773,16 +2171,26 @@ function dessiner() {
             Math.PI * 2
         );
 
+
         contexte.fill();
+
     }
 
-    for (const p of particules) {
+
+    for (
+        const p of particules
+    ) {
 
         contexte.globalAlpha =
-        Math.max(0, p.vie / 40);
+        Math.max(
+            0,
+            p.vie / 40
+        );
+
 
         contexte.fillStyle =
         "#ffaa00";
+
 
         contexte.fillRect(
             p.x,
@@ -1790,9 +2198,12 @@ function dessiner() {
             p.taille,
             p.taille
         );
+
     }
 
-    contexte.globalAlpha = 1;
+
+    contexte.globalAlpha =
+    1;
 
 }
 
@@ -1824,13 +2235,17 @@ function boucle() {
 
         bougerEtoiles();
 
+
         tempsTirEnnemi++;
+
 
         const intervalle =
         Math.max(
             25,
-            100 - niveau * 5
+            100 -
+            niveau * 5
         );
+
 
         if (
             tempsTirEnnemi >=
@@ -1839,8 +2254,11 @@ function boucle() {
 
             tirerEnnemi();
 
-            tempsTirEnnemi = 0;
+            tempsTirEnnemi =
+            0;
+
         }
+
 
         if (
             boss &&
@@ -1848,7 +2266,9 @@ function boucle() {
         ) {
 
             tirerBoss();
+
         }
+
 
         if (
             ennemis.length === 0 &&
@@ -1857,13 +2277,18 @@ function boucle() {
         ) {
 
             niveauSuivant();
+
         }
 
     }
 
+
     dessiner();
 
-    requestAnimationFrame(boucle);
+
+    requestAnimationFrame(
+        boucle
+    );
 
 }
 
@@ -1879,55 +2304,77 @@ function maintenirBouton(
 
     let intervalle = null;
 
+
     function commencer(event) {
 
         event.preventDefault();
 
+
         action();
+
 
         intervalle =
         setInterval(
             action,
             40
         );
+
     }
+
 
     function arreter(event) {
 
         event.preventDefault();
 
-        clearInterval(intervalle);
+
+        clearInterval(
+            intervalle
+        );
+
 
         intervalle = null;
+
     }
+
 
     bouton.addEventListener(
         "touchstart",
         commencer,
-        { passive: false }
+        {
+            passive: false
+        }
     );
+
 
     bouton.addEventListener(
         "touchend",
         arreter,
-        { passive: false }
+        {
+            passive: false
+        }
     );
+
 
     bouton.addEventListener(
         "touchcancel",
         arreter,
-        { passive: false }
+        {
+            passive: false
+        }
     );
+
 
     bouton.addEventListener(
         "mousedown",
         commencer
     );
 
+
     bouton.addEventListener(
         "mouseup",
         arreter
     );
+
 
     bouton.addEventListener(
         "mouseleave",
@@ -1937,40 +2384,70 @@ function maintenirBouton(
 }
 
 
+/* =========================================================
+   BOUTON GAUCHE
+========================================================= */
+
 maintenirBouton(
-    document.getElementById("gauche"),
+
+    document.getElementById(
+        "gauche"
+    ),
+
     function() {
 
         if (
             jeuTermine ||
             jeuEnPause
         ) {
+
             return;
+
         }
+
 
         joueur.x -=
         joueur.vitesse * 1.5;
 
-        if (joueur.x < 0) {
+
+        if (
+            joueur.x < 0
+        ) {
+
             joueur.x = 0;
+
         }
+
     }
+
 );
 
 
+/* =========================================================
+   BOUTON DROITE
+========================================================= */
+
 maintenirBouton(
-    document.getElementById("droite"),
+
+    document.getElementById(
+        "droite"
+    ),
+
     function() {
 
         if (
             jeuTermine ||
             jeuEnPause
         ) {
+
             return;
+
         }
+
 
         joueur.x +=
         joueur.vitesse * 1.5;
+
 
         if (
             joueur.x +
@@ -1981,8 +2458,11 @@ maintenirBouton(
             joueur.x =
             canvas.width -
             joueur.largeur;
+
         }
+
     }
+
 );
 
 
@@ -1991,52 +2471,81 @@ maintenirBouton(
 ========================================================= */
 
 const boutonTirer =
-document.getElementById("tirer");
+document.getElementById(
+    "tirer"
+);
 
-let tirDejaEffectue = false;
+
+let tirDejaEffectue =
+false;
+
 
 function appuyerTir(event) {
 
     event.preventDefault();
 
-    if (tirDejaEffectue) {
+
+    if (
+        tirDejaEffectue
+    ) {
+
         return;
+
     }
+
 
     tirer();
 
-    tirDejaEffectue = true;
+
+    tirDejaEffectue =
+    true;
+
 }
+
 
 function relacherTir(event) {
 
     event.preventDefault();
 
-    tirDejaEffectue = false;
+
+    tirDejaEffectue =
+    false;
+
 }
+
 
 boutonTirer.addEventListener(
     "touchstart",
     appuyerTir,
-    { passive: false }
+    {
+        passive: false
+    }
 );
+
 
 boutonTirer.addEventListener(
     "touchend",
     relacherTir,
-    { passive: false }
+    {
+        passive: false
+    }
 );
+
 
 boutonTirer.addEventListener(
     "touchcancel",
     relacherTir,
-    { passive: false }
+    {
+        passive: false
+    }
 );
+
 
 boutonTirer.addEventListener(
     "mousedown",
     appuyerTir
 );
+
 
 boutonTirer.addEventListener(
     "mouseup",
@@ -2046,7 +2555,7 @@ boutonTirer.addEventListener(
 
 /* =========================================================
    SUPABASE
-   ENREGISTREMENT DU MEILLEUR SCORE
+   ENREGISTREMENT MEILLEUR SCORE
 ========================================================= */
 
 async function enregistrerMeilleurScore() {
@@ -2057,23 +2566,15 @@ async function enregistrerMeilleurScore() {
         "❌ Aucun pseudo enregistré.";
 
         return;
+
     }
+
 
     try {
 
         statutClassement.textContent =
         "⏳ Enregistrement du score...";
 
-
-        /*
-            On cherche UNIQUEMENT :
-
-            pseudo = joueur
-            jeu = 6
-
-            Donc les autres jeux
-            ne sont jamais touchés.
-        */
 
         const urlRecherche =
         SUPABASE_URL +
@@ -2090,13 +2591,21 @@ async function enregistrerMeilleurScore() {
         await fetch(
             urlRecherche,
             {
-                method: "GET",
+
+                method:
+                "GET",
 
                 headers: {
-                    "apikey": SUPABASE_KEY,
+
+                    "apikey":
+                    SUPABASE_KEY,
+
                     "Authorization":
-                    "Bearer " + SUPABASE_KEY
+                    "Bearer " +
+                    SUPABASE_KEY
+
                 }
+
             }
         );
 
@@ -2106,14 +2615,17 @@ async function enregistrerMeilleurScore() {
             const texte =
             await recherche.text();
 
+
             console.error(
                 "ERREUR RECHERCHE :",
                 texte
             );
 
+
             throw new Error(
                 texte
             );
+
         }
 
 
@@ -2121,10 +2633,9 @@ async function enregistrerMeilleurScore() {
         await recherche.json();
 
 
-        /*
-            AUCUN SCORE POUR CE JOUEUR
-            SUR LE JEU 6
-        */
+        /* =================================================
+           PREMIER SCORE
+        ================================================= */
 
         if (
             anciensScores.length === 0
@@ -2135,10 +2646,14 @@ async function enregistrerMeilleurScore() {
                 SUPABASE_URL +
                 "/rest/v1/scores",
                 {
-                    method: "POST",
+
+                    method:
+                    "POST",
 
                     headers: {
-                        "apikey": SUPABASE_KEY,
+
+                        "apikey":
+                        SUPABASE_KEY,
 
                         "Authorization":
                         "Bearer " +
@@ -2149,6 +2664,7 @@ async function enregistrerMeilleurScore() {
 
                         "Prefer":
                         "return=minimal"
+
                     },
 
                     body:
@@ -2164,6 +2680,7 @@ async function enregistrerMeilleurScore() {
                         "6"
 
                     })
+
                 }
             );
 
@@ -2173,14 +2690,17 @@ async function enregistrerMeilleurScore() {
                 const texte =
                 await insertion.text();
 
+
                 console.error(
                     "ERREUR INSERT :",
                     texte
                 );
 
+
                 throw new Error(
                     texte
                 );
+
             }
 
 
@@ -2190,9 +2710,9 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /*
-            LE JOUEUR A DEJA UN SCORE
-        */
+        /* =================================================
+           SCORE EXISTANT
+        ================================================= */
 
         else {
 
@@ -2202,11 +2722,13 @@ async function enregistrerMeilleurScore() {
             );
 
 
-            /*
-                NOUVEAU RECORD
-            */
+            /* =============================================
+               NOUVEAU RECORD
+            ============================================= */
 
-            if (score > ancien) {
+            if (
+                score > ancien
+            ) {
 
                 const id =
                 anciensScores[0].id;
@@ -2221,7 +2743,9 @@ async function enregistrerMeilleurScore() {
                     encodeURIComponent(id),
 
                     {
-                        method: "PATCH",
+
+                        method:
+                        "PATCH",
 
                         headers: {
 
@@ -2237,6 +2761,7 @@ async function enregistrerMeilleurScore() {
 
                             "Prefer":
                             "return=minimal"
+
                         },
 
                         body:
@@ -2249,7 +2774,9 @@ async function enregistrerMeilleurScore() {
                             "6"
 
                         })
+
                     }
+
                 );
 
 
@@ -2258,14 +2785,17 @@ async function enregistrerMeilleurScore() {
                     const texte =
                     await miseAJour.text();
 
+
                     console.error(
                         "ERREUR UPDATE :",
                         texte
                     );
 
+
                     throw new Error(
                         texte
                     );
+
                 }
 
 
@@ -2277,12 +2807,9 @@ async function enregistrerMeilleurScore() {
             }
 
 
-            /*
-                SCORE INFERIEUR
-                OU EGAL
-
-                ON NE MODIFIE RIEN
-            */
+            /* =============================================
+               PAS DE NOUVEAU RECORD
+            ============================================= */
 
             else {
 
@@ -2296,13 +2823,10 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /*
-            Recharge le Top 10
-        */
-
         await chargerClassement();
 
     }
+
 
     catch (erreur) {
 
@@ -2310,6 +2834,7 @@ async function enregistrerMeilleurScore() {
             "ERREUR ENREGISTREMENT :",
             erreur
         );
+
 
         statutClassement.textContent =
         "❌ Erreur lors de l'enregistrement.";
@@ -2332,17 +2857,6 @@ async function chargerClassement() {
         "⏳ Chargement du classement...";
 
 
-        /*
-            IMPORTANT :
-
-            jeu=eq.6
-
-            Comme la colonne jeu est TEXT,
-            cela recherche exactement :
-
-            jeu = "6"
-        */
-
         const url =
         SUPABASE_URL +
         "/rest/v1/scores" +
@@ -2352,17 +2866,13 @@ async function chargerClassement() {
         "&limit=10";
 
 
-        console.log(
-            "URL classement :",
-            url
-        );
-
-
         const resultat =
         await fetch(
             url,
             {
-                method: "GET",
+
+                method:
+                "GET",
 
                 headers: {
 
@@ -2375,7 +2885,9 @@ async function chargerClassement() {
 
                     "Accept":
                     "application/json"
+
                 }
+
             }
         );
 
@@ -2385,14 +2897,17 @@ async function chargerClassement() {
             const texte =
             await resultat.text();
 
+
             console.error(
                 "ERREUR CLASSEMENT :",
                 texte
             );
 
+
             throw new Error(
                 texte
             );
+
         }
 
 
@@ -2400,14 +2915,13 @@ async function chargerClassement() {
         await resultat.json();
 
 
-        console.log(
-            "Scores Space Invaders :",
-            scores
-        );
+        listeScores.innerHTML =
+        "";
 
 
-        listeScores.innerHTML = "";
-
+        /* =================================================
+           AUCUN SCORE
+        ================================================= */
 
         if (
             scores.length === 0
@@ -2418,19 +2932,29 @@ async function chargerClassement() {
                 <tr>
 
                     <td colspan="3">
-                        Aucun score pour Space Invaders.
+
+                        Aucun score pour
+                        Space Invaders.
+
                     </td>
 
                 </tr>
 
             `;
 
+
             statutClassement.textContent =
             "🌍 Aucun score enregistré pour le jeu 6.";
 
+
             return;
+
         }
 
+
+        /* =================================================
+           AFFICHER TOP 10
+        ================================================= */
 
         scores.forEach(
             function(
@@ -2439,25 +2963,67 @@ async function chargerClassement() {
             ) {
 
                 const ligne =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
                 const celluleNumero =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
 
-                celluleNumero.textContent =
-                index + 1;
+
+                if (
+                    index === 0
+                ) {
+
+                    celluleNumero.textContent =
+                    "🥇";
+
+                }
+
+                else if (
+                    index === 1
+                ) {
+
+                    celluleNumero.textContent =
+                    "🥈";
+
+                }
+
+                else if (
+                    index === 2
+                ) {
+
+                    celluleNumero.textContent =
+                    "🥉";
+
+                }
+
+                else {
+
+                    celluleNumero.textContent =
+                    index + 1;
+
+                }
 
 
                 const cellulePseudo =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
+
 
                 cellulePseudo.textContent =
                 joueurScore.pseudo;
 
 
                 const celluleScore =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
+
 
                 celluleScore.textContent =
                 Number(
@@ -2469,9 +3035,11 @@ async function chargerClassement() {
                     celluleNumero
                 );
 
+
                 ligne.appendChild(
                     cellulePseudo
                 );
+
 
                 ligne.appendChild(
                     celluleScore
@@ -2489,8 +3057,8 @@ async function chargerClassement() {
         statutClassement.textContent =
         "🌍 Classement Space Invaders actualisé.";
 
-
     }
+
 
     catch (erreur) {
 
@@ -2505,7 +3073,10 @@ async function chargerClassement() {
             <tr>
 
                 <td colspan="3">
-                    ❌ Impossible de charger le classement.
+
+                    ❌ Impossible de charger
+                    le classement.
+
                 </td>
 
             </tr>
@@ -2525,7 +3096,7 @@ async function chargerClassement() {
    DEMARRAGE
 ========================================================= */
 
-afficherCompte();
+afficherCompte = undefined;
 
 creerEnnemis();
 
@@ -2534,6 +3105,7 @@ dessiner();
 chargerClassement();
 
 boucle();
+
 
 </script>
 
