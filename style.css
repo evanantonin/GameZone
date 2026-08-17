@@ -1698,13 +1698,10 @@ body.page-space {
         position: fixed;
         bottom: 10px;
         left: 0;
-        right: 0;
         width: 100%;
         margin: 0;
-        padding: 0;
         display: flex;
         justify-content: center;
-        align-items: center;
         gap: 20px;
         z-index: 9999;
     }
@@ -1716,4 +1713,17 @@ body.page-space {
         margin: 0;
     }
 
+}
+@media (max-width: 768px) {
+    body.page-space .controles-mobile {
+        position: fixed !important;
+        bottom: 10px !important;
+        left: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        gap: 20px !important;
+        z-index: 99999 !important;
+    }
 }
