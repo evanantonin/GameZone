@@ -301,7 +301,7 @@ document.getElementById("statutClassement");
 ========================================================= */
 
 let pseudo =
-localStorage.getItem("gamezonePseudo");
+localStorage.getItem("pseudoGameZone");
 
 
 function afficherCompte() {
@@ -415,16 +415,19 @@ async function() {
             return;
         }
 
-        pseudo = nouveauPseudo;
+       pseudo = nouveauPseudo;
 
-        let pseudo = localStorage.getItem("pseudoGameZone");
+localStorage.setItem(
+    "pseudoGameZone",
+    pseudo
+);
 
-        afficherCompte();
+afficherCompte();
 
-        statutClassement.textContent =
-        "✅ Compte créé !";
+statutClassement.textContent =
+    "✅ Compte créé !";
 
-        await chargerClassement();
+await chargerClassement();
 
     }
 
