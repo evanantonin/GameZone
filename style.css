@@ -2861,3 +2861,10 @@ body.page-accueil .jeu .bouton-jeu {
     }
 
 }
+@media (max-width: 768px) {
+
+    .page-space #jeuSpace {
+        height: 450px !important;
+    }
+
+}
