@@ -2481,40 +2481,6 @@ body.page-flappy {
     border-radius: 10px;
 }
 
-/* =========================================================
-   CONTROLES TACTILES
-========================================================= */
-
-.page-tetris .controles-mobile {
-    display: none;
-    position: fixed;
-    bottom: 15px;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-}
-
-.page-tetris .controles-mobile button {
-    width: 65px;
-    height: 65px;
-    border: 2px solid #00eaff;
-    border-radius: 12px;
-    background: #11152b;
-    color: white;
-    font-size: 25px;
-    box-shadow: 0 0 12px rgba(0, 234, 255, 0.5);
-    touch-action: none;
-    user-select: none;
-}
-
-.page-tetris .controles-mobile button:active {
-    transform: scale(0.92);
-    background: #18264a;
-}
 
 /* =========================================================
    CLASSEMENT
@@ -2569,16 +2535,107 @@ body.page-flappy {
         width: min(95vw, 400px);
     }
 
-    .page-tetris .controles-mobile {
-        display: flex;
-    }
+    
 
     .page-tetris .commandes {
         margin-bottom: 100px;
     }
 
 }
+/* =========================================================
+   CONTROLES MOBILES — TETRIS
+========================================================= */
 
+/* Sur ordinateur : cachés */
+.controles-tetris-mobile {
+    display: none;
+}
+
+
+/* =========================================================
+   MOBILE / TABLETTE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .controles-tetris-mobile {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 10px;
+
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 10px;
+
+        z-index: 99999;
+
+        pointer-events: none;
+    }
+
+    .controles-tetris-mobile button {
+        pointer-events: auto;
+
+        width: 58px;
+        height: 58px;
+
+        padding: 0;
+
+        border: 2px solid #00eaff;
+        border-radius: 12px;
+
+        background: #11152b;
+        color: white;
+
+        font-size: 24px;
+        font-weight: bold;
+
+        box-shadow:
+            0 0 12px rgba(0, 234, 255, 0.5);
+
+        touch-action: manipulation;
+
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .controles-tetris-mobile button:active {
+        transform: scale(0.92);
+
+        background: #18264a;
+    }
+}
+
+
+/* =========================================================
+   PETITS TELEPHONES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .controles-tetris-mobile {
+        bottom: 5px;
+
+        gap: 5px;
+
+        padding: 5px;
+    }
+
+    .controles-tetris-mobile button {
+        width: 52px;
+        height: 52px;
+
+        font-size: 21px;
+    }
+}
 
 /* =========================================================
    FIN DU STYLE GAMEZONE
