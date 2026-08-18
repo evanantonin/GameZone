@@ -1972,3 +1972,648 @@ body.page-pong .classement table {
     }
 
 }
+/* =========================================================
+   GAMEZONE — ACCUEIL UNIQUEMENT
+========================================================= */
+
+body.page-accueil {
+    text-align: center;
+}
+
+/* Contenu principal de l'accueil */
+body.page-accueil main {
+    width: 95%;
+    max-width: 1200px;
+
+    margin: 30px auto;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   TITRE ACCUEIL
+========================================================= */
+
+body.page-accueil h1 {
+    width: 100%;
+
+    margin: 35px auto 20px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   TEXTE D'ACCUEIL
+========================================================= */
+
+body.page-accueil main > p {
+    width: 90%;
+    max-width: 700px;
+
+    margin: 10px auto 30px;
+
+    padding: 15px 20px;
+
+    border: 2px solid #333;
+
+    border-radius: 15px;
+
+    background: #111;
+
+    color: #aaa;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   LISTE DES JEUX
+========================================================= */
+
+body.page-accueil .liste-jeux {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 20px auto 50px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+
+    justify-content: center;
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   CASES DES JEUX
+========================================================= */
+
+body.page-accueil .jeu {
+    width: 100%;
+    min-height: 380px;
+
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background: #151515;
+
+    border: 3px solid #444;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.7);
+
+    transition: 0.3s ease;
+}
+
+
+/* Effet quand on passe dessus */
+body.page-accueil .jeu:hover {
+    border-color: #00ffff;
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.4),
+        0 10px 25px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================================
+   IMAGES DANS LES CASES
+========================================================= */
+
+body.page-accueil .jeu img {
+    width: 100%;
+    max-width: 260px;
+
+    height: 160px;
+
+    object-fit: cover;
+
+    margin: 0 auto 18px;
+
+    border: 2px solid #555;
+
+    border-radius: 12px;
+
+    display: block;
+}
+
+
+/* =========================================================
+   TITRES DES JEUX
+========================================================= */
+
+body.page-accueil .jeu h2 {
+    margin: 8px auto 10px;
+
+    color: white;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+body.page-accueil .jeu p {
+    margin: 5px auto 18px;
+
+    color: #aaa;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   BOUTONS DES JEUX
+========================================================= */
+
+body.page-accueil .jeu button,
+body.page-accueil .jeu .bouton-jeu {
+    margin: auto auto 0;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body.page-accueil .liste-jeux {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   TELEPHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    body.page-accueil main {
+        width: 94%;
+    }
+
+    body.page-accueil .liste-jeux {
+        width: 100%;
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+    body.page-accueil .jeu {
+        min-height: 350px;
+
+        padding: 20px;
+    }
+
+}
+/* =========================================================
+   GAMEZONE — ACCUEIL
+========================================================= */
+
+.page-accueil {
+    margin: 0;
+    min-height: 100vh;
+    background: #050510;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.page-accueil nav {
+    width: 100%;
+    padding: 15px 0;
+    background: #080812;
+    border-bottom: 2px solid #00aaff;
+
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.page-accueil nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.page-accueil nav a:hover {
+    color: #00aaff;
+}
+
+/* =========================================================
+   CONTENU PRINCIPAL
+========================================================= */
+
+.page-accueil .accueil {
+    width: min(95%, 1000px);
+    margin: 25px auto;
+}
+
+/* =========================================================
+   TITRE
+========================================================= */
+
+.page-accueil .accueil > h1 {
+    margin: 0 0 15px;
+
+    padding: 20px;
+
+    border: 2px solid #00aaff;
+    border-radius: 15px;
+
+    background: #09091a;
+
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.25);
+}
+
+/* =========================================================
+   BIENVENUE
+========================================================= */
+
+.page-accueil .bienvenue {
+    margin: 0 0 20px;
+
+    padding: 15px;
+
+    border: 2px solid #9c27ff;
+    border-radius: 12px;
+
+    background: #09091a;
+
+    font-size: 18px;
+}
+
+/* =========================================================
+   CONNEXION / INSCRIPTION
+========================================================= */
+
+.page-accueil .auth-container {
+    width: min(100%, 500px);
+
+    margin: 20px auto;
+
+    padding: 25px;
+
+    border: 2px solid #00ff88;
+    border-radius: 15px;
+
+    background: #09091a;
+
+    box-shadow:
+        0 0 15px rgba(0, 255, 136, 0.15);
+}
+
+.page-accueil .auth-container h2 {
+    margin-top: 0;
+    color: #00ff88;
+}
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.page-accueil .auth-container input {
+    display: block;
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin: 10px 0;
+
+    box-sizing: border-box;
+
+    border: 2px solid #444466;
+    border-radius: 8px;
+
+    background: #111122;
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+.page-accueil .auth-container input:focus {
+    border-color: #00aaff;
+
+    box-shadow:
+        0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.page-accueil .auth-container input::placeholder {
+    color: #999;
+}
+
+/* =========================================================
+   BOUTONS AUTH
+========================================================= */
+
+.page-accueil .auth-button {
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 10px;
+
+    border: 2px solid #00aaff;
+    border-radius: 8px;
+
+    background: #101025;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.page-accueil .auth-button:hover {
+    background: #00aaff;
+    color: black;
+}
+
+/* =========================================================
+   CHANGER CONNEXION / INSCRIPTION
+========================================================= */
+
+.page-accueil .changer-auth {
+    margin-bottom: 0;
+
+    color: #00aaff;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.page-accueil .changer-auth:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   CONTENU CONNECTE
+========================================================= */
+
+.page-accueil #contenuConnecte {
+    width: 100%;
+}
+
+/* =========================================================
+   CASE PSEUDO
+========================================================= */
+
+.page-accueil .pseudo-affiche {
+    padding: 20px;
+
+    margin: 20px 0;
+
+    border: 2px solid #ffaa00;
+    border-radius: 12px;
+
+    background: #09091a;
+
+    font-size: 18px;
+}
+
+.page-accueil #pseudoJoueur {
+    color: #00aaff;
+    font-weight: bold;
+}
+
+/* =========================================================
+   BOUTON DECONNEXION
+========================================================= */
+
+.page-accueil .bouton-deconnexion {
+    margin-top: 12px;
+
+    padding: 9px 15px;
+
+    border: 2px solid #ff4444;
+    border-radius: 8px;
+
+    background: #111122;
+    color: white;
+
+    cursor: pointer;
+}
+
+.page-accueil .bouton-deconnexion:hover {
+    background: #ff4444;
+}
+
+/* =========================================================
+   BOUTON VOIR LES JEUX
+========================================================= */
+
+.page-accueil .bouton-jeux {
+    display: block;
+
+    width: fit-content;
+
+    margin: 20px auto;
+
+    padding: 15px 30px;
+
+    border: 2px solid #00aaff;
+    border-radius: 12px;
+
+    background: #09091a;
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    box-shadow:
+        0 0 12px rgba(0, 170, 255, 0.2);
+}
+
+.page-accueil .bouton-jeux:hover {
+    background: #00aaff;
+    color: black;
+}
+
+/* =========================================================
+   PRESENTATION
+========================================================= */
+
+.page-accueil .presentation {
+    margin: 20px 0;
+
+    padding: 20px;
+
+    border: 2px solid #9c27ff;
+    border-radius: 15px;
+
+    background: #09091a;
+}
+
+.page-accueil .presentation h2 {
+    margin-top: 0;
+    color: #c45cff;
+}
+
+.page-accueil .presentation p {
+    margin: 12px 0;
+}
+
+/* =========================================================
+   MES JEUX
+========================================================= */
+
+.page-accueil .accueil > #contenuConnecte > section:last-child {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+
+    background: #09091a;
+}
+
+.page-accueil .accueil > #contenuConnecte > section:last-child > h2 {
+    margin-top: 0;
+
+    color: #ffd700;
+}
+
+/* =========================================================
+   GRILLE DES JEUX
+========================================================= */
+
+.page-accueil .aperçu-jeux {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-top: 15px;
+}
+
+/* =========================================================
+   CARTE DE JEU
+========================================================= */
+
+.page-accueil .carte-jeu {
+    min-height: 130px;
+
+    padding: 18px;
+
+    border: 2px solid #444466;
+    border-radius: 12px;
+
+    background: #0d0d22;
+
+    transition:
+        transform 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.page-accueil .carte-jeu:hover {
+    transform: translateY(-3px);
+
+    border-color: #00aaff;
+
+    box-shadow:
+        0 0 12px rgba(0, 170, 255, 0.25);
+}
+
+.page-accueil .carte-jeu h3 {
+    margin-top: 0;
+
+    color: #00aaff;
+}
+
+.page-accueil .carte-jeu p {
+    color: #ddd;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   MESSAGE AUTH
+========================================================= */
+
+.page-accueil #messageAuth {
+    margin-bottom: 0;
+
+    font-weight: bold;
+}
+
+/* =========================================================
+   TELEPHONE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .page-accueil nav {
+        gap: 15px;
+    }
+
+    .page-accueil nav a {
+        font-size: 16px;
+    }
+
+    .page-accueil .accueil {
+        width: 94%;
+        margin: 15px auto;
+    }
+
+    .page-accueil .auth-container {
+        padding: 18px;
+    }
+
+    .page-accueil .aperçu-jeux {
+        grid-template-columns: 1fr;
+    }
+
+    .page-accueil .carte-jeu {
+        min-height: auto;
+    }
+
+}
