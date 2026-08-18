@@ -2617,3 +2617,177 @@ body.page-accueil .jeu .bouton-jeu {
     }
 
 }
+.page-space-invaders .controles-mobile {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (min-width: 769px) {
+    .page-space-invaders .controles-mobile {
+        display: none !important;
+    }
+}
+/* =========================================================
+   SPACE INVADERS — BOUTONS SUR L'ÉCRAN DE JEU
+========================================================= */
+
+.page-space-invaders .zone-jeu {
+    position: relative;
+    display: inline-block;
+}
+
+.page-space-invaders .controles-mobile {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    z-index: 10;
+}
+
+.page-space-invaders .controles-mobile button {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    border-radius: 12px;
+}
+.page-space-invaders .controles-mobile {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (min-width: 769px) {
+    .page-space-invaders .controles-mobile {
+        display: none !important;
+    }
+}
+/* =========================================================
+   SPACE INVADERS — CONTROLES MOBILES TOUJOURS VISIBLES
+========================================================= */
+
+.page-space-invaders .controles-mobile {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    width: 100%;
+    max-width: 500px;
+
+    margin: 15px auto 0;
+
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    position: relative;
+    z-index: 10;
+}
+
+/* Boutons mobiles */
+
+.page-space-invaders .controles-mobile button {
+    display: flex !important;
+    visibility: visible !important;
+
+    width: 70px;
+    height: 60px;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+
+    cursor: pointer;
+}
+
+/* Sur ordinateur : on cache les contrôles */
+
+@media (min-width: 769px) {
+
+    .page-space-invaders .controles-mobile {
+        display: none !important;
+    }
+
+}
+
+/* Sur téléphone */
+
+@media (max-width: 768px) {
+
+    .page-space-invaders .controles-mobile {
+        display: flex !important;
+
+        position: relative;
+
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+}
+/* =========================================================
+   SPACE INVADERS — CONTROLES MOBILE TOUJOURS VISIBLES
+========================================================= */
+
+.page-space .controles-mobile {
+    display: flex !important;
+
+    width: 100%;
+    max-width: 800px;
+
+    margin: 0 auto 25px;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    position: relative;
+    z-index: 10;
+}
+
+.page-space .controles-mobile button {
+    display: flex !important;
+
+    width: 80px;
+    height: 60px;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 28px;
+
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+/* Sur ordinateur : on cache les contrôles mobiles */
+@media (min-width: 769px) {
+
+    .page-space .controles-mobile {
+        display: none !important;
+    }
+
+}
+
+/* Sur téléphone : toujours visibles */
+@media (max-width: 768px) {
+
+    .page-space .controles-mobile {
+        display: flex !important;
+    }
+
+}
