@@ -2868,3 +2868,12 @@ body.page-accueil .jeu .bouton-jeu {
     }
 
 }
+@media (max-width: 768px) {
+
+    .page-space #jeuSpace {
+        width: 100% !important;
+        height: 350px !important;
+        max-height: 350px !important;
+    }
+
+}
