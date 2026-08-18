@@ -1,0 +1,2634 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone - Flappy</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #172554 0%,
+                    #080b18 45%,
+                    #02030a 100%
+                );
+
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            text-align: center;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+
+            width: 100%;
+
+            padding: 16px 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 20px;
+
+            background:
+                rgba(3, 5, 15, 0.95);
+
+            border-bottom:
+                2px solid #00ffff;
+
+            box-shadow:
+                0 0 15px
+                rgba(0,255,255,0.25);
+        }
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 9px 16px;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 10px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+
+            color: #00ffff;
+
+            border-color: #00ffff;
+
+            background:
+                rgba(0,255,255,0.08);
+
+            box-shadow:
+                0 0 12px
+                rgba(0,255,255,0.35);
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page-jeu {
+
+            width: 95%;
+
+            max-width: 900px;
+
+            margin: 25px auto;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(20,25,50,0.96),
+                    rgba(5,7,18,0.96)
+                );
+
+            border:
+                2px solid #26345c;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,0.7),
+
+                inset 0 0 25px
+                rgba(0,255,255,0.04);
+        }
+
+
+        /* =========================
+           TITRE
+        ========================= */
+
+        h1 {
+
+            margin: 5px auto 12px;
+
+            color: #00ffff;
+
+            font-size:
+                clamp(40px,7vw,65px);
+
+            letter-spacing: 4px;
+
+            text-shadow:
+                0 0 5px #00ffff,
+                0 0 15px #00ffff,
+                0 0 30px
+                rgba(0,255,255,0.8);
+        }
+
+        .description {
+
+            margin: 0 0 15px;
+
+            color: #aeb8d0;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           JOUEUR
+        ========================= */
+
+        .joueur {
+
+            margin-bottom: 15px;
+
+            padding: 9px 18px;
+
+            background:
+                rgba(5,8,20,0.95);
+
+            border:
+                2px solid #00ffff;
+
+            border-radius: 12px;
+
+            color: #aaa;
+
+            font-weight: bold;
+        }
+
+        .joueur span {
+
+            color: #00ffff;
+
+            font-size: 19px;
+        }
+
+
+        /* =========================
+           INFOS
+        ========================= */
+
+        .infos {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 10px auto 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .info {
+
+            min-width: 125px;
+
+            padding: 9px 16px;
+
+            background:
+                rgba(5,8,20,0.95);
+
+            border:
+                2px solid #00ffff;
+
+            border-radius: 12px;
+
+            color: #aaa;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 0 10px
+                rgba(0,255,255,0.12);
+        }
+
+        .info span {
+
+            color: #00ffff;
+
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           JEU
+        ========================= */
+
+        .zone-jeu {
+
+            position: relative;
+
+            width: 600px;
+
+            max-width: 100%;
+
+            margin: 5px auto 15px;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            background: #020617;
+
+            border:
+                4px solid #00ffff;
+
+            box-shadow:
+                0 0 10px #00ffff,
+                0 0 25px
+                rgba(0,255,255,0.35),
+                0 15px 35px
+                rgba(0,0,0,0.7);
+        }
+
+        #jeuFlappy {
+
+            display: block;
+
+            width: 600px;
+
+            height: 400px;
+
+            max-width: 100%;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #38bdf8 0%,
+                    #60a5fa 45%,
+                    #bfdbfe 100%
+                );
+
+            cursor: pointer;
+
+            user-select: none;
+
+            -webkit-user-select: none;
+
+            touch-action: none;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        #message {
+
+            width: 90%;
+
+            max-width: 600px;
+
+            margin: 10px auto 15px;
+
+            padding: 12px 18px;
+
+            background:
+                rgba(5,8,20,0.95);
+
+            border:
+                2px solid #444;
+
+            border-radius: 12px;
+
+            color: white;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .boutons {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 10px auto 15px;
+
+            flex-wrap: wrap;
+        }
+
+        button,
+        .retour {
+
+            padding: 11px 22px;
+
+            border:
+                2px solid #00ffff;
+
+            border-radius: 11px;
+
+            background: #00ffff;
+
+            color: #000;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition: 0.15s;
+        }
+
+        button:hover,
+        .retour:hover {
+
+            background: transparent;
+
+            color: #00ffff;
+
+            box-shadow:
+                0 0 15px
+                rgba(0,255,255,0.6);
+
+            transform:
+                translateY(-2px);
+        }
+
+        button:active {
+
+            transform: scale(0.95);
+        }
+
+
+        /* =========================
+           COMMANDES
+        ========================= */
+
+        .commandes {
+
+            margin: 5px auto 10px;
+
+            color: #8f9bb5;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           CONTROLES MOBILE
+        ========================= */
+
+        .controles-mobile {
+
+            display: none;
+        }
+
+
+        /* =========================
+           CLASSEMENT
+        ========================= */
+
+        .classement {
+
+            width: 600px;
+
+            max-width: 100%;
+
+            margin: 20px auto 5px;
+
+            padding: 18px;
+
+            background:
+                rgba(7,10,25,0.95);
+
+            border:
+                2px solid #29375e;
+
+            border-radius: 18px;
+        }
+
+        .classement h2 {
+
+            margin: 0 0 15px;
+
+            color: #00ffff;
+
+            text-shadow:
+                0 0 8px
+                rgba(0,255,255,0.5);
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+
+            padding: 10px;
+
+            background: #00ffff;
+
+            color: #000;
+        }
+
+        td {
+
+            padding: 10px;
+
+            background: #0c1022;
+
+            color: white;
+
+            border-bottom:
+                1px solid #252b43;
+        }
+
+        tr:last-child td {
+
+            border-bottom: none;
+        }
+
+        .mon-score {
+
+            color: #00ffff;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+
+                gap: 8px;
+
+                padding: 12px 8px;
+            }
+
+            nav a {
+
+                font-size: 14px;
+
+                padding: 8px 10px;
+            }
+
+            .page-jeu {
+
+                width: 96%;
+
+                margin: 15px auto;
+
+                padding: 12px;
+
+                border-radius: 18px;
+
+                padding-bottom: 105px;
+            }
+
+            h1 {
+
+                font-size: 38px;
+
+                letter-spacing: 2px;
+            }
+
+            .description {
+
+                font-size: 14px;
+            }
+
+            .infos {
+
+                width: 100%;
+
+                gap: 6px;
+            }
+
+            .info {
+
+                min-width: 100px;
+
+                padding: 7px 9px;
+
+                font-size: 12px;
+            }
+
+            .info span {
+
+                font-size: 18px;
+            }
+
+            .zone-jeu {
+
+                width: 100%;
+
+                height: 250px;
+
+                border-width: 3px;
+
+                border-radius: 12px;
+            }
+
+            #jeuFlappy {
+
+                width: 100%;
+
+                height: 250px;
+
+                max-width: none;
+            }
+
+
+            /* CONTROLES FIXES */
+
+            .controles-mobile {
+
+                position: fixed;
+
+                left: 0;
+
+                right: 0;
+
+                bottom: 15px;
+
+                width: 100%;
+
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                z-index: 99999;
+
+                pointer-events: none;
+
+                padding: 0 15px;
+            }
+
+            .controles-mobile button {
+
+                width: 75px;
+
+                height: 65px;
+
+                padding: 0;
+
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                font-size: 28px;
+
+                border-radius: 15px;
+
+                pointer-events: auto;
+
+                touch-action: manipulation;
+
+                box-shadow:
+                    0 0 15px
+                    rgba(0,255,255,0.5);
+            }
+
+            .classement {
+
+                padding: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="liste-jeux.html">
+            Jeux
+        </a>
+
+    </nav>
+
+
+    <main class="page-jeu">
+
+
+        <h1>🐦 FLAPPY</h1>
+
+
+        <p class="description">
+            Clique pour faire sauter l'oiseau !
+        </p>
+
+
+        <!-- PSEUDO -->
+
+        <div class="joueur">
+
+            👤 Joueur :
+
+            <span id="pseudoJoueur">
+                Chargement...
+            </span>
+
+        </div>
+
+
+        <!-- INFOS -->
+
+        <div class="infos">
+
+            <div class="info">
+
+                Score :
+
+                <span id="score">
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                Meilleur :
+
+                <span id="meilleurScore">
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                Niveau :
+
+                <span id="niveau">
+                    1
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- JEU -->
+
+        <div class="zone-jeu">
+
+            <canvas
+                id="jeuFlappy"
+                width="600"
+                height="400">
+            </canvas>
+
+        </div>
+
+
+        <p id="message">
+            Clique pour commencer !
+        </p>
+
+
+        <div class="boutons">
+
+            <button id="boutonRejouer">
+                🔄 Rejouer
+            </button>
+
+
+            <a
+                href="liste-jeux.html"
+                class="retour">
+
+                ← Retour aux jeux
+
+            </a>
+
+        </div>
+
+
+        <p class="commandes">
+            🖱️ Ordinateur : clic gauche
+        </p>
+
+
+        <!-- CONTROLE MOBILE -->
+
+        <div class="controles-mobile">
+
+            <button id="boutonMobile">
+                🐦
+            </button>
+
+        </div>
+
+
+        <!-- CLASSEMENT -->
+
+        <section class="classement">
+
+            <h2>
+                🏆 Classement mondial
+            </h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Position
+                        </th>
+
+                        <th>
+                            Pseudo
+                        </th>
+
+                        <th>
+                            Score
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tableauScores">
+
+                    <tr>
+
+                        <td colspan="3">
+                            ⏳ Chargement du classement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const canvas =
+            document.getElementById(
+                "jeuFlappy"
+            );
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        const scoreElement =
+            document.getElementById(
+                "score"
+            );
+
+        const meilleurScoreElement =
+            document.getElementById(
+                "meilleurScore"
+            );
+
+        const niveauElement =
+            document.getElementById(
+                "niveau"
+            );
+
+        const messageElement =
+            document.getElementById(
+                "message"
+            );
+
+        const pseudoElement =
+            document.getElementById(
+                "pseudoJoueur"
+            );
+
+        const boutonMobile =
+            document.getElementById(
+                "boutonMobile"
+            );
+
+        const boutonRejouer =
+            document.getElementById(
+                "boutonRejouer"
+            );
+
+        const tableauScores =
+            document.getElementById(
+                "tableauScores"
+            );
+
+
+        /* =====================================================
+           PSEUDO
+        ===================================================== */
+
+        const pseudo =
+            localStorage.getItem(
+                "pseudoGameZone"
+            );
+
+
+        if (pseudo) {
+
+            pseudoElement.textContent =
+                pseudo;
+
+        }
+        else {
+
+            pseudoElement.textContent =
+                "Joueur";
+
+            messageElement.textContent =
+                "⚠️ Connecte-toi depuis l'accueil pour enregistrer ton score.";
+
+        }
+
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        let oiseau;
+
+        let tuyaux = [];
+
+        let score = 0;
+
+        let niveau = 1;
+
+        let jeuCommence = false;
+
+        let jeuTermine = false;
+
+        let animationID;
+
+        let dernierTemps = 0;
+
+        let tempsDernierTuyau = 0;
+
+
+        let vitesse = 2.8;
+
+        let gravite = 0.34;
+
+        let puissanceSaut = -5.5;
+
+        let espaceTuyaux = 155;
+
+        let intervalleTuyaux = 1450;
+
+
+        /* =====================================================
+           MEILLEUR SCORE LOCAL
+        ===================================================== */
+
+        const cleMeilleurScore =
+            "meilleurScoreFlappy_" +
+            (pseudo || "joueur");
+
+
+        let meilleurScore =
+            Number(
+                localStorage.getItem(
+                    cleMeilleurScore
+                )
+            ) || 0;
+
+
+        meilleurScoreElement.textContent =
+            meilleurScore;
+
+
+        /* =====================================================
+           INITIALISATION
+        ===================================================== */
+
+        function initialiserJeu() {
+
+            cancelAnimationFrame(
+                animationID
+            );
+
+
+            oiseau = {
+
+                x: 120,
+
+                y: canvas.height / 2,
+
+                largeur: 34,
+
+                hauteur: 26,
+
+                vitesseY: 0
+
+            };
+
+
+            tuyaux = [];
+
+            score = 0;
+
+            niveau = 1;
+
+            vitesse = 2.8;
+
+            gravite = 0.34;
+
+            puissanceSaut = -5.5;
+
+            espaceTuyaux = 155;
+
+            intervalleTuyaux = 1450;
+
+            jeuCommence = false;
+
+            jeuTermine = false;
+
+            dernierTemps = 0;
+
+            tempsDernierTuyau = 0;
+
+
+            scoreElement.textContent =
+                "0";
+
+            niveauElement.textContent =
+                "1";
+
+
+            messageElement.textContent =
+                "Clique pour commencer !";
+
+
+            dessiner();
+
+        }
+
+
+        /* =====================================================
+           SAUT
+        ===================================================== */
+
+        function sauter() {
+
+            if (jeuTermine) {
+
+                return;
+            }
+
+
+            if (!jeuCommence) {
+
+                jeuCommence = true;
+
+                messageElement.textContent =
+                    "";
+
+                dernierTemps =
+                    performance.now();
+
+                animationID =
+                    requestAnimationFrame(
+                        boucle
+                    );
+            }
+
+
+            oiseau.vitesseY =
+                puissanceSaut;
+
+        }
+
+
+        /* =====================================================
+           CONTROLES
+        ===================================================== */
+
+        canvas.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                event.preventDefault();
+
+                sauter();
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        boutonMobile.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                event.preventDefault();
+
+                sauter();
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        /* =====================================================
+           TUYAUX
+        ===================================================== */
+
+        function creerTuyau() {
+
+            const hauteurMin = 60;
+
+
+            const hauteurMax =
+                canvas.height -
+                espaceTuyaux -
+                60;
+
+
+            const hauteurHaut =
+                Math.floor(
+                    Math.random() *
+                    (hauteurMax - hauteurMin)
+                ) +
+                hauteurMin;
+
+
+            tuyaux.push({
+
+                x: canvas.width,
+
+                largeur: 65,
+
+                hauteurHaut:
+                    hauteurHaut,
+
+                espace:
+                    espaceTuyaux,
+
+                passe: false
+
+            });
+
+        }
+
+
+        /* =====================================================
+           DIFFICULTE
+        ===================================================== */
+
+        function augmenterDifficulte() {
+
+            niveau =
+                Math.floor(
+                    score / 5
+                ) + 1;
+
+
+            niveauElement.textContent =
+                niveau;
+
+
+            vitesse =
+                Math.min(
+                    5.5,
+                    2.8 +
+                    (niveau - 1) *
+                    0.3
+                );
+
+
+            espaceTuyaux =
+                Math.max(
+                    115,
+                    155 -
+                    (niveau - 1) *
+                    5
+                );
+
+
+            intervalleTuyaux =
+                Math.max(
+                    950,
+                    1450 -
+                    (niveau - 1) *
+                    45
+                );
+
+        }
+
+
+        /* =====================================================
+           COLLISION
+        ===================================================== */
+
+        function collision(
+            oiseau,
+            tuyau
+        ) {
+
+            const marge = 4;
+
+
+            const gauche =
+                oiseau.x +
+                marge;
+
+            const droite =
+                oiseau.x +
+                oiseau.largeur -
+                marge;
+
+            const haut =
+                oiseau.y +
+                marge;
+
+            const bas =
+                oiseau.y +
+                oiseau.hauteur -
+                marge;
+
+
+            const tuyauGauche =
+                tuyau.x;
+
+            const tuyauDroite =
+                tuyau.x +
+                tuyau.largeur;
+
+
+            const hautBas =
+                tuyau.hauteurHaut;
+
+            const basHaut =
+                tuyau.hauteurHaut +
+                tuyau.espace;
+
+
+            if (
+                droite > tuyauGauche &&
+                gauche < tuyauDroite
+            ) {
+
+                if (
+                    haut < hautBas ||
+                    bas > basHaut
+                ) {
+
+                    return true;
+
+                }
+
+            }
+
+
+            return false;
+
+        }
+
+
+        /* =====================================================
+           GAME OVER
+        ===================================================== */
+
+        async function gameOver() {
+
+            if (jeuTermine) {
+
+                return;
+            }
+
+
+            jeuTermine = true;
+
+
+            cancelAnimationFrame(
+                animationID
+            );
+
+
+            /* MEILLEUR SCORE PERSONNEL */
+
+            if (
+                score >
+                meilleurScore
+            ) {
+
+                meilleurScore =
+                    score;
+
+
+                localStorage.setItem(
+                    cleMeilleurScore,
+                    meilleurScore
+                );
+
+
+                meilleurScoreElement.textContent =
+                    meilleurScore;
+
+            }
+
+
+            messageElement.textContent =
+                "💥 Game Over ! Score : " +
+                score;
+
+
+            dessiner();
+
+
+            /* ENVOI SUPABASE */
+
+            if (pseudo) {
+
+                await enregistrerScoreSupabase();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ENREGISTRER SCORE SUPABASE
+        ===================================================== */
+
+        async function enregistrerScoreSupabase() {
+
+            try {
+
+                /*
+                 On récupère le score actuel
+                 du joueur.
+                */
+
+                const recherche =
+                    await supabaseClient
+                        .from("scores_flappy")
+                        .select("score")
+                        .eq(
+                            "pseudo",
+                            pseudo
+                        )
+                        .maybeSingle();
+
+
+                if (recherche.error) {
+
+                    console.error(
+                        "Erreur recherche score :",
+                        recherche.error
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 Le joueur possède déjà
+                 un score.
+                */
+
+                if (recherche.data) {
+
+                    const ancienScore =
+                        Number(
+                            recherche.data.score
+                        );
+
+
+                    /*
+                     On ne remplace
+                     que si le nouveau
+                     score est meilleur.
+                    */
+
+                    if (
+                        score >
+                        ancienScore
+                    ) {
+
+                        const modification =
+                            await supabaseClient
+                                .from("scores_flappy")
+                                .update({
+
+                                    score: score
+
+                                })
+                                .eq(
+                                    "pseudo",
+                                    pseudo
+                                );
+
+
+                        if (
+                            modification.error
+                        ) {
+
+                            console.error(
+                                "Erreur mise à jour :",
+                                modification.error
+                            );
+
+                        }
+
+                    }
+
+                }
+
+
+                /*
+                 Aucun score :
+                 on crée le joueur.
+                */
+
+                else {
+
+                    const insertion =
+                        await supabaseClient
+                            .from("scores_flappy")
+                            .insert({
+
+                                pseudo:
+                                    pseudo,
+
+                                score:
+                                    score
+
+                            });
+
+
+                    if (
+                        insertion.error
+                    ) {
+
+                        console.error(
+                            "Erreur insertion :",
+                            insertion.error
+                        );
+
+                    }
+
+                }
+
+
+                /*
+                 Actualiser le classement.
+                */
+
+                await afficherClassement();
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur Supabase :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CLASSEMENT SUPABASE
+        ===================================================== */
+
+        async function afficherClassement() {
+
+            tableauScores.innerHTML = `
+
+                <tr>
+
+                    <td colspan="3">
+                        ⏳ Chargement...
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            try {
+
+                const resultat =
+                    await supabaseClient
+                        .from("scores_flappy")
+                        .select("pseudo,score")
+                        .order(
+                            "score",
+                            {
+                                ascending: false
+                            }
+                        )
+                        .limit(10);
+
+
+                if (resultat.error) {
+
+                    throw resultat.error;
+
+                }
+
+
+                const scores =
+                    resultat.data || [];
+
+
+                if (scores.length === 0) {
+
+                    tableauScores.innerHTML = `
+
+                        <tr>
+
+                            <td colspan="3">
+                                Aucun score pour le moment.
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                tableauScores.innerHTML =
+                    "";
+
+
+                scores.forEach(
+                    function(
+                        joueur,
+                        index
+                    ) {
+
+                        const ligne =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        const estMoi =
+                            pseudo &&
+                            joueur.pseudo ===
+                            pseudo;
+
+
+                        ligne.innerHTML = `
+
+                            <td>
+                                ${
+                                    index === 0
+                                    ? "🥇"
+                                    : index === 1
+                                    ? "🥈"
+                                    : index === 2
+                                    ? "🥉"
+                                    : index + 1
+                                }
+                            </td>
+
+                            <td class="${
+                                estMoi
+                                ? "mon-score"
+                                : ""
+                            }">
+
+                                ${
+                                    joueur.pseudo
+                                }
+
+                                ${
+                                    estMoi
+                                    ? " 👈"
+                                    : ""
+                                }
+
+                            </td>
+
+                            <td class="${
+                                estMoi
+                                ? "mon-score"
+                                : ""
+                            }">
+
+                                ${
+                                    joueur.score
+                                }
+
+                            </td>
+
+                        `;
+
+
+                        tableauScores.appendChild(
+                            ligne
+                        );
+
+                    }
+                );
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur chargement classement :",
+                    erreur
+                );
+
+
+                tableauScores.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            ❌ Impossible de charger
+                            le classement.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MISE A JOUR
+        ===================================================== */
+
+        function mettreAJour(
+            deltaTime,
+            maintenant
+        ) {
+
+            oiseau.vitesseY +=
+                gravite *
+                deltaTime;
+
+
+            oiseau.y +=
+                oiseau.vitesseY *
+                deltaTime;
+
+
+            for (
+                let i =
+                    tuyaux.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                const tuyau =
+                    tuyaux[i];
+
+
+                tuyau.x -=
+                    vitesse *
+                    deltaTime;
+
+
+                /* SCORE */
+
+                if (
+                    !tuyau.passe &&
+                    tuyau.x +
+                    tuyau.largeur <
+                    oiseau.x
+                ) {
+
+                    tuyau.passe = true;
+
+                    score++;
+
+
+                    scoreElement.textContent =
+                        score;
+
+
+                    augmenterDifficulte();
+
+                }
+
+
+                /* COLLISION */
+
+                if (
+                    collision(
+                        oiseau,
+                        tuyau
+                    )
+                ) {
+
+                    gameOver();
+
+                    return;
+
+                }
+
+
+                /* SUPPRESSION */
+
+                if (
+                    tuyau.x +
+                    tuyau.largeur <
+                    0
+                ) {
+
+                    tuyaux.splice(
+                        i,
+                        1
+                    );
+
+                }
+
+            }
+
+
+            /* NOUVEAU TUYAU */
+
+            if (
+                maintenant -
+                tempsDernierTuyau >
+                intervalleTuyaux
+            ) {
+
+                creerTuyau();
+
+                tempsDernierTuyau =
+                    maintenant;
+
+            }
+
+
+            /* SOL */
+
+            if (
+                oiseau.y +
+                oiseau.hauteur >=
+                canvas.height
+            ) {
+
+                oiseau.y =
+                    canvas.height -
+                    oiseau.hauteur;
+
+
+                gameOver();
+
+                return;
+
+            }
+
+
+            /* PLAFOND */
+
+            if (
+                oiseau.y < 0
+            ) {
+
+                oiseau.y = 0;
+
+                oiseau.vitesseY = 0;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FOND
+        ===================================================== */
+
+        function dessinerFond() {
+
+            const gradient =
+                ctx.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    canvas.height
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#38bdf8"
+            );
+
+            gradient.addColorStop(
+                0.55,
+                "#60a5fa"
+            );
+
+            gradient.addColorStop(
+                1,
+                "#dbeafe"
+            );
+
+
+            ctx.fillStyle =
+                gradient;
+
+
+            ctx.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            dessinerNuage(
+                80,
+                75,
+                1
+            );
+
+
+            dessinerNuage(
+                390,
+                55,
+                0.8
+            );
+
+
+            dessinerNuage(
+                520,
+                135,
+                0.65
+            );
+
+
+            /* SOLEIL */
+
+            const soleil =
+                ctx.createRadialGradient(
+                    510,
+                    65,
+                    5,
+                    510,
+                    65,
+                    55
+                );
+
+
+            soleil.addColorStop(
+                0,
+                "rgba(255,255,210,0.95)"
+            );
+
+
+            soleil.addColorStop(
+                1,
+                "rgba(255,240,100,0)"
+            );
+
+
+            ctx.fillStyle =
+                soleil;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                510,
+                65,
+                55,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+        }
+
+
+        /* =====================================================
+           NUAGE
+        ===================================================== */
+
+        function dessinerNuage(
+            x,
+            y,
+            taille
+        ) {
+
+            ctx.save();
+
+
+            ctx.globalAlpha =
+                0.7;
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                x,
+                y,
+                22 * taille,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.arc(
+                x + 25 * taille,
+                y - 10 * taille,
+                28 * taille,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.arc(
+                x + 55 * taille,
+                y,
+                22 * taille,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           TUYAU
+        ===================================================== */
+
+        function dessinerTuyau(
+            tuyau
+        ) {
+
+            const x =
+                tuyau.x;
+
+
+            const largeur =
+                tuyau.largeur;
+
+
+            const haut =
+                tuyau.hauteurHaut;
+
+
+            const bas =
+                tuyau.hauteurHaut +
+                tuyau.espace;
+
+
+            const gradient =
+                ctx.createLinearGradient(
+                    x,
+                    0,
+                    x + largeur,
+                    0
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#166534"
+            );
+
+
+            gradient.addColorStop(
+                0.35,
+                "#22c55e"
+            );
+
+
+            gradient.addColorStop(
+                0.7,
+                "#4ade80"
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "#15803d"
+            );
+
+
+            ctx.fillStyle =
+                gradient;
+
+
+            /* TUYAU HAUT */
+
+            ctx.fillRect(
+                x,
+                0,
+                largeur,
+                haut
+            );
+
+
+            ctx.fillStyle =
+                "#22c55e";
+
+
+            ctx.fillRect(
+                x - 5,
+                haut - 20,
+                largeur + 10,
+                20
+            );
+
+
+            /* TUYAU BAS */
+
+            ctx.fillStyle =
+                gradient;
+
+
+            ctx.fillRect(
+                x,
+                bas,
+                largeur,
+                canvas.height - bas
+            );
+
+
+            ctx.fillStyle =
+                "#22c55e";
+
+
+            ctx.fillRect(
+                x - 5,
+                bas,
+                largeur + 10,
+                20
+            );
+
+
+            /* REFLET */
+
+            ctx.fillStyle =
+                "rgba(255,255,255,0.22)";
+
+
+            ctx.fillRect(
+                x + 9,
+                0,
+                8,
+                haut - 20
+            );
+
+
+            ctx.fillRect(
+                x + 9,
+                bas + 20,
+                8,
+                canvas.height -
+                bas -
+                20
+            );
+
+
+            /* CONTOURS */
+
+            ctx.strokeStyle =
+                "#14532d";
+
+
+            ctx.lineWidth = 2;
+
+
+            ctx.strokeRect(
+                x,
+                0,
+                largeur,
+                haut
+            );
+
+
+            ctx.strokeRect(
+                x,
+                bas,
+                largeur,
+                canvas.height -
+                bas
+            );
+
+        }
+
+
+        /* =====================================================
+           OISEAU
+        ===================================================== */
+
+        function dessinerOiseau() {
+
+            const x =
+                oiseau.x;
+
+
+            const y =
+                oiseau.y;
+
+
+            ctx.save();
+
+
+            let angle =
+                oiseau.vitesseY *
+                0.07;
+
+
+            angle =
+                Math.max(
+                    -0.35,
+                    Math.min(
+                        0.7,
+                        angle
+                    )
+                );
+
+
+            ctx.translate(
+                x +
+                oiseau.largeur / 2,
+                y +
+                oiseau.hauteur / 2
+            );
+
+
+            ctx.rotate(angle);
+
+
+            /* OMBRE */
+
+            ctx.shadowColor =
+                "rgba(0,0,0,0.35)";
+
+
+            ctx.shadowBlur = 7;
+
+            ctx.shadowOffsetY = 4;
+
+
+            /* CORPS */
+
+            const gradient =
+                ctx.createLinearGradient(
+                    -18,
+                    -15,
+                    18,
+                    15
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#fef08a"
+            );
+
+
+            gradient.addColorStop(
+                0.5,
+                "#facc15"
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "#f59e0b"
+            );
+
+
+            ctx.fillStyle =
+                gradient;
+
+
+            ctx.beginPath();
+
+
+            ctx.ellipse(
+                0,
+                0,
+                18,
+                14,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            /* AILE */
+
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle =
+                "#f97316";
+
+
+            ctx.beginPath();
+
+
+            ctx.ellipse(
+                -5,
+                5,
+                10,
+                6,
+                -0.3,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            /* OEIL */
+
+            ctx.fillStyle =
+                "white";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                10,
+                -7,
+                6,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            ctx.fillStyle =
+                "#111";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                12,
+                -7,
+                2.5,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            /* BEC */
+
+            ctx.fillStyle =
+                "#ef4444";
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                16,
+                0
+            );
+
+
+            ctx.lineTo(
+                30,
+                5
+            );
+
+
+            ctx.lineTo(
+                16,
+                9
+            );
+
+
+            ctx.closePath();
+
+
+            ctx.fill();
+
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           SOL
+        ===================================================== */
+
+        function dessinerSol() {
+
+            const hauteurSol =
+                18;
+
+
+            const y =
+                canvas.height -
+                hauteurSol;
+
+
+            const gradient =
+                ctx.createLinearGradient(
+                    0,
+                    y,
+                    0,
+                    canvas.height
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#84cc16"
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "#365314"
+            );
+
+
+            ctx.fillStyle =
+                gradient;
+
+
+            ctx.fillRect(
+                0,
+                y,
+                canvas.width,
+                hauteurSol
+            );
+
+        }
+
+
+        /* =====================================================
+           DESSIN
+        ===================================================== */
+
+        function dessiner() {
+
+            dessinerFond();
+
+
+            for (
+                const tuyau of tuyaux
+            ) {
+
+                dessinerTuyau(
+                    tuyau
+                );
+
+            }
+
+
+            dessinerSol();
+
+
+            if (oiseau) {
+
+                dessinerOiseau();
+
+            }
+
+
+            /* DEPART */
+
+            if (
+                !jeuCommence &&
+                !jeuTermine
+            ) {
+
+                ctx.fillStyle =
+                    "rgba(0,0,0,0.18)";
+
+
+                ctx.fillRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                ctx.fillStyle =
+                    "white";
+
+
+                ctx.font =
+                    "bold 28px Arial";
+
+
+                ctx.textAlign =
+                    "center";
+
+
+                ctx.fillText(
+                    "CLIQUE POUR JOUER",
+                    canvas.width / 2,
+                    canvas.height / 2
+                );
+
+            }
+
+
+            /* GAME OVER */
+
+            if (jeuTermine) {
+
+                ctx.fillStyle =
+                    "rgba(0,0,0,0.42)";
+
+
+                ctx.fillRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                ctx.fillStyle =
+                    "white";
+
+
+                ctx.font =
+                    "bold 38px Arial";
+
+
+                ctx.textAlign =
+                    "center";
+
+
+                ctx.fillText(
+                    "GAME OVER",
+                    canvas.width / 2,
+                    canvas.height / 2 - 10
+                );
+
+
+                ctx.font =
+                    "bold 20px Arial";
+
+
+                ctx.fillText(
+                    "Score : " + score,
+                    canvas.width / 2,
+                    canvas.height / 2 + 28
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           BOUCLE
+        ===================================================== */
+
+        function boucle(
+            maintenant
+        ) {
+
+            if (jeuTermine) {
+
+                return;
+
+            }
+
+
+            if (!dernierTemps) {
+
+                dernierTemps =
+                    maintenant;
+
+            }
+
+
+            let deltaTime =
+                (
+                    maintenant -
+                    dernierTemps
+                ) / 16.67;
+
+
+            deltaTime =
+                Math.min(
+                    deltaTime,
+                    2
+                );
+
+
+            dernierTemps =
+                maintenant;
+
+
+            mettreAJour(
+                deltaTime,
+                maintenant
+            );
+
+
+            dessiner();
+
+
+            if (!jeuTermine) {
+
+                animationID =
+                    requestAnimationFrame(
+                        boucle
+                    );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REJOUER
+        ===================================================== */
+
+        boutonRejouer.addEventListener(
+            "click",
+            function() {
+
+                initialiserJeu();
+
+            }
+        );
+
+
+        /* =====================================================
+           DEMARRAGE
+        ===================================================== */
+
+        initialiserJeu();
+
+
+        /*
+         Charger immédiatement
+         le classement Supabase.
+        */
+
+        afficherClassement();
+
+    </script>
+
+</body>
+
+</html>

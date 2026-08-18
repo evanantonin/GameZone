@@ -2083,6 +2083,322 @@ footer {
     }
 
 }
+/* =========================================================
+   FLAPPY BIRD — CENTRAGE COMPLET
+========================================================= */
+
+body.page-flappy {
+    margin: 0;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* CONTENEUR PRINCIPAL */
+
+.page-flappy .flappy-container {
+    width: 95%;
+    max-width: 900px;
+
+    margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+/* TITRE */
+
+.page-flappy h1 {
+    width: 100%;
+
+    margin: 20px auto;
+
+    text-align: center;
+}
+
+/* PSEUDO */
+
+.page-flappy .pseudo-joueur {
+    margin: 10px auto 15px;
+
+    text-align: center;
+}
+
+/* INFORMATIONS */
+
+.page-flappy .flappy-infos {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 10px auto 20px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.page-flappy .flappy-infos > div {
+    flex: 1;
+
+    padding: 10px;
+
+    background: #101010;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 12px;
+
+    color: white;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+.page-flappy .flappy-infos span {
+    color: #00ffff;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+/* MEILLEUR SCORE */
+
+.page-flappy .flappy-infos > div:nth-child(2) {
+    border-color: #ffff00;
+}
+
+.page-flappy .flappy-infos > div:nth-child(2) span {
+    color: #ffff00;
+}
+
+
+/* =========================================================
+   ZONE DE JEU
+========================================================= */
+
+.page-flappy .flappy-zone {
+    position: relative;
+
+    width: 400px;
+    max-width: 100%;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+/* CANVAS */
+
+.page-flappy #jeuFlappy {
+    display: block;
+
+    width: 400px;
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 0 auto;
+
+    background: #050520;
+
+    border: 4px solid #00ffff;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 12px #00ffff,
+        0 0 25px rgba(0, 255, 255, 0.35);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.page-flappy #messageFlappy {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 80%;
+
+    padding: 15px;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    border: 2px solid #00ffff;
+
+    border-radius: 12px;
+
+    color: white;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.page-flappy .flappy-boutons {
+    width: 100%;
+
+    margin: 20px auto;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    text-align: center;
+}
+
+.page-flappy .flappy-boutons button,
+.page-flappy .flappy-boutons .bouton-jeu {
+    margin: 0;
+}
+
+
+/* =========================================================
+   CONTROLE MOBILE
+========================================================= */
+
+.page-flappy .flappy-mobile {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    margin: 10px auto 20px;
+}
+
+.page-flappy .flappy-mobile button {
+    width: 75px;
+    height: 60px;
+
+    padding: 0;
+
+    font-size: 28px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================================================
+   COMMANDES
+========================================================= */
+
+.page-flappy .flappy-commandes {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 10px auto 30px;
+
+    padding: 15px;
+
+    background: #101010;
+
+    border: 2px solid #333;
+
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.page-flappy .flappy-commandes p {
+    margin: 7px auto;
+
+    color: #aaa;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .page-flappy .flappy-container {
+        width: 94%;
+
+        margin: 15px auto;
+    }
+
+    .page-flappy h1 {
+        font-size: 38px;
+
+        margin: 15px auto;
+    }
+
+    .page-flappy .flappy-infos {
+        width: 100%;
+
+        gap: 8px;
+    }
+
+    .page-flappy .flappy-infos > div {
+        padding: 8px 5px;
+
+        font-size: 14px;
+    }
+
+    .page-flappy .flappy-infos span {
+        font-size: 19px;
+    }
+
+    .page-flappy .flappy-zone {
+        width: 100%;
+    }
+
+    .page-flappy #jeuFlappy {
+        width: 100%;
+
+        max-width: 400px;
+
+        border-width: 3px;
+    }
+
+    .page-flappy .flappy-boutons {
+        gap: 10px;
+    }
+
+    .page-flappy .flappy-commandes {
+        width: 100%;
+    }
+
+}
 
 
 /* =========================================================
