@@ -48,7 +48,6 @@ nav {
 
 nav a {
     color: white;
-
     text-decoration: none;
 
     font-size: 18px;
@@ -104,7 +103,7 @@ body > p {
 
 
 /* =========================================================
-   ACCUEIL
+   ACCUEIL — LISTE DES JEUX
 ========================================================= */
 
 .liste-jeux {
@@ -137,11 +136,9 @@ body > p {
     border-radius: 20px;
 
     display: flex;
-
     flex-direction: column;
 
     justify-content: center;
-
     align-items: center;
 
     text-align: center;
@@ -214,7 +211,6 @@ button,
     padding: 12px 25px;
 
     border: 2px solid #00ffff;
-
     border-radius: 12px;
 
     background: #00ffff;
@@ -222,7 +218,6 @@ button,
     color: #000;
 
     font-size: 17px;
-
     font-weight: bold;
 
     text-decoration: none;
@@ -332,7 +327,6 @@ button:disabled {
     color: #00ffff;
 
     font-size: 28px;
-
     font-weight: bold;
 }
 
@@ -368,7 +362,6 @@ button:disabled {
     color: #ff00ff;
 
     font-size: 24px;
-
     font-weight: bold;
 }
 
@@ -456,7 +449,7 @@ button:disabled {
 
 
 /* =========================================================
-   PIERRE FEUILLE CISEAUX
+   PIERRE — FEUILLE — CISEAUX
 ========================================================= */
 
 .choix {
@@ -609,11 +602,9 @@ tr:last-child td {
     border-radius: 22px;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
@@ -657,24 +648,24 @@ tr:last-child td {
 
 
 /* =========================================================
-   SPACE INVADERS — CONTENEUR PRINCIPAL
+   SPACE INVADERS — BASE
 ========================================================= */
 
 .page-space {
     text-align: center;
+
+    overflow-x: hidden;
 }
 
 .page-space .container {
+    width: 95%;
+    max-width: 950px;
 
-    width: 94%;
-    max-width: 1000px;
-
-    margin: 0 auto;
+    margin: 20px auto;
 
     padding: 20px 20px 50px;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
@@ -688,10 +679,9 @@ tr:last-child td {
 ========================================================= */
 
 .page-space h1 {
-
     width: 100%;
 
-    margin: 35px auto 15px;
+    margin: 20px auto 10px;
 
     text-align: center;
 }
@@ -702,11 +692,10 @@ tr:last-child td {
 ========================================================= */
 
 .page-space .pseudo-joueur {
-
     width: max-content;
     max-width: 100%;
 
-    margin: 10px auto 20px;
+    margin: 8px auto 12px;
 
     padding: 10px 20px;
 
@@ -725,50 +714,24 @@ tr:last-child td {
 
 
 /* =========================================================
-   SPACE INVADERS — RETOUR
+   SPACE INVADERS — INFOS
 ========================================================= */
-
-.page-space .container > div:not(.infos):not(.boutons):not(.controles-mobile) {
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-
-    margin: 10px auto 20px;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — INFORMATIONS
-========================================================= */
-
-/*
-   Score / Meilleur / Niveau / Vies
-   sont tous sur UNE SEULE LIGNE
-   au-dessus du canvas.
-*/
 
 .page-space .infos {
+    width: 720px;
+    max-width: 100%;
 
-    width: 100%;
-    max-width: 850px;
-
-    margin: 15px auto 25px;
+    margin: 15px auto;
 
     padding: 12px;
 
-    display: flex;
+    display: grid;
 
-    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 10px;
 
     align-items: stretch;
-
-    gap: 15px;
-
-    flex-wrap: wrap;
 
     background: #101010;
 
@@ -780,41 +743,48 @@ tr:last-child td {
         0 0 15px rgba(0, 255, 255, 0.12);
 }
 
-
-/* Chaque information */
-
 .page-space .infos > div {
+    width: 100%;
+    min-width: 0;
 
-    min-width: 150px;
+    height: 55px;
 
-    padding: 10px 18px;
+    margin: 0;
+    padding: 8px 10px;
 
-    background: #080808;
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    background: #101010;
 
     border: 2px solid #00ffff;
 
-    border-radius: 12px;
+    border-radius: 10px;
 
-    color: #aaa;
+    color: white;
 
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: bold;
 
     text-align: center;
+
+    white-space: nowrap;
 }
 
-
-/* Valeurs */
-
 .page-space .infos span {
+    display: inline;
 
-    display: inline-block;
-
-    margin-left: 5px;
+    margin: 0;
 
     color: #00ffff;
 
-    font-size: 24px;
-
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -847,588 +817,14 @@ tr:last-child td {
     border-color: #ff1744;
 }
 
-.page-space .infos > div:nth-child(4) span {
-    color: #ff4444;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — CANVAS
-========================================================= */
-
-.page-space #jeuSpace {
-
-    display: block;
-
-    width: 800px;
-
-    max-width: 100%;
-
-    height: auto;
-
-    margin: 0 auto 25px;
-
-    background: #02020a;
-
-    border: 4px solid #00ffff;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 0 12px #00ffff,
-        0 0 30px rgba(0, 255, 255, 0.35);
-
-    flex-shrink: 0;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — MESSAGE
-========================================================= */
-
-.page-space #message {
-
-    width: 90%;
-
-    max-width: 800px;
-
-    margin: 10px auto 20px;
-
-    padding: 12px 20px;
-
-    background: #101010;
-
-    border: 2px solid #444;
-
-    border-radius: 12px;
-
-    color: white;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — BOUTONS
-========================================================= */
-
-.page-space .boutons {
-
-    width: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 10px auto 20px;
-}
-
-.page-space .boutons button {
-    margin: 0;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — COMMANDES
-========================================================= */
-
-.page-space .commandes {
-
-    width: 90%;
-
-    max-width: 800px;
-
-    margin: 10px auto 20px;
-
-    padding: 15px 20px;
-
-    background: #101010;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    text-align: center;
-}
-
-.page-space .commandes p {
-
-    margin: 7px auto;
-
-    color: #aaa;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — CONTROLES MOBILE
-========================================================= */
-
-.page-space .controles-mobile {
-
-    width: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 15px auto 30px;
-}
-
-.page-space .controles-mobile button {
-
-    width: 75px;
-
-    height: 55px;
-
-    padding: 0;
-
-    font-size: 22px;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — CLASSEMENT
-========================================================= */
-
-.page-space .classement {
-
-    width: 100%;
-
-    max-width: 850px;
-
-    margin: 20px auto;
-
-    padding: 25px;
-
-    background: #101010;
-
-    border: 3px solid #333;
-
-    border-radius: 20px;
-
-    text-align: center;
-
-    box-shadow:
-        0 0 20px rgba(0, 255, 255, 0.12);
-}
-
-.page-space .classement h2 {
-
-    margin: 5px auto 20px;
-
-    color: #00ffff;
-
-    text-align: center;
-
-    font-size: 24px;
-}
-
-.page-space .classement table {
-
-    width: 100%;
-
-    margin: 20px auto;
-}
-
-
-/* Statut classement */
-
-.page-space .statut {
-
-    margin: 15px auto 0;
-
-    color: #aaa;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-    margin-top: 60px;
-
-    padding: 25px;
-
-    background: #050505;
-
-    border-top: 2px solid #222;
-
-    color: #777;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   TABLETTE
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .liste-jeux {
-
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 20px;
-    }
-
-    .jeu {
-        min-height: 370px;
-    }
-
-
-    .page-space .infos {
-
-        max-width: 700px;
-
-        gap: 10px;
-    }
-
-    .page-space .infos > div {
-
-        min-width: 140px;
-    }
-}
-
-
-/* =========================================================
-   TELEPHONE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    /* MENU */
-
-    nav {
-
-        flex-direction: column;
-
-        gap: 8px;
-    }
-
-    nav a {
-
-        width: 90%;
-
-        text-align: center;
-    }
-
-
-    /* TITRE */
-
-    h1 {
-
-        font-size: 40px;
-    }
-
-
-    /* ACCUEIL */
-
-    .liste-jeux {
-
-        width: 92%;
-
-        grid-template-columns: 1fr;
-
-        gap: 20px;
-    }
-
-    .jeu {
-
-        min-height: 370px;
-
-        padding: 20px;
-    }
-
-
-    /* PAGE JEU */
-
-    .page-jeu {
-
-        width: 94%;
-
-        padding: 15px;
-
-        border-radius: 18px;
-    }
-
-    .zone-jeu {
-
-        padding: 20px;
-
-        border-radius: 15px;
-    }
-
-
-    /* =====================================================
-       SPACE INVADERS MOBILE
-    ===================================================== */
-
-    .page-space .container {
-
-        width: 96%;
-
-        padding: 10px 5px 40px;
-    }
-
-
-    .page-space h1 {
-
-        margin-top: 25px;
-
-        font-size: 38px;
-    }
-
-
-    /* =========================================================
-   SPACE INVADERS — INFOS BIEN ALIGNÉES
-========================================================= */
-
-.page-space .infos {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 15px auto 12px;
-
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 10px;
-
-    align-items: stretch;
-}
-
-.page-space .infos > div {
-    width: 100%;
-    min-width: 0;
-
-    height: 55px;
-
-    padding: 8px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 5px;
-
-    background: #101010;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 10px;
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    text-align: center;
-}
-
-.page-space .infos span {
-    color: #00ffff;
-
-    font-size: 20px;
-
-    font-weight: bold;
-}
-
-.page-space .infos #vies {
-    color: #ff4444;
-}
-    /* CANVAS */
-
-    .page-space #jeuSpace {
-
-        width: 100%;
-
-        max-width: 100%;
-
-        height: auto;
-
-        border-width: 3px;
-
-        border-radius: 12px;
-
-        margin: 0 auto 20px;
-    }
-
-
-    /* BOUTONS */
-
-    .page-space .boutons {
-
-        flex-wrap: wrap;
-
-        gap: 10px;
-    }
-
-
-    .page-space .boutons button {
-
-        padding: 10px 18px;
-    }
-
-
-    /* COMMANDES */
-
-    .page-space .commandes {
-
-        width: 100%;
-
-        padding: 10px;
-    }
-
-
-    /* CONTROLES */
-
-    .page-space .controles-mobile {
-
-        gap: 10px;
-
-        margin-bottom: 25px;
-    }
-
-    .page-space .controles-mobile button {
-
-        width: 70px;
-
-        height: 55px;
-    }
-
-
-    /* CLASSEMENT */
-
-    .page-space .classement {
-
-        width: 100%;
-
-        padding: 15px;
-
-        border-radius: 15px;
-    }
-
-    .page-space .classement h2 {
-
-        font-size: 19px;
-    }
-
-    .page-space .classement table {
-
-        font-size: 14px;
-    }
-
-    .page-space .classement th,
-    .page-space .classement td {
-
-        padding: 9px 5px;
-    }
-}
-/* =========================================================
-   SPACE INVADERS — JEU + INFOS VISIBLES ENSEMBLE
-========================================================= */
-
-.page-space {
-    overflow-x: hidden;
-}
-
-.page-space .container {
-    width: 95%;
-    max-width: 950px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-/* TITRE */
-.page-space h1 {
-    margin: 20px auto 10px;
-}
-
-/* PSEUDO */
-.page-space .pseudo-joueur {
-    margin: 8px auto 12px;
-}
-
-/* BOUTON RETOUR */
-.page-space .container > div {
-    text-align: center;
-}
-
-/* =========================================================
-   SCORE / VIES / NIVEAU / MEILLEUR
-========================================================= */
-
-.page-space .infos {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 15px auto 10px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 10px;
-
-    flex-wrap: nowrap;
-}
-
-.page-space .infos > div {
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 8px 10px;
-
-    background: #101010;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 10px;
-
-    color: white;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    text-align: center;
-
-    white-space: nowrap;
-}
-
-.page-space .infos span {
-    color: #00ffff;
-
-    font-size: 20px;
-
-    margin-left: 3px;
-}
-
+.page-space .infos > div:nth-child(4) span,
 .page-space #vies {
     color: #ff4444;
 }
 
+
 /* =========================================================
-   ÉCRAN SPACE INVADERS
+   SPACE INVADERS — ÉCRAN DE JEU
 ========================================================= */
 
 .page-space #jeuSpace {
@@ -1450,10 +846,13 @@ footer {
     box-shadow:
         0 0 12px #00ffff,
         0 0 25px rgba(0, 255, 255, 0.35);
+
+    flex-shrink: 0;
 }
 
+
 /* =========================================================
-   MESSAGE
+   SPACE INVADERS — MESSAGE
 ========================================================= */
 
 .page-space #message {
@@ -1462,18 +861,30 @@ footer {
 
     margin: 10px auto;
 
+    padding: 12px 20px;
+
+    background: #101010;
+
+    border: 2px solid #444;
+
+    border-radius: 12px;
+
+    color: white;
+
     text-align: center;
 }
 
+
 /* =========================================================
-   BOUTONS
+   SPACE INVADERS — BOUTONS
 ========================================================= */
 
 .page-space .boutons {
+    width: 100%;
+
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 15px;
@@ -1481,38 +892,96 @@ footer {
     margin: 15px auto;
 }
 
+.page-space .boutons button {
+    margin: 0;
+}
+
+
 /* =========================================================
-   COMMANDES
+   SPACE INVADERS — COMMANDES
 ========================================================= */
 
 .page-space .commandes {
-    text-align: center;
+    width: 90%;
+    max-width: 800px;
 
     margin: 15px auto;
+
+    padding: 15px 20px;
+
+    background: #101010;
+
+    border: 2px solid #333;
+
+    border-radius: 15px;
+
+    text-align: center;
 }
 
+.page-space .commandes p {
+    margin: 7px auto;
+
+    color: #aaa;
+
+    text-align: center;
+}
+
+
 /* =========================================================
-   CONTRÔLES MOBILE
+   SPACE INVADERS — CONTROLES MOBILES
 ========================================================= */
 
+/* Position normale pour la structure */
+
 .page-space .controles-mobile {
-    display: flex;
+    width: 100%;
+    max-width: 800px;
+
+    display: flex !important;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 15px;
 
-    margin: 15px auto;
+    margin: 0 auto 25px;
+
+    position: relative;
+
+    z-index: 10;
+
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .page-space .controles-mobile button {
-    min-width: 65px;
+    display: flex !important;
+
+    width: 80px;
+    height: 60px;
+
+    padding: 0;
+    margin: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 28px;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    flex-shrink: 0;
 }
 
+
 /* =========================================================
-   CLASSEMENT
+   SPACE INVADERS — CLASSEMENT
 ========================================================= */
 
 .page-space .classement {
@@ -1521,158 +990,53 @@ footer {
 
     margin: 30px auto;
 
+    padding: 25px;
+
+    background: #101010;
+
+    border: 3px solid #333;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.12);
+}
+
+.page-space .classement h2 {
+    margin: 5px auto 20px;
+
+    color: #00ffff;
+
+    text-align: center;
+
+    font-size: 24px;
+}
+
+.page-space .classement table {
+    width: 100%;
+
+    margin: 20px auto;
+}
+
+.page-space .statut {
+    margin: 15px auto 0;
+
+    color: #aaa;
+
     text-align: center;
 }
 
-/* =========================================================
-   PETITS ÉCRANS
-========================================================= */
-
-@media (max-width: 750px) {
-
-    .page-space .container {
-        width: 96%;
-    }
-
-    .page-space .infos {
-        width: 100%;
-
-        gap: 5px;
-    }
-
-    .page-space .infos > div {
-        padding: 7px 4px;
-
-        font-size: 12px;
-    }
-
-    .page-space .infos span {
-        font-size: 16px;
-    }
-
-    .page-space #jeuSpace {
-        width: 100%;
-
-        height: auto;
-    }
-
-}
-/* =========================================================
-   SPACE INVADERS — ALIGNEMENT FORCÉ DES INFOS
-========================================================= */
-
-body.page-space .infos {
-    width: 720px !important;
-    max-width: 100% !important;
-
-    margin: 15px auto !important;
-
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(4, 1fr) !important;
-
-    gap: 10px !important;
-
-    align-items: stretch !important;
-    justify-content: center !important;
-}
-
-body.page-space .infos > div {
-    width: 100% !important;
-    height: 55px !important;
-
-    margin: 0 !important;
-    padding: 8px !important;
-
-    display: flex !important;
-
-    flex-direction: row !important;
-
-    justify-content: center !important;
-    align-items: center !important;
-
-    gap: 5px !important;
-
-    background: #101010 !important;
-
-    border: 2px solid #00ffff !important;
-
-    border-radius: 10px !important;
-
-    text-align: center !important;
-
-    white-space: nowrap !important;
-}
-
-body.page-space .infos span {
-    display: inline !important;
-
-    margin: 0 !important;
-
-    color: #00ffff !important;
-
-    font-size: 20px !important;
-}
-
-body.page-space .infos #vies {
-    color: #ff4444 !important;
-}
-
 
 /* =========================================================
-   ÉCRAN DE JEU
-========================================================= */
-
-body.page-space #jeuSpace {
-    display: block !important;
-
-    width: 720px !important;
-    height: 540px !important;
-
-    max-width: 100% !important;
-
-    margin: 10px auto 15px !important;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 750px) {
-
-    body.page-space .infos {
-        width: 100% !important;
-
-        grid-template-columns:
-            repeat(2, 1fr) !important;
-    }
-
-    body.page-space .infos > div {
-        height: 50px !important;
-
-        font-size: 13px !important;
-    }
-
-}
-/* Couleur de la case Meilleur Score */
-body.page-space .infos > div:nth-child(2) {
-    border-color: #ffff00 !important;
-}
-
-body.page-space .infos > div:nth-child(2) span {
-    color: #ffff00 !important;
-}
-/* =========================================================
-   PONG — CENTRAGE COMPLET DE LA PAGE
+   PONG — PAGE COMPLÈTE
 ========================================================= */
 
 body.page-pong {
     text-align: center;
 }
 
-/* Conteneur principal */
 body.page-pong .container {
     width: 95%;
     max-width: 1000px;
@@ -1687,7 +1051,6 @@ body.page-pong .container {
     text-align: center;
 }
 
-/* Tous les titres */
 body.page-pong h1,
 body.page-pong h2,
 body.page-pong h3 {
@@ -1699,7 +1062,6 @@ body.page-pong h3 {
     text-align: center;
 }
 
-/* Pseudo */
 body.page-pong .pseudo-joueur {
     width: 100%;
 
@@ -1708,13 +1070,9 @@ body.page-pong .pseudo-joueur {
     text-align: center;
 }
 
-/* Bouton retour */
-body.page-pong .container > div {
-    text-align: center;
-}
 
 /* =========================================================
-   INFORMATIONS — SCORE / MEILLEUR / NIVEAU / VIES
+   PONG — INFOS
 ========================================================= */
 
 body.page-pong .infos {
@@ -1766,7 +1124,9 @@ body.page-pong .infos span {
     font-size: 20px;
 }
 
+
 /* Meilleur score */
+
 body.page-pong .infos > div:nth-child(2) {
     border-color: #ffff00;
 }
@@ -1775,7 +1135,9 @@ body.page-pong .infos > div:nth-child(2) span {
     color: #ffff00;
 }
 
+
 /* Vies */
+
 body.page-pong .infos > div:nth-child(4) {
     border-color: #ff4444;
 }
@@ -1786,7 +1148,7 @@ body.page-pong .infos > div:nth-child(4) span {
 
 
 /* =========================================================
-   CANVAS PONG
+   PONG — CANVAS
 ========================================================= */
 
 body.page-pong canvas,
@@ -1814,7 +1176,7 @@ body.page-pong #pong {
 
 
 /* =========================================================
-   MESSAGE
+   PONG — MESSAGE
 ========================================================= */
 
 body.page-pong #message {
@@ -1828,7 +1190,7 @@ body.page-pong #message {
 
 
 /* =========================================================
-   BOUTONS
+   PONG — BOUTONS
 ========================================================= */
 
 body.page-pong .boutons {
@@ -1848,7 +1210,7 @@ body.page-pong .boutons button {
 
 
 /* =========================================================
-   COMMANDES
+   PONG — COMMANDES
 ========================================================= */
 
 body.page-pong .commandes {
@@ -1865,7 +1227,7 @@ body.page-pong .commandes p {
 
 
 /* =========================================================
-   CLASSEMENT
+   PONG — CLASSEMENT
 ========================================================= */
 
 body.page-pong .classement {
@@ -1888,348 +1250,80 @@ body.page-pong .classement table {
 
 
 /* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 750px) {
-
-    body.page-pong .container {
-        width: 96%;
-    }
-
-    body.page-pong .infos {
-        width: 100%;
-
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    body.page-pong canvas,
-    body.page-pong #jeuPong,
-    body.page-pong #pong {
-        width: 100%;
-
-        max-width: 100%;
-    }
-
-    body.page-pong .classement {
-        width: 100%;
-    }
-
-}
-/* =========================================================
-   PONG — CONTROLES MOBILE CACHÉS SUR ORDINATEUR
+   PONG — CONTROLES JOUEUR 2
 ========================================================= */
 
 @media (min-width: 751px) {
 
     body.page-pong .controles-mobile,
     body.page-pong #controles-mobile,
-    body.page-pong .commandes-mobile {
-        display: none !important;
-    }
-
-}
-/* =========================================================
-   PONG — ORDINATEUR : CACHER LES CONTROLES JOUEUR 2
-========================================================= */
-
-@media (min-width: 751px) {
-
+    body.page-pong .commandes-mobile,
     body.page-pong .joueur2-controles,
     body.page-pong .controles-joueur2,
     body.page-pong #joueur2-controles,
-    body.page-pong #controles-joueur2 {
-        display: none !important;
-    }
-
-}
-/* =========================================================
-   PONG — CONTROLE JOUEUR 2
-========================================================= */
-
-/* Sur ordinateur : cacher les contrôles mobiles du joueur 2 */
-@media (min-width: 751px) {
-
+    body.page-pong #controles-joueur2,
     body.page-pong #controleJoueur2 {
         display: none !important;
     }
 
 }
-/* =========================================================
-   PONG — MOBILE
-========================================================= */
 
 @media (max-width: 750px) {
 
-    /* Par défaut : cacher les contrôles du joueur 2 */
     body.page-pong #controleJoueur2 {
         display: none;
     }
 
-    /* En mode 2 joueurs : afficher les contrôles */
     body.page-pong #controlesMobile.mode-2-joueurs #controleJoueur2 {
         display: block;
     }
 
 }
+
+
 /* =========================================================
-   GAMEZONE — ACCUEIL UNIQUEMENT
+   ACCUEIL — PAGE
 ========================================================= */
 
 body.page-accueil {
-    text-align: center;
-}
-
-/* Contenu principal de l'accueil */
-body.page-accueil main {
-    width: 95%;
-    max-width: 1200px;
-
-    margin: 30px auto;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   TITRE ACCUEIL
-========================================================= */
-
-body.page-accueil h1 {
-    width: 100%;
-
-    margin: 35px auto 20px;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   TEXTE D'ACCUEIL
-========================================================= */
-
-body.page-accueil main > p {
-    width: 90%;
-    max-width: 700px;
-
-    margin: 10px auto 30px;
-
-    padding: 15px 20px;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    background: #111;
-
-    color: #aaa;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   LISTE DES JEUX
-========================================================= */
-
-body.page-accueil .liste-jeux {
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 20px auto 50px;
-
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 25px;
-
-    justify-content: center;
-    align-items: stretch;
-}
-
-
-/* =========================================================
-   CASES DES JEUX
-========================================================= */
-
-body.page-accueil .jeu {
-    width: 100%;
-    min-height: 380px;
-
-    padding: 22px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    background: #151515;
-
-    border: 3px solid #444;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.7);
-
-    transition: 0.3s ease;
-}
-
-
-/* Effet quand on passe dessus */
-body.page-accueil .jeu:hover {
-    border-color: #00ffff;
-
-    transform: translateY(-5px);
-
-    box-shadow:
-        0 0 15px rgba(0, 255, 255, 0.4),
-        0 10px 25px rgba(0, 0, 0, 0.8);
-}
-
-
-/* =========================================================
-   IMAGES DANS LES CASES
-========================================================= */
-
-body.page-accueil .jeu img {
-    width: 100%;
-    max-width: 260px;
-
-    height: 160px;
-
-    object-fit: cover;
-
-    margin: 0 auto 18px;
-
-    border: 2px solid #555;
-
-    border-radius: 12px;
-
-    display: block;
-}
-
-
-/* =========================================================
-   TITRES DES JEUX
-========================================================= */
-
-body.page-accueil .jeu h2 {
-    margin: 8px auto 10px;
-
-    color: white;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
-
-body.page-accueil .jeu p {
-    margin: 5px auto 18px;
-
-    color: #aaa;
-
-    line-height: 1.5;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   BOUTONS DES JEUX
-========================================================= */
-
-body.page-accueil .jeu button,
-body.page-accueil .jeu .bouton-jeu {
-    margin: auto auto 0;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   TABLETTE
-========================================================= */
-
-@media (max-width: 900px) {
-
-    body.page-accueil .liste-jeux {
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 20px;
-    }
-
-}
-
-
-/* =========================================================
-   TELEPHONE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    body.page-accueil main {
-        width: 94%;
-    }
-
-    body.page-accueil .liste-jeux {
-        width: 100%;
-
-        grid-template-columns: 1fr;
-
-        gap: 20px;
-    }
-
-    body.page-accueil .jeu {
-        min-height: 350px;
-
-        padding: 20px;
-    }
-
-}
-/* =========================================================
-   GAMEZONE — ACCUEIL
-========================================================= */
-
-.page-accueil {
     margin: 0;
     min-height: 100vh;
+
     background: #050510;
+
     color: white;
+
     font-family: Arial, sans-serif;
+
     text-align: center;
 }
 
+
 /* =========================================================
-   MENU
+   ACCUEIL — MENU
 ========================================================= */
 
 .page-accueil nav {
     width: 100%;
+
     padding: 15px 0;
+
     background: #080812;
+
     border-bottom: 2px solid #00aaff;
 
     display: flex;
+
     justify-content: center;
+
     gap: 30px;
 }
 
 .page-accueil nav a {
     color: white;
+
     text-decoration: none;
+
     font-size: 18px;
     font-weight: bold;
 }
@@ -2238,17 +1332,20 @@ body.page-accueil .jeu .bouton-jeu {
     color: #00aaff;
 }
 
+
 /* =========================================================
-   CONTENU PRINCIPAL
+   ACCUEIL — CONTENU
 ========================================================= */
 
 .page-accueil .accueil {
     width: min(95%, 1000px);
+
     margin: 25px auto;
 }
 
+
 /* =========================================================
-   TITRE
+   ACCUEIL — TITRE
 ========================================================= */
 
 .page-accueil .accueil > h1 {
@@ -2257,6 +1354,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 20px;
 
     border: 2px solid #00aaff;
+
     border-radius: 15px;
 
     background: #09091a;
@@ -2265,8 +1363,9 @@ body.page-accueil .jeu .bouton-jeu {
         0 0 15px rgba(0, 170, 255, 0.25);
 }
 
+
 /* =========================================================
-   BIENVENUE
+   ACCUEIL — BIENVENUE
 ========================================================= */
 
 .page-accueil .bienvenue {
@@ -2275,6 +1374,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 15px;
 
     border: 2px solid #9c27ff;
+
     border-radius: 12px;
 
     background: #09091a;
@@ -2282,8 +1382,9 @@ body.page-accueil .jeu .bouton-jeu {
     font-size: 18px;
 }
 
+
 /* =========================================================
-   CONNEXION / INSCRIPTION
+   ACCUEIL — CONNEXION / INSCRIPTION
 ========================================================= */
 
 .page-accueil .auth-container {
@@ -2294,6 +1395,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 25px;
 
     border: 2px solid #00ff88;
+
     border-radius: 15px;
 
     background: #09091a;
@@ -2304,11 +1406,13 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil .auth-container h2 {
     margin-top: 0;
+
     color: #00ff88;
 }
 
+
 /* =========================================================
-   CHAMPS
+   ACCUEIL — CHAMPS
 ========================================================= */
 
 .page-accueil .auth-container input {
@@ -2320,12 +1424,12 @@ body.page-accueil .jeu .bouton-jeu {
 
     margin: 10px 0;
 
-    box-sizing: border-box;
-
     border: 2px solid #444466;
+
     border-radius: 8px;
 
     background: #111122;
+
     color: white;
 
     font-size: 16px;
@@ -2344,8 +1448,9 @@ body.page-accueil .jeu .bouton-jeu {
     color: #999;
 }
 
+
 /* =========================================================
-   BOUTONS AUTH
+   ACCUEIL — BOUTONS AUTH
 ========================================================= */
 
 .page-accueil .auth-button {
@@ -2356,12 +1461,15 @@ body.page-accueil .jeu .bouton-jeu {
     margin-top: 10px;
 
     border: 2px solid #00aaff;
+
     border-radius: 8px;
 
     background: #101025;
+
     color: white;
 
     font-size: 16px;
+
     font-weight: bold;
 
     cursor: pointer;
@@ -2369,11 +1477,13 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil .auth-button:hover {
     background: #00aaff;
+
     color: black;
 }
 
+
 /* =========================================================
-   CHANGER CONNEXION / INSCRIPTION
+   ACCUEIL — CHANGER AUTH
 ========================================================= */
 
 .page-accueil .changer-auth {
@@ -2390,16 +1500,18 @@ body.page-accueil .jeu .bouton-jeu {
     text-decoration: underline;
 }
 
+
 /* =========================================================
-   CONTENU CONNECTE
+   ACCUEIL — CONTENU CONNECTÉ
 ========================================================= */
 
 .page-accueil #contenuConnecte {
     width: 100%;
 }
 
+
 /* =========================================================
-   CASE PSEUDO
+   ACCUEIL — PSEUDO
 ========================================================= */
 
 .page-accueil .pseudo-affiche {
@@ -2408,6 +1520,7 @@ body.page-accueil .jeu .bouton-jeu {
     margin: 20px 0;
 
     border: 2px solid #ffaa00;
+
     border-radius: 12px;
 
     background: #09091a;
@@ -2417,11 +1530,13 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil #pseudoJoueur {
     color: #00aaff;
+
     font-weight: bold;
 }
 
+
 /* =========================================================
-   BOUTON DECONNEXION
+   ACCUEIL — DÉCONNEXION
 ========================================================= */
 
 .page-accueil .bouton-deconnexion {
@@ -2430,9 +1545,11 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 9px 15px;
 
     border: 2px solid #ff4444;
+
     border-radius: 8px;
 
     background: #111122;
+
     color: white;
 
     cursor: pointer;
@@ -2442,8 +1559,9 @@ body.page-accueil .jeu .bouton-jeu {
     background: #ff4444;
 }
 
+
 /* =========================================================
-   BOUTON VOIR LES JEUX
+   ACCUEIL — VOIR LES JEUX
 ========================================================= */
 
 .page-accueil .bouton-jeux {
@@ -2456,14 +1574,17 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 15px 30px;
 
     border: 2px solid #00aaff;
+
     border-radius: 12px;
 
     background: #09091a;
+
     color: white;
 
     text-decoration: none;
 
     font-size: 20px;
+
     font-weight: bold;
 
     box-shadow:
@@ -2472,11 +1593,13 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil .bouton-jeux:hover {
     background: #00aaff;
+
     color: black;
 }
 
+
 /* =========================================================
-   PRESENTATION
+   ACCUEIL — PRÉSENTATION
 ========================================================= */
 
 .page-accueil .presentation {
@@ -2485,6 +1608,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 20px;
 
     border: 2px solid #9c27ff;
+
     border-radius: 15px;
 
     background: #09091a;
@@ -2492,6 +1616,7 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil .presentation h2 {
     margin-top: 0;
+
     color: #c45cff;
 }
 
@@ -2499,8 +1624,9 @@ body.page-accueil .jeu .bouton-jeu {
     margin: 12px 0;
 }
 
+
 /* =========================================================
-   MES JEUX
+   ACCUEIL — MES JEUX
 ========================================================= */
 
 .page-accueil .accueil > #contenuConnecte > section:last-child {
@@ -2509,6 +1635,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 20px;
 
     border: 2px solid #ffd700;
+
     border-radius: 15px;
 
     background: #09091a;
@@ -2520,8 +1647,9 @@ body.page-accueil .jeu .bouton-jeu {
     color: #ffd700;
 }
 
+
 /* =========================================================
-   GRILLE DES JEUX
+   ACCUEIL — GRILLE DES JEUX
 ========================================================= */
 
 .page-accueil .aperçu-jeux {
@@ -2535,8 +1663,9 @@ body.page-accueil .jeu .bouton-jeu {
     margin-top: 15px;
 }
 
+
 /* =========================================================
-   CARTE DE JEU
+   ACCUEIL — CARTE DE JEU
 ========================================================= */
 
 .page-accueil .carte-jeu {
@@ -2545,6 +1674,7 @@ body.page-accueil .jeu .bouton-jeu {
     padding: 18px;
 
     border: 2px solid #444466;
+
     border-radius: 12px;
 
     background: #0d0d22;
@@ -2572,11 +1702,13 @@ body.page-accueil .jeu .bouton-jeu {
 
 .page-accueil .carte-jeu p {
     color: #ddd;
+
     line-height: 1.5;
 }
 
+
 /* =========================================================
-   MESSAGE AUTH
+   ACCUEIL — MESSAGE AUTH
 ========================================================= */
 
 .page-accueil #messageAuth {
@@ -2585,8 +1717,176 @@ body.page-accueil .jeu .bouton-jeu {
     font-weight: bold;
 }
 
+
 /* =========================================================
-   TELEPHONE
+   FOOTER
+========================================================= */
+
+footer {
+    margin-top: 60px;
+
+    padding: 25px;
+
+    background: #050505;
+
+    border-top: 2px solid #222;
+
+    color: #777;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   TABLETTE — 900 PX
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .liste-jeux {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 20px;
+    }
+
+    .jeu {
+        min-height: 370px;
+    }
+
+    .page-space .infos {
+        max-width: 700px;
+
+        gap: 10px;
+    }
+
+    .page-space .infos > div {
+        min-width: 140px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE — 750 PX
+========================================================= */
+
+@media (max-width: 750px) {
+
+    /* -----------------------------------------------------
+       SPACE INVADERS
+    ----------------------------------------------------- */
+
+    .page-space .container {
+        width: 96%;
+
+        padding: 10px 5px 110px;
+    }
+
+    .page-space .infos {
+        width: 100%;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 5px;
+    }
+
+    .page-space .infos > div {
+        height: 50px;
+
+        min-width: 0;
+
+        padding: 7px 4px;
+
+        font-size: 13px;
+    }
+
+    .page-space .infos span {
+        font-size: 16px;
+    }
+
+    .page-space #jeuSpace {
+        width: 100% !important;
+
+        height: 250px !important;
+        min-height: 250px !important;
+        max-height: 250px !important;
+
+        border-width: 3px;
+
+        border-radius: 12px;
+
+        margin: 0 auto 20px;
+    }
+
+    .page-space .boutons {
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+    .page-space .boutons button {
+        padding: 10px 18px;
+    }
+
+    .page-space .commandes {
+        width: 100%;
+
+        padding: 10px;
+    }
+
+    .page-space .classement {
+        width: 100%;
+
+        padding: 15px;
+
+        border-radius: 15px;
+    }
+
+    .page-space .classement h2 {
+        font-size: 19px;
+    }
+
+    .page-space .classement table {
+        font-size: 14px;
+    }
+
+    .page-space .classement th,
+    .page-space .classement td {
+        padding: 9px 5px;
+    }
+
+
+    /* -----------------------------------------------------
+       PONG
+    ----------------------------------------------------- */
+
+    body.page-pong .container {
+        width: 96%;
+    }
+
+    body.page-pong .infos {
+        width: 100%;
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    body.page-pong canvas,
+    body.page-pong #jeuPong,
+    body.page-pong #pong {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+    body.page-pong .classement {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE — 700 PX — ACCUEIL
 ========================================================= */
 
 @media (max-width: 700px) {
@@ -2601,6 +1901,7 @@ body.page-accueil .jeu .bouton-jeu {
 
     .page-accueil .accueil {
         width: 94%;
+
         margin: 15px auto;
     }
 
@@ -2617,182 +1918,82 @@ body.page-accueil .jeu .bouton-jeu {
     }
 
 }
-.page-space-invaders .controles-mobile {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
 
-@media (min-width: 769px) {
-    .page-space-invaders .controles-mobile {
-        display: none !important;
-    }
-}
+
 /* =========================================================
-   SPACE INVADERS — BOUTONS SUR L'ÉCRAN DE JEU
+   MOBILE — 600 PX
 ========================================================= */
 
-.page-space-invaders .zone-jeu {
-    position: relative;
-    display: inline-block;
-}
+@media (max-width: 600px) {
 
-.page-space-invaders .controles-mobile {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* -----------------------------------------------------
+       MENU
+    ----------------------------------------------------- */
 
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
+    nav {
+        flex-direction: column;
 
-    z-index: 10;
-}
-
-.page-space-invaders .controles-mobile button {
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
-    border-radius: 12px;
-}
-.page-space-invaders .controles-mobile {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-@media (min-width: 769px) {
-    .page-space-invaders .controles-mobile {
-        display: none !important;
+        gap: 8px;
     }
+
+    nav a {
+        width: 90%;
+
+        text-align: center;
+    }
+
+
+    /* -----------------------------------------------------
+       TITRE
+    ----------------------------------------------------- */
+
+    h1 {
+        font-size: 40px;
+    }
+
+
+    /* -----------------------------------------------------
+       ACCUEIL — LISTE
+    ----------------------------------------------------- */
+
+    .liste-jeux {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+    .jeu {
+        min-height: 370px;
+
+        padding: 20px;
+    }
+
+
+    /* -----------------------------------------------------
+       PAGE JEU
+    ----------------------------------------------------- */
+
+    .page-jeu {
+        width: 94%;
+
+        padding: 15px;
+
+        border-radius: 18px;
+    }
+
+    .zone-jeu {
+        padding: 20px;
+
+        border-radius: 15px;
+    }
+
 }
+
+
 /* =========================================================
-   SPACE INVADERS — CONTROLES MOBILES TOUJOURS VISIBLES
-========================================================= */
-
-.page-space-invaders .controles-mobile {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    width: 100%;
-    max-width: 500px;
-
-    margin: 15px auto 0;
-
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-
-    position: relative;
-    z-index: 10;
-}
-
-/* Boutons mobiles */
-
-.page-space-invaders .controles-mobile button {
-    display: flex !important;
-    visibility: visible !important;
-
-    width: 70px;
-    height: 60px;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 28px;
-
-    border: 2px solid #00ffff;
-    border-radius: 12px;
-
-    cursor: pointer;
-}
-
-/* Sur ordinateur : on cache les contrôles */
-
-@media (min-width: 769px) {
-
-    .page-space-invaders .controles-mobile {
-        display: none !important;
-    }
-
-}
-
-/* Sur téléphone */
-
-@media (max-width: 768px) {
-
-    .page-space-invaders .controles-mobile {
-        display: flex !important;
-
-        position: relative;
-
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-}
-/* =========================================================
-   SPACE INVADERS — CONTROLES MOBILE TOUJOURS VISIBLES
-========================================================= */
-
-.page-space .controles-mobile {
-    display: flex !important;
-
-    width: 100%;
-    max-width: 800px;
-
-    margin: 0 auto 25px;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 15px;
-
-    position: relative;
-    z-index: 10;
-}
-
-.page-space .controles-mobile button {
-    display: flex !important;
-
-    width: 80px;
-    height: 60px;
-
-    justify-content: center;
-    align-items: center;
-
-    font-size: 28px;
-
-    border: 2px solid #00ffff;
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-}
-
-/* Sur ordinateur : on cache les contrôles mobiles */
-@media (min-width: 769px) {
-
-    .page-space .controles-mobile {
-        display: none !important;
-    }
-
-}
-
-/* Sur téléphone : toujours visibles */
-@media (max-width: 768px) {
-
-    .page-space .controles-mobile {
-        display: flex !important;
-    }
-
-}
-/* =========================================================
-   SPACE INVADERS — CONTROLES MOBILE FIXES
+   SPACE INVADERS — CONTROLES MOBILES FIXES
 ========================================================= */
 
 @media (max-width: 768px) {
@@ -2807,15 +2008,17 @@ body.page-accueil .jeu .bouton-jeu {
         width: 100% !important;
 
         display: flex !important;
+
         justify-content: center !important;
         align-items: center !important;
 
         gap: 25px !important;
 
-        z-index: 99999 !important;
-
         margin: 0 !important;
+
         padding: 0 15px !important;
+
+        z-index: 99999 !important;
 
         pointer-events: none;
     }
@@ -2829,11 +2032,12 @@ body.page-accueil .jeu .bouton-jeu {
         padding: 0 !important;
         margin: 0 !important;
 
-        font-size: 32px !important;
-
         display: flex !important;
+
         justify-content: center !important;
         align-items: center !important;
+
+        font-size: 32px !important;
 
         border-radius: 15px !important;
 
@@ -2842,16 +2046,12 @@ body.page-accueil .jeu .bouton-jeu {
         flex-shrink: 0;
     }
 
-    /* Évite que le contenu passe sous les boutons */
-    .page-space .container {
-        padding-bottom: 110px !important;
-    }
-
 }
 
 
 /* =========================================================
-   PC : PAS DE CONTROLES MOBILES
+   SPACE INVADERS — PC
+   Pas de contrôles mobiles
 ========================================================= */
 
 @media (min-width: 769px) {
@@ -2861,19 +2061,30 @@ body.page-accueil .jeu .bouton-jeu {
     }
 
 }
-@media (max-width: 768px) {
 
-    .page-space #jeuSpace {
-        height: 450px !important;
-    }
 
-}
-@media (max-width: 768px) {
+/* =========================================================
+   SPACE INVADERS — ALIGNEMENT PETITS ÉCRANS
+========================================================= */
 
-    .page-space #jeuSpace {
+@media screen and (max-width: 750px) {
+
+    body.page-space .infos {
         width: 100% !important;
-        height: 350px !important;
-        max-height: 350px !important;
+
+        grid-template-columns:
+            repeat(2, 1fr) !important;
+    }
+
+    body.page-space .infos > div {
+        height: 50px !important;
+
+        font-size: 13px !important;
     }
 
 }
+
+
+/* =========================================================
+   FIN DU STYLE GAMEZONE
+========================================================= */
