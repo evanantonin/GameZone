@@ -10,339 +10,1058 @@
 
     <title>GameZone</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
 
-    
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #18233d 0%,
+                    #080b14 45%,
+                    #03040a 100%
+                );
+
+            color: white;
+
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        nav {
+
+            width: 100%;
+
+            background: #050505;
+
+            border-bottom:
+                2px solid #00eaff;
+
+            box-shadow:
+                0 0 15px
+                rgba(0, 234, 255, 0.35);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 15px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            transition: 0.2s;
+
+        }
+
+
+        nav a:hover {
+
+            background: #00eaff;
+
+            color: #050505;
+
+            box-shadow:
+                0 0 15px
+                rgba(0, 234, 255, 0.7);
+
+        }
+
+
+        /* =====================================================
+           TITRE
+        ===================================================== */
+
+        header {
+
+            text-align: center;
+
+            padding: 45px 20px 25px;
+
+        }
+
+
+        h1 {
+
+            margin: 0;
+
+            font-size:
+                clamp(40px, 8vw, 75px);
+
+            color: #00eaff;
+
+            text-shadow:
+                0 0 10px #00eaff,
+                0 0 25px #00eaff;
+
+        }
+
+
+        header p {
+
+            color: #b8c7d9;
+
+            font-size: 18px;
+
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section-jeux {
+
+            width:
+                min(1200px, 94%);
+
+            margin: auto;
+
+            padding-bottom: 50px;
+
+        }
+
+
+        .titre-section {
+
+            text-align: center;
+
+            font-size: 30px;
+
+            margin-bottom: 25px;
+
+            color: white;
+
+        }
+
+
+        .titre-section span {
+
+            color: #00eaff;
+
+        }
+
+
+        /* =====================================================
+           CHARGEMENT
+        ===================================================== */
+
+        #chargement {
+
+            text-align: center;
+
+            color: #00eaff;
+
+            font-size: 18px;
+
+            padding: 30px;
+
+        }
+
+
+        /* =====================================================
+           GRILLE
+        ===================================================== */
+
+        .grille-jeux {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        /* =====================================================
+           CARTE
+        ===================================================== */
+
+        .jeu {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #080b12
+                );
+
+            border:
+                1px solid
+                rgba(0, 234, 255, 0.35);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 15px
+                rgba(0, 234, 255, 0.12);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .jeu:hover {
+
+            transform:
+                translateY(-7px);
+
+            box-shadow:
+                0 0 25px
+                rgba(0, 234, 255, 0.35);
+
+        }
+
+
+        /* =====================================================
+           CLASSEMENT
+        ===================================================== */
+
+        .rang {
+
+            position: absolute;
+
+            top: 10px;
+
+            left: 10px;
+
+            background: #00eaff;
+
+            color: #050505;
+
+            font-weight: bold;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           NOM DU JEU
+        ===================================================== */
+
+        .jeu h3 {
+
+            margin-top: 15px;
+
+            margin-bottom: 10px;
+
+            color: #00eaff;
+
+        }
+
+
+        /* =====================================================
+           NOMBRE DE PARTIES
+        ===================================================== */
+
+        .parties {
+
+            color: #aebdcc;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        /* =====================================================
+           BOUTON
+        ===================================================== */
+
+        .bouton-jouer {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0077ff,
+                    #00eaff
+                );
+
+            padding: 11px 22px;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+
+        }
+
+
+        .bouton-jouer:hover {
+
+            transform:
+                scale(1.05);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 234, 255, 0.65);
+
+        }
+
+
+        /* =====================================================
+           ERREUR
+        ===================================================== */
+
+        #erreur {
+
+            display: none;
+
+            text-align: center;
+
+            color: #ff5577;
+
+            padding: 20px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .grille-jeux {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            nav {
+
+                gap: 3px;
+
+                padding: 10px;
+
+            }
+
+
+            nav a {
+
+                padding: 8px 10px;
+
+                font-size: 14px;
+
+            }
+
+
+            header {
+
+                padding-top: 30px;
+
+            }
+
+
+            .grille-jeux {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body class="page-accueil">
-  
+
+<body>
 
 
-    <!-- =========================
-         MENU
-    ========================= -->
+    <!-- =====================================================
+         NAVIGATION
+    ===================================================== -->
 
     <nav>
 
         <a href="index.html">
-            🏠 Accueil
+            Accueil
         </a>
 
         <a href="liste-jeux.html">
-            🎮 Jeux
+            Jeux
+        </a>
+
+        <a
+            href="compte.html"
+            class="icone-compte"
+            title="Mon compte"
+        >
+            👤
         </a>
 
     </nav>
 
 
-    <!-- =========================
-         ACCUEIL
-    ========================= -->
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
 
-    <main class="accueil">
+    <header>
 
         <h1>
-            🎮GameZone
+            GameZone
         </h1>
 
-        <p class="bienvenue">
-            Bienvenue sur mon site de jeux !
+        <p>
+            🎮 Les jeux les plus joués du moment
         </p>
 
+    </header>
 
-        <!-- =================================================
-             AUTHENTIFICATION
-        ================================================== -->
+
+    <!-- =====================================================
+         JEUX DU MOMENT
+    ===================================================== -->
+
+    <main class="section-jeux">
+
+        <h2 class="titre-section">
+
+            🔥 <span>Jeux du moment</span>
+
+        </h2>
+
+
+        <div id="chargement">
+
+            ⏳ Chargement des jeux...
+
+        </div>
+
 
         <div
-            class="auth-container"
-            id="authContainer">
-
-
-            <!-- =========================
-                 CREER UN COMPTE
-            ========================= -->
-
-            <div id="formInscription">
-
-                <h2>
-                    📝 Créer un compte
-                </h2>
-
-                <input
-                    type="text"
-                    id="pseudoInscription"
-                    placeholder="👤 Ton pseudo"
-                    maxlength="20"
-                    autocomplete="nickname"
-                >
-
-                <input
-                    type="email"
-                    id="emailInscription"
-                    placeholder="📧 Ton email"
-                    autocomplete="email"
-                >
-
-                <input
-                    type="password"
-                    id="motDePasseInscription"
-                    placeholder="🔒 Mot de passe"
-                    autocomplete="new-password"
-                >
-
-                <input
-                    type="password"
-                    id="confirmationMotDePasse"
-                    placeholder="🔒 Confirmer le mot de passe"
-                    autocomplete="new-password"
-                >
-
-                <button
-                    class="auth-button"
-                    id="boutonInscription"
-                    onclick="creerCompte()">
-
-                    Créer mon compte
-
-                </button>
-
-
-                <p
-                    class="changer-auth"
-                    onclick="afficherConnexion()">
-
-                    🔐 J'ai déjà un compte
-
-                </p>
-
-            </div>
-
-
-            <!-- =========================
-                 CONNEXION
-            ========================= -->
-
-            <div
-                id="formConnexion"
-                style="display: none;">
-
-                <h2>
-                    🔐 Se connecter
-                </h2>
-
-                <input
-                    type="email"
-                    id="emailConnexion"
-                    placeholder="📧 Ton email"
-                    autocomplete="email"
-                >
-
-                <input
-                    type="password"
-                    id="motDePasseConnexion"
-                    placeholder="🔒 Ton mot de passe"
-                    autocomplete="current-password"
-                >
-
-                <button
-                    class="auth-button"
-                    id="boutonConnexion"
-                    onclick="seConnecter()">
-
-                    Se connecter
-
-                </button>
-
-
-                <p
-                    class="changer-auth"
-                    onclick="afficherInscription()">
-
-                    📝 Créer un compte
-
-                </p>
-
-            </div>
-
-
-            <!-- =========================
-                 MESSAGE
-            ========================= -->
-
-            <p id="messageAuth"></p>
-
+            id="grilleJeux"
+            class="grille-jeux"
+        >
         </div>
 
 
-        <!-- =================================================
-             CONTENU POUR UTILISATEUR CONNECTÉ
-        ================================================== -->
+        <div id="erreur">
 
-        <div id="contenuConnecte">
-
-
-            <!-- =========================
-                 PSEUDO
-            ========================= -->
-
-            <div
-                id="pseudoAffiche"
-                class="pseudo-affiche">
-
-                👤 Joueur :
-
-                <span id="pseudoJoueur"></span>
-
-                <br>
-
-                <button
-                    class="bouton-deconnexion"
-                    onclick="seDeconnecter()">
-
-                    🚪 Se déconnecter
-
-                </button>
-
-            </div>
-
-
-            <!-- =========================
-                 BOUTON JEUX
-            ========================= -->
-
-            <a
-                href="liste-jeux.html"
-                class="bouton-jeux">
-
-                🎮 Voir les jeux
-
-            </a>
-
-
-            <!-- =========================
-                 PRESENTATION
-            ========================= -->
-
-            <section class="presentation">
-
-                <h2>
-                    🚀 Bienvenue sur GameZone !
-                </h2>
-
-                <p>
-                    Découvre plusieurs jeux directement
-                    dans ton navigateur.
-                </p>
-
-                <p>
-                    🏆 Fais les meilleurs scores,
-                    retrouve ton meilleur score personnel
-                    et compare-toi aux autres joueurs.
-                </p>
-
-                <p>
-                    📱 GameZone fonctionne sur ordinateur
-                    et téléphone.
-                </p>
-
-            </section>
-
-
-            <!-- =========================
-                 APERÇU DES JEUX
-            ========================= -->
-
-            <section>
-
-                <h2>
-                    🎮 Mes jeux
-                </h2>
-
-
-                <div class="aperçu-jeux">
-
-
-                    <div class="carte-jeu">
-
-                        <h3>
-                            🖱️ Clicker
-                        </h3>
-
-                        <p>
-                            Clique le plus rapidement possible !
-                        </p>
-
-                    </div>
-
-
-                    <div class="carte-jeu">
-
-                        <h3>
-                            🐍 Snake
-                        </h3>
-
-                        <p>
-                            Fais grandir ton serpent
-                            sans te faire toucher.
-                        </p>
-
-                    </div>
-
-
-                    <div class="carte-jeu">
-
-                        <h3>
-                            ✊ Pierre Feuille Ciseaux
-                        </h3>
-
-                        <p>
-                            Affronte l'ordinateur
-                            et sois le premier à gagner.
-                        </p>
-
-                    </div>
-
-
-                    <div class="carte-jeu">
-
-                        <h3>
-                            👾 Space Invaders
-                        </h3>
-
-                        <p>
-                            Détruis les envahisseurs
-                            et bats le meilleur score.
-                        </p>
-
-                    </div>
-
-
-                </div>
-                <p class="plus-jeux">
-    🎮 Et plus de jeux encore !
-</p>
-
-            </section>
-
+            ❌ Impossible de charger
+            les statistiques des jeux.
 
         </div>
-
 
     </main>
 
 
     <!-- =====================================================
-         SUPABASE
-    ====================================================== -->
+         SUPABASE + JEUX DU MOMENT
+    ===================================================== -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+
+        /* =====================================================
+           CONFIGURATION SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
- 
-<script src="script.js"></script>
+        /* =====================================================
+           CORRESPONDANCE DES JEUX
+        ===================================================== */
+
+        const jeux = {
+
+            "Jeu de clics": {
+
+                fichier: "jeux.html",
+
+                emoji: "🎯"
+
+            },
+
+            "Devine le nombre": {
+
+                fichier: "jeux2.html",
+
+                emoji: "🔢"
+
+            },
+
+            "Pierre Feuille Ciseaux": {
+
+                fichier: "jeux3.html",
+
+                emoji: "✂️"
+
+            },
+
+            "Snake": {
+
+                fichier: "jeux4.html",
+
+                emoji: "🐍"
+
+            },
+
+            "Pong": {
+
+                fichier: "jeux5.html",
+
+                emoji: "🏓"
+
+            },
+
+            "Space Invaders": {
+
+                fichier: "jeux6.html",
+
+                emoji: "👾"
+
+            },
+
+            "Flappy Bird": {
+
+                fichier: "jeux7.html",
+
+                emoji: "🐦"
+
+            },
+
+            "Tetris": {
+
+                fichier: "jeux8.html",
+
+                emoji: "🧱"
+
+            }
+
+        };
+
+
+        /* =====================================================
+           ELEMENTS HTML
+        ===================================================== */
+
+        const chargement =
+            document.getElementById(
+                "chargement"
+            );
+
+        const grille =
+            document.getElementById(
+                "grilleJeux"
+            );
+
+        const erreur =
+            document.getElementById(
+                "erreur"
+            );
+
+
+        /* =====================================================
+           CHARGER LES JEUX DU MOMENT
+        ===================================================== */
+
+        async function chargerJeuxDuMoment() {
+
+            console.log(
+                "🔄 Chargement de statistiques_jeux..."
+            );
+
+
+            try {
+
+                const url =
+                    SUPABASE_URL +
+                    "/rest/v1/statistiques_jeux" +
+                    "?select=nom_jeu,nombre_parties,ordre" +
+                    "&order=nombre_parties.desc";
+
+
+                console.log(
+                    "🌐 URL Supabase :",
+                    url
+                );
+
+
+                const resultat =
+                    await fetch(
+                        url,
+                        {
+
+                            method: "GET",
+
+                            headers: {
+
+                                "apikey":
+                                    SUPABASE_KEY,
+
+                                "Authorization":
+                                    "Bearer " +
+                                    SUPABASE_KEY,
+
+                                "Accept":
+                                    "application/json"
+
+                            }
+
+                        }
+                    );
+
+
+                console.log(
+                    "📡 Réponse Supabase :",
+                    resultat.status
+                );
+
+
+                if (!resultat.ok) {
+
+                    const texte =
+                        await resultat.text();
+
+                    throw new Error(
+                        texte
+                    );
+
+                }
+
+
+                const statistiques =
+                    await resultat.json();
+
+
+                console.log(
+                    "📊 Données reçues :",
+                    statistiques
+                );
+
+
+                /* =================================================
+                   FIN CHARGEMENT
+                ================================================= */
+
+                chargement.style.display =
+                    "none";
+
+
+                /* =================================================
+                   VERIFIER LES DONNEES
+                ================================================= */
+
+                if (
+                    !Array.isArray(statistiques) ||
+                    statistiques.length === 0
+                ) {
+
+                    grille.innerHTML = `
+
+                        <div
+                            style="
+                                grid-column:1/-1;
+                                text-align:center;
+                                padding:30px;
+                                color:#aebdcc;
+                            "
+                        >
+
+                            <div
+                                style="
+                                    font-size:50px;
+                                    margin-bottom:15px;
+                                "
+                            >
+                                🎮
+                            </div>
+
+                            <h3
+                                style="
+                                    color:#00eaff;
+                                    margin-bottom:10px;
+                                "
+                            >
+                                Aucun jeu joué pour le moment
+                            </h3>
+
+                            <p>
+                                Joue à un jeu pour qu'il apparaisse
+                                dans les
+                                <strong>
+                                    Jeux du moment
+                                </strong>.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                /* =================================================
+                   GARDER UNIQUEMENT LES JEUX CONNUS
+                ================================================= */
+
+                const jeuxConnus =
+                    statistiques.filter(
+                        function(jeu) {
+
+                            return Object.prototype.hasOwnProperty.call(
+                                jeux,
+                                jeu.nom_jeu
+                            );
+
+                        }
+                    );
+
+
+                /* =================================================
+                   TRIER PAR NOMBRE DE PARTIES
+                ================================================= */
+
+                jeuxConnus.sort(
+                    function(a, b) {
+
+                        return (
+                            Number(
+                                b.nombre_parties
+                            ) || 0
+                        ) -
+                        (
+                            Number(
+                                a.nombre_parties
+                            ) || 0
+                        );
+
+                    }
+                );
+
+
+                /* =================================================
+                   TOP 4
+                ================================================= */
+
+                const top4 =
+                    jeuxConnus.slice(0, 4);
+
+
+                grille.innerHTML =
+                    "";
+
+
+                /* =================================================
+                   CREER LES CARTES
+                ================================================= */
+
+                top4.forEach(
+                    function(
+                        jeu,
+                        index
+                    ) {
+
+                        const informations =
+                            jeux[
+                                jeu.nom_jeu
+                            ];
+
+
+                        if (!informations) {
+
+                            return;
+
+                        }
+
+
+                        const carte =
+                            document.createElement(
+                                "article"
+                            );
+
+
+                        carte.className =
+                            "jeu";
+
+
+                        /* =========================
+                           MEDAILLE
+                        ========================= */
+
+                        let medaille =
+                            index + 1;
+
+
+                        if (index === 0) {
+
+                            medaille =
+                                "🥇";
+
+                        }
+
+                        else if (index === 1) {
+
+                            medaille =
+                                "🥈";
+
+                        }
+
+                        else if (index === 2) {
+
+                            medaille =
+                                "🥉";
+
+                        }
+
+
+                        /* =========================
+                           NOMBRE DE PARTIES
+                        ========================= */
+
+                        const nombreParties =
+                            Number(
+                                jeu.nombre_parties
+                            ) || 0;
+
+
+                        /* =========================
+                           CARTE
+                        ========================= */
+
+                        carte.innerHTML = `
+
+                            <div class="rang">
+
+                                ${medaille}
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    font-size:55px;
+                                    margin-top:15px;
+                                "
+                            >
+
+                                ${informations.emoji}
+
+                            </div>
+
+
+                            <h3>
+
+                                ${jeu.nom_jeu}
+
+                            </h3>
+
+
+                            <div class="parties">
+
+                                🎮
+                                ${nombreParties.toLocaleString("fr-FR")}
+
+                                partie${
+
+                                    nombreParties > 1
+                                        ? "s"
+                                        : ""
+
+                                }
+
+                            </div>
+
+
+                            <a
+                                class="bouton-jouer"
+                                href="${informations.fichier}"
+                            >
+
+                                ▶️ Jouer
+
+                            </a>
+
+                        `;
+
+
+                        grille.appendChild(
+                            carte
+                        );
+
+                    }
+                );
+
+
+                /* =================================================
+                   AUCUN JEU RECONNU
+                ================================================= */
+
+                if (
+                    top4.length === 0
+                ) {
+
+                    grille.innerHTML = `
+
+                        <div
+                            style="
+                                grid-column:1/-1;
+                                text-align:center;
+                                padding:30px;
+                                color:#aebdcc;
+                            "
+                        >
+
+                            <div
+                                style="
+                                    font-size:50px;
+                                    margin-bottom:15px;
+                                "
+                            >
+                                🎮
+                            </div>
+
+                            <h3
+                                style="
+                                    color:#00eaff;
+                                "
+                            >
+                                Aucun jeu reconnu
+                            </h3>
+
+                            <p>
+                                Les noms de
+                                <strong>
+                                    statistiques_jeux
+                                </strong>
+                                ne correspondent pas
+                                aux jeux de GameZone.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+
+            catch (e) {
+
+                console.error(
+                    "❌ Erreur Supabase :",
+                    e
+                );
+
+
+                chargement.style.display =
+                    "none";
+
+
+                erreur.style.display =
+                    "block";
+
+
+                erreur.innerHTML = `
+
+                    ❌ Impossible de charger
+                    les statistiques des jeux.
+
+                    <br><br>
+
+                    <small>
+
+                        Vérifie la table
+                        <strong>
+                            statistiques_jeux
+                        </strong>
+                        dans Supabase.
+
+                    </small>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DEMARRAGE
+        ===================================================== */
+
+        chargerJeuxDuMoment();
+
+    </script>
 
 </body>
 

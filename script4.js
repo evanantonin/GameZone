@@ -1,4 +1,7 @@
 
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 /* =====================================================
    SUPABASE
@@ -7,15 +10,13 @@
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
 
-
-const SUPABASE_ANON_KEY =
+const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
-
 
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_ANON_KEY
+        SUPABASE_KEY
     );
 
 
@@ -24,6 +25,9 @@ const supabaseClient =
 ===================================================== */
 
 const JEU = "jeux4";
+
+const NOM_JEU_STATISTIQUE =
+    "Snake";
 
 
 /* =====================================================
@@ -36,16 +40,55 @@ const pseudo =
     );
 
 
-document.getElementById(
-    "pseudoJoueur"
-).textContent =
-    pseudo;
+const pseudoJoueurElement =
+    document.getElementById(
+        "pseudoJoueur"
+    );
 
 
-document.getElementById(
-    "pseudoAffiche"
-).textContent =
-    pseudo;
+const pseudoAfficheElement =
+    document.getElementById(
+        "pseudoAffiche"
+    );
+
+
+if (pseudo) {
+
+    if (pseudoJoueurElement) {
+
+        pseudoJoueurElement.textContent =
+            pseudo;
+
+    }
+
+
+    if (pseudoAfficheElement) {
+
+        pseudoAfficheElement.textContent =
+            pseudo;
+
+    }
+
+}
+
+else {
+
+    if (pseudoJoueurElement) {
+
+        pseudoJoueurElement.textContent =
+            "Joueur";
+
+    }
+
+
+    if (pseudoAfficheElement) {
+
+        pseudoAfficheElement.textContent =
+            "Joueur";
+
+    }
+
+}
 
 
 /* =====================================================
@@ -53,22 +96,28 @@ document.getElementById(
 ===================================================== */
 
 const canvas =
-    document.getElementById("jeu");
+    document.getElementById(
+        "jeu"
+    );
 
 
 const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+        "2d"
+    );
 
 
 /* =====================================================
-   VARIABLES
+   VARIABLES DU JEU
 ===================================================== */
 
-const tailleCase = 20;
+const tailleCase =
+    20;
 
 
 const nombreCases =
-    canvas.width / tailleCase;
+    canvas.width /
+    tailleCase;
 
 
 /* =====================================================
@@ -119,7 +168,8 @@ let nourriture = {
    SCORE
 ===================================================== */
 
-let score = 0;
+let score =
+    0;
 
 
 let meilleurScore =
@@ -130,52 +180,172 @@ let meilleurScore =
     ) || 0;
 
 
-document.getElementById(
-    "meilleurScore"
-).textContent =
-    meilleurScore;
+const scoreElement =
+    document.getElementById(
+        "score"
+    );
+
+
+const meilleurScoreElement =
+    document.getElementById(
+        "meilleurScore"
+    );
+
+
+if (scoreElement) {
+
+    scoreElement.textContent =
+        score;
+
+}
+
+
+if (meilleurScoreElement) {
+
+    meilleurScoreElement.textContent =
+        meilleurScore;
+
+}
 
 
 /* =====================================================
    ÉTAT DU JEU
 ===================================================== */
 
-let jeuTermine = false;
+let jeuTermine =
+    false;
 
 
-let jeuEnPause = false;
+let jeuEnPause =
+    false;
 
 
-let intervalleJeu = null;
+let intervalleJeu =
+    null;
 
 
-let scoreEnregistre = false;
+let scoreEnregistre =
+    false;
 
 
+/* =====================================================
+   COMPTER UNE PARTIE
+===================================================== */
+
+/* =========================================================
+   STATISTIQUES — JEU 4
+========================================================= */
+
+async function compterPartieJeu4() {
+
+    try {
+
+        const recherche = await fetch(
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?nom_jeu=eq.Snake" +
+            "&select=id,nom_jeu,nombre_parties",
+            {
+                method: "GET",
+
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": "Bearer " + SUPABASE_KEY,
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        if (!recherche.ok) {
+            throw new Error(await recherche.text());
+        }
+
+        const statistiques =
+            await recherche.json();
+
+        if (!statistiques.length) {
+            console.error(
+                "❌ Snake n'existe pas dans statistiques_jeux"
+            );
+            return;
+        }
+
+        const jeu = statistiques[0];
+
+        const nouveauNombre =
+            Number(jeu.nombre_parties || 0) + 1;
+
+        const miseAJour = await fetch(
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?id=eq." + jeu.id,
+            {
+                method: "PATCH",
+
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": "Bearer " + SUPABASE_KEY,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                },
+
+                body: JSON.stringify({
+                    nombre_parties: nouveauNombre
+                })
+            }
+        );
+
+        if (!miseAJour.ok) {
+            throw new Error(await miseAJour.text());
+        }
+
+        console.log(
+            "✅ Snake : " +
+            nouveauNombre +
+            " parties"
+        );
+
+    } catch (erreur) {
+
+        console.error(
+            "❌ Erreur statistiques Jeu 4 :",
+            erreur
+        );
+
+    }
+}
 /* =====================================================
    NOUVELLE NOURRITURE
 ===================================================== */
 
 function nouvelleNourriture() {
 
-    let positionValide = false;
+    let positionValide =
+        false;
 
 
-    while (!positionValide) {
+    while (
+        !positionValide
+    ) {
 
         nourriture.x =
             Math.floor(
-                Math.random() * nombreCases
-            ) * tailleCase;
+                Math.random() *
+                nombreCases
+            ) *
+            tailleCase;
 
 
         nourriture.y =
             Math.floor(
-                Math.random() * nombreCases
-            ) * tailleCase;
+                Math.random() *
+                nombreCases
+            ) *
+            tailleCase;
 
 
-        positionValide = true;
+        positionValide =
+            true;
 
 
         for (
@@ -183,11 +353,17 @@ function nouvelleNourriture() {
         ) {
 
             if (
-                partie.x === nourriture.x &&
-                partie.y === nourriture.y
+
+                partie.x ===
+                nourriture.x &&
+
+                partie.y ===
+                nourriture.y
+
             ) {
 
-                positionValide = false;
+                positionValide =
+                    false;
 
                 break;
 
@@ -206,69 +382,99 @@ function nouvelleNourriture() {
 
 function dessiner() {
 
-    /* Fond */
+    /*
+     Fond
+    */
 
-    ctx.fillStyle = "white";
+    ctx.fillStyle =
+        "white";
+
 
     ctx.fillRect(
+
         0,
         0,
         canvas.width,
         canvas.height
+
     );
 
 
-    /* Nourriture */
+    /*
+     Nourriture
+    */
 
-    ctx.fillStyle = "red";
+    ctx.fillStyle =
+        "red";
+
 
     ctx.fillRect(
+
         nourriture.x,
         nourriture.y,
         tailleCase,
         tailleCase
+
     );
 
 
-    /* Serpent */
+    /*
+     Serpent
+    */
 
     serpent.forEach(
-        function(partie, index) {
 
-            if (index === 0) {
+        function(
+            partie,
+            index
+        ) {
 
-                ctx.fillStyle = "#00ff00";
+            if (
+                index === 0
+            ) {
+
+                ctx.fillStyle =
+                    "#00ff00";
 
             }
 
             else {
 
-                ctx.fillStyle = "#00aa00";
+                ctx.fillStyle =
+                    "#00aa00";
 
             }
 
 
             ctx.fillRect(
+
                 partie.x,
                 partie.y,
                 tailleCase,
                 tailleCase
+
             );
 
 
-            ctx.strokeStyle = "#111";
+            ctx.strokeStyle =
+                "#111";
+
 
             ctx.strokeRect(
+
                 partie.x,
                 partie.y,
                 tailleCase,
                 tailleCase
+
             );
 
         }
+
     );
 
 }
+
 
 /* =====================================================
    DÉPLACEMENT
@@ -277,8 +483,10 @@ function dessiner() {
 function avancer() {
 
     if (
+
         jeuTermine ||
         jeuEnPause
+
     ) {
 
         return;
@@ -290,20 +498,27 @@ function avancer() {
         prochaineDirection;
 
 
-    const tete =
-        {
-            x: serpent[0].x,
-            y: serpent[0].y
-        };
+    const tete = {
+
+        x:
+            serpent[0].x,
+
+        y:
+            serpent[0].y
+
+    };
 
 
-    /* Déplacement */
+    /*
+     Déplacement
+    */
 
     if (
         direction === "haut"
     ) {
 
-        tete.y -= tailleCase;
+        tete.y -=
+            tailleCase;
 
     }
 
@@ -312,7 +527,8 @@ function avancer() {
         direction === "bas"
     ) {
 
-        tete.y += tailleCase;
+        tete.y +=
+            tailleCase;
 
     }
 
@@ -321,7 +537,8 @@ function avancer() {
         direction === "gauche"
     ) {
 
-        tete.x -= tailleCase;
+        tete.x -=
+            tailleCase;
 
     }
 
@@ -330,14 +547,15 @@ function avancer() {
         direction === "droite"
     ) {
 
-        tete.x += tailleCase;
+        tete.x +=
+            tailleCase;
 
     }
 
 
-    /* =================================================
-       PASSAGE À TRAVERS LES BORDS
-    ================================================= */
+    /*
+     Passage à travers les bords
+    */
 
     if (
         tete.x < 0
@@ -354,7 +572,8 @@ function avancer() {
         tete.x >= canvas.width
     ) {
 
-        tete.x = 0;
+        tete.x =
+            0;
 
     }
 
@@ -374,24 +593,34 @@ function avancer() {
         tete.y >= canvas.height
     ) {
 
-        tete.y = 0;
+        tete.y =
+            0;
 
     }
 
 
-    /* =================================================
-       COLLISION AVEC SOI-MÊME
-    ================================================= */
+    /*
+     Collision avec soi-même
+    */
 
     for (
+
         let i = 0;
+
         i < serpent.length;
+
         i++
+
     ) {
 
         if (
-            tete.x === serpent[i].x &&
-            tete.y === serpent[i].y
+
+            tete.x ===
+            serpent[i].x &&
+
+            tete.y ===
+            serpent[i].y
+
         ) {
 
             terminerJeu();
@@ -403,32 +632,43 @@ function avancer() {
     }
 
 
-    /* Ajouter la tête */
+    /*
+     Ajouter la tête
+    */
 
     serpent.unshift(
         tete
     );
 
 
-    /* =================================================
-       MANGER
-    ================================================= */
+    /*
+     Manger
+    */
 
     if (
-        tete.x === nourriture.x &&
-        tete.y === nourriture.y
+
+        tete.x ===
+        nourriture.x &&
+
+        tete.y ===
+        nourriture.y
+
     ) {
 
         score++;
 
 
-        document.getElementById(
-            "score"
-        ).textContent =
-            score;
+        if (scoreElement) {
+
+            scoreElement.textContent =
+                score;
+
+        }
 
 
-        /* Nouveau meilleur score */
+        /*
+         Nouveau meilleur score
+        */
 
         if (
             score > meilleurScore
@@ -438,15 +678,20 @@ function avancer() {
                 score;
 
 
-            document.getElementById(
-                "meilleurScore"
-            ).textContent =
-                meilleurScore;
+            if (meilleurScoreElement) {
+
+                meilleurScoreElement.textContent =
+                    meilleurScore;
+
+            }
 
 
             localStorage.setItem(
+
                 "meilleurScoreJeux4",
+
                 meilleurScore
+
             );
 
         }
@@ -476,10 +721,12 @@ function changerDirection(
     nouvelleDirection
 ) {
 
-
     if (
+
         nouvelleDirection === "haut" &&
+
         direction !== "bas"
+
     ) {
 
         prochaineDirection =
@@ -489,8 +736,11 @@ function changerDirection(
 
 
     if (
+
         nouvelleDirection === "bas" &&
+
         direction !== "haut"
+
     ) {
 
         prochaineDirection =
@@ -500,8 +750,11 @@ function changerDirection(
 
 
     if (
+
         nouvelleDirection === "gauche" &&
+
         direction !== "droite"
+
     ) {
 
         prochaineDirection =
@@ -511,8 +764,11 @@ function changerDirection(
 
 
     if (
+
         nouvelleDirection === "droite" &&
+
         direction !== "gauche"
+
     ) {
 
         prochaineDirection =
@@ -528,7 +784,9 @@ function changerDirection(
 ===================================================== */
 
 document.addEventListener(
+
     "keydown",
+
     function(event) {
 
         const touche =
@@ -536,11 +794,15 @@ document.addEventListener(
 
 
         if (
+
             touche === "z" ||
             touche === "arrowup"
+
         ) {
 
-            changerDirection("haut");
+            changerDirection(
+                "haut"
+            );
 
             event.preventDefault();
 
@@ -548,11 +810,15 @@ document.addEventListener(
 
 
         else if (
+
             touche === "s" ||
             touche === "arrowdown"
+
         ) {
 
-            changerDirection("bas");
+            changerDirection(
+                "bas"
+            );
 
             event.preventDefault();
 
@@ -560,11 +826,15 @@ document.addEventListener(
 
 
         else if (
+
             touche === "q" ||
             touche === "arrowleft"
+
         ) {
 
-            changerDirection("gauche");
+            changerDirection(
+                "gauche"
+            );
 
             event.preventDefault();
 
@@ -572,18 +842,24 @@ document.addEventListener(
 
 
         else if (
+
             touche === "d" ||
             touche === "arrowright"
+
         ) {
 
-            changerDirection("droite");
+            changerDirection(
+                "droite"
+            );
 
             event.preventDefault();
 
         }
 
 
-        /* Espace = pause */
+        /*
+         Espace = pause
+        */
 
         else if (
             event.code === "Space"
@@ -596,6 +872,7 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
@@ -622,7 +899,7 @@ function pauseJeu() {
         );
 
 
-    const message =
+    const messageSnake =
         document.getElementById(
             "messageSnake"
         );
@@ -630,23 +907,39 @@ function pauseJeu() {
 
     if (jeuEnPause) {
 
-        bouton.textContent =
-            "▶️ Reprendre";
+        if (bouton) {
+
+            bouton.textContent =
+                "▶️ Reprendre";
+
+        }
 
 
-        message.textContent =
-            "⏸️ Jeu en pause";
+        if (messageSnake) {
+
+            messageSnake.textContent =
+                "⏸️ Jeu en pause";
+
+        }
 
     }
 
     else {
 
-        bouton.textContent =
-            "⏸️ Pause";
+        if (bouton) {
+
+            bouton.textContent =
+                "⏸️ Pause";
+
+        }
 
 
-        message.textContent =
-            "";
+        if (messageSnake) {
+
+            messageSnake.textContent =
+                "";
+
+        }
 
     }
 
@@ -668,17 +961,33 @@ function terminerJeu() {
     );
 
 
-    document.getElementById(
-        "messageSnake"
-    ).textContent =
-        "💥 Game Over ! Score : " +
-        score;
+    const messageSnake =
+        document.getElementById(
+            "messageSnake"
+        );
 
 
-    document.getElementById(
-        "zoneEnregistrement"
-    ).style.display =
-        "block";
+    if (messageSnake) {
+
+        messageSnake.textContent =
+            "💥 Game Over ! Score : " +
+            score;
+
+    }
+
+
+    const zoneEnregistrement =
+        document.getElementById(
+            "zoneEnregistrement"
+        );
+
+
+    if (zoneEnregistrement) {
+
+        zoneEnregistrement.style.display =
+            "block";
+
+    }
 
 }
 
@@ -688,10 +997,19 @@ function terminerJeu() {
 ===================================================== */
 
 function recommencer() {
+   compterPartieJeu4();
 
     clearInterval(
         intervalleJeu
     );
+
+
+    /*
+     Une nouvelle partie =
+     +1 dans les statistiques.
+    */
+
+  
 
 
     serpent = [
@@ -722,7 +1040,8 @@ function recommencer() {
         "droite";
 
 
-    score = 0;
+    score =
+        0;
 
 
     jeuTermine =
@@ -737,28 +1056,68 @@ function recommencer() {
         false;
 
 
-    document.getElementById(
-        "score"
-    ).textContent =
-        "0";
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            "0";
+
+    }
 
 
-    document.getElementById(
-        "messageSnake"
-    ).textContent =
-        "";
+    const messageSnake =
+        document.getElementById(
+            "messageSnake"
+        );
 
 
-    document.getElementById(
-        "boutonPause"
-    ).textContent =
-        "⏸️ Pause";
+    if (messageSnake) {
+
+        messageSnake.textContent =
+            "";
+
+    }
 
 
-    document.getElementById(
-        "zoneEnregistrement"
-    ).style.display =
-        "none";
+    const boutonPause =
+        document.getElementById(
+            "boutonPause"
+        );
+
+
+    if (boutonPause) {
+
+        boutonPause.textContent =
+            "⏸️ Pause";
+
+    }
+
+
+    const zoneEnregistrement =
+        document.getElementById(
+            "zoneEnregistrement"
+        );
+
+
+    if (zoneEnregistrement) {
+
+        zoneEnregistrement.style.display =
+            "none";
+
+    }
+
+
+    const messageEnregistrement =
+        document.getElementById(
+            "messageEnregistrement"
+        );
+
+
+    if (messageEnregistrement) {
+
+        messageEnregistrement.textContent =
+            "";
+
+    }
 
 
     nouvelleNourriture();
@@ -785,8 +1144,11 @@ function demarrerJeu() {
 
     intervalleJeu =
         setInterval(
+
             avancer,
+
             120
+
         );
 
 }
@@ -850,21 +1212,23 @@ async function enregistrerMeilleurScore() {
 
     try {
 
-
-        /* =================================================
-           RECHERCHER LE SCORE
-        ================================================= */
+        /*
+         Rechercher le score existant
+        */
 
         const {
+
             data: ancienScore,
+
             error: erreurRecherche
+
         } =
             await supabaseClient
 
                 .from("scores")
 
                 .select(
-                    "pseudo,score,jeu"
+                    "id,pseudo,score,jeu"
                 )
 
                 .eq(
@@ -886,8 +1250,10 @@ async function enregistrerMeilleurScore() {
                 erreurRecherche
             );
 
+
             scoreEnregistre =
                 false;
+
 
             throw new Error(
                 "Recherche impossible."
@@ -896,15 +1262,17 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /* =================================================
-           SCORE EXISTANT
-        ================================================= */
+        /*
+         Score existant
+        */
 
         if (
-            ancienScore &&
-            ancienScore.length > 0
-        ) {
 
+            ancienScore &&
+
+            ancienScore.length > 0
+
+        ) {
 
             const scoreExistant =
                 Number(
@@ -912,13 +1280,18 @@ async function enregistrerMeilleurScore() {
                 );
 
 
+            /*
+             Nouveau record
+            */
+
             if (
                 score > scoreExistant
             ) {
 
-
                 const {
+
                     error: erreurUpdate
+
                 } =
                     await supabaseClient
 
@@ -936,13 +1309,8 @@ async function enregistrerMeilleurScore() {
                         })
 
                         .eq(
-                            "pseudo",
-                            pseudoActuel
-                        )
-
-                        .eq(
-                            "jeu",
-                            JEU
+                            "id",
+                            ancienScore[0].id
                         );
 
 
@@ -952,8 +1320,10 @@ async function enregistrerMeilleurScore() {
                         erreurUpdate
                     );
 
+
                     scoreEnregistre =
                         false;
+
 
                     throw new Error(
                         "Modification impossible."
@@ -977,15 +1347,16 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /* =================================================
-           PREMIER SCORE
-        ================================================= */
+        /*
+         Premier score
+        */
 
         else {
 
-
             const {
+
                 error: erreurInsertion
+
             } =
                 await supabaseClient
 
@@ -1015,8 +1386,10 @@ async function enregistrerMeilleurScore() {
                     erreurInsertion
                 );
 
+
                 scoreEnregistre =
                     false;
+
 
                 throw new Error(
                     "Insertion impossible."
@@ -1031,14 +1404,19 @@ async function enregistrerMeilleurScore() {
         }
 
 
+        /*
+         Actualiser le classement
+        */
+
         await chargerClassement();
 
-
     }
+
 
     catch (erreur) {
 
         console.error(
+            "Erreur :",
             erreur
         );
 
@@ -1067,6 +1445,13 @@ async function chargerClassement() {
         );
 
 
+    if (!tbody) {
+
+        return;
+
+    }
+
+
     tbody.innerHTML = `
 
         <tr>
@@ -1084,10 +1469,12 @@ async function chargerClassement() {
 
     try {
 
-
         const {
+
             data,
+
             error
+
         } =
             await supabaseClient
 
@@ -1103,10 +1490,13 @@ async function chargerClassement() {
                 )
 
                 .order(
+
                     "score",
+
                     {
                         ascending: false
                     }
+
                 )
 
                 .limit(10);
@@ -1118,6 +1508,7 @@ async function chargerClassement() {
                 error
             );
 
+
             throw new Error(
                 "Classement impossible."
             );
@@ -1125,9 +1516,16 @@ async function chargerClassement() {
         }
 
 
+        /*
+         Aucun score
+        */
+
         if (
+
             !data ||
+
             data.length === 0
+
         ) {
 
             tbody.innerHTML = `
@@ -1144,27 +1542,36 @@ async function chargerClassement() {
 
             `;
 
+
             return;
 
         }
 
+
+        /*
+         Afficher les scores
+        */
 
         tbody.innerHTML =
             "";
 
 
         data.forEach(
+
             function(
                 joueur,
                 index
             ) {
-
 
                 const ligne =
                     document.createElement(
                         "tr"
                     );
 
+
+                /*
+                 Position
+                */
 
                 const position =
                     document.createElement(
@@ -1207,6 +1614,10 @@ async function chargerClassement() {
                 }
 
 
+                /*
+                 Pseudo
+                */
+
                 const pseudoCell =
                     document.createElement(
                         "td"
@@ -1216,6 +1627,10 @@ async function chargerClassement() {
                 pseudoCell.textContent =
                     joueur.pseudo;
 
+
+                /*
+                 Score
+                */
 
                 const scoreCell =
                     document.createElement(
@@ -1247,8 +1662,8 @@ async function chargerClassement() {
                 );
 
             }
-        );
 
+        );
 
     }
 
@@ -1288,6 +1703,18 @@ nouvelleNourriture();
 dessiner();
 
 demarrerJeu();
+
+
+/*
+ La partie est comptée au lancement
+ de la page.
+*/
+compterPartieJeu4();
+
+
+/*
+ Charger le classement.
+*/
 
 chargerClassement();
 

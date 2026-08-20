@@ -1,6 +1,5 @@
 
 
-
 /* =====================================================
    SUPABASE
 ===================================================== */
@@ -8,114 +7,68 @@
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
-
 const supabaseClient =
     window.supabase.createClient(
-
         SUPABASE_URL,
-
         SUPABASE_ANON_KEY
-
     );
+
 
 
 /* =====================================================
    IDENTIFICATION DU JEU
 ===================================================== */
 
-const JEU = "jeux3";
-
+const JEU = "pierre-feuille-ciseaux";
 
 /* =====================================================
    ELEMENTS
 ===================================================== */
 
 const pseudoJoueurElement =
-    document.getElementById(
-        "pseudoJoueur"
-    );
-
+    document.getElementById("pseudoJoueur");
 
 const scoreJoueurElement =
-    document.getElementById(
-        "scoreJoueur"
-    );
-
+    document.getElementById("scoreJoueur");
 
 const scoreOrdinateurElement =
-    document.getElementById(
-        "scoreOrdinateur"
-    );
-
+    document.getElementById("scoreOrdinateur");
 
 const manchesJoueurElement =
-    document.getElementById(
-        "manchesJoueur"
-    );
-
+    document.getElementById("manchesJoueur");
 
 const manchesOrdinateurElement =
-    document.getElementById(
-        "manchesOrdinateur"
-    );
-
+    document.getElementById("manchesOrdinateur");
 
 const choixJoueurElement =
-    document.getElementById(
-        "choixJoueur"
-    );
-
+    document.getElementById("choixJoueur");
 
 const choixOrdinateurElement =
-    document.getElementById(
-        "choixOrdinateur"
-    );
-
+    document.getElementById("choixOrdinateur");
 
 const message =
-    document.getElementById(
-        "message"
-    );
-
+    document.getElementById("message");
 
 const boutonNouvelleManche =
-    document.getElementById(
-        "boutonNouvelleManche"
-    );
-
+    document.getElementById("boutonNouvelleManche");
 
 const zoneEnregistrement =
-    document.getElementById(
-        "zoneEnregistrement"
-    );
-
+    document.getElementById("zoneEnregistrement");
 
 const manchesFinales =
-    document.getElementById(
-        "manchesFinales"
-    );
-
+    document.getElementById("manchesFinales");
 
 const messageEnregistrement =
-    document.getElementById(
-        "messageEnregistrement"
-    );
-
+    document.getElementById("messageEnregistrement");
 
 const classementBody =
-    document.getElementById(
-        "classementBody"
-    );
-
+    document.getElementById("classementBody");
 
 const messageClassement =
-    document.getElementById(
-        "messageClassement"
-    );
+    document.getElementById("messageClassement");
 
 
 /* =====================================================
@@ -123,10 +76,7 @@ const messageClassement =
 ===================================================== */
 
 const pseudo =
-    localStorage.getItem(
-        "pseudoGameZone"
-    );
-
+    localStorage.getItem("pseudoGameZone");
 
 pseudoJoueurElement.textContent =
     pseudo || "Joueur";
@@ -136,36 +86,25 @@ pseudoJoueurElement.textContent =
    VARIABLES
 ===================================================== */
 
-/*
-   Score de la manche actuelle
-*/
-
 let scoreJoueur = 0;
 
 let scoreOrdinateur = 0;
-
-
-/*
-   Nombre de manches gagnées
-*/
 
 let manchesGagneesJoueur = 0;
 
 let manchesGagneesOrdinateur = 0;
 
-
-/*
-   État de la manche
-*/
-
 let mancheTerminee = false;
 
+let scoreEnregistre = false;
+
 
 /*
-   Empêche plusieurs enregistrements
+   Empêche de compter deux fois
+   la même partie.
 */
 
-let scoreEnregistre = false;
+let partieComptee = false;
 
 
 /* =====================================================
@@ -184,14 +123,11 @@ function actualiserAffichage() {
     scoreJoueurElement.textContent =
         scoreJoueur;
 
-
     scoreOrdinateurElement.textContent =
         scoreOrdinateur;
 
-
     manchesJoueurElement.textContent =
         manchesGagneesJoueur;
-
 
     manchesOrdinateurElement.textContent =
         manchesGagneesOrdinateur;
@@ -206,20 +142,15 @@ function actualiserAffichage() {
 function choixOrdinateur() {
 
     const choix = [
-
         "pierre",
         "feuille",
         "ciseaux"
-
     ];
-
 
     const hasard =
         Math.floor(
-            Math.random() *
-            choix.length
+            Math.random() * choix.length
         );
-
 
     return choix[hasard];
 
@@ -233,25 +164,16 @@ function choixOrdinateur() {
 function afficherChoix(choix) {
 
     if (choix === "pierre") {
-
         return "✊ Pierre";
-
     }
-
 
     if (choix === "feuille") {
-
         return "📄 Feuille";
-
     }
-
 
     if (choix === "ciseaux") {
-
         return "✂️ Ciseaux";
-
     }
-
 
     return "-";
 
@@ -264,27 +186,16 @@ function afficherChoix(choix) {
 
 function jouer(choix) {
 
-
-    /*
-       Si la manche est terminée,
-       on ne joue plus.
-    */
-
     if (mancheTerminee) {
-
         return;
-
     }
-
 
     const ordinateur =
         choixOrdinateur();
 
-
     choixJoueurElement.textContent =
         "👤 Ton choix : " +
         afficherChoix(choix);
-
 
     choixOrdinateurElement.textContent =
         "🤖 Choix ordinateur : " +
@@ -292,7 +203,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       ÉGALITÉ
+       EGALITE
     ================================================= */
 
     if (choix === ordinateur) {
@@ -306,7 +217,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       JOUEUR GAGNE LE POINT
+       JOUEUR GAGNE
     ================================================= */
 
     if (
@@ -326,26 +237,21 @@ function jouer(choix) {
 
     ) {
 
-
         scoreJoueur++;
-
 
         message.textContent =
             "🎉 Tu gagnes le point !";
-
 
     }
 
 
     /* =================================================
-       ORDINATEUR GAGNE LE POINT
+       ORDINATEUR GAGNE
     ================================================= */
 
     else {
 
-
         scoreOrdinateur++;
-
 
         message.textContent =
             "🤖 L'ordinateur gagne le point !";
@@ -357,7 +263,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       JOUEUR ARRIVE À 5
+       JOUEUR ARRIVE A 5
     ================================================= */
 
     if (scoreJoueur >= 5) {
@@ -370,7 +276,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       ORDINATEUR ARRIVE À 5
+       ORDINATEUR ARRIVE A 5
     ================================================= */
 
     if (scoreOrdinateur >= 5) {
@@ -388,16 +294,12 @@ function jouer(choix) {
    TERMINER UNE MANCHE
 ===================================================== */
 
-function terminerManche(joueurGagne) {
+async function terminerManche(joueurGagne) {
 
-
-    mancheTerminee =
-        true;
-
+    mancheTerminee = true;
 
     boutonNouvelleManche.style.display =
         "inline-block";
-
 
     zoneEnregistrement.style.display =
         "block";
@@ -405,40 +307,21 @@ function terminerManche(joueurGagne) {
 
     if (joueurGagne) {
 
-
-        /*
-           UNE SEULE MANCHE GAGNÉE
-           = +1 manche pour le joueur
-        */
-
         manchesGagneesJoueur++;
 
-
         message.textContent =
-
-            "🏆 Tu as gagné cette manche !";
-
-
-        message.textContent +=
-
-            " 🎉 Tu as maintenant " +
-
+            "🏆 Tu as gagné cette manche ! " +
+            "🎉 Tu as maintenant " +
             manchesGagneesJoueur +
-
             " manche(s) gagnée(s).";
-
 
     }
 
-
     else {
-
 
         manchesGagneesOrdinateur++;
 
-
         message.textContent =
-
             "💀 L'ordinateur a gagné cette manche !";
 
     }
@@ -451,42 +334,224 @@ function terminerManche(joueurGagne) {
         manchesGagneesJoueur;
 
 
-    /*
-       Le score de la manche reste visible
-       jusqu'au clic sur Nouvelle manche.
-    */
+    /* =================================================
+       COMPTER LA PARTIE
+    ================================================= */
+
+    if (!partieComptee) {
+
+        partieComptee = true;
+
+        await compterPartieJeu3();;
+
+    }
 
 }
 
+
+/* =====================================================
+   COMPTER UNE PARTIE POUR
+   « JEUX DU MOMENT »
+===================================================== */
+
+/* =========================================================
+   STATISTIQUES — JEU 3
+========================================================= */
+
+/* =====================================================
+   COMPTER UNE PARTIE — JEU 3
+   Pierre Feuille Ciseaux
+===================================================== */
+
+async function compterPartieJeu3() {
+
+    const nomJeu = "Pierre Feuille Ciseaux";
+
+    try {
+
+        console.log(
+            "🎮 Comptage de la partie :",
+            nomJeu
+        );
+
+        /* =================================================
+           RECHERCHE DU JEU
+        ================================================= */
+
+        const recherche = await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?nom_jeu=eq." +
+            encodeURIComponent(nomJeu) +
+            "&select=id,nom_jeu,nombre_parties",
+
+            {
+                method: "GET",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_ANON_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_ANON_KEY,
+
+                    "Accept":
+                        "application/json"
+
+                }
+            }
+
+        );
+
+
+        if (!recherche.ok) {
+
+            throw new Error(
+                await recherche.text()
+            );
+
+        }
+
+
+        const statistiques =
+            await recherche.json();
+
+
+        console.log(
+            "📊 Statistiques reçues :",
+            statistiques
+        );
+
+
+        /* =================================================
+           JEU INTROUVABLE
+        ================================================= */
+
+        if (
+            !Array.isArray(statistiques) ||
+            statistiques.length === 0
+        ) {
+
+            console.error(
+                "❌ Pierre Feuille Ciseaux n'existe pas dans statistiques_jeux"
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           JEU TROUVÉ
+        ================================================= */
+
+        const jeu =
+            statistiques[0];
+
+
+        const nouveauNombre =
+            Number(
+                jeu.nombre_parties || 0
+            ) + 1;
+
+
+        /* =================================================
+           MISE À JOUR
+        ================================================= */
+
+        const miseAJour = await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?id=eq." +
+            encodeURIComponent(jeu.id),
+
+            {
+                method: "PATCH",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_ANON_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_ANON_KEY,
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Prefer":
+                        "return=minimal"
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        nombre_parties:
+                            nouveauNombre
+
+                    })
+
+            }
+
+        );
+
+
+        if (!miseAJour.ok) {
+
+            throw new Error(
+                await miseAJour.text()
+            );
+
+        }
+
+
+        console.log(
+            "✅ Pierre Feuille Ciseaux : " +
+            nouveauNombre +
+            " parties"
+        );
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur statistiques Jeu 3 :",
+            erreur
+        );
+
+    }
+
+}
 
 /* =====================================================
    NOUVELLE MANCHE
 ===================================================== */
 
 function nouvelleManche() {
+    compterPartieJeu3();
 
+    scoreJoueur = 0;
+
+    scoreOrdinateur = 0;
+
+    mancheTerminee = false;
+
+    scoreEnregistre = false;
 
     /*
-       IMPORTANT :
-       On ne remet PAS les manches gagnées à zéro.
+       Nouvelle partie :
+       le prochain duel sera compté
+       lorsqu'il sera terminé.
     */
 
-
-    scoreJoueur =
-        0;
-
-
-    scoreOrdinateur =
-        0;
-
-
-    mancheTerminee =
-        false;
-
-
-    scoreEnregistre =
-        false;
-
+    partieComptee = false;
 
     actualiserAffichage();
 
@@ -494,22 +559,17 @@ function nouvelleManche() {
     choixJoueurElement.textContent =
         "👤 Ton choix : -";
 
-
     choixOrdinateurElement.textContent =
         "🤖 Choix ordinateur : -";
-
 
     message.textContent =
         "🎮 Nouvelle manche !";
 
-
     boutonNouvelleManche.style.display =
         "none";
 
-
     zoneEnregistrement.style.display =
         "none";
-
 
     messageEnregistrement.textContent =
         "";
@@ -518,11 +578,10 @@ function nouvelleManche() {
 
 
 /* =====================================================
-   ENREGISTRER LES MANCHES GAGNÉES
+   ENREGISTRER LES MANCHES GAGNEES
 ===================================================== */
 
 async function enregistrerManches() {
-
 
     if (!pseudo) {
 
@@ -533,11 +592,6 @@ async function enregistrerManches() {
 
     }
 
-
-    /*
-       On ne peut enregistrer que si
-       le joueur a gagné au moins une manche.
-    */
 
     if (manchesGagneesJoueur <= 0) {
 
@@ -559,9 +613,7 @@ async function enregistrerManches() {
     }
 
 
-    scoreEnregistre =
-        true;
-
+    scoreEnregistre = true;
 
     messageEnregistrement.textContent =
         "⏳ Enregistrement...";
@@ -569,37 +621,24 @@ async function enregistrerManches() {
 
     try {
 
-
-        /* =================================================
-           RECHERCHER LE JOUEUR
-        ================================================= */
-
         const {
-
             data: anciensScores,
-
             error: erreurRecherche
-
         } =
 
             await supabaseClient
-
                 .from("scores")
-
                 .select(
                     "id,pseudo,score,jeu"
                 )
-
                 .eq(
                     "pseudo",
                     pseudo
                 )
-
                 .eq(
                     "jeu",
                     JEU
                 )
-
                 .limit(1);
 
 
@@ -609,10 +648,7 @@ async function enregistrerManches() {
                 erreurRecherche
             );
 
-
-            scoreEnregistre =
-                false;
-
+            scoreEnregistre = false;
 
             throw new Error(
                 "Recherche impossible."
@@ -628,11 +664,9 @@ async function enregistrerManches() {
         if (
 
             anciensScores &&
-
             anciensScores.length > 0
 
         ) {
-
 
             const ancienNombreManches =
                 Number(
@@ -640,15 +674,8 @@ async function enregistrerManches() {
                 );
 
 
-            /*
-               On ajoute les manches gagnées
-               à celles déjà enregistrées.
-            */
-
             const nouveauNombreManches =
-
                 ancienNombreManches +
-
                 manchesGagneesJoueur;
 
 
@@ -657,15 +684,11 @@ async function enregistrerManches() {
 
 
             const {
-
                 error: erreurUpdate
-
             } =
 
                 await supabaseClient
-
                     .from("scores")
-
                     .update({
 
                         score:
@@ -676,7 +699,6 @@ async function enregistrerManches() {
                                 .toISOString()
 
                     })
-
                     .eq(
                         "id",
                         id
@@ -689,10 +711,7 @@ async function enregistrerManches() {
                     erreurUpdate
                 );
 
-
-                scoreEnregistre =
-                    false;
-
+                scoreEnregistre = false;
 
                 throw new Error(
                     "Modification impossible."
@@ -702,13 +721,9 @@ async function enregistrerManches() {
 
 
             messageEnregistrement.textContent =
-
                 "🏆 Résultat enregistré ! " +
-
                 "Tu as maintenant " +
-
                 nouveauNombreManches +
-
                 " manche(s) gagnée(s) au classement.";
 
         }
@@ -720,17 +735,12 @@ async function enregistrerManches() {
 
         else {
 
-
             const {
-
                 error: erreurInsertion
-
             } =
 
                 await supabaseClient
-
                     .from("scores")
-
                     .insert({
 
                         pseudo:
@@ -755,10 +765,7 @@ async function enregistrerManches() {
                     erreurInsertion
                 );
 
-
-                scoreEnregistre =
-                    false;
-
+                scoreEnregistre = false;
 
                 throw new Error(
                     "Insertion impossible."
@@ -768,11 +775,8 @@ async function enregistrerManches() {
 
 
             messageEnregistrement.textContent =
-
                 "✅ " +
-
                 manchesGagneesJoueur +
-
                 " manche(s) gagnée(s) enregistrée(s) !";
 
         }
@@ -780,23 +784,17 @@ async function enregistrerManches() {
 
         await chargerClassement();
 
-
     }
 
     catch (erreur) {
-
 
         console.error(
             erreur
         );
 
-
-        scoreEnregistre =
-            false;
-
+        scoreEnregistre = false;
 
         messageEnregistrement.textContent =
-
             "❌ Erreur lors de l'enregistrement.";
 
     }
@@ -809,7 +807,6 @@ async function enregistrerManches() {
 ===================================================== */
 
 async function chargerClassement() {
-
 
     classementBody.innerHTML = `
 
@@ -828,38 +825,26 @@ async function chargerClassement() {
 
     try {
 
-
         const {
-
             data,
-
             error
-
         } =
 
             await supabaseClient
-
                 .from("scores")
-
                 .select(
                     "pseudo,score"
                 )
-
                 .eq(
                     "jeu",
                     JEU
                 )
-
                 .order(
-
                     "score",
-
                     {
                         ascending: false
                     }
-
                 )
-
                 .limit(10);
 
 
@@ -868,7 +853,6 @@ async function chargerClassement() {
             console.error(
                 error
             );
-
 
             throw new Error(
                 "Classement impossible."
@@ -884,11 +868,9 @@ async function chargerClassement() {
         if (
 
             !data ||
-
             data.length === 0
 
         ) {
-
 
             classementBody.innerHTML = `
 
@@ -904,10 +886,8 @@ async function chargerClassement() {
 
             `;
 
-
             messageClassement.textContent =
                 "🌍 Aucun score pour le moment.";
-
 
             return;
 
@@ -915,7 +895,7 @@ async function chargerClassement() {
 
 
         /* =================================================
-           AFFICHAGE
+           AFFICHER LE TOP 10
         ================================================= */
 
         classementBody.innerHTML =
@@ -923,20 +903,16 @@ async function chargerClassement() {
 
 
         data.forEach(
-
             function(
                 joueur,
                 index
             ) {
-
 
                 const ligne =
                     document.createElement(
                         "tr"
                     );
 
-
-                /* POSITION */
 
                 const position =
                     document.createElement(
@@ -973,8 +949,6 @@ async function chargerClassement() {
                 }
 
 
-                /* PSEUDO */
-
                 const pseudoCell =
                     document.createElement(
                         "td"
@@ -984,8 +958,6 @@ async function chargerClassement() {
                 pseudoCell.textContent =
                     joueur.pseudo;
 
-
-                /* MANCHES */
 
                 const manchesCell =
                     document.createElement(
@@ -1001,11 +973,9 @@ async function chargerClassement() {
                     position
                 );
 
-
                 ligne.appendChild(
                     pseudoCell
                 );
-
 
                 ligne.appendChild(
                     manchesCell
@@ -1017,18 +987,15 @@ async function chargerClassement() {
                 );
 
             }
-
         );
 
 
         messageClassement.textContent =
             "🌍 Classement actualisé.";
 
-
     }
 
     catch (erreur) {
-
 
         console.error(
             erreur
@@ -1060,7 +1027,7 @@ async function chargerClassement() {
 
 
 /* =====================================================
-   DÉMARRAGE
+   DEMARRAGE
 ===================================================== */
 
 chargerClassement();

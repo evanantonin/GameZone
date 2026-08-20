@@ -1,4 +1,6 @@
-
+/* =========================================================
+   VERIFICATION DU PSEUDO
+========================================================= */
 
 if (!localStorage.getItem("pseudoGameZone")) {
 
@@ -12,40 +14,72 @@ if (!localStorage.getItem("pseudoGameZone")) {
 ========================================================= */
 
 const SUPABASE_URL =
-"https://pxgymcwpbesqyjochwgd.supabase.co";
+    "https://pxgymcwpbesqyjochwgd.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+    "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
-/*
-   JEU 8
-*/
+/* =========================================================
+   IDENTIFICATION DU JEU
+========================================================= */
 
 const JEU_ID = "8";
 
 
 /* =========================================================
-   ELEMENTS
+   ELEMENTS HTML
 ========================================================= */
 
 const canvas =
-document.getElementById("jeuTetris");
+    document.getElementById("jeuTetris");
 
 const contexte =
-canvas.getContext("2d");
+    canvas.getContext("2d");
+
 
 const pseudoAffiche =
-document.getElementById("pseudoAffiche");
+    document.getElementById("pseudoAffiche");
+
 
 const listeScores =
-document.getElementById("listeScores");
+    document.getElementById("listeScores");
+
 
 const statutClassement =
-document.getElementById("statutClassement");
+    document.getElementById("statutClassement");
+
 
 const message =
-document.getElementById("message");
+    document.getElementById("message");
+
+
+const scoreElement =
+    document.getElementById("score");
+
+
+const meilleurScoreElement =
+    document.getElementById("meilleurScore");
+
+
+const niveauElement =
+    document.getElementById("niveau");
+
+
+const lignesElement =
+    document.getElementById("lignes");
+
+
+const partiesJoueesElement =
+    document.getElementById("partiesJouees");
+
+
+const boutonPause =
+    document.getElementById("boutonPause");
+
+
+const boutonRejouer =
+    document.getElementById("boutonRejouer");
 
 
 /* =========================================================
@@ -53,33 +87,306 @@ document.getElementById("message");
 ========================================================= */
 
 const pseudo =
-localStorage.getItem("pseudoGameZone");
+    localStorage.getItem("pseudoGameZone");
 
 
-if (pseudo) {
+if (pseudo && pseudoAffiche) {
 
     pseudoAffiche.textContent =
-    pseudo;
+        pseudo;
 
 }
 
 
 /* =========================================================
-   MEILLEUR SCORE
+   MEILLEUR SCORE LOCAL
+   Un meilleur score différent pour chaque pseudo
 ========================================================= */
 
+const cleMeilleurScore =
+    "meilleurScoreTetris_" +
+    (
+        pseudo ||
+        "joueur"
+    );
+
+
 let meilleurScore =
-Number(
-    localStorage.getItem(
-        "meilleurScoreTetris"
-    )
-) || 0;
+    Number(
+        localStorage.getItem(
+            cleMeilleurScore
+        )
+    ) || 0;
 
 
-document.getElementById(
-    "meilleurScore"
-).textContent =
-meilleurScore;
+if (meilleurScoreElement) {
+
+    meilleurScoreElement.textContent =
+        meilleurScore;
+
+}
+
+
+/* =========================================================
+   PARTIES JOUEES
+========================================================= */
+
+const clePartiesJouees =
+    "partiesJoueesTetris_" +
+    (
+        pseudo ||
+        "joueur"
+    );
+
+
+let partiesJouees =
+    Number(
+        localStorage.getItem(
+            clePartiesJouees
+        )
+    ) || 0;
+
+
+if (partiesJoueesElement) {
+
+    partiesJoueesElement.textContent =
+        partiesJouees;
+
+}
+
+
+/* =========================================================
+   COMPTER UNE PARTIE
+========================================================= */
+
+async function compterPartie() {
+
+    /* =====================================================
+       COMPTEUR LOCAL
+    ===================================================== */
+
+    partiesJouees++;
+
+
+    localStorage.setItem(
+        clePartiesJouees,
+        partiesJouees
+    );
+
+
+    if (partiesJoueesElement) {
+
+        partiesJoueesElement.textContent =
+            partiesJouees;
+
+    }
+
+
+    /* =====================================================
+       COMPTEUR GLOBAL JEUX DU MOMENT
+       TABLE : statistiques_jeux
+    ===================================================== */
+
+    try {
+
+        const recherche =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/statistiques_jeux" +
+                "?nom_jeu=eq.Tetris" +
+                "&select=id,nom_jeu,nombre_parties",
+
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Accept":
+                            "application/json"
+
+                    }
+
+                }
+
+            );
+
+
+        if (!recherche.ok) {
+
+            throw new Error(
+                await recherche.text()
+            );
+
+        }
+
+
+        const resultat =
+            await recherche.json();
+
+
+        /* =================================================
+           TETRIS EXISTE
+        ================================================= */
+
+        if (resultat.length > 0) {
+
+            const jeu =
+                resultat[0];
+
+
+            const nouveauNombre =
+                Number(
+                    jeu.nombre_parties
+                ) + 1;
+
+
+            const miseAJour =
+                await fetch(
+
+                    SUPABASE_URL +
+                    "/rest/v1/statistiques_jeux" +
+                    "?id=eq." +
+                    encodeURIComponent(
+                        jeu.id
+                    ),
+
+                    {
+
+                        method: "PATCH",
+
+                        headers: {
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY,
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Prefer":
+                                "return=minimal"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                nombre_parties:
+                                    nouveauNombre
+
+                            })
+
+                    }
+
+                );
+
+
+            if (!miseAJour.ok) {
+
+                throw new Error(
+                    await miseAJour.text()
+                );
+
+            }
+
+
+            console.log(
+                "🎮 Tetris : " +
+                nouveauNombre +
+                " parties"
+            );
+
+        }
+
+
+        /* =================================================
+           TETRIS N'EXISTE PAS
+        ================================================= */
+
+        else {
+
+            const insertion =
+                await fetch(
+
+                    SUPABASE_URL +
+                    "/rest/v1/statistiques_jeux",
+
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY,
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Prefer":
+                                "return=minimal"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                nom_jeu:
+                                    "Tetris",
+
+                                nombre_parties:
+                                    1
+
+                            })
+
+                    }
+
+                );
+
+
+            if (!insertion.ok) {
+
+                throw new Error(
+                    await insertion.text()
+                );
+
+            }
+
+
+            console.log(
+                "🎮 Tetris : première partie"
+            );
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur statistiques Tetris :",
+            erreur
+        );
+
+    }
+
+}
 
 
 /* =========================================================
@@ -99,38 +406,58 @@ const TAILLE = 30;
 
 const pieces = [
 
-    [
-        [1,1,1,1]
-    ],
+    /* I */
 
     [
-        [1,1],
-        [1,1]
+        [1, 1, 1, 1]
     ],
 
-    [
-        [0,1,0],
-        [1,1,1]
-    ],
+
+    /* O */
 
     [
-        [1,0,0],
-        [1,1,1]
+        [1, 1],
+        [1, 1]
     ],
 
-    [
-        [0,0,1],
-        [1,1,1]
-    ],
+
+    /* T */
 
     [
-        [0,1,1],
-        [1,1,0]
+        [0, 1, 0],
+        [1, 1, 1]
     ],
 
+
+    /* L */
+
     [
-        [1,1,0],
-        [0,1,1]
+        [1, 0, 0],
+        [1, 1, 1]
+    ],
+
+
+    /* J */
+
+    [
+        [0, 0, 1],
+        [1, 1, 1]
+    ],
+
+
+    /* S */
+
+    [
+        [0, 1, 1],
+        [1, 1, 0]
+    ],
+
+
+    /* Z */
+
+    [
+        [1, 1, 0],
+        [0, 1, 1]
     ]
 
 ];
@@ -139,18 +466,24 @@ const pieces = [
 const couleurs = [
 
     "#00eaff",
+
     "#ffff00",
+
     "#b000ff",
+
     "#ff8800",
+
     "#0066ff",
+
     "#00ff66",
+
     "#ff3355"
 
 ];
 
 
 /* =========================================================
-   VARIABLES
+   VARIABLES DU JEU
 ========================================================= */
 
 let grille;
@@ -177,6 +510,8 @@ let tempsDerniereChute = 0;
 
 let vitesse = 800;
 
+let animationID;
+
 
 /* =========================================================
    CREER GRILLE
@@ -185,11 +520,16 @@ let vitesse = 800;
 function creerGrille() {
 
     return Array.from(
+
         {
             length: LIGNES
         },
+
         () =>
-        Array(COLONNES).fill(0)
+            Array(
+                COLONNES
+            ).fill(0)
+
     );
 
 }
@@ -202,32 +542,35 @@ function creerGrille() {
 function nouvellePiece() {
 
     const index =
-    Math.floor(
-        Math.random() *
-        pieces.length
-    );
+        Math.floor(
+            Math.random() *
+            pieces.length
+        );
 
 
     piece =
-    pieces[index].map(
-        ligne =>
-        [...ligne]
-    );
+        pieces[index].map(
+            ligne =>
+                [...ligne]
+        );
 
 
     pieceCouleur =
-    couleurs[index];
+        couleurs[index];
 
 
     pieceX =
-    Math.floor(
-        COLONNES / 2 -
-        piece[0].length / 2
-    );
+        Math.floor(
+            COLONNES / 2 -
+            piece[0].length / 2
+        );
 
 
-    pieceY = 0;
+    pieceY =
+        0;
 
+
+    /* VERIFICATION GAME OVER */
 
     if (
         collisionPiece()
@@ -241,12 +584,15 @@ function nouvellePiece() {
 
 
 /* =========================================================
-   COLLISION
+   COLLISION PIECE
 ========================================================= */
 
 function collisionPiece(
+
     decalageX = 0,
+
     decalageY = 0
+
 ) {
 
     for (
@@ -271,20 +617,29 @@ function collisionPiece(
 
 
             const nouveauX =
-            pieceX +
-            x +
-            decalageX;
+                pieceX +
+                x +
+                decalageX;
+
 
             const nouveauY =
-            pieceY +
-            y +
-            decalageY;
+                pieceY +
+                y +
+                decalageY;
 
+
+            /* MURS */
 
             if (
+
                 nouveauX < 0 ||
-                nouveauX >= COLONNES ||
-                nouveauY >= LIGNES
+
+                nouveauX >=
+                COLONNES ||
+
+                nouveauY >=
+                LIGNES
+
             ) {
 
                 return true;
@@ -292,9 +647,18 @@ function collisionPiece(
             }
 
 
+            /* BLOCS */
+
             if (
+
                 nouveauY >= 0 &&
-                grille[nouveauY][nouveauX]
+
+                grille[
+                    nouveauY
+                ][
+                    nouveauX
+                ]
+
             ) {
 
                 return true;
@@ -338,7 +702,7 @@ function fixerPiece() {
                 ][
                     pieceX + x
                 ] =
-                pieceCouleur;
+                    pieceCouleur;
 
             }
 
@@ -349,19 +713,20 @@ function fixerPiece() {
 
     supprimerLignes();
 
+
     nouvellePiece();
 
 }
 
 
 /* =========================================================
-   SUPPRIMER LIGNES
+   SUPPRIMER LES LIGNES
 ========================================================= */
 
 function supprimerLignes() {
 
     let nombre =
-    0;
+        0;
 
 
     for (
@@ -371,9 +736,12 @@ function supprimerLignes() {
     ) {
 
         if (
+
             grille[y].every(
-                cellule => cellule !== 0
+                cellule =>
+                    cellule !== 0
             )
+
         ) {
 
             grille.splice(
@@ -383,7 +751,9 @@ function supprimerLignes() {
 
 
             grille.unshift(
-                Array(COLONNES).fill(0)
+                Array(
+                    COLONNES
+                ).fill(0)
             );
 
 
@@ -401,7 +771,7 @@ function supprimerLignes() {
     ) {
 
         lignesSupprimees +=
-        nombre;
+            nombre;
 
 
         let points = 0;
@@ -445,16 +815,22 @@ function supprimerLignes() {
         );
 
 
-        document.getElementById(
-            "lignes"
-        ).textContent =
-        lignesSupprimees;
+        if (lignesElement) {
 
+            lignesElement.textContent =
+                lignesSupprimees;
+
+        }
+
+
+        /* =================================================
+           NIVEAU
+        ================================================= */
 
         const nouveauNiveau =
-        Math.floor(
-            lignesSupprimees / 10
-        ) + 1;
+            Math.floor(
+                lignesSupprimees / 10
+            ) + 1;
 
 
         if (
@@ -463,28 +839,39 @@ function supprimerLignes() {
         ) {
 
             niveau =
-            nouveauNiveau;
+                nouveauNiveau;
 
 
             vitesse =
-            Math.max(
-                100,
-                800 -
-                (niveau - 1) *
-                70
-            );
+                Math.max(
+
+                    100,
+
+                    800 -
+                    (
+                        niveau - 1
+                    ) *
+                    70
+
+                );
 
 
-            document.getElementById(
-                "niveau"
-            ).textContent =
-            niveau;
+            if (niveauElement) {
+
+                niveauElement.textContent =
+                    niveau;
+
+            }
 
 
-            message.textContent =
-            "🔥 Niveau "
-            + niveau
-            + " !";
+            if (message) {
+
+                message.textContent =
+                    "🔥 Niveau " +
+                    niveau +
+                    " !";
+
+            }
 
         }
 
@@ -500,8 +887,11 @@ function supprimerLignes() {
 function descendre() {
 
     if (
+
         jeuTermine ||
+
         jeuEnPause
+
     ) {
 
         return;
@@ -510,10 +900,12 @@ function descendre() {
 
 
     if (
+
         !collisionPiece(
             0,
             1
         )
+
     ) {
 
         pieceY++;
@@ -533,11 +925,16 @@ function descendre() {
    DEPLACER
 ========================================================= */
 
-function deplacer(direction) {
+function deplacer(
+    direction
+) {
 
     if (
+
         jeuTermine ||
+
         jeuEnPause
+
     ) {
 
         return;
@@ -546,14 +943,16 @@ function deplacer(direction) {
 
 
     if (
+
         !collisionPiece(
             direction,
             0
         )
+
     ) {
 
         pieceX +=
-        direction;
+            direction;
 
     }
 
@@ -567,8 +966,11 @@ function deplacer(direction) {
 function tourner() {
 
     if (
+
         jeuTermine ||
+
         jeuEnPause
+
     ) {
 
         return;
@@ -577,25 +979,26 @@ function tourner() {
 
 
     const anciennePiece =
-    piece.map(
-        ligne =>
-        [...ligne]
-    );
+        piece.map(
+            ligne =>
+                [...ligne]
+        );
 
 
     const ancienneX =
-    pieceX;
+        pieceX;
 
 
     const hauteur =
-    piece.length;
+        piece.length;
+
 
     const largeur =
-    piece[0].length;
+        piece[0].length;
 
 
     const nouvelle =
-    [];
+        [];
 
 
     for (
@@ -606,10 +1009,15 @@ function tourner() {
 
         nouvelle[x] = [];
 
+
         for (
-            let y = hauteur - 1;
+            let y =
+                hauteur - 1;
+
             y >= 0;
+
             y--
+
         ) {
 
             nouvelle[x].push(
@@ -622,18 +1030,22 @@ function tourner() {
 
 
     piece =
-    nouvelle;
+        nouvelle;
 
+
+    /* SI LA ROTATION PROVOQUE
+       UNE COLLISION */
 
     if (
         collisionPiece()
     ) {
 
         piece =
-        anciennePiece;
+            anciennePiece;
+
 
         pieceX =
-        ancienneX;
+            ancienneX;
 
     }
 
@@ -647,8 +1059,11 @@ function tourner() {
 function chuteRapide() {
 
     if (
+
         jeuTermine ||
+
         jeuEnPause
+
     ) {
 
         return;
@@ -656,14 +1071,17 @@ function chuteRapide() {
     }
 
 
-    let distance = 0;
+    let distance =
+        0;
 
 
     while (
+
         !collisionPiece(
             0,
             1
         )
+
     ) {
 
         pieceY++;
@@ -687,11 +1105,15 @@ function chuteRapide() {
    SCORE
 ========================================================= */
 
-function ajouterScore(points) {
+function ajouterScore(
+    points
+) {
 
     score +=
-    points;
+        points;
 
+
+    /* MEILLEUR SCORE */
 
     if (
         score >
@@ -699,27 +1121,31 @@ function ajouterScore(points) {
     ) {
 
         meilleurScore =
-        score;
+            score;
 
 
         localStorage.setItem(
-            "meilleurScoreTetris",
+            cleMeilleurScore,
             meilleurScore
         );
 
     }
 
 
-    document.getElementById(
-        "score"
-    ).textContent =
-    score;
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            score;
+
+    }
 
 
-    document.getElementById(
-        "meilleurScore"
-    ).textContent =
-    meilleurScore;
+    if (meilleurScoreElement) {
+
+        meilleurScoreElement.textContent =
+            meilleurScore;
+
+    }
 
 }
 
@@ -733,17 +1159,18 @@ document.addEventListener(
     function(event) {
 
         const touche =
-        event.key.toLowerCase();
+            event.key.toLowerCase();
 
 
-        /* =========================
-           GAUCHE
-           Q ou ←
-        ========================= */
+        /* GAUCHE */
 
         if (
+
             touche === "q" ||
-            event.key === "ArrowLeft"
+
+            event.key ===
+            "ArrowLeft"
+
         ) {
 
             event.preventDefault();
@@ -753,14 +1180,15 @@ document.addEventListener(
         }
 
 
-        /* =========================
-           DROITE
-           D ou →
-        ========================= */
+        /* DROITE */
 
         else if (
+
             touche === "d" ||
-            event.key === "ArrowRight"
+
+            event.key ===
+            "ArrowRight"
+
         ) {
 
             event.preventDefault();
@@ -770,14 +1198,15 @@ document.addEventListener(
         }
 
 
-        /* =========================
-           DESCENDRE
-           S ou ↓
-        ========================= */
+        /* DESCENDRE */
 
         else if (
+
             touche === "s" ||
-            event.key === "ArrowDown"
+
+            event.key ===
+            "ArrowDown"
+
         ) {
 
             event.preventDefault();
@@ -787,14 +1216,15 @@ document.addEventListener(
         }
 
 
-        /* =========================
-           ROTATION
-           Z ou ↑
-        ========================= */
+        /* ROTATION */
 
         else if (
+
             touche === "z" ||
-            event.key === "ArrowUp"
+
+            event.key ===
+            "ArrowUp"
+
         ) {
 
             event.preventDefault();
@@ -804,10 +1234,7 @@ document.addEventListener(
         }
 
 
-        /* =========================
-           CHUTE RAPIDE
-           ESPACE
-        ========================= */
+        /* CHUTE RAPIDE */
 
         else if (
             event.code === "Space"
@@ -821,29 +1248,40 @@ document.addEventListener(
 
     }
 );
+
+
 /* =========================================================
    DESSIN GRILLE
 ========================================================= */
 
 function dessinerGrille() {
 
+    /* FOND */
+
     contexte.fillStyle =
-    "#050510";
+        "#050510";
+
 
     contexte.fillRect(
+
         0,
         0,
         canvas.width,
         canvas.height
+
     );
 
 
-    /* GRILLE */
+    /* =====================================================
+       GRILLE VERTICALE
+    ===================================================== */
 
     contexte.strokeStyle =
-    "rgba(0,234,255,0.12)";
+        "rgba(0,234,255,0.12)";
 
-    contexte.lineWidth = 1;
+
+    contexte.lineWidth =
+        1;
 
 
     for (
@@ -854,20 +1292,31 @@ function dessinerGrille() {
 
         contexte.beginPath();
 
+
         contexte.moveTo(
+
             x * TAILLE,
             0
+
         );
 
+
         contexte.lineTo(
+
             x * TAILLE,
             canvas.height
+
         );
+
 
         contexte.stroke();
 
     }
 
+
+    /* =====================================================
+       GRILLE HORIZONTALE
+    ===================================================== */
 
     for (
         let y = 0;
@@ -877,22 +1326,31 @@ function dessinerGrille() {
 
         contexte.beginPath();
 
+
         contexte.moveTo(
+
             0,
             y * TAILLE
+
         );
 
+
         contexte.lineTo(
+
             canvas.width,
             y * TAILLE
+
         );
+
 
         contexte.stroke();
 
     }
 
 
-    /* BLOCS DEJA POSES */
+    /* =====================================================
+       BLOCS DEJA POSES
+    ===================================================== */
 
     for (
         let y = 0;
@@ -911,9 +1369,11 @@ function dessinerGrille() {
             ) {
 
                 dessinerBloc(
+
                     x,
                     y,
                     grille[y][x]
+
                 );
 
             }
@@ -923,7 +1383,9 @@ function dessinerGrille() {
     }
 
 
-    /* PIECE ACTUELLE */
+    /* =====================================================
+       PIECE ACTUELLE
+    ===================================================== */
 
     if (
         piece
@@ -946,9 +1408,11 @@ function dessinerGrille() {
                 ) {
 
                     dessinerBloc(
+
                         pieceX + x,
                         pieceY + y,
                         pieceCouleur
+
                     );
 
                 }
@@ -967,43 +1431,53 @@ function dessinerGrille() {
 ========================================================= */
 
 function dessinerBloc(
+
     x,
     y,
     couleur
+
 ) {
 
     contexte.save();
 
 
     contexte.fillStyle =
-    couleur;
+        couleur;
+
 
     contexte.shadowBlur =
-    12;
+        12;
+
 
     contexte.shadowColor =
-    couleur;
+        couleur;
 
 
     contexte.fillRect(
+
         x * TAILLE + 2,
         y * TAILLE + 2,
         TAILLE - 4,
         TAILLE - 4
+
     );
 
 
     contexte.strokeStyle =
-    "#ffffff";
+        "#ffffff";
 
-    contexte.lineWidth = 1;
+
+    contexte.lineWidth =
+        1;
 
 
     contexte.strokeRect(
+
         x * TAILLE + 3,
         y * TAILLE + 3,
         TAILLE - 6,
         TAILLE - 6
+
     );
 
 
@@ -1013,10 +1487,12 @@ function dessinerBloc(
 
 
 /* =========================================================
-   BOUCLE
+   BOUCLE DU JEU
 ========================================================= */
 
-function boucle(temps) {
+function boucle(
+    temps
+) {
 
     if (
         !jeuTermine &&
@@ -1024,15 +1500,18 @@ function boucle(temps) {
     ) {
 
         if (
+
             temps -
             tempsDerniereChute >
             vitesse
+
         ) {
 
             descendre();
 
+
             tempsDerniereChute =
-            temps;
+                temps;
 
         }
 
@@ -1042,9 +1521,10 @@ function boucle(temps) {
     dessinerGrille();
 
 
-    requestAnimationFrame(
-        boucle
-    );
+    animationID =
+        requestAnimationFrame(
+            boucle
+        );
 
 }
 
@@ -1053,52 +1533,65 @@ function boucle(temps) {
    PAUSE
 ========================================================= */
 
-document.getElementById(
-    "boutonPause"
-).addEventListener(
-    "click",
-    function() {
+if (boutonPause) {
 
-        if (
-            jeuTermine
-        ) {
+    boutonPause.addEventListener(
+        "click",
+        function() {
 
-            return;
+            if (
+                jeuTermine
+            ) {
+
+                return;
+
+            }
+
+
+            jeuEnPause =
+                !jeuEnPause;
+
+
+            if (
+                jeuEnPause
+            ) {
+
+                this.textContent =
+                    "▶️ Reprendre";
+
+
+                if (message) {
+
+                    message.textContent =
+                        "⏸️ Jeu en pause";
+
+                }
+
+            }
+
+            else {
+
+                this.textContent =
+                    "⏸️ Pause";
+
+
+                if (message) {
+
+                    message.textContent =
+                        "🧱 C'est reparti !";
+
+                }
+
+
+                tempsDerniereChute =
+                    performance.now();
+
+            }
 
         }
+    );
 
-
-        jeuEnPause =
-        !jeuEnPause;
-
-
-        if (
-            jeuEnPause
-        ) {
-
-            this.textContent =
-            "▶️ Reprendre";
-
-            message.textContent =
-            "⏸️ Jeu en pause";
-
-        }
-
-        else {
-
-            this.textContent =
-            "⏸️ Pause";
-
-            message.textContent =
-            "🧱 C'est reparti !";
-
-            tempsDerniereChute =
-            performance.now();
-
-        }
-
-    }
-);
+}
 
 
 /* =========================================================
@@ -1117,24 +1610,37 @@ async function terminerJeu() {
 
 
     jeuTermine =
-    true;
+        true;
 
 
-    message.textContent =
-    "💀 GAME OVER ! Score : "
-    + score;
+    cancelAnimationFrame(
+        animationID
+    );
 
 
-    document.getElementById(
-        "boutonPause"
-    ).style.display =
-    "none";
+    if (message) {
+
+        message.textContent =
+            "💀 GAME OVER ! Score : " +
+            score;
+
+    }
 
 
-    document.getElementById(
-        "boutonRejouer"
-    ).style.display =
-    "inline-block";
+    if (boutonPause) {
+
+        boutonPause.style.display =
+            "none";
+
+    }
+
+
+    if (boutonRejouer) {
+
+        boutonRejouer.style.display =
+            "inline-block";
+
+    }
 
 
     await enregistrerMeilleurScore();
@@ -1148,68 +1654,127 @@ async function terminerJeu() {
 
 function rejouer() {
 
+    /* NOUVELLE PARTIE */
+
+    compterPartie();
+
+
     grille =
-    creerGrille();
+        creerGrille();
 
 
-    score = 0;
-
-    niveau = 1;
-
-    lignesSupprimees = 0;
-
-    vitesse = 800;
-
-    jeuTermine = false;
-
-    jeuEnPause = false;
+    score =
+        0;
 
 
-    document.getElementById(
-        "score"
-    ).textContent =
-    "0";
+    niveau =
+        1;
 
 
-    document.getElementById(
-        "niveau"
-    ).textContent =
-    "1";
+    lignesSupprimees =
+        0;
 
 
-    document.getElementById(
-        "lignes"
-    ).textContent =
-    "0";
+    vitesse =
+        800;
 
 
-    document.getElementById(
-        "boutonPause"
-    ).style.display =
-    "inline-block";
+    jeuTermine =
+        false;
 
 
-    document.getElementById(
-        "boutonPause"
-    ).textContent =
-    "⏸️ Pause";
+    jeuEnPause =
+        false;
 
 
-    document.getElementById(
-        "boutonRejouer"
-    ).style.display =
-    "none";
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            "0";
+
+    }
 
 
-    message.textContent =
-    "🧱 Nouvelle partie !";
+    if (niveauElement) {
+
+        niveauElement.textContent =
+            "1";
+
+    }
+
+
+    if (lignesElement) {
+
+        lignesElement.textContent =
+            "0";
+
+    }
+
+
+    if (boutonPause) {
+
+        boutonPause.style.display =
+            "inline-block";
+
+
+        boutonPause.textContent =
+            "⏸️ Pause";
+
+    }
+
+
+    if (boutonRejouer) {
+
+        boutonRejouer.style.display =
+            "none";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+            "🧱 Nouvelle partie !";
+
+    }
 
 
     nouvellePiece();
 
 
     tempsDerniereChute =
-    performance.now();
+        performance.now();
+
+
+    /* RELANCE LA BOUCLE */
+
+    cancelAnimationFrame(
+        animationID
+    );
+
+
+    animationID =
+        requestAnimationFrame(
+            boucle
+        );
+
+}
+
+
+/* =========================================================
+   BOUTON REJOUER
+========================================================= */
+
+if (boutonRejouer) {
+
+    boutonRejouer.addEventListener(
+        "click",
+        function() {
+
+            rejouer();
+
+        }
+    );
 
 }
 
@@ -1219,15 +1784,26 @@ function rejouer() {
 ========================================================= */
 
 function boutonMobile(
+
     id,
     action
+
 ) {
 
     const bouton =
-    document.getElementById(id);
+        document.getElementById(id);
 
 
-    function appuyer(event) {
+    if (!bouton) {
+
+        return;
+
+    }
+
+
+    function appuyer(
+        event
+    ) {
 
         event.preventDefault();
 
@@ -1237,102 +1813,125 @@ function boutonMobile(
 
 
     bouton.addEventListener(
+
         "touchstart",
         appuyer,
         {
             passive: false
         }
+
     );
 
 
     bouton.addEventListener(
+
         "mousedown",
         appuyer
+
     );
 
 }
 
 
 /* =========================================================
-   GAUCHE
+   MOBILE — GAUCHE
 ========================================================= */
 
 boutonMobile(
+
     "tetrisGauche",
+
     function() {
 
         deplacer(-1);
 
     }
+
 );
 
 
 /* =========================================================
-   ROTATION
+   MOBILE — ROTATION
 ========================================================= */
 
 boutonMobile(
+
     "tetrisRotation",
+
     function() {
 
         tourner();
 
     }
+
 );
 
 
 /* =========================================================
-   DROITE
+   MOBILE — DROITE
 ========================================================= */
 
 boutonMobile(
+
     "tetrisDroite",
+
     function() {
 
         deplacer(1);
 
     }
+
 );
 
 
 /* =========================================================
-   DESCENDRE
+   MOBILE — DESCENDRE
 ========================================================= */
 
 boutonMobile(
+
     "tetrisDescendre",
+
     function() {
 
         descendre();
 
     }
+
 );
 
 
 /* =========================================================
-   CHUTE
+   MOBILE — CHUTE RAPIDE
 ========================================================= */
 
 boutonMobile(
+
     "tetrisChute",
+
     function() {
 
         chuteRapide();
 
     }
+
 );
 
 
 /* =========================================================
-   SUPABASE
+   ENREGISTRER MEILLEUR SCORE SUPABASE
 ========================================================= */
 
 async function enregistrerMeilleurScore() {
 
     if (!pseudo) {
 
-        statutClassement.textContent =
-        "❌ Aucun pseudo enregistré.";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "❌ Aucun pseudo enregistré.";
+
+        }
 
         return;
 
@@ -1341,41 +1940,63 @@ async function enregistrerMeilleurScore() {
 
     try {
 
-        statutClassement.textContent =
-        "⏳ Enregistrement du score...";
+        if (statutClassement) {
 
+            statutClassement.textContent =
+                "⏳ Enregistrement du score...";
+
+        }
+
+
+        /* =================================================
+           RECHERCHE DU MEILLEUR SCORE DU JOUEUR
+        ================================================= */
 
         const urlRecherche =
-        SUPABASE_URL +
-        "/rest/v1/scores" +
-        "?pseudo=eq." +
-        encodeURIComponent(pseudo) +
-        "&jeu=eq.8" +
-        "&select=id,pseudo,score,jeu" +
-        "&order=score.desc" +
-        "&limit=1";
+
+            SUPABASE_URL +
+
+            "/rest/v1/scores" +
+
+            "?pseudo=eq." +
+            encodeURIComponent(pseudo) +
+
+            "&jeu=eq." +
+            encodeURIComponent(JEU_ID) +
+
+            "&select=id,pseudo,score,jeu" +
+
+            "&order=score.desc" +
+
+            "&limit=1";
 
 
         const recherche =
-        await fetch(
-            urlRecherche,
-            {
+            await fetch(
 
-                method: "GET",
+                urlRecherche,
 
-                headers: {
+                {
 
-                    "apikey":
-                    SUPABASE_KEY,
+                    method: "GET",
 
-                    "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Accept":
+                            "application/json"
+
+                    }
 
                 }
 
-            }
-        );
+            );
 
 
         if (
@@ -1390,56 +2011,61 @@ async function enregistrerMeilleurScore() {
 
 
         const anciensScores =
-        await recherche.json();
+            await recherche.json();
 
 
-        /* PREMIER SCORE */
+        /* =================================================
+           PREMIER SCORE
+        ================================================= */
 
         if (
             anciensScores.length === 0
         ) {
 
             const insertion =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/scores",
-                {
+                await fetch(
 
-                    method: "POST",
+                    SUPABASE_URL +
+                    "/rest/v1/scores",
 
-                    headers: {
+                    {
 
-                        "apikey":
-                        SUPABASE_KEY,
+                        method: "POST",
 
-                        "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY,
+                        headers: {
 
-                        "Content-Type":
-                        "application/json",
+                            "apikey":
+                                SUPABASE_KEY,
 
-                        "Prefer":
-                        "return=minimal"
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY,
 
-                    },
+                            "Content-Type":
+                                "application/json",
 
-                    body:
-                    JSON.stringify({
+                            "Prefer":
+                                "return=minimal"
 
-                        pseudo:
-                        pseudo,
+                        },
 
-                        score:
-                        score,
+                        body:
+                            JSON.stringify({
 
-                        jeu:
-                        "8"
+                                pseudo:
+                                    pseudo,
 
-                    })
+                                score:
+                                    score,
 
-                }
-            );
+                                jeu:
+                                    JEU_ID
+
+                            })
+
+                    }
+
+                );
 
 
             if (
@@ -1453,73 +2079,84 @@ async function enregistrerMeilleurScore() {
             }
 
 
-            statutClassement.textContent =
-            "🏆 Premier score enregistré !";
+            if (statutClassement) {
+
+                statutClassement.textContent =
+                    "🏆 Premier score enregistré !";
+
+            }
 
         }
 
 
-        /* SCORE EXISTANT */
+        /* =================================================
+           SCORE EXISTANT
+        ================================================= */
 
         else {
 
             const ancien =
-            Number(
-                anciensScores[0].score
-            );
+                Number(
+                    anciensScores[0].score
+                );
 
+
+            /* =================================================
+               NOUVEAU RECORD
+            ================================================= */
 
             if (
                 score > ancien
             ) {
 
                 const id =
-                anciensScores[0].id;
+                    anciensScores[0].id;
 
 
                 const miseAJour =
-                await fetch(
+                    await fetch(
 
-                    SUPABASE_URL +
-                    "/rest/v1/scores" +
-                    "?id=eq." +
-                    encodeURIComponent(id),
+                        SUPABASE_URL +
+                        "/rest/v1/scores" +
 
-                    {
+                        "?id=eq." +
+                        encodeURIComponent(id),
 
-                        method: "PATCH",
+                        {
 
-                        headers: {
+                            method: "PATCH",
 
-                            "apikey":
-                            SUPABASE_KEY,
+                            headers: {
 
-                            "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY,
+                                "apikey":
+                                    SUPABASE_KEY,
 
-                            "Content-Type":
-                            "application/json",
+                                "Authorization":
+                                    "Bearer " +
+                                    SUPABASE_KEY,
 
-                            "Prefer":
-                            "return=minimal"
+                                "Content-Type":
+                                    "application/json",
 
-                        },
+                                "Prefer":
+                                    "return=minimal"
 
-                        body:
-                        JSON.stringify({
+                            },
 
-                            score:
-                            score,
+                            body:
+                                JSON.stringify({
 
-                            jeu:
-                            "8"
+                                    score:
+                                        score,
 
-                        })
+                                    jeu:
+                                        JEU_ID
 
-                    }
+                                })
 
-                );
+                        }
+
+                    );
 
 
                 if (
@@ -1533,19 +2170,32 @@ async function enregistrerMeilleurScore() {
                 }
 
 
-                statutClassement.textContent =
-                "🔥 NOUVEAU RECORD ! "
-                + score
-                + " points !";
+                if (statutClassement) {
+
+                    statutClassement.textContent =
+                        "🔥 NOUVEAU RECORD ! " +
+                        score +
+                        " points !";
+
+                }
 
             }
 
+
+            /* =================================================
+               PAS DE NOUVEAU RECORD
+            ================================================= */
+
             else {
 
-                statutClassement.textContent =
-                "ℹ️ Ton meilleur score reste "
-                + ancien
-                + " points.";
+                if (statutClassement) {
+
+                    statutClassement.textContent =
+                        "ℹ️ Ton meilleur score reste " +
+                        ancien +
+                        " points.";
+
+                }
 
             }
 
@@ -1560,13 +2210,17 @@ async function enregistrerMeilleurScore() {
     catch (erreur) {
 
         console.error(
-            "ERREUR SCORE :",
+            "❌ ERREUR SCORE :",
             erreur
         );
 
 
-        statutClassement.textContent =
-        "❌ Erreur lors de l'enregistrement.";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "❌ Erreur lors de l'enregistrement.";
+
+        }
 
     }
 
@@ -1579,40 +2233,70 @@ async function enregistrerMeilleurScore() {
 
 async function chargerClassement() {
 
+    if (!listeScores) {
+
+        return;
+
+    }
+
+
     try {
 
+        listeScores.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+                    ⏳ Chargement...
+                </td>
+
+            </tr>
+
+        `;
+
+
         const url =
-        SUPABASE_URL +
-        "/rest/v1/scores" +
-        "?jeu=eq.8" +
-        "&select=pseudo,score,jeu" +
-        "&order=score.desc" +
-        "&limit=10";
+
+            SUPABASE_URL +
+
+            "/rest/v1/scores" +
+
+            "?jeu=eq." +
+            encodeURIComponent(JEU_ID) +
+
+            "&select=pseudo,score,jeu" +
+
+            "&order=score.desc" +
+
+            "&limit=10";
 
 
         const resultat =
-        await fetch(
-            url,
-            {
+            await fetch(
 
-                method: "GET",
+                url,
 
-                headers: {
+                {
 
-                    "apikey":
-                    SUPABASE_KEY,
+                    method: "GET",
 
-                    "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY,
+                    headers: {
 
-                    "Accept":
-                    "application/json"
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Accept":
+                            "application/json"
+
+                    }
 
                 }
 
-            }
-        );
+            );
 
 
         if (
@@ -1627,12 +2311,16 @@ async function chargerClassement() {
 
 
         const scores =
-        await resultat.json();
+            await resultat.json();
 
 
         listeScores.innerHTML =
-        "";
+            "";
 
+
+        /* =================================================
+           AUCUN SCORE
+        ================================================= */
 
         if (
             scores.length === 0
@@ -1653,30 +2341,41 @@ async function chargerClassement() {
             `;
 
 
-            statutClassement.textContent =
-            "🌍 Aucun score enregistré pour le jeu 8.";
+            if (statutClassement) {
+
+                statutClassement.textContent =
+                    "🌍 Aucun score enregistré pour le jeu 8.";
+
+            }
 
             return;
 
         }
 
 
+        /* =================================================
+           AFFICHER TOP 10
+        ================================================= */
+
         scores.forEach(
+
             function(
                 joueurScore,
                 index
             ) {
 
                 const ligne =
-                document.createElement(
-                    "tr"
-                );
+                    document.createElement(
+                        "tr"
+                    );
 
+
+                /* POSITION */
 
                 const numero =
-                document.createElement(
-                    "td"
-                );
+                    document.createElement(
+                        "td"
+                    );
 
 
                 if (
@@ -1684,7 +2383,7 @@ async function chargerClassement() {
                 ) {
 
                     numero.textContent =
-                    "🥇";
+                        "🥇";
 
                 }
 
@@ -1693,7 +2392,7 @@ async function chargerClassement() {
                 ) {
 
                     numero.textContent =
-                    "🥈";
+                        "🥈";
 
                 }
 
@@ -1702,47 +2401,76 @@ async function chargerClassement() {
                 ) {
 
                     numero.textContent =
-                    "🥉";
+                        "🥉";
 
                 }
 
                 else {
 
                     numero.textContent =
-                    index + 1;
+                        index + 1;
 
                 }
 
 
+                /* PSEUDO */
+
                 const pseudoCellule =
-                document.createElement(
-                    "td"
-                );
+                    document.createElement(
+                        "td"
+                    );
 
 
                 pseudoCellule.textContent =
-                joueurScore.pseudo;
+                    joueurScore.pseudo;
 
+
+                /* SCORE */
 
                 const scoreCellule =
-                document.createElement(
-                    "td"
-                );
+                    document.createElement(
+                        "td"
+                    );
 
 
                 scoreCellule.textContent =
-                Number(
-                    joueurScore.score
-                );
+                    Number(
+                        joueurScore.score
+                    );
+
+
+                /* =================================================
+                   METTRE LE JOUEUR ACTUEL EN EVIDENCE
+                ================================================= */
+
+                if (
+
+                    joueurScore.pseudo ===
+                    pseudo
+
+                ) {
+
+                    pseudoCellule.classList.add(
+                        "mon-score"
+                    );
+
+
+                    scoreCellule.classList.add(
+                        "mon-score"
+                    );
+
+                }
 
 
                 ligne.appendChild(
                     numero
                 );
 
+
                 ligne.appendChild(
                     pseudoCellule
                 );
+
 
                 ligne.appendChild(
                     scoreCellule
@@ -1754,11 +2482,16 @@ async function chargerClassement() {
                 );
 
             }
+
         );
 
 
-        statutClassement.textContent =
-        "🌍 Classement Tetris actualisé.";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "🌍 Classement Tetris actualisé.";
+
+        }
 
     }
 
@@ -1766,7 +2499,7 @@ async function chargerClassement() {
     catch (erreur) {
 
         console.error(
-            "ERREUR CLASSEMENT :",
+            "❌ ERREUR CLASSEMENT :",
             erreur
         );
 
@@ -1787,8 +2520,12 @@ async function chargerClassement() {
         `;
 
 
-        statutClassement.textContent =
-        "❌ Erreur lors du chargement du classement.";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "❌ Erreur lors du chargement du classement.";
+
+        }
 
     }
 
@@ -1796,23 +2533,33 @@ async function chargerClassement() {
 
 
 /* =========================================================
-   DEMARRAGE
+   DEMARRAGE DU JEU
 ========================================================= */
 
-grille =
-creerGrille();
+/* Création de la grille */
 
+grille =
+    creerGrille();
+
+
+/* Une partie commence */
+
+compterPartie();
+
+
+/* Première pièce */
 
 nouvellePiece();
 
 
+/* Chargement du classement */
+
 chargerClassement();
 
 
-requestAnimationFrame(
-    boucle
-);
+/* Lancement de la boucle */
 
-
-
-
+animationID =
+    requestAnimationFrame(
+        boucle
+    );

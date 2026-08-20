@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GameZone — Mon compte</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="page-compte">
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <nav>
+
+        <div class="menu-gauche">
+
+            <a href="index.html">
+                🏠 Accueil
+            </a>
+
+            <a href="liste-jeux.html">
+                🎮 Jeux
+            </a>
+
+        </div>
+
+        <a href="compte.html"
+           class="icone-compte"
+           title="Mon compte">
+
+            👤
+
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         COMPTE
+    ========================= -->
+
+    <main class="compte-container">
+
+        <h1>
+            👤 Mon compte
+        </h1>
+
+
+        <!-- UTILISATEUR CONNECTÉ -->
+
+        <section
+            id="compteConnecte"
+            class="compte-card"
+            style="display: none;">
+
+            <div class="avatar-compte">
+                👤
+            </div>
+
+            <h2>
+                Ton profil
+            </h2>
+
+            <div class="info-compte">
+
+                <div class="info-ligne">
+
+                    <span>
+                        👤 Pseudo
+                    </span>
+
+                    <strong id="comptePseudo">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="info-ligne">
+
+                    <span>
+                        📧 Email
+                    </span>
+
+                    <strong id="compteEmail">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="bouton-deconnexion-compte"
+                onclick="seDeconnecterCompte()">
+
+                🚪 Se déconnecter
+
+            </button>
+
+        </section>
+
+
+        <!-- PAS CONNECTÉ -->
+
+        <section
+            id="compteNonConnecte"
+            class="compte-card">
+
+            <div class="avatar-compte">
+                🔐
+            </div>
+
+            <h2>
+                Tu n'es pas connecté
+            </h2>
+
+            <p>
+                Connecte-toi pour accéder
+                aux informations de ton compte.
+            </p>
+
+            <a
+                href="index.html"
+                class="bouton-compte">
+
+                🔐 Se connecter
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         SUPABASE
+    ========================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        async function chargerCompte() {
+
+            const resultat =
+                await supabaseClient.auth.getUser();
+
+
+            if (
+                resultat.error ||
+                !resultat.data.user
+            ) {
+
+                document.getElementById(
+                    "compteConnecte"
+                ).style.display = "none";
+
+                document.getElementById(
+                    "compteNonConnecte"
+                ).style.display = "block";
+
+                return;
+
+            }
+
+
+            const user =
+                resultat.data.user;
+
+
+            /* =========================
+               RÉCUPÉRER LE PROFIL
+            ========================= */
+
+            const profil =
+                await supabaseClient
+                    .from("profils")
+                    .select("pseudo")
+                    .eq("id", user.id)
+                    .maybeSingle();
+
+
+            let pseudo = "Joueur";
+
+
+            if (
+                profil.data &&
+                profil.data.pseudo
+            ) {
+
+                pseudo =
+                    profil.data.pseudo;
+
+            }
+            else if (
+                user.user_metadata &&
+                user.user_metadata.pseudo
+            ) {
+
+                pseudo =
+                    user.user_metadata.pseudo;
+
+            }
+
+
+            /* =========================
+               AFFICHER LES INFORMATIONS
+            ========================= */
+
+            document.getElementById(
+                "comptePseudo"
+            ).textContent = pseudo;
+
+
+            document.getElementById(
+                "compteEmail"
+            ).textContent =
+                user.email || "-";
+
+
+            document.getElementById(
+                "compteConnecte"
+            ).style.display = "block";
+
+
+            document.getElementById(
+                "compteNonConnecte"
+            ).style.display = "none";
+
+        }
+
+
+        /* =========================
+           DÉCONNEXION
+        ========================= */
+
+        async function seDeconnecterCompte() {
+
+            const resultat =
+                await supabaseClient.auth.signOut();
+
+
+            if (resultat.error) {
+
+                console.error(
+                    "Erreur déconnexion :",
+                    resultat.error
+                );
+
+                return;
+
+            }
+
+
+            localStorage.removeItem(
+                "pseudoGameZone"
+            );
+
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        chargerCompte();
+
+    </script>
+
+</body>
+
+</html>
+

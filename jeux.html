@@ -21,75 +21,7 @@
 <body class="page-jeu">
 
 
-<!-- =====================================================
-     AUTHENTIFICATION
-===================================================== -->
-
-<script>
-
-    const SUPABASE_URL =
-        "https://pxgymcwpbesqyjochwgd.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-        "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
-
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
-
-
-    /*
-     =====================================================
-     VÉRIFICATION DU COMPTE
-     =====================================================
-    */
-
-    async function verifierConnexion() {
-
-        const {
-            data,
-            error
-        } = await supabaseClient.auth.getSession();
-
-
-        if (error) {
-
-            console.error(
-                "Erreur authentification :",
-                error
-            );
-
-            window.location.href =
-                "index.html";
-
-            return;
-
-        }
-
-
-        /*
-         Si aucune session :
-         retour à l'accueil
-        */
-
-        if (!data.session) {
-
-            window.location.href =
-                "index.html";
-
-            return;
-
-        }
-
-    }
-
-
-    verifierConnexion();
-
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- =====================================================
      MENU
@@ -105,20 +37,39 @@
         🎮 Jeux
     </a>
 
+    <a
+        href="compte.html"
+        class="icone-compte"
+        title="Mon compte">
+
+        👤
+
+    </a>
+
 </nav>
 
 
 <!-- =====================================================
-     JEU
+     JEU DE CLICS
 ===================================================== -->
 
 <main class="page-clics">
 
 
+    <!-- =================================================
+         TITRE
+    ================================================== -->
+
     <h1>
+
         🎯 Jeu de clics
+
     </h1>
 
+
+    <!-- =================================================
+         RETOUR
+    ================================================== -->
 
     <a
         href="liste-jeux.html"
@@ -138,7 +89,9 @@
         👤 Joueur :
 
         <strong id="pseudoJoueur">
+
             Chargement...
+
         </strong>
 
     </p>
@@ -150,14 +103,19 @@
 
     <div class="infos-jeu">
 
+
         <p>
 
             🎯 Score :
 
             <strong>
+
                 <span id="score">
+
                     0
+
                 </span>
+
             </strong>
 
         </p>
@@ -168,9 +126,13 @@
             🏆 Meilleur score :
 
             <strong>
+
                 <span id="meilleurScore">
+
                     0
+
                 </span>
+
             </strong>
 
         </p>
@@ -181,20 +143,25 @@
             ⏱️ Temps :
 
             <strong>
+
                 <span id="temps">
+
                     30
+
                 </span>
+
             </strong>
 
             secondes
 
         </p>
 
+
     </div>
 
 
     <!-- =================================================
-         BOUTON DE JEU
+         BOUTON PRINCIPAL
     ================================================== -->
 
     <button
@@ -210,7 +177,7 @@
 
 
     <!-- =================================================
-         REJOUER
+         BOUTON REJOUER
     ================================================== -->
 
     <button
@@ -224,15 +191,18 @@
 
 
     <!-- =================================================
-         ENREGISTREMENT
+         ENREGISTREMENT DU SCORE
     ================================================== -->
 
     <div
         id="zoneEnregistrement"
         style="display:none;">
 
+
         <h2>
+
             🏆 Enregistrer ton score
+
         </h2>
 
 
@@ -241,6 +211,7 @@
             👤 Pseudo :
 
             <strong id="pseudoAffiche">
+
             </strong>
 
         </p>
@@ -255,7 +226,11 @@
         </button>
 
 
-        <p id="messageEnregistrement"></p>
+        <p
+            id="messageEnregistrement">
+
+        </p>
+
 
     </div>
 
@@ -268,9 +243,13 @@
 
 
         <h2>
+
             🌍 🏆 TOP 10 MONDIAL
+
             <br>
+
             🎯 JEU DE CLICS
+
         </h2>
 
 
@@ -282,15 +261,23 @@
                 <tr>
 
                     <th>
+
                         #
+
                     </th>
 
+
                     <th>
+
                         👤 Pseudo
+
                     </th>
 
+
                     <th>
+
                         🎯 Score
+
                     </th>
 
                 </tr>
@@ -300,13 +287,17 @@
 
             <tbody id="classementBody">
 
+
                 <tr>
 
                     <td colspan="3">
+
                         ⏳ Chargement...
+
                     </td>
 
                 </tr>
+
 
             </tbody>
 
@@ -317,6 +308,7 @@
         <p
             id="messageClassement"
             class="message-classement">
+
         </p>
 
 
@@ -327,6 +319,13 @@
 
 
 <script src="script1.js"></script>
+
+
+
+<!-- =====================================================
+     VERIFICATION DE LA CONNEXION
+===================================================== -->
+
 
 </body>
 

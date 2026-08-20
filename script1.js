@@ -1,22 +1,36 @@
 
+/* =====================================================
+   GAMEZONE — JEU DE CLICS
+   script1.js
+===================================================== */
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://pxgymcwpbesqyjochwgd.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
 
 
 /* =====================================================
    IDENTIFICATION DU JEU
 ===================================================== */
 
-const JEU =
-    "jeux";
+const JEU = "jeux";
 
-
-/* =====================================================
-   PSEUDO
-===================================================== */
-
-const pseudo =
-    localStorage.getItem(
-        "pseudoGameZone"
-    );
+const NOM_JEU_STATISTIQUE =
+    "Jeu de clics";
 
 
 /* =====================================================
@@ -24,59 +38,37 @@ const pseudo =
 ===================================================== */
 
 const pseudoJoueur =
-    document.getElementById(
-        "pseudoJoueur"
-    );
+    document.getElementById("pseudoJoueur");
 
 const pseudoAffiche =
-    document.getElementById(
-        "pseudoAffiche"
-    );
+    document.getElementById("pseudoAffiche");
 
 const scoreElement =
-    document.getElementById(
-        "score"
-    );
+    document.getElementById("score");
 
 const meilleurScoreElement =
-    document.getElementById(
-        "meilleurScore"
-    );
+    document.getElementById("meilleurScore");
 
 const tempsElement =
-    document.getElementById(
-        "temps"
-    );
+    document.getElementById("temps");
 
 const boutonJeu =
-    document.getElementById(
-        "boutonJeu"
-    );
+    document.getElementById("boutonJeu");
 
 const boutonRejouer =
-    document.getElementById(
-        "rejouer"
-    );
+    document.getElementById("rejouer");
 
 const zoneEnregistrement =
-    document.getElementById(
-        "zoneEnregistrement"
-    );
+    document.getElementById("zoneEnregistrement");
 
 const messageEnregistrement =
-    document.getElementById(
-        "messageEnregistrement"
-    );
+    document.getElementById("messageEnregistrement");
 
 const classementBody =
-    document.getElementById(
-        "classementBody"
-    );
+    document.getElementById("classementBody");
 
 const messageClassement =
-    document.getElementById(
-        "messageClassement"
-    );
+    document.getElementById("messageClassement");
 
 
 /* =====================================================
@@ -87,9 +79,7 @@ let score = 0;
 
 let meilleurScore =
     Number(
-        localStorage.getItem(
-            "meilleurScore"
-        )
+        localStorage.getItem("meilleurScore")
     ) || 0;
 
 let temps = 30;
@@ -102,36 +92,183 @@ let scoreEnregistre = false;
 
 
 /* =====================================================
-   AFFICHER LE PSEUDO
+   PSEUDO
 ===================================================== */
 
-if (pseudo) {
+const pseudo =
+    localStorage.getItem("pseudoGameZone");
+
+
+if (pseudoJoueur) {
 
     pseudoJoueur.textContent =
-        pseudo;
-
-    pseudoAffiche.textContent =
-        pseudo;
+        pseudo || "Aucun pseudo";
 
 }
 
-else {
 
-    pseudoJoueur.textContent =
-        "Aucun pseudo";
+if (pseudoAffiche) {
 
     pseudoAffiche.textContent =
-        "Aucun pseudo";
+        pseudo || "Aucun pseudo";
 
 }
 
 
 /* =====================================================
-   AFFICHER MEILLEUR SCORE
+   MEILLEUR SCORE
 ===================================================== */
 
-meilleurScoreElement.textContent =
-    meilleurScore;
+if (meilleurScoreElement) {
+
+    meilleurScoreElement.textContent =
+        meilleurScore;
+
+}
+
+
+/* =====================================================
+   COMPTER UNE PARTIE
+   TABLE : statistiques_jeux
+===================================================== */
+
+async function compterPartieJeu1() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("statistiques_jeux")
+                .select("id,nombre_parties")
+                .eq(
+                    "nom_jeu",
+                    NOM_JEU_STATISTIQUE
+                )
+                .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erreur statistiques Jeu 1 :",
+                error
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           LE JEU EXISTE
+        ================================================= */
+
+        if (data) {
+
+            const nouveauNombre =
+                Number(
+                    data.nombre_parties || 0
+                ) + 1;
+
+
+            const {
+                error: erreurUpdate
+            } =
+                await supabaseClient
+                    .from("statistiques_jeux")
+                    .update({
+                        nombre_parties:
+                            nouveauNombre
+                    })
+                    .eq(
+                        "id",
+                        data.id
+                    );
+
+
+            if (erreurUpdate) {
+
+                console.error(
+                    "❌ Erreur mise à jour statistiques :",
+                    erreurUpdate
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "✅ Jeu de clics :",
+                nouveauNombre,
+                "parties"
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           LE JEU N'EXISTE PAS
+        ================================================= */
+
+        const {
+            error: erreurInsert
+        } =
+            await supabaseClient
+                .from("statistiques_jeux")
+                .insert({
+                    nom_jeu:
+                        NOM_JEU_STATISTIQUE,
+
+                    nombre_parties:
+                        1
+                });
+
+
+        if (erreurInsert) {
+
+            console.error(
+                "❌ Erreur création statistiques :",
+                erreurInsert
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "✅ Jeu de clics : 1 partie"
+        );
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur statistiques Jeu 1 :",
+            erreur
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FONCTION GENERALE
+===================================================== */
+
+async function compterPartie() {
+
+    await compterPartieJeu1();
+
+}
 
 
 /* =====================================================
@@ -139,12 +276,6 @@ meilleurScoreElement.textContent =
 ===================================================== */
 
 function ajouterPoint() {
-
-
-    /*
-     Empêcher de jouer après
-     la fin du chrono
-    */
 
     if (jeuTermine) {
 
@@ -156,25 +287,26 @@ function ajouterPoint() {
     score++;
 
 
-    scoreElement.textContent =
-        score;
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            score;
+
+    }
 
 
-    /*
-     Nouveau record local
-    */
-
-    if (
-        score >
-        meilleurScore
-    ) {
+    if (score > meilleurScore) {
 
         meilleurScore =
             score;
 
 
-        meilleurScoreElement.textContent =
-            meilleurScore;
+        if (meilleurScoreElement) {
+
+            meilleurScoreElement.textContent =
+                meilleurScore;
+
+        }
 
 
         localStorage.setItem(
@@ -188,75 +320,75 @@ function ajouterPoint() {
 
 
 /* =====================================================
-   CHRONOMÈTRE
+   CHRONOMETRE
 ===================================================== */
 
 function demarrerChrono() {
 
-
-    clearInterval(
-        chrono
-    );
+    clearInterval(chrono);
 
 
     chrono =
         setInterval(
             function() {
 
+                if (jeuTermine) {
+
+                    return;
+
+                }
+
 
                 temps--;
 
 
-                tempsElement.textContent =
-                    temps;
+                if (tempsElement) {
+
+                    tempsElement.textContent =
+                        temps;
+
+                }
 
 
-                /*
-                 FIN DE PARTIE
-                */
+                if (temps <= 0) {
 
-                if (
-                    temps <= 0
-                ) {
-
-
-                    clearInterval(
-                        chrono
-                    );
+                    clearInterval(chrono);
 
 
                     jeuTermine =
                         true;
 
 
-                    boutonJeu.disabled =
-                        true;
+                    if (boutonJeu) {
+
+                        boutonJeu.disabled =
+                            true;
+
+                    }
 
 
-                    boutonRejouer.style.display =
-                        "inline-block";
+                    if (boutonRejouer) {
+
+                        boutonRejouer.style.display =
+                            "inline-block";
+
+                    }
 
 
-                    zoneEnregistrement.style.display =
-                        "block";
+                    if (zoneEnregistrement) {
+
+                        zoneEnregistrement.style.display =
+                            "block";
+
+                    }
 
 
-                    messageEnregistrement.textContent =
-                        "";
-
-
-                    alert(
-
-                        "⏱️ Temps écoulé !\n\n" +
-
-                        "Ton score : " +
-
+                    console.log(
+                        "⏱️ Partie terminée. Score :",
                         score
-
                     );
 
                 }
-
 
             },
             1000
@@ -271,50 +403,75 @@ function demarrerChrono() {
 
 function rejouer() {
 
+    clearInterval(chrono);
 
-    clearInterval(
-        chrono
-    );
+
+    /*
+     Nouvelle partie
+    */
+
+    compterPartieJeu1();
 
 
     score =
         0;
 
-
     temps =
         30;
 
-
     jeuTermine =
         false;
-
 
     scoreEnregistre =
         false;
 
 
-    scoreElement.textContent =
-        "0";
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            "0";
+
+    }
 
 
-    tempsElement.textContent =
-        "30";
+    if (tempsElement) {
+
+        tempsElement.textContent =
+            "30";
+
+    }
 
 
-    boutonJeu.disabled =
-        false;
+    if (boutonJeu) {
+
+        boutonJeu.disabled =
+            false;
+
+    }
 
 
-    boutonRejouer.style.display =
-        "none";
+    if (boutonRejouer) {
+
+        boutonRejouer.style.display =
+            "none";
+
+    }
 
 
-    zoneEnregistrement.style.display =
-        "none";
+    if (zoneEnregistrement) {
+
+        zoneEnregistrement.style.display =
+            "none";
+
+    }
 
 
-    messageEnregistrement.textContent =
-        "";
+    if (messageEnregistrement) {
+
+        messageEnregistrement.textContent =
+            "";
+
+    }
 
 
     demarrerChrono();
@@ -324,18 +481,17 @@ function rejouer() {
 
 /* =====================================================
    ENREGISTRER LE SCORE
+   TABLE : scores
 ===================================================== */
 
 async function enregistrerMeilleurScore() {
 
+    if (!messageEnregistrement) {
 
-    const message =
-        messageEnregistrement;
+        return;
 
+    }
 
-    /*
-     Vérifier le pseudo
-    */
 
     const pseudoActuel =
         localStorage.getItem(
@@ -345,23 +501,17 @@ async function enregistrerMeilleurScore() {
 
     if (!pseudoActuel) {
 
-        message.textContent =
-            "❌ Aucun pseudo trouvé. Retourne à l'accueil.";
+        messageEnregistrement.textContent =
+            "❌ Aucun pseudo trouvé.";
 
         return;
 
     }
 
 
-    /*
-     Le score doit être supérieur à 0
-    */
+    if (score <= 0) {
 
-    if (
-        score <= 0
-    ) {
-
-        message.textContent =
+        messageEnregistrement.textContent =
             "⚠️ Ton score doit être supérieur à 0.";
 
         return;
@@ -369,15 +519,9 @@ async function enregistrerMeilleurScore() {
     }
 
 
-    /*
-     Empêcher plusieurs clics
-    */
+    if (scoreEnregistre) {
 
-    if (
-        scoreEnregistre
-    ) {
-
-        message.textContent =
+        messageEnregistrement.textContent =
             "ℹ️ Ce score a déjà été enregistré.";
 
         return;
@@ -389,62 +533,35 @@ async function enregistrerMeilleurScore() {
         true;
 
 
-    message.textContent =
+    messageEnregistrement.textContent =
         "⏳ Enregistrement...";
 
 
     try {
 
-
-        /* =================================================
-           CHERCHER LE SCORE EXISTANT
-        ================================================= */
-
         const {
-
-            data: ancienScore,
-
-            error: erreurRecherche
-
+            data,
+            error
         } =
             await supabaseClient
-
                 .from("scores")
-
                 .select(
                     "id,pseudo,score,jeu"
                 )
-
                 .eq(
                     "pseudo",
                     pseudoActuel
                 )
-
                 .eq(
                     "jeu",
                     JEU
                 )
-
                 .limit(1);
 
 
-        if (
-            erreurRecherche
-        ) {
+        if (error) {
 
-            console.error(
-                "Erreur recherche :",
-                erreurRecherche
-            );
-
-
-            scoreEnregistre =
-                false;
-
-
-            throw new Error(
-                "Recherche impossible."
-            );
+            throw error;
 
         }
 
@@ -454,91 +571,48 @@ async function enregistrerMeilleurScore() {
         ================================================= */
 
         if (
-
-            ancienScore &&
-
-            ancienScore.length > 0
-
+            data &&
+            data.length > 0
         ) {
 
-
-            const scoreExistant =
+            const ancienScore =
                 Number(
-                    ancienScore[0].score
+                    data[0].score || 0
                 );
 
 
-            /*
-             Nouveau record
-            */
-
-            if (
-                score >
-                scoreExistant
-            ) {
-
+            if (score > ancienScore) {
 
                 const {
-
                     error: erreurUpdate
-
                 } =
                     await supabaseClient
-
                         .from("scores")
-
                         .update({
-
                             score:
-                                score,
-
-                            date_creation:
-                                new Date()
-                                    .toISOString()
-
+                                score
                         })
-
                         .eq(
-                            "pseudo",
-                            pseudoActuel
-                        )
-
-                        .eq(
-                            "jeu",
-                            JEU
+                            "id",
+                            data[0].id
                         );
 
 
-                if (
-                    erreurUpdate
-                ) {
+                if (erreurUpdate) {
 
-                    console.error(
-                        "Erreur update :",
-                        erreurUpdate
-                    );
-
-
-                    scoreEnregistre =
-                        false;
-
-
-                    throw new Error(
-                        "Modification impossible."
-                    );
+                    throw erreurUpdate;
 
                 }
 
 
-                message.textContent =
+                messageEnregistrement.textContent =
                     "🏆 Nouveau record enregistré !";
 
             }
 
-
             else {
 
-                message.textContent =
+                messageEnregistrement.textContent =
                     "ℹ️ Ton ancien score est meilleur ou égal.";
 
             }
@@ -552,16 +626,11 @@ async function enregistrerMeilleurScore() {
 
         else {
 
-
             const {
-
                 error: erreurInsertion
-
             } =
                 await supabaseClient
-
                     .from("scores")
-
                     .insert({
 
                         pseudo:
@@ -571,55 +640,32 @@ async function enregistrerMeilleurScore() {
                             score,
 
                         jeu:
-                            JEU,
-
-                        date_creation:
-                            new Date()
-                                .toISOString()
+                            JEU
 
                     });
 
 
-            if (
-                erreurInsertion
-            ) {
+            if (erreurInsertion) {
 
-                console.error(
-                    "Erreur insertion :",
-                    erreurInsertion
-                );
-
-
-                scoreEnregistre =
-                    false;
-
-
-                throw new Error(
-                    "Insertion impossible."
-                );
+                throw erreurInsertion;
 
             }
 
 
-            message.textContent =
+            messageEnregistrement.textContent =
                 "✅ Score enregistré !";
 
         }
 
 
-        /*
-         Actualiser le classement
-        */
-
         await chargerClassement();
 
     }
 
-
     catch (erreur) {
 
         console.error(
-            "Erreur :",
+            "❌ Erreur enregistrement score :",
             erreur
         );
 
@@ -628,7 +674,7 @@ async function enregistrerMeilleurScore() {
             false;
 
 
-        message.textContent =
+        messageEnregistrement.textContent =
             "❌ Erreur lors de l'enregistrement.";
 
     }
@@ -638,9 +684,17 @@ async function enregistrerMeilleurScore() {
 
 /* =====================================================
    CHARGER LE TOP 10
+   IMPORTANT :
+   On ne demande PAS created_at
 ===================================================== */
 
 async function chargerClassement() {
+
+    if (!classementBody) {
+
+        return;
+
+    }
 
 
     classementBody.innerHTML = `
@@ -648,9 +702,7 @@ async function chargerClassement() {
         <tr>
 
             <td colspan="3">
-
                 ⏳ Chargement...
-
             </td>
 
         </tr>
@@ -660,73 +712,46 @@ async function chargerClassement() {
 
     try {
 
-
         const {
-
             data,
-
             error
-
         } =
             await supabaseClient
-
                 .from("scores")
-
                 .select(
-                    "pseudo,score,date_creation"
+                    "pseudo,score"
                 )
-
                 .eq(
                     "jeu",
                     JEU
                 )
-
                 .order(
                     "score",
                     {
                         ascending: false
                     }
                 )
-
                 .limit(10);
 
 
         if (error) {
 
-            console.error(
-                "Erreur classement :",
-                error
-            );
-
-
-            throw new Error(
-                "Classement impossible."
-            );
+            throw error;
 
         }
 
 
-        /*
-         Aucun score
-        */
-
         if (
-
             !data ||
-
             data.length === 0
-
         ) {
-
 
             classementBody.innerHTML = `
 
                 <tr>
 
                     <td colspan="3">
-
                         Aucun score pour ce jeu.
-
                     </td>
 
                 </tr>
@@ -734,25 +759,21 @@ async function chargerClassement() {
             `;
 
 
-            messageClassement.textContent =
-                "🌍 Aucun score enregistré pour le moment.";
+            if (messageClassement) {
+
+                messageClassement.textContent =
+                    "🌍 Aucun score enregistré pour le moment.";
+
+            }
 
             return;
 
         }
 
 
-        /*
-         Vider le tableau
-        */
-
         classementBody.innerHTML =
             "";
 
-
-        /*
-         Afficher les joueurs
-        */
 
         data.forEach(
             function(
@@ -760,40 +781,29 @@ async function chargerClassement() {
                 index
             ) {
 
-
                 const ligne =
-                    document.createElement(
-                        "tr"
-                    );
+                    document.createElement("tr");
 
 
                 const position =
-                    document.createElement(
-                        "td"
-                    );
+                    document.createElement("td");
 
 
-                if (
-                    index === 0
-                ) {
+                if (index === 0) {
 
                     position.textContent =
                         "🥇";
 
                 }
 
-                else if (
-                    index === 1
-                ) {
+                else if (index === 1) {
 
                     position.textContent =
                         "🥈";
 
                 }
 
-                else if (
-                    index === 2
-                ) {
+                else if (index === 2) {
 
                     position.textContent =
                         "🥉";
@@ -809,9 +819,7 @@ async function chargerClassement() {
 
 
                 const pseudoCell =
-                    document.createElement(
-                        "td"
-                    );
+                    document.createElement("td");
 
 
                 pseudoCell.textContent =
@@ -819,9 +827,7 @@ async function chargerClassement() {
 
 
                 const scoreCell =
-                    document.createElement(
-                        "td"
-                    );
+                    document.createElement("td");
 
 
                 scoreCell.textContent =
@@ -832,11 +838,9 @@ async function chargerClassement() {
                     position
                 );
 
-
                 ligne.appendChild(
                     pseudoCell
                 );
-
 
                 ligne.appendChild(
                     scoreCell
@@ -851,18 +855,19 @@ async function chargerClassement() {
         );
 
 
-        messageClassement.textContent =
-            "🌍 Classement actualisé.";
+        if (messageClassement) {
 
+            messageClassement.textContent =
+                "🌍 Classement actualisé.";
+
+        }
 
     }
 
-
     catch (erreur) {
 
-
         console.error(
-            "Erreur classement :",
+            "❌ Erreur classement :",
             erreur
         );
 
@@ -872,10 +877,8 @@ async function chargerClassement() {
             <tr>
 
                 <td colspan="3">
-
                     ❌ Impossible de charger
                     le classement.
-
                 </td>
 
             </tr>
@@ -883,8 +886,12 @@ async function chargerClassement() {
         `;
 
 
-        messageClassement.textContent =
-            "❌ Erreur lors du chargement du classement.";
+        if (messageClassement) {
+
+            messageClassement.textContent =
+                "❌ Erreur lors du chargement du classement.";
+
+        }
 
     }
 
@@ -892,17 +899,32 @@ async function chargerClassement() {
 
 
 /* =====================================================
-   DÉMARRAGE
+   RENDRE LES FONCTIONS DISPONIBLES AU HTML
 ===================================================== */
 
-demarrerChrono();
+window.ajouterPoint =
+    ajouterPoint;
+
+window.rejouer =
+    rejouer;
+
+window.enregistrerMeilleurScore =
+    enregistrerMeilleurScore;
+
+window.compterPartie =
+    compterPartie;
+
+window.chargerClassement =
+    chargerClassement;
 
 
 /* =====================================================
-   CHARGER LE CLASSEMENT
+   DEMARRAGE
 ===================================================== */
 
+compterPartieJeu1();
+
+demarrerChrono();
+
 chargerClassement();
-
-
 

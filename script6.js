@@ -1,6 +1,4 @@
 
-
-
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -26,19 +24,13 @@ const JEU_ID = "6";
 ========================================================= */
 
 const pseudoAffiche =
-document.getElementById(
-    "pseudoAffiche"
-);
+document.getElementById("pseudoAffiche");
 
 const listeScores =
-document.getElementById(
-    "listeScores"
-);
+document.getElementById("listeScores");
 
 const statutClassement =
-document.getElementById(
-    "statutClassement"
-);
+document.getElementById("statutClassement");
 
 
 /* =========================================================
@@ -46,9 +38,7 @@ document.getElementById(
 ========================================================= */
 
 const pseudo =
-localStorage.getItem(
-    "pseudoGameZone"
-);
+localStorage.getItem("pseudoGameZone");
 
 
 if (pseudo) {
@@ -77,20 +67,15 @@ document.getElementById(
 meilleurScore;
 
 
-
 /* =========================================================
    CANVAS
 ========================================================= */
 
 const canvas =
-document.getElementById(
-    "jeuSpace"
-);
+document.getElementById("jeuSpace");
 
 const contexte =
-canvas.getContext(
-    "2d"
-);
+canvas.getContext("2d");
 
 
 /* =========================================================
@@ -1254,6 +1239,7 @@ document.getElementById(
 ========================================================= */
 
 function rejouer() {
+    compterPartieJeu6();
 
     score = 0;
 
@@ -1505,102 +1491,168 @@ function dessinerFond() {
 function dessinerJoueur() {
 
     const x = joueur.x;
+
     const y = joueur.y;
-    const centreX = x + joueur.largeur / 2;
+
+    const centreX =
+    x +
+    joueur.largeur / 2;
+
 
     contexte.save();
 
-    contexte.shadowBlur = 25;
-    contexte.shadowColor = "#00eaff";
 
-    const gradient = contexte.createLinearGradient(
+    contexte.shadowBlur =
+    25;
+
+    contexte.shadowColor =
+    "#00eaff";
+
+
+    const gradient =
+    contexte.createLinearGradient(
         x,
         y - 22,
         x,
         y + joueur.hauteur
     );
 
-    gradient.addColorStop(0, "#ffffff");
-    gradient.addColorStop(0.25, "#00eaff");
-    gradient.addColorStop(0.65, "#008cff");
-    gradient.addColorStop(1, "#003cff");
 
-    contexte.fillStyle = gradient;
+    gradient.addColorStop(
+        0,
+        "#ffffff"
+    );
+
+    gradient.addColorStop(
+        0.25,
+        "#00eaff"
+    );
+
+    gradient.addColorStop(
+        0.65,
+        "#008cff"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#003cff"
+    );
+
+
+    contexte.fillStyle =
+    gradient;
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         centreX,
         y - 22
     );
 
-    contexte.lineTo(
-        x + joueur.largeur - 8,
-        y + joueur.hauteur
-    );
 
     contexte.lineTo(
-        x + joueur.largeur - 23,
-        y + joueur.hauteur - 3
+        x +
+        joueur.largeur -
+        8,
+
+        y +
+        joueur.hauteur
     );
+
+
+    contexte.lineTo(
+        x +
+        joueur.largeur -
+        23,
+
+        y +
+        joueur.hauteur -
+        3
+    );
+
 
     contexte.lineTo(
         centreX + 10,
         y + 10
     );
 
+
     contexte.lineTo(
         centreX,
         y + 15
     );
+
 
     contexte.lineTo(
         centreX - 10,
         y + 10
     );
 
+
     contexte.lineTo(
         x + 23,
-        y + joueur.hauteur - 3
+        y +
+        joueur.hauteur -
+        3
     );
+
 
     contexte.lineTo(
         x + 8,
-        y + joueur.hauteur
+        y +
+        joueur.hauteur
     );
+
 
     contexte.closePath();
 
     contexte.fill();
 
-    contexte.strokeStyle = "#8fffff";
-    contexte.lineWidth = 2;
+
+    contexte.strokeStyle =
+    "#8fffff";
+
+    contexte.lineWidth =
+    2;
+
     contexte.stroke();
 
 
     /* COCKPIT */
 
-    contexte.shadowBlur = 15;
-    contexte.shadowColor = "#ffffff";
+    contexte.shadowBlur =
+    15;
 
-    contexte.fillStyle = "#dfffff";
+    contexte.shadowColor =
+    "#ffffff";
+
+
+    contexte.fillStyle =
+    "#dfffff";
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         centreX,
         y - 8
     );
 
+
     contexte.lineTo(
         centreX + 14,
         y + 12
     );
 
+
     contexte.lineTo(
         centreX - 14,
         y + 12
     );
+
 
     contexte.closePath();
 
@@ -1609,40 +1661,62 @@ function dessinerJoueur() {
 
     /* LIGNE DU COCKPIT */
 
-    contexte.strokeStyle = "#00ffff";
-    contexte.lineWidth = 2;
+    contexte.strokeStyle =
+    "#00ffff";
+
+    contexte.lineWidth =
+    2;
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         centreX,
         y - 5
     );
 
+
     contexte.lineTo(
         centreX,
         y + 10
     );
+
 
     contexte.stroke();
 
 
     /* MOTEURS */
 
-    contexte.shadowBlur = 20;
-    contexte.shadowColor = "#ff6600";
-    contexte.fillStyle = "#ff9d00";
+    contexte.shadowBlur =
+    20;
+
+    contexte.shadowColor =
+    "#ff6600";
+
+    contexte.fillStyle =
+    "#ff9d00";
+
 
     contexte.fillRect(
         x + 12,
-        y + joueur.hauteur - 2,
+        y +
+        joueur.hauteur -
+        2,
         12,
         7
     );
 
+
     contexte.fillRect(
-        x + joueur.largeur - 24,
-        y + joueur.hauteur - 2,
+        x +
+        joueur.largeur -
+        24,
+
+        y +
+        joueur.hauteur -
+        2,
+
         12,
         7
     );
@@ -1650,25 +1724,39 @@ function dessinerJoueur() {
 
     /* FLAMMES */
 
-    contexte.shadowColor = "#ff1744";
-    contexte.fillStyle = "#ff1744";
+    contexte.shadowColor =
+    "#ff1744";
+
+    contexte.fillStyle =
+    "#ff1744";
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         x + 14,
-        y + joueur.hauteur + 5
+        y +
+        joueur.hauteur +
+        5
     );
+
 
     contexte.lineTo(
         x + 18,
-        y + joueur.hauteur + 17
+        y +
+        joueur.hauteur +
+        17
     );
+
 
     contexte.lineTo(
         x + 23,
-        y + joueur.hauteur + 5
+        y +
+        joueur.hauteur +
+        5
     );
+
 
     contexte.closePath();
 
@@ -1677,40 +1765,68 @@ function dessinerJoueur() {
 
     contexte.beginPath();
 
+
     contexte.moveTo(
-        x + joueur.largeur - 23,
-        y + joueur.hauteur + 5
+        x +
+        joueur.largeur -
+        23,
+
+        y +
+        joueur.hauteur +
+        5
     );
 
-    contexte.lineTo(
-        x + joueur.largeur - 18,
-        y + joueur.hauteur + 17
-    );
 
     contexte.lineTo(
-        x + joueur.largeur - 14,
-        y + joueur.hauteur + 5
+        x +
+        joueur.largeur -
+        18,
+
+        y +
+        joueur.hauteur +
+        17
     );
+
+
+    contexte.lineTo(
+        x +
+        joueur.largeur -
+        14,
+
+        y +
+        joueur.hauteur +
+        5
+    );
+
 
     contexte.closePath();
 
     contexte.fill();
 
+
     contexte.restore();
+
 }
+
+
 /* =========================================================
    DESSIN ENNEMI
 ========================================================= */
 
 function dessinerEnnemi(ennemi) {
 
-    const x = ennemi.x;
-    const y = ennemi.y;
+    const x =
+    ennemi.x;
+
+    const y =
+    ennemi.y;
+
 
     const couleurPrincipale =
         ennemi.type === "fort"
         ? "#ff1744"
         : "#a020f0";
+
 
     const couleurClaire =
         ennemi.type === "fort"
@@ -1720,37 +1836,50 @@ function dessinerEnnemi(ennemi) {
 
     contexte.save();
 
-    contexte.shadowBlur = 22;
-    contexte.shadowColor = couleurPrincipale;
+
+    contexte.shadowBlur =
+    22;
+
+    contexte.shadowColor =
+    couleurPrincipale;
 
 
     /* CORPS */
 
-    const gradient = contexte.createLinearGradient(
+    const gradient =
+    contexte.createLinearGradient(
         x,
         y,
         x,
-        y + ennemi.hauteur
+        y +
+        ennemi.hauteur
     );
+
 
     gradient.addColorStop(
         0,
         couleurClaire
     );
 
+
     gradient.addColorStop(
         0.35,
         couleurPrincipale
     );
+
 
     gradient.addColorStop(
         1,
         "#250020"
     );
 
-    contexte.fillStyle = gradient;
+
+    contexte.fillStyle =
+    gradient;
+
 
     contexte.beginPath();
+
 
     contexte.roundRect(
         x + 3,
@@ -1760,52 +1889,78 @@ function dessinerEnnemi(ennemi) {
         8
     );
 
+
     contexte.fill();
 
 
     /* CONTOUR */
 
-    contexte.strokeStyle = couleurClaire;
-    contexte.lineWidth = 2;
+    contexte.strokeStyle =
+    couleurClaire;
+
+    contexte.lineWidth =
+    2;
+
     contexte.stroke();
 
 
     /* ANTENNES */
 
-    contexte.strokeStyle = couleurClaire;
-    contexte.lineWidth = 3;
+    contexte.strokeStyle =
+    couleurClaire;
+
+    contexte.lineWidth =
+    3;
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         x + 10,
         y + 7
     );
 
+
     contexte.lineTo(
         x + 4,
         y - 5
     );
 
+
     contexte.moveTo(
-        x + ennemi.largeur - 10,
+        x +
+        ennemi.largeur -
+        10,
+
         y + 7
     );
 
+
     contexte.lineTo(
-        x + ennemi.largeur - 4,
+        x +
+        ennemi.largeur -
+        4,
+
         y - 5
     );
+
 
     contexte.stroke();
 
 
     /* YEUX */
 
-    contexte.shadowBlur = 12;
-    contexte.shadowColor = "#ffffff";
+    contexte.shadowBlur =
+    12;
 
-    contexte.fillStyle = "#ffffff";
+    contexte.shadowColor =
+    "#ffffff";
+
+
+    contexte.fillStyle =
+    "#ffffff";
+
 
     contexte.fillRect(
         x + 9,
@@ -1814,9 +1969,14 @@ function dessinerEnnemi(ennemi) {
         9
     );
 
+
     contexte.fillRect(
-        x + ennemi.largeur - 17,
+        x +
+        ennemi.largeur -
+        17,
+
         y + 11,
+
         8,
         9
     );
@@ -1824,7 +1984,9 @@ function dessinerEnnemi(ennemi) {
 
     /* PUPILLES */
 
-    contexte.fillStyle = "#050505";
+    contexte.fillStyle =
+    "#050505";
+
 
     contexte.fillRect(
         x + 12,
@@ -1833,9 +1995,14 @@ function dessinerEnnemi(ennemi) {
         5
     );
 
+
     contexte.fillRect(
-        x + ennemi.largeur - 14,
+        x +
+        ennemi.largeur -
+        14,
+
         y + 13,
+
         3,
         5
     );
@@ -1843,60 +2010,87 @@ function dessinerEnnemi(ennemi) {
 
     /* BOUCHE */
 
-    contexte.strokeStyle = couleurClaire;
-    contexte.lineWidth = 2;
+    contexte.strokeStyle =
+    couleurClaire;
+
+    contexte.lineWidth =
+    2;
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         x + 12,
         y + 25
     );
 
+
     contexte.lineTo(
         x + 18,
         y + 20
     );
+
 
     contexte.lineTo(
         x + 25,
         y + 25
     );
 
+
     contexte.lineTo(
         x + 32,
         y + 20
     );
+
 
     contexte.lineTo(
         x + 39,
         y + 25
     );
 
+
     contexte.stroke();
 
 
     /* LUMIERES */
 
-    contexte.fillStyle = "#ffffff";
-    contexte.shadowBlur = 10;
+    contexte.fillStyle =
+    "#ffffff";
+
+    contexte.shadowBlur =
+    10;
+
 
     contexte.fillRect(
         x + 4,
-        y + ennemi.hauteur - 5,
+        y +
+        ennemi.hauteur -
+        5,
+
         5,
         3
     );
+
 
     contexte.fillRect(
-        x + ennemi.largeur - 9,
-        y + ennemi.hauteur - 5,
+        x +
+        ennemi.largeur -
+        9,
+
+        y +
+        ennemi.hauteur -
+        5,
+
         5,
         3
     );
 
+
     contexte.restore();
+
 }
+
 
 /* =========================================================
    DESSIN BOSS
@@ -1905,51 +2099,71 @@ function dessinerEnnemi(ennemi) {
 function dessinerBoss() {
 
     if (!boss) {
+
         return;
+
     }
 
-    const x = boss.x;
-    const y = boss.y;
+
+    const x =
+    boss.x;
+
+    const y =
+    boss.y;
 
 
     contexte.save();
 
-    contexte.shadowBlur = 35;
-    contexte.shadowColor = "#ff004c";
+
+    contexte.shadowBlur =
+    35;
+
+    contexte.shadowColor =
+    "#ff004c";
 
 
     /* CORPS */
 
-    const gradient = contexte.createLinearGradient(
+    const gradient =
+    contexte.createLinearGradient(
         x,
         y,
         x,
-        y + boss.hauteur
+        y +
+        boss.hauteur
     );
+
 
     gradient.addColorStop(
         0,
         "#ff315f"
     );
 
+
     gradient.addColorStop(
         0.3,
         "#b0004c"
     );
+
 
     gradient.addColorStop(
         0.7,
         "#4b0035"
     );
 
+
     gradient.addColorStop(
         1,
         "#120018"
     );
 
-    contexte.fillStyle = gradient;
+
+    contexte.fillStyle =
+    gradient;
+
 
     contexte.beginPath();
+
 
     contexte.roundRect(
         x,
@@ -1959,62 +2173,89 @@ function dessinerBoss() {
         18
     );
 
+
     contexte.fill();
 
 
     /* CONTOUR */
 
-    contexte.strokeStyle = "#ff5577";
-    contexte.lineWidth = 4;
+    contexte.strokeStyle =
+    "#ff5577";
+
+    contexte.lineWidth =
+    4;
+
     contexte.stroke();
 
 
     /* AILES */
 
-    contexte.fillStyle = "#67003e";
+    contexte.fillStyle =
+    "#67003e";
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         x,
         y + 15
     );
+
 
     contexte.lineTo(
         x - 28,
         y + 42
     );
 
+
     contexte.lineTo(
         x,
         y + 48
     );
 
+
     contexte.closePath();
 
     contexte.fill();
 
-    contexte.strokeStyle = "#ff1744";
-    contexte.lineWidth = 2;
+
+    contexte.strokeStyle =
+    "#ff1744";
+
+    contexte.lineWidth =
+    2;
+
     contexte.stroke();
 
 
     contexte.beginPath();
 
+
     contexte.moveTo(
-        x + boss.largeur,
+        x +
+        boss.largeur,
+
         y + 15
     );
 
+
     contexte.lineTo(
-        x + boss.largeur + 28,
+        x +
+        boss.largeur +
+        28,
+
         y + 42
     );
 
+
     contexte.lineTo(
-        x + boss.largeur,
+        x +
+        boss.largeur,
+
         y + 48
     );
+
 
     contexte.closePath();
 
@@ -2025,10 +2266,16 @@ function dessinerBoss() {
 
     /* YEUX */
 
-    contexte.shadowBlur = 20;
-    contexte.shadowColor = "#ffff00";
+    contexte.shadowBlur =
+    20;
 
-    contexte.fillStyle = "#ffff00";
+    contexte.shadowColor =
+    "#ffff00";
+
+
+    contexte.fillStyle =
+    "#ffff00";
+
 
     contexte.fillRect(
         x + 35,
@@ -2037,9 +2284,14 @@ function dessinerBoss() {
         16
     );
 
+
     contexte.fillRect(
-        x + boss.largeur - 73,
+        x +
+        boss.largeur -
+        73,
+
         y + 20,
+
         38,
         16
     );
@@ -2047,7 +2299,9 @@ function dessinerBoss() {
 
     /* PUPILLES */
 
-    contexte.fillStyle = "#ff3300";
+    contexte.fillStyle =
+    "#ff3300";
+
 
     contexte.fillRect(
         x + 48,
@@ -2056,9 +2310,14 @@ function dessinerBoss() {
         12
     );
 
+
     contexte.fillRect(
-        x + boss.largeur - 56,
+        x +
+        boss.largeur -
+        56,
+
         y + 22,
+
         8,
         12
     );
@@ -2066,43 +2325,68 @@ function dessinerBoss() {
 
     /* NOYAU CENTRAL */
 
-    contexte.shadowBlur = 25;
-    contexte.shadowColor = "#00ffff";
+    contexte.shadowBlur =
+    25;
 
-    contexte.fillStyle = "#00ffff";
+    contexte.shadowColor =
+    "#00ffff";
+
+
+    contexte.fillStyle =
+    "#00ffff";
+
 
     contexte.beginPath();
 
+
     contexte.arc(
-        x + boss.largeur / 2,
+        x +
+        boss.largeur / 2,
+
         y + 38,
+
         12,
+
         0,
         Math.PI * 2
     );
+
 
     contexte.fill();
 
-    contexte.fillStyle = "#ffffff";
+
+    contexte.fillStyle =
+    "#ffffff";
+
 
     contexte.beginPath();
 
+
     contexte.arc(
-        x + boss.largeur / 2,
+        x +
+        boss.largeur / 2,
+
         y + 38,
+
         5,
+
         0,
         Math.PI * 2
     );
+
 
     contexte.fill();
 
 
     /* BARRE DE VIE */
 
-    contexte.shadowBlur = 0;
+    contexte.shadowBlur =
+    0;
 
-    contexte.fillStyle = "#100010";
+
+    contexte.fillStyle =
+    "#100010";
+
 
     contexte.fillRect(
         x,
@@ -2111,21 +2395,31 @@ function dessinerBoss() {
         9
     );
 
-    contexte.fillStyle = "#00ff55";
+
+    contexte.fillStyle =
+    "#00ff55";
+
 
     contexte.fillRect(
         x,
         y - 17,
+
         boss.largeur *
         (
             boss.vie /
             boss.vieMax
         ),
+
         9
     );
 
-    contexte.strokeStyle = "#ffffff";
-    contexte.lineWidth = 1;
+
+    contexte.strokeStyle =
+    "#ffffff";
+
+    contexte.lineWidth =
+    1;
+
 
     contexte.strokeRect(
         x,
@@ -2137,20 +2431,27 @@ function dessinerBoss() {
 
     /* CIRCUITS */
 
-    contexte.strokeStyle = "#ff5577";
-    contexte.lineWidth = 2;
+    contexte.strokeStyle =
+    "#ff5577";
+
+    contexte.lineWidth =
+    2;
+
 
     contexte.beginPath();
+
 
     contexte.moveTo(
         x + 15,
         y + 48
     );
 
+
     contexte.lineTo(
         x + 45,
         y + 48
     );
+
 
     contexte.lineTo(
         x + 55,
@@ -2159,24 +2460,39 @@ function dessinerBoss() {
 
 
     contexte.moveTo(
-        x + boss.largeur - 15,
+        x +
+        boss.largeur -
+        15,
+
         y + 48
     );
 
+
     contexte.lineTo(
-        x + boss.largeur - 45,
+        x +
+        boss.largeur -
+        45,
+
         y + 48
     );
 
+
     contexte.lineTo(
-        x + boss.largeur - 55,
+        x +
+        boss.largeur -
+        55,
+
         y + 55
     );
 
+
     contexte.stroke();
 
+
     contexte.restore();
+
 }
+
 
 /* =========================================================
    DESSIN GENERAL
@@ -3181,10 +3497,165 @@ async function chargerClassement() {
 
 
 /* =========================================================
-   DEMARRAGE
+   JEUX DU MOMENT
+   COMPTAGE DES PARTIES — JEU 6
 ========================================================= */
 
-afficherCompte = undefined;
+async function compterPartieJeu6() {
+
+    try {
+
+        console.log("🔄 Comptage Space Invaders...");
+
+        const url =
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?id=eq.22" +
+            "&select=id,nom_jeu,nombre_parties,ordre";
+
+        console.log("🌐 URL :", url);
+
+
+        const recherche =
+            await fetch(
+                url,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY,
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        console.log(
+            "📡 Statut :",
+            recherche.status
+        );
+
+
+        const texte =
+            await recherche.text();
+
+        console.log(
+            "📦 Réponse brute :",
+            texte
+        );
+
+
+        if (!recherche.ok) {
+
+            throw new Error(texte);
+
+        }
+
+
+        const statistiques =
+            JSON.parse(texte);
+
+
+        if (
+            !Array.isArray(statistiques) ||
+            statistiques.length === 0
+        ) {
+
+            console.error(
+                "❌ Supabase ne retourne aucune ligne pour id=22."
+            );
+
+            return;
+
+        }
+
+
+        const jeu =
+            statistiques[0];
+
+
+        console.log(
+            "🎮 Jeu trouvé :",
+            jeu
+        );
+
+
+        const nouveauNombre =
+            Number(jeu.nombre_parties) + 1;
+
+
+        /* =========================================
+           MISE À JOUR
+        ========================================= */
+
+        const updateUrl =
+            SUPABASE_URL +
+            "/rest/v1/statistiques_jeux" +
+            "?id=eq.22";
+
+
+        const miseAJour =
+            await fetch(
+                updateUrl,
+                {
+                    method: "PATCH",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Prefer":
+                            "return=minimal"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            nombre_parties:
+                                nouveauNombre
+                        })
+                }
+            );
+
+
+        if (!miseAJour.ok) {
+
+            const erreur =
+                await miseAJour.text();
+
+            throw new Error(erreur);
+
+        }
+
+
+        console.log(
+            "🚀 Space Invaders : " +
+            nouveauNombre +
+            " parties"
+        );
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur comptage Jeux du moment :",
+            erreur
+        );
+
+    }
+
+}
+/* =========================================================
+   DEMARRAGE
+========================================================= */
 
 creerEnnemis();
 
@@ -3192,7 +3663,11 @@ dessiner();
 
 chargerClassement();
 
+/*
+    Comptage du Jeu 6 dans
+    "Jeux du moment"
+*/
+
+compterPartieJeu6();
+
 boucle();
-
-
-
