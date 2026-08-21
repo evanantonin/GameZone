@@ -3088,7 +3088,120 @@ body.page-flappy {
 
     font-size: 18px;
 }
+/* =====================================================
+   PONG — CONTROLES MOBILES
+===================================================== */
 
+/*
+   PAR DEFAUT :
+   Les contrôles mobiles sont complètement cachés.
+   Donc sur ordinateur : aucun bouton mobile.
+*/
+
+.controles-pong {
+    display: none;
+}
+
+
+/* =====================================================
+   TELEPHONE / TABLETTE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    /*
+       Sur téléphone/tablette,
+       on affiche la zone des contrôles.
+    */
+
+    .controles-pong {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+
+    /*
+       Joueur 1 :
+       toujours visible sur mobile.
+    */
+
+    .joueur1-mobile {
+        display: block;
+    }
+
+
+    /*
+       Joueur 2 :
+       caché par défaut.
+    */
+
+    .joueur2-mobile {
+        display: none;
+    }
+
+
+    /*
+       Quand le JavaScript ajoute
+       "mode-2-joueurs",
+       le Joueur 2 apparaît.
+    */
+
+    .controles-pong.mode-2-joueurs
+    .joueur2-mobile {
+        display: block;
+    }
+
+
+    /*
+       Style des zones joueurs
+    */
+
+    .controle-joueur-pong {
+        margin: 15px auto;
+        text-align: center;
+    }
+
+
+    /*
+       Boutons mobiles
+    */
+
+    .boutons-pong-mobile {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+
+    .boutons-pong-mobile button {
+        width: 80px;
+        height: 60px;
+        font-size: 25px;
+        cursor: pointer;
+        touch-action: none;
+        user-select: none;
+    }
+
+}
+
+
+/* =====================================================
+   ORDINATEUR
+===================================================== */
+
+@media (min-width: 769px) {
+
+    /*
+       Sécurité supplémentaire :
+       aucun contrôle mobile sur PC.
+    */
+
+    .controles-pong {
+        display: none !important;
+    }
+
+}
 
 
 /* =========================================================

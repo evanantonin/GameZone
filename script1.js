@@ -1,7 +1,7 @@
-
 /* =====================================================
    GAMEZONE — JEU DE CLICS
    script1.js
+   MODE CONNECTÉ + MODE VISITEUR
 ===================================================== */
 
 
@@ -61,14 +61,94 @@ const boutonRejouer =
 const zoneEnregistrement =
     document.getElementById("zoneEnregistrement");
 
+const boutonEnregistrer =
+    document.getElementById("enregistrerScore");
+
 const messageEnregistrement =
-    document.getElementById("messageEnregistrement");
+    document.getElementById(
+        "messageEnregistrement"
+    );
 
 const classementBody =
-    document.getElementById("classementBody");
+    document.getElementById(
+        "classementBody"
+    );
 
 const messageClassement =
-    document.getElementById("messageClassement");
+    document.getElementById(
+        "messageClassement"
+    );
+
+
+/* =====================================================
+   PSEUDO
+===================================================== */
+
+const pseudo =
+    localStorage.getItem(
+        "pseudoGameZone"
+    );
+
+
+/* =====================================================
+   MODE VISITEUR
+===================================================== */
+
+const modeVisiteur =
+    !pseudo;
+
+
+/* =====================================================
+   AFFICHAGE DU PSEUDO
+===================================================== */
+
+if (pseudoJoueur) {
+
+    pseudoJoueur.textContent =
+        pseudo ||
+        "👻 Visiteur";
+
+}
+
+
+if (pseudoAffiche) {
+
+    pseudoAffiche.textContent =
+        pseudo ||
+        "👻 Visiteur";
+
+}
+
+
+/* =====================================================
+   MEILLEUR SCORE
+   CONNECTÉ :
+   meilleurScore
+
+   VISITEUR :
+   meilleurScoreVisiteur
+===================================================== */
+
+const cleMeilleurScore =
+    pseudo
+        ? "meilleurScore_" + pseudo
+        : "meilleurScoreVisiteur";
+
+
+let meilleurScore =
+    Number(
+        localStorage.getItem(
+            cleMeilleurScore
+        )
+    ) || 0;
+
+
+if (meilleurScoreElement) {
+
+    meilleurScoreElement.textContent =
+        meilleurScore;
+
+}
 
 
 /* =====================================================
@@ -76,11 +156,6 @@ const messageClassement =
 ===================================================== */
 
 let score = 0;
-
-let meilleurScore =
-    Number(
-        localStorage.getItem("meilleurScore")
-    ) || 0;
 
 let temps = 30;
 
@@ -92,44 +167,9 @@ let scoreEnregistre = false;
 
 
 /* =====================================================
-   PSEUDO
-===================================================== */
-
-const pseudo =
-    localStorage.getItem("pseudoGameZone");
-
-
-if (pseudoJoueur) {
-
-    pseudoJoueur.textContent =
-        pseudo || "Aucun pseudo";
-
-}
-
-
-if (pseudoAffiche) {
-
-    pseudoAffiche.textContent =
-        pseudo || "Aucun pseudo";
-
-}
-
-
-/* =====================================================
-   MEILLEUR SCORE
-===================================================== */
-
-if (meilleurScoreElement) {
-
-    meilleurScoreElement.textContent =
-        meilleurScore;
-
-}
-
-
-/* =====================================================
    COMPTER UNE PARTIE
-   TABLE : statistiques_jeux
+   POUR TOUS LES JOUEURS,
+   VISITEURS COMPRIS
 ===================================================== */
 
 async function compterPartieJeu1() {
@@ -142,7 +182,9 @@ async function compterPartieJeu1() {
         } =
             await supabaseClient
                 .from("statistiques_jeux")
-                .select("id,nombre_parties")
+                .select(
+                    "id,nombre_parties"
+                )
                 .eq(
                     "nom_jeu",
                     NOM_JEU_STATISTIQUE
@@ -153,7 +195,7 @@ async function compterPartieJeu1() {
         if (error) {
 
             console.error(
-                "❌ Erreur statistiques Jeu 1 :",
+                "❌ Erreur statistiques :",
                 error
             );
 
@@ -162,9 +204,9 @@ async function compterPartieJeu1() {
         }
 
 
-        /* =================================================
+        /* -------------------------------------------------
            LE JEU EXISTE
-        ================================================= */
+        ------------------------------------------------- */
 
         if (data) {
 
@@ -178,7 +220,9 @@ async function compterPartieJeu1() {
                 error: erreurUpdate
             } =
                 await supabaseClient
-                    .from("statistiques_jeux")
+                    .from(
+                        "statistiques_jeux"
+                    )
                     .update({
                         nombre_parties:
                             nouveauNombre
@@ -192,7 +236,7 @@ async function compterPartieJeu1() {
             if (erreurUpdate) {
 
                 console.error(
-                    "❌ Erreur mise à jour statistiques :",
+                    "❌ Erreur mise à jour :",
                     erreurUpdate
                 );
 
@@ -202,31 +246,36 @@ async function compterPartieJeu1() {
 
 
             console.log(
-                "✅ Jeu de clics :",
+                "🎮 Jeu de clics :",
                 nouveauNombre,
                 "parties"
             );
+
 
             return;
 
         }
 
 
-        /* =================================================
+        /* -------------------------------------------------
            LE JEU N'EXISTE PAS
-        ================================================= */
+        ------------------------------------------------- */
 
         const {
             error: erreurInsert
         } =
             await supabaseClient
-                .from("statistiques_jeux")
+                .from(
+                    "statistiques_jeux"
+                )
                 .insert({
+
                     nom_jeu:
                         NOM_JEU_STATISTIQUE,
 
                     nombre_parties:
                         1
+
                 });
 
 
@@ -243,7 +292,7 @@ async function compterPartieJeu1() {
 
 
         console.log(
-            "✅ Jeu de clics : 1 partie"
+            "🎮 Jeu de clics : première partie"
         );
 
     }
@@ -251,7 +300,7 @@ async function compterPartieJeu1() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur statistiques Jeu 1 :",
+            "❌ Erreur statistiques :",
             erreur
         );
 
@@ -295,6 +344,10 @@ function ajouterPoint() {
     }
 
 
+    /* -------------------------------------------------
+       NOUVEAU MEILLEUR SCORE
+    ------------------------------------------------- */
+
     if (score > meilleurScore) {
 
         meilleurScore =
@@ -310,7 +363,7 @@ function ajouterPoint() {
 
 
         localStorage.setItem(
-            "meilleurScore",
+            cleMeilleurScore,
             meilleurScore
         );
 
@@ -325,7 +378,9 @@ function ajouterPoint() {
 
 function demarrerChrono() {
 
-    clearInterval(chrono);
+    clearInterval(
+        chrono
+    );
 
 
     chrono =
@@ -352,7 +407,9 @@ function demarrerChrono() {
 
                 if (temps <= 0) {
 
-                    clearInterval(chrono);
+                    clearInterval(
+                        chrono
+                    );
 
 
                     jeuTermine =
@@ -383,6 +440,30 @@ function demarrerChrono() {
                     }
 
 
+                    /* -------------------------------------------------
+                       VISITEUR
+                    ------------------------------------------------- */
+
+                    if (modeVisiteur) {
+
+                        if (boutonEnregistrer) {
+
+                            boutonEnregistrer.style.display =
+                                "none";
+
+                        }
+
+
+                        if (messageEnregistrement) {
+
+                            messageEnregistrement.textContent =
+                                "👻 Mode visiteur : connecte-toi pour enregistrer ton score dans le classement.";
+
+                        }
+
+                    }
+
+
                     console.log(
                         "⏱️ Partie terminée. Score :",
                         score
@@ -403,12 +484,12 @@ function demarrerChrono() {
 
 function rejouer() {
 
-    clearInterval(chrono);
+    clearInterval(
+        chrono
+    );
 
 
-    /*
-     Nouvelle partie
-    */
+    /* Nouvelle partie */
 
     compterPartieJeu1();
 
@@ -416,11 +497,14 @@ function rejouer() {
     score =
         0;
 
+
     temps =
         30;
 
+
     jeuTermine =
         false;
+
 
     scoreEnregistre =
         false;
@@ -481,10 +565,27 @@ function rejouer() {
 
 /* =====================================================
    ENREGISTRER LE SCORE
-   TABLE : scores
 ===================================================== */
 
 async function enregistrerMeilleurScore() {
+
+    /* -------------------------------------------------
+       VISITEUR
+    ------------------------------------------------- */
+
+    if (modeVisiteur) {
+
+        if (messageEnregistrement) {
+
+            messageEnregistrement.textContent =
+                "👻 Tu es en mode visiteur. Connecte-toi pour enregistrer ton score mondial.";
+
+        }
+
+        return;
+
+    }
+
 
     if (!messageEnregistrement) {
 
@@ -566,9 +667,9 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /* =================================================
+        /* -------------------------------------------------
            SCORE EXISTANT
-        ================================================= */
+        ------------------------------------------------- */
 
         if (
             data &&
@@ -589,8 +690,10 @@ async function enregistrerMeilleurScore() {
                     await supabaseClient
                         .from("scores")
                         .update({
+
                             score:
                                 score
+
                         })
                         .eq(
                             "id",
@@ -620,9 +723,9 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /* =================================================
+        /* -------------------------------------------------
            PREMIER SCORE
-        ================================================= */
+        ------------------------------------------------- */
 
         else {
 
@@ -683,9 +786,7 @@ async function enregistrerMeilleurScore() {
 
 
 /* =====================================================
-   CHARGER LE TOP 10
-   IMPORTANT :
-   On ne demande PAS created_at
+   CHARGER TOP 10
 ===================================================== */
 
 async function chargerClassement() {
@@ -728,7 +829,8 @@ async function chargerClassement() {
                 .order(
                     "score",
                     {
-                        ascending: false
+                        ascending:
+                            false
                     }
                 )
                 .limit(10);
@@ -766,6 +868,7 @@ async function chargerClassement() {
 
             }
 
+
             return;
 
         }
@@ -782,11 +885,15 @@ async function chargerClassement() {
             ) {
 
                 const ligne =
-                    document.createElement("tr");
+                    document.createElement(
+                        "tr"
+                    );
 
 
                 const position =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
 
 
                 if (index === 0) {
@@ -819,7 +926,9 @@ async function chargerClassement() {
 
 
                 const pseudoCell =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
 
 
                 pseudoCell.textContent =
@@ -827,7 +936,9 @@ async function chargerClassement() {
 
 
                 const scoreCell =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
 
 
                 scoreCell.textContent =
@@ -838,9 +949,11 @@ async function chargerClassement() {
                     position
                 );
 
+
                 ligne.appendChild(
                     pseudoCell
                 );
+
 
                 ligne.appendChild(
                     scoreCell
@@ -899,7 +1012,7 @@ async function chargerClassement() {
 
 
 /* =====================================================
-   RENDRE LES FONCTIONS DISPONIBLES AU HTML
+   FONCTIONS DISPONIBLES DANS HTML
 ===================================================== */
 
 window.ajouterPoint =
@@ -927,4 +1040,3 @@ compterPartieJeu1();
 demarrerChrono();
 
 chargerClassement();
-

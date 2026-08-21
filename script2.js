@@ -1,7 +1,12 @@
 
 /* =====================================================
    GAMEZONE — JEU 2
+   DEVINE LE NOMBRE
    script2.js
+
+   Système :
+   - Visiteur = peut jouer
+   - Compte = peut jouer + enregistrer ses scores
 ===================================================== */
 
 
@@ -15,12 +20,12 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY
     );
-
 
 
 /* =====================================================
@@ -31,17 +36,7 @@ const JEU =
     "jeux2";
 
 const NOM_JEU_STATISTIQUE =
-    "Jeu 2";
-
-
-/* =====================================================
-   PSEUDO
-===================================================== */
-
-const pseudo =
-    localStorage.getItem(
-        "pseudoGameZone"
-    );
+    "Devine le nombre";
 
 
 /* =====================================================
@@ -110,19 +105,7 @@ const statutClassement =
 
 
 /* =====================================================
-   AFFICHER LE PSEUDO
-===================================================== */
-
-if (pseudoAffiche) {
-
-    pseudoAffiche.textContent =
-        pseudo || "Aucun pseudo";
-
-}
-
-
-/* =====================================================
-   VARIABLES DU JEU
+   VARIABLES
 ===================================================== */
 
 let score = 3;
@@ -141,6 +124,167 @@ let partieTerminee =
 
 let scoreEnregistre =
     false;
+
+let nombreSecret =
+    nouveauNombre();
+
+
+/* =====================================================
+   VISITEUR / COMPTE
+===================================================== */
+
+let utilisateurConnecte =
+    null;
+
+
+/* =====================================================
+   VERIFIER LA SESSION
+===================================================== */
+
+async function verifierSession() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        if (
+            error ||
+            !data ||
+            !data.user
+        ) {
+
+            utilisateurConnecte =
+                null;
+
+            afficherVisiteur();
+
+            return;
+
+        }
+
+
+        utilisateurConnecte =
+            data.user;
+
+
+        await afficherUtilisateur();
+
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur session :",
+            erreur
+        );
+
+        utilisateurConnecte =
+            null;
+
+        afficherVisiteur();
+
+    }
+
+}
+
+
+/* =====================================================
+   AFFICHER VISITEUR
+===================================================== */
+
+function afficherVisiteur() {
+
+    if (!pseudoAffiche) {
+
+        return;
+
+    }
+
+
+    pseudoAffiche.textContent =
+        "Visiteur 👤";
+
+}
+
+
+/* =====================================================
+   AFFICHER UTILISATEUR CONNECTÉ
+===================================================== */
+
+async function afficherUtilisateur() {
+
+    if (!pseudoAffiche) {
+
+        return;
+
+    }
+
+
+    let pseudo =
+        "Joueur";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("profils")
+                .select("pseudo")
+                .eq(
+                    "id",
+                    utilisateurConnecte.id
+                )
+                .maybeSingle();
+
+
+        if (
+            !error &&
+            data &&
+            data.pseudo
+        ) {
+
+            pseudo =
+                data.pseudo;
+
+        }
+
+        else if (
+            utilisateurConnecte.user_metadata &&
+            utilisateurConnecte.user_metadata.pseudo
+        ) {
+
+            pseudo =
+                utilisateurConnecte
+                    .user_metadata
+                    .pseudo;
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur récupération pseudo :",
+            erreur
+        );
+
+    }
+
+
+    pseudoAffiche.textContent =
+        pseudo + " 👤";
+
+}
 
 
 /* =====================================================
@@ -184,34 +328,28 @@ function nouveauNombre() {
 }
 
 
-let nombreSecret =
-    nouveauNombre();
-
-
 /* =====================================================
    COMPTER UNE PARTIE
-   TABLE : statistiques_jeux
 ===================================================== */
 
 async function compterPartieJeu2() {
 
     try {
 
-        console.log(
-            "🎮 Comptage : Devine le nombre"
-        );
-
         const {
             data,
             error
-        } = await supabaseClient
-            .from("statistiques_jeux")
-            .select("id,nombre_parties")
-            .eq(
-                "nom_jeu",
-                "Devine le nombre"
-            )
-            .maybeSingle();
+        } =
+            await supabaseClient
+                .from("statistiques_jeux")
+                .select(
+                    "id,nombre_parties"
+                )
+                .eq(
+                    "nom_jeu",
+                    NOM_JEU_STATISTIQUE
+                )
+                .maybeSingle();
 
 
         if (error) {
@@ -226,15 +364,10 @@ async function compterPartieJeu2() {
         }
 
 
-        /*
-         La ligne doit déjà exister.
-         On ne fait JAMAIS de INSERT ici.
-        */
-
         if (!data) {
 
             console.error(
-                "❌ La ligne 'Devine le nombre' n'existe pas dans statistiques_jeux."
+                "❌ La ligne 'Devine le nombre' n'existe pas."
             );
 
             return;
@@ -242,7 +375,7 @@ async function compterPartieJeu2() {
         }
 
 
-        const nouveauNombre =
+        const nouveauNombreParties =
             Number(
                 data.nombre_parties || 0
             ) + 1;
@@ -250,18 +383,19 @@ async function compterPartieJeu2() {
 
         const {
             error: erreurUpdate
-        } = await supabaseClient
-            .from("statistiques_jeux")
-            .update({
+        } =
+            await supabaseClient
+                .from("statistiques_jeux")
+                .update({
 
-                nombre_parties:
-                    nouveauNombre
+                    nombre_parties:
+                        nouveauNombreParties
 
-            })
-            .eq(
-                "id",
-                data.id
-            );
+                })
+                .eq(
+                    "id",
+                    data.id
+                );
 
 
         if (erreurUpdate) {
@@ -278,7 +412,7 @@ async function compterPartieJeu2() {
 
         console.log(
             "✅ Devine le nombre :",
-            nouveauNombre,
+            nouveauNombreParties,
             "parties"
         );
 
@@ -296,12 +430,20 @@ async function compterPartieJeu2() {
 }
 
 
+/* =====================================================
+   FONCTION GENERALE
+===================================================== */
+
 async function compterPartie() {
 
     await compterPartieJeu2();
 
 }
-window.compterPartie = compterPartie;
+
+
+window.compterPartie =
+    compterPartie;
+
 
 /* =====================================================
    VERIFIER LE NOMBRE
@@ -330,7 +472,7 @@ function verifier() {
 
 
     /* =================================================
-       VERIFICATION
+       VALIDATION
     ================================================= */
 
     if (
@@ -459,8 +601,7 @@ function verifier() {
             score <= 0
         ) {
 
-            score =
-                0;
+            score = 0;
 
 
             if (scoreElement) {
@@ -568,24 +709,13 @@ function terminerPartie() {
             meilleurScore
         );
 
-
-        if (messageEnregistrement) {
-
-            messageEnregistrement.textContent =
-                "🔥 Nouveau record !";
-
-        }
-
     }
 
-    else {
 
-        if (messageEnregistrement) {
+    if (messageEnregistrement) {
 
-            messageEnregistrement.textContent =
-                "";
-
-        }
+        messageEnregistrement.textContent =
+            "";
 
     }
 
@@ -608,55 +738,84 @@ function nouvellePartie() {
 
     compterPartie();
 
-    score = 3;
 
-    maximumPartie = 3;
+    score =
+        3;
 
-    partieTerminee = false;
+    maximumPartie =
+        3;
 
-    scoreEnregistre = false;
+    partieTerminee =
+        false;
 
-    nombreSecret = nouveauNombre();
+    scoreEnregistre =
+        false;
+
+    nombreSecret =
+        nouveauNombre();
+
 
     if (scoreElement) {
-        scoreElement.textContent = "3";
+
+        scoreElement.textContent =
+            "3";
+
     }
+
 
     if (maximumPartieElement) {
-        maximumPartieElement.textContent = "3";
+
+        maximumPartieElement.textContent =
+            "3";
+
     }
 
+
     if (nombreInput) {
-        nombreInput.value = "";
-        nombreInput.disabled = false;
+
+        nombreInput.value =
+            "";
+
+        nombreInput.disabled =
+            false;
+
         nombreInput.focus();
+
     }
+
 
     if (boutonValider) {
-        boutonValider.disabled = false;
+
+        boutonValider.disabled =
+            false;
+
     }
+
 
     if (zoneEnregistrement) {
-        zoneEnregistrement.style.display = "none";
+
+        zoneEnregistrement.style.display =
+            "none";
+
     }
+
 
     if (message) {
-        message.textContent = "🎲 Nouvelle partie !";
+
+        message.textContent =
+            "🎲 Nouvelle partie !";
+
     }
+
 
     if (messageEnregistrement) {
-        messageEnregistrement.textContent = "";
+
+        messageEnregistrement.textContent =
+            "";
+
     }
+
 }
-
-
-    if (nombreInput) {
-
-        nombreInput.focus();
-
-    }
-
-
 
 
 /* =====================================================
@@ -696,10 +855,25 @@ async function enregistrerMeilleurScore() {
     }
 
 
-    if (!pseudo) {
+    /* =================================================
+       VISITEUR
+    ================================================= */
 
-        messageEnregistrement.textContent =
-            "❌ Aucun pseudo trouvé.";
+    if (!utilisateurConnecte) {
+
+        messageEnregistrement.innerHTML =
+
+            `🔐 Tu joues actuellement en visiteur.<br><br>
+
+             Crée un compte ou connecte-toi pour
+             enregistrer ton score dans le classement.<br><br>
+
+             <a href="compte.html"
+                class="bouton-compte">
+
+                👤 Créer un compte / Se connecter
+
+             </a>`;
 
         return;
 
@@ -738,6 +912,56 @@ async function enregistrerMeilleurScore() {
 
     try {
 
+        /* =================================================
+           RÉCUPÉRER LE PSEUDO DU COMPTE
+        ================================================= */
+
+        let pseudoCompte =
+            "Joueur";
+
+
+        const {
+            data: profil,
+            error: erreurProfil
+        } =
+            await supabaseClient
+                .from("profils")
+                .select("pseudo")
+                .eq(
+                    "id",
+                    utilisateurConnecte.id
+                )
+                .maybeSingle();
+
+
+        if (
+            !erreurProfil &&
+            profil &&
+            profil.pseudo
+        ) {
+
+            pseudoCompte =
+                profil.pseudo;
+
+        }
+
+        else if (
+            utilisateurConnecte.user_metadata &&
+            utilisateurConnecte.user_metadata.pseudo
+        ) {
+
+            pseudoCompte =
+                utilisateurConnecte
+                    .user_metadata
+                    .pseudo;
+
+        }
+
+
+        /* =================================================
+           RECHERCHE DU SCORE
+        ================================================= */
+
         const {
             data: anciensScores,
             error: erreurRecherche
@@ -749,7 +973,7 @@ async function enregistrerMeilleurScore() {
                 )
                 .eq(
                     "pseudo",
-                    pseudo
+                    pseudoCompte
                 )
                 .eq(
                     "jeu",
@@ -760,15 +984,7 @@ async function enregistrerMeilleurScore() {
 
         if (erreurRecherche) {
 
-            console.error(
-                "❌ Erreur recherche score :",
-                erreurRecherche
-            );
-
-
-            throw new Error(
-                "Recherche impossible."
-            );
+            throw erreurRecherche;
 
         }
 
@@ -799,7 +1015,7 @@ async function enregistrerMeilleurScore() {
                 const {
                     error: erreurUpdate
                 } =
-                    await supabaseClientJeu2
+                    await supabaseClient
                         .from("scores")
                         .update({
 
@@ -815,15 +1031,7 @@ async function enregistrerMeilleurScore() {
 
                 if (erreurUpdate) {
 
-                    console.error(
-                        "❌ Erreur update score :",
-                        erreurUpdate
-                    );
-
-
-                    throw new Error(
-                        "Modification impossible."
-                    );
+                    throw erreurUpdate;
 
                 }
 
@@ -852,12 +1060,12 @@ async function enregistrerMeilleurScore() {
             const {
                 error: erreurInsertion
             } =
-                await supabaseClientJeu2
+                await supabaseClient
                     .from("scores")
                     .insert({
 
                         pseudo:
-                            pseudo,
+                            pseudoCompte,
 
                         score:
                             maximumPartie,
@@ -870,15 +1078,7 @@ async function enregistrerMeilleurScore() {
 
             if (erreurInsertion) {
 
-                console.error(
-                    "❌ Erreur insertion score :",
-                    erreurInsertion
-                );
-
-
-                throw new Error(
-                    "Insertion impossible."
-                );
+                throw erreurInsertion;
 
             }
 
@@ -965,20 +1165,10 @@ async function chargerClassement() {
 
         if (error) {
 
-            console.error(
-                "❌ Erreur classement :",
-                error
-            );
-
-
             throw error;
 
         }
 
-
-        /* =================================================
-           AUCUN SCORE
-        ================================================= */
 
         if (
 
@@ -1008,15 +1198,10 @@ async function chargerClassement() {
 
             }
 
-
             return;
 
         }
 
-
-        /* =================================================
-           AFFICHER LES SCORES
-        ================================================= */
 
         listeScores.innerHTML =
             "";
@@ -1093,11 +1278,9 @@ async function chargerClassement() {
                     position
                 );
 
-
                 ligne.appendChild(
                     pseudoCell
                 );
-
 
                 ligne.appendChild(
                     scoreCell
@@ -1134,8 +1317,10 @@ async function chargerClassement() {
             <tr>
 
                 <td colspan="3">
+
                     ❌ Impossible de charger
                     le classement.
+
                 </td>
 
             </tr>
@@ -1159,11 +1344,28 @@ async function chargerClassement() {
    RENDRE LES FONCTIONS ACCESSIBLES AU HTML
 ===================================================== */
 
-window.verifier = verifier;
-window.nouvellePartie = nouvellePartie;
-window.enregistrerMeilleurScore = enregistrerMeilleurScore;
-window.chargerClassement = chargerClassement;
-window.compterPartie = compterPartie;
+window.verifier =
+    verifier;
+
+window.nouvellePartie =
+    nouvellePartie;
+
+window.enregistrerMeilleurScore =
+    enregistrerMeilleurScore;
+
+window.chargerClassement =
+    chargerClassement;
+
+window.compterPartie =
+    compterPartie;
+
+
+/* =====================================================
+   DEMARRAGE
+===================================================== */
+
+verifierSession();
 
 compterPartie();
+
 chargerClassement();

@@ -1,6 +1,12 @@
 /* =========================================================
-   GAMEZONE — FLAPPY
-   script7.js
+   GAMEZONE — SCRIPT 7 — FLAPPY BIRD
+=========================================================
+   👤 Mode visiteur autorisé
+   🔐 Compte connecté = classement mondial
+   🏆 Classement mondial Supabase
+   📊 Compteur global des parties
+   💾 Meilleur score local
+   📱 PC + mobile
 ========================================================= */
 
 
@@ -36,7 +42,10 @@ const JEU_ID = "7";
 ========================================================= */
 
 const canvas =
-    document.getElementById("jeuFlappy");
+    document.getElementById(
+        "jeuFlappy"
+    );
+
 
 const ctx =
     canvas
@@ -45,39 +54,55 @@ const ctx =
 
 
 const scoreElement =
-    document.getElementById("score");
+    document.getElementById(
+        "score"
+    );
 
 
 const meilleurScoreElement =
-    document.getElementById("meilleurScore");
+    document.getElementById(
+        "meilleurScore"
+    );
 
 
 const niveauElement =
-    document.getElementById("niveau");
+    document.getElementById(
+        "niveau"
+    );
 
 
 const messageElement =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 
 const pseudoElement =
-    document.getElementById("pseudoJoueur");
+    document.getElementById(
+        "pseudoJoueur"
+    );
 
 
 const boutonMobile =
-    document.getElementById("boutonMobile");
+    document.getElementById(
+        "boutonMobile"
+    );
 
 
 const boutonRejouer =
-    document.getElementById("boutonRejouer");
+    document.getElementById(
+        "boutonRejouer"
+    );
 
 
 const tableauScores =
-    document.getElementById("tableauScores");
+    document.getElementById(
+        "tableauScores"
+    );
 
 
 /* =========================================================
-   VERIFICATION DU CANVAS
+   VERIFICATION CANVAS
 ========================================================= */
 
 if (!canvas || !ctx) {
@@ -94,19 +119,224 @@ if (!canvas || !ctx) {
 
 
 /* =========================================================
-   PSEUDO
+   UTILISATEUR
 ========================================================= */
 
-const pseudo =
+let utilisateurConnecte =
+    false;
+
+
+let pseudo =
     localStorage.getItem(
         "pseudoGameZone"
     );
 
 
+/* =========================================================
+   VERIFICATION DU COMPTE
+   MODE VISITEUR AUTORISE
+========================================================= */
+
+async function verifierConnexionFlappy() {
+
+    /*
+       Si Supabase n'est pas disponible,
+       on autorise le mode visiteur.
+    */
+
+    if (!supabaseClient) {
+
+        console.warn(
+            "⚠️ Supabase non disponible."
+        );
+
+        utilisateurConnecte =
+            false;
+
+        pseudo =
+            null;
+
+        if (pseudoElement) {
+
+            pseudoElement.textContent =
+                "Visiteur";
+
+        }
+
+        return true;
+
+    }
+
+
+    try {
+
+        /*
+           Vérifier la session actuelle.
+        */
+
+        const resultat =
+            await supabaseClient.auth.getSession();
+
+
+        /*
+           Erreur de session :
+           mode visiteur.
+        */
+
+        if (resultat.error) {
+
+            console.warn(
+                "⚠️ Erreur vérification session :",
+                resultat.error
+            );
+
+            utilisateurConnecte =
+                false;
+
+            pseudo =
+                null;
+
+            if (pseudoElement) {
+
+                pseudoElement.textContent =
+                    "Visiteur";
+
+            }
+
+            return true;
+
+        }
+
+
+        const session =
+            resultat.data.session;
+
+
+        /*
+           =================================================
+           VISITEUR
+           =================================================
+        */
+
+        if (!session) {
+
+            console.log(
+                "👤 Mode visiteur activé."
+            );
+
+            utilisateurConnecte =
+                false;
+
+            pseudo =
+                null;
+
+            if (pseudoElement) {
+
+                pseudoElement.textContent =
+                    "Visiteur";
+
+            }
+
+            return true;
+
+        }
+
+
+        /*
+           =================================================
+           COMPTE CONNECTÉ
+           =================================================
+        */
+
+        utilisateurConnecte =
+            true;
+
+
+        console.log(
+            "✅ Compte connecté :",
+            session.user.email
+        );
+
+
+        /*
+           Le pseudo est récupéré
+           depuis le localStorage.
+        */
+
+        pseudo =
+            localStorage.getItem(
+                "pseudoGameZone"
+            );
+
+
+        if (pseudoElement) {
+
+            pseudoElement.textContent =
+                pseudo ||
+                "Joueur";
+
+        }
+
+
+        return true;
+
+    }
+
+    catch (erreur) {
+
+        console.warn(
+            "⚠️ Vérification connexion impossible :",
+            erreur
+        );
+
+
+        /*
+           En cas de problème,
+           le mode visiteur reste autorisé.
+        */
+
+        utilisateurConnecte =
+            false;
+
+
+        pseudo =
+            null;
+
+
+        if (pseudoElement) {
+
+            pseudoElement.textContent =
+                "Visiteur";
+
+        }
+
+
+        return true;
+
+    }
+
+}
+
+
+/* =========================================================
+   PSEUDO AFFICHAGE
+========================================================= */
+
 if (pseudoElement) {
 
-    pseudoElement.textContent =
-        pseudo || "Joueur";
+    if (utilisateurConnecte && pseudo) {
+
+        pseudoElement.textContent =
+            pseudo;
+
+    }
+
+    else {
+
+        pseudoElement.textContent =
+            "Visiteur";
+
+    }
 
 }
 
@@ -115,12 +345,40 @@ if (pseudoElement) {
    MEILLEUR SCORE LOCAL
 ========================================================= */
 
-const cleMeilleurScore =
-    "meilleurScoreFlappy_" +
-    (
-        pseudo ||
-        "joueur"
-    );
+function obtenirCleMeilleurScore() {
+
+    /*
+       Compte connecté :
+       score associé au pseudo.
+
+       Visiteur :
+       score associé à "visiteur".
+    */
+
+    if (
+        utilisateurConnecte &&
+        pseudo
+    ) {
+
+        return (
+            "meilleurScoreFlappy_" +
+            pseudo
+        );
+
+    }
+
+
+    return "meilleurScoreFlappy_visiteur";
+
+}
+
+
+/* =========================================================
+   CLE SCORE
+========================================================= */
+
+let cleMeilleurScore =
+    obtenirCleMeilleurScore();
 
 
 let meilleurScore =
@@ -143,12 +401,28 @@ if (meilleurScoreElement) {
    COMPTEUR LOCAL DES PARTIES
 ========================================================= */
 
-const clePartiesJouees =
-    "partiesJoueesFlappy_" +
-    (
-        pseudo ||
-        "joueur"
-    );
+function obtenirClePartiesJouees() {
+
+    if (
+        utilisateurConnecte &&
+        pseudo
+    ) {
+
+        return (
+            "partiesJoueesFlappy_" +
+            pseudo
+        );
+
+    }
+
+
+    return "partiesJoueesFlappy_visiteur";
+
+}
+
+
+let clePartiesJouees =
+    obtenirClePartiesJouees();
 
 
 let partiesJouees =
@@ -190,23 +464,17 @@ let tempsDernierTuyau = 0;
    PARAMETRES DU JEU
 ========================================================= */
 
-/*
-   IMPORTANT :
-
-   Les vitesses sont exprimées en pixels par seconde.
-
-   Cela évite que le jeu soit plus rapide ou plus lent
-   selon le nombre de FPS de l'ordinateur.
-*/
-
 const GRAVITE_BASE =
     950;
+
 
 const SAUT_BASE =
     -350;
 
+
 const VITESSE_BASE =
     170;
+
 
 const VITESSE_MAX =
     330;
@@ -239,6 +507,7 @@ let intervalleTuyaux =
 const LARGEUR_OISEAU =
     34;
 
+
 const HAUTEUR_OISEAU =
     26;
 
@@ -257,7 +526,9 @@ const HAUTEUR_SOL =
 
 function initialiserJeu() {
 
-    /* Annuler une ancienne boucle */
+    /*
+       Annuler une ancienne boucle.
+    */
 
     if (animationID !== null) {
 
@@ -265,10 +536,15 @@ function initialiserJeu() {
             animationID
         );
 
+        animationID =
+            null;
+
     }
 
 
-    /* OISEAU */
+    /*
+       OISEAU
+    */
 
     oiseau = {
 
@@ -288,20 +564,25 @@ function initialiserJeu() {
     };
 
 
-    /* TUYAUX */
+    /*
+       TUYAUX
+    */
 
     tuyaux = [];
 
 
-    /* SCORE */
+    /*
+       SCORE
+    */
 
     score = 0;
-
 
     niveau = 1;
 
 
-    /* DIFFICULTE */
+    /*
+       DIFFICULTE
+    */
 
     vitesse =
         VITESSE_BASE;
@@ -323,22 +604,33 @@ function initialiserJeu() {
         1.45;
 
 
-    /* ETAT */
+    /*
+       ETAT
+    */
 
-    jeuCommence = false;
-
-    jeuTermine = false;
-
-
-    dernierTemps = 0;
-
-    tempsDernierTuyau = 0;
+    jeuCommence =
+        false;
 
 
-    partieComptee = false;
+    jeuTermine =
+        false;
 
 
-    /* AFFICHAGE */
+    dernierTemps =
+        0;
+
+
+    tempsDernierTuyau =
+        0;
+
+
+    partieComptee =
+        false;
+
+
+    /*
+       AFFICHAGE
+    */
 
     if (scoreElement) {
 
@@ -372,7 +664,9 @@ function initialiserJeu() {
     }
 
 
-    /* DESSIN INITIAL */
+    /*
+       Dessin initial.
+    */
 
     dessiner();
 
@@ -386,7 +680,7 @@ function initialiserJeu() {
 async function compterPartie() {
 
     /*
-       Compteur local
+       Compteur local.
     */
 
     partiesJouees++;
@@ -402,7 +696,7 @@ async function compterPartie() {
 
 
     /*
-       Compteur global
+       Compteur global Supabase.
     */
 
     await compterPartieJeu7();
@@ -418,7 +712,7 @@ function sauter() {
 
     /*
        Si le jeu est terminé,
-       le joueur doit utiliser Rejouer.
+       ne rien faire.
     */
 
     if (jeuTermine) {
@@ -430,22 +724,23 @@ function sauter() {
 
     /*
        Premier saut :
-       démarrage du jeu.
+       démarrage.
     */
 
     if (!jeuCommence) {
 
-        jeuCommence = true;
+        jeuCommence =
+            true;
 
 
         /*
-           Compter UNE SEULE fois
-           par partie.
+           Compter une seule partie.
         */
 
         if (!partieComptee) {
 
-            partieComptee = true;
+            partieComptee =
+                true;
 
 
             compterPartie();
@@ -462,8 +757,7 @@ function sauter() {
 
 
         /*
-           Initialiser le temps
-           pour éviter un gros delta.
+           Initialiser le temps.
         */
 
         dernierTemps =
@@ -483,7 +777,7 @@ function sauter() {
 
 
     /*
-       Saut
+       Saut.
     */
 
     oiseau.vitesseY =
@@ -583,13 +877,6 @@ document.addEventListener(
 
 function creerTuyau() {
 
-    /*
-       Le sol fait 18 pixels.
-
-       On garde également une marge
-       en haut et en bas.
-    */
-
     const hauteurMin =
         55;
 
@@ -600,10 +887,6 @@ function creerTuyau() {
         espaceTuyaux -
         55;
 
-
-    /*
-       Sécurité si la fenêtre est petite.
-    */
 
     if (
         hauteurMax <= hauteurMin
@@ -692,8 +975,7 @@ function augmenterDifficulte() {
 
 
     /*
-       Passage progressivement
-       plus petit.
+       Passage plus petit.
     */
 
     espaceTuyaux =
@@ -711,7 +993,8 @@ function augmenterDifficulte() {
 
 
     /*
-       Tuyaux légèrement plus fréquents.
+       Tuyaux légèrement
+       plus fréquents.
     */
 
     intervalleTuyaux =
@@ -739,13 +1022,9 @@ function collision(
     tuyau
 ) {
 
-    /*
-       Petite marge pour rendre
-       les collisions moins frustrantes.
-    */
-
     const margeX =
         5;
+
 
     const margeY =
         4;
@@ -791,10 +1070,6 @@ function collision(
         tuyau.espace;
 
 
-    /*
-       Collision horizontale
-    */
-
     const collisionX =
         droite > tuyauGauche &&
         gauche < tuyauDroite;
@@ -806,10 +1081,6 @@ function collision(
 
     }
 
-
-    /*
-       Collision verticale
-    */
 
     if (
 
@@ -836,8 +1107,7 @@ function collision(
 async function gameOver() {
 
     /*
-       Empêcher plusieurs appels
-       simultanés.
+       Empêcher plusieurs appels.
     */
 
     if (jeuTermine) {
@@ -847,7 +1117,8 @@ async function gameOver() {
     }
 
 
-    jeuTermine = true;
+    jeuTermine =
+        true;
 
 
     if (animationID !== null) {
@@ -856,11 +1127,14 @@ async function gameOver() {
             animationID
         );
 
+        animationID =
+            null;
+
     }
 
 
     /*
-       Meilleur score
+       Meilleur score local.
     */
 
     if (
@@ -892,20 +1166,33 @@ async function gameOver() {
 
 
     /*
-       Message
+       Message.
     */
 
     if (messageElement) {
 
-        messageElement.textContent =
-            "💥 Game Over ! Score : " +
-            score;
+        if (utilisateurConnecte) {
+
+            messageElement.textContent =
+                "💥 Game Over ! Score : " +
+                score;
+
+        }
+
+        else {
+
+            messageElement.textContent =
+                "💥 Game Over ! Score : " +
+                score +
+                " — 👤 Mode visiteur";
+
+        }
 
     }
 
 
     /*
-       Bouton Rejouer
+       Bouton Rejouer.
     */
 
     if (boutonRejouer) {
@@ -917,19 +1204,31 @@ async function gameOver() {
 
 
     /*
-       Dernier dessin
+       Dernier dessin.
     */
 
     dessiner();
 
 
     /*
-       Enregistrer le score.
+       Enregistrer uniquement
+       si un compte est connecté.
     */
 
-    if (pseudo) {
+    if (
+        utilisateurConnecte &&
+        pseudo
+    ) {
 
         await enregistrerScoreSupabase();
+
+    }
+
+    else {
+
+        console.log(
+            "👤 Visiteur : score non envoyé au classement."
+        );
 
     }
 
@@ -937,21 +1236,16 @@ async function gameOver() {
 
 
 /* =========================================================
-   ENREGISTRER SCORE SUPABASE
+   ENREGISTRER SCORE FLAPPY DANS SUPABASE
 ========================================================= */
-
-/* =====================================================
-   ENREGISTRER SCORE FLAPPY DANS SUPABASE
-===================================================== */
-
-/* =====================================================
-   ENREGISTRER SCORE FLAPPY DANS SUPABASE
-===================================================== */
 
 async function enregistrerScoreSupabase() {
 
     const pseudoActuel =
-        localStorage.getItem("pseudoGameZone");
+        localStorage.getItem(
+            "pseudoGameZone"
+        );
+
 
     if (!pseudoActuel) {
 
@@ -960,7 +1254,20 @@ async function enregistrerScoreSupabase() {
         );
 
         return;
+
     }
+
+
+    if (!supabaseClient) {
+
+        console.error(
+            "❌ Supabase non disponible."
+        );
+
+        return;
+
+    }
+
 
     try {
 
@@ -971,9 +1278,9 @@ async function enregistrerScoreSupabase() {
         );
 
 
-        /* =================================================
-           RECHERCHER LE SCORE DU JOUEUR
-        ================================================= */
+        /*
+           Rechercher le score du joueur.
+        */
 
         const resultat =
             await supabaseClient
@@ -996,16 +1303,19 @@ async function enregistrerScoreSupabase() {
             );
 
             return;
+
         }
 
 
-        /* =================================================
+        /*
            SCORE EXISTANT
-        ================================================= */
+        */
 
         if (
+
             resultat.data &&
             resultat.data.length > 0
+
         ) {
 
             const ancienScore =
@@ -1014,11 +1324,13 @@ async function enregistrerScoreSupabase() {
                 ) || 0;
 
 
-            /* ---------------------------------------------
-               Le nouveau score n'est pas meilleur
-            --------------------------------------------- */
+            /*
+               Score moins bon.
+            */
 
-            if (score <= ancienScore) {
+            if (
+                score <= ancienScore
+            ) {
 
                 console.log(
                     "ℹ️ Ancien meilleur score conservé :",
@@ -1026,12 +1338,13 @@ async function enregistrerScoreSupabase() {
                 );
 
                 return;
+
             }
 
 
-            /* ---------------------------------------------
-               Nouveau record
-            --------------------------------------------- */
+            /*
+               Nouveau record.
+            */
 
             const miseAJour =
                 await supabaseClient
@@ -1059,6 +1372,7 @@ async function enregistrerScoreSupabase() {
                 );
 
                 return;
+
             }
 
 
@@ -1070,9 +1384,9 @@ async function enregistrerScoreSupabase() {
         }
 
 
-        /* =================================================
-           PREMIER SCORE DU JOUEUR
-        ================================================= */
+        /*
+           PREMIER SCORE
+        */
 
         else {
 
@@ -1104,6 +1418,7 @@ async function enregistrerScoreSupabase() {
                 );
 
                 return;
+
             }
 
 
@@ -1115,18 +1430,11 @@ async function enregistrerScoreSupabase() {
         }
 
 
-        /* =================================================
-           RECHARGER LE CLASSEMENT
-        ================================================= */
+        /*
+           Recharger classement.
+        */
 
-        if (
-            typeof chargerClassement ===
-            "function"
-        ) {
-
-            await chargerClassement();
-
-        }
+        await afficherClassement();
 
     }
 
@@ -1140,6 +1448,7 @@ async function enregistrerScoreSupabase() {
     }
 
 }
+
 
 /* =========================================================
    CLASSEMENT TOP 10
@@ -1174,7 +1483,7 @@ async function afficherClassement() {
             <tr>
 
                 <td colspan="3">
-                    ❌ Supabase non chargé.
+                    ❌ Classement indisponible.
                 </td>
 
             </tr>
@@ -1222,7 +1531,7 @@ async function afficherClassement() {
 
 
         /*
-           Aucun score
+           Aucun score.
         */
 
         if (
@@ -1286,7 +1595,7 @@ async function afficherClassement() {
 
 
                 /*
-                   Position
+                   Position.
                 */
 
                 if (
@@ -1325,7 +1634,7 @@ async function afficherClassement() {
 
 
                 /*
-                   Pseudo
+                   Pseudo.
                 */
 
                 pseudoCellule.textContent =
@@ -1333,7 +1642,7 @@ async function afficherClassement() {
 
 
                 /*
-                   Score
+                   Score.
                 */
 
                 scoreCellule.textContent =
@@ -1343,11 +1652,12 @@ async function afficherClassement() {
 
 
                 /*
-                   Mettre le joueur
-                   actuel en évidence.
+                   Joueur connecté.
                 */
 
                 if (
+
+                    utilisateurConnecte &&
 
                     pseudo &&
 
@@ -1396,7 +1706,6 @@ async function afficherClassement() {
         );
 
     }
-
 
     catch (erreur) {
 
@@ -1451,11 +1760,13 @@ function mettreAJour(
     */
 
     for (
+
         let i = tuyaux.length - 1;
 
         i >= 0;
 
         i--
+
     ) {
 
         const tuyau =
@@ -1463,7 +1774,7 @@ function mettreAJour(
 
 
         /*
-           Déplacement
+           Déplacement.
         */
 
         tuyau.x -=
@@ -1472,7 +1783,7 @@ function mettreAJour(
 
 
         /*
-           SCORE
+           SCORE.
         */
 
         if (
@@ -1506,7 +1817,7 @@ function mettreAJour(
 
 
         /*
-           Collision
+           Collision.
         */
 
         if (
@@ -1524,7 +1835,7 @@ function mettreAJour(
 
 
         /*
-           Supprimer les tuyaux
+           Supprimer tuyaux
            sortis de l'écran.
         */
 
@@ -1547,7 +1858,7 @@ function mettreAJour(
 
 
     /*
-       CREATION DES TUYAUX
+       CREATION TUYAUX
     */
 
     if (
@@ -1666,7 +1977,7 @@ function dessinerFond() {
 
 
     /*
-       Nuages
+       Nuages.
     */
 
     dessinerNuage(
@@ -1691,7 +2002,7 @@ function dessinerFond() {
 
 
     /*
-       Soleil
+       Soleil.
     */
 
     const soleil =
@@ -1840,7 +2151,7 @@ function dessinerTuyau(
 
 
     /*
-       Gradient
+       Gradient.
     */
 
     const gradient =
@@ -2037,7 +2348,7 @@ function dessinerOiseau() {
 
 
     /*
-       Rotation selon la vitesse.
+       Rotation.
     */
 
     let angle =
@@ -2332,14 +2643,14 @@ function dessinerSol() {
 function dessiner() {
 
     /*
-       Fond
+       Fond.
     */
 
     dessinerFond();
 
 
     /*
-       Tuyaux
+       Tuyaux.
     */
 
     for (
@@ -2354,14 +2665,14 @@ function dessiner() {
 
 
     /*
-       Sol
+       Sol.
     */
 
     dessinerSol();
 
 
     /*
-       Oiseau
+       Oiseau.
     */
 
     if (oiseau) {
@@ -2496,7 +2807,7 @@ function boucle(
 ) {
 
     /*
-       Arrêt complet après Game Over.
+       Arrêt après Game Over.
     */
 
     if (jeuTermine) {
@@ -2519,7 +2830,7 @@ function boucle(
 
 
     /*
-       Delta en secondes.
+       Delta.
     */
 
     let deltaSecondes =
@@ -2530,9 +2841,7 @@ function boucle(
 
 
     /*
-       Protection contre les gros
-       ralentissements / changement
-       d'onglet.
+       Protection.
     */
 
     deltaSecondes =
@@ -2547,7 +2856,7 @@ function boucle(
 
 
     /*
-       Mise à jour
+       Mise à jour.
     */
 
     mettreAJour(
@@ -2560,7 +2869,7 @@ function boucle(
 
 
     /*
-       Dessin
+       Dessin.
     */
 
     dessiner();
@@ -2608,13 +2917,18 @@ if (boutonRejouer) {
    COMPTEUR GLOBAL — JEU 7
 ========================================================= */
 
-/* =====================================================
-   COMPTER UNE PARTIE — FLAPPY BIRD
-===================================================== */
-
 async function compterPartieJeu7() {
 
-    const NOM_JEU = "Flappy Bird";
+    const NOM_JEU =
+        "Flappy Bird";
+
+
+    if (!supabaseClient) {
+
+        return;
+
+    }
+
 
     try {
 
@@ -2624,9 +2938,9 @@ async function compterPartieJeu7() {
         );
 
 
-        /* =================================================
-           RECHERCHER LE JEU
-        ================================================= */
+        /*
+           Rechercher le jeu.
+        */
 
         const resultat =
             await supabaseClient
@@ -2641,10 +2955,6 @@ async function compterPartieJeu7() {
                 .maybeSingle();
 
 
-        /* =================================================
-           ERREUR SUPABASE
-        ================================================= */
-
         if (resultat.error) {
 
             console.error(
@@ -2653,12 +2963,13 @@ async function compterPartieJeu7() {
             );
 
             return;
+
         }
 
 
-        /* =================================================
-           JEU INTROUVABLE
-        ================================================= */
+        /*
+           Jeu introuvable.
+        */
 
         if (!resultat.data) {
 
@@ -2667,18 +2978,9 @@ async function compterPartieJeu7() {
             );
 
             return;
+
         }
 
-
-        console.log(
-            "📊 Ligne trouvée :",
-            resultat.data
-        );
-
-
-        /* =================================================
-           NOUVEAU NOMBRE DE PARTIES
-        ================================================= */
 
         const ancienNombre =
             Number(
@@ -2690,9 +2992,9 @@ async function compterPartieJeu7() {
             ancienNombre + 1;
 
 
-        /* =================================================
-           METTRE À JOUR
-        ================================================= */
+        /*
+           Mise à jour.
+        */
 
         const miseAJour =
             await supabaseClient
@@ -2709,10 +3011,6 @@ async function compterPartieJeu7() {
                 );
 
 
-        /* =================================================
-           ERREUR MISE À JOUR
-        ================================================= */
-
         if (miseAJour.error) {
 
             console.error(
@@ -2721,12 +3019,9 @@ async function compterPartieJeu7() {
             );
 
             return;
+
         }
 
-
-        /* =================================================
-           SUCCÈS
-        ================================================= */
 
         console.log(
             "✅ Flappy Bird :",
@@ -2747,16 +3042,47 @@ async function compterPartieJeu7() {
 
 }
 
+
 /* =========================================================
    DEMARRAGE
 ========================================================= */
 
-initialiserJeu();
+async function demarrerFlappy() {
+
+    /*
+       Vérification du compte.
+       Le visiteur est autorisé.
+    */
+
+    const connecte =
+        await verifierConnexionFlappy();
 
 
-/*
-   Charger immédiatement
-   le classement mondial.
-*/
+    if (!connecte) {
 
-afficherClassement();
+        return;
+
+    }
+
+
+    /*
+       Initialiser le jeu.
+    */
+
+    initialiserJeu();
+
+
+    /*
+       Charger le classement.
+    */
+
+    afficherClassement();
+
+}
+
+
+/* =========================================================
+   LANCEMENT
+========================================================= */
+
+demarrerFlappy();

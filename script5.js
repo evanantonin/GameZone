@@ -1,6 +1,7 @@
 /* =====================================================
    GAMEZONE — PONG
    script5.js
+   MODE VISITEUR
 ===================================================== */
 
 
@@ -10,6 +11,7 @@
 
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
+
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
@@ -29,11 +31,6 @@ const supabaseClient =
 const JEU =
     "pong";
 
-
-/*
-   Nom EXACT présent dans
-   statistiques_jeux
-*/
 
 const NOM_JEU_STATISTIQUE =
     "Pong";
@@ -58,7 +55,7 @@ const pseudoJoueurElement =
 if (pseudoJoueurElement) {
 
     pseudoJoueurElement.textContent =
-        pseudo || "Joueur";
+        pseudo || "Visiteur";
 
 }
 
@@ -146,34 +143,11 @@ const messageClassement =
 
 let mode = null;
 
-
-/*
-   false = aucune partie
-   true = partie en cours
-*/
-
 let jeuCommence = false;
-
-
-/*
-   true = partie terminée
-*/
 
 let jeuTermine = false;
 
-
-/*
-   Évite d'enregistrer plusieurs fois
-   la même victoire.
-*/
-
 let victoireEnregistree = false;
-
-
-/*
-   Évite de compter plusieurs fois
-   une même partie.
-*/
 
 let partieComptee = false;
 
@@ -209,6 +183,7 @@ let mouvementJoueur2 = null;
 
 const largeurRaquette =
     15;
+
 
 const hauteurRaquette =
     90;
@@ -313,7 +288,6 @@ const joueur2 = {
 
 /* =====================================================
    COMPTER UNE PARTIE
-   STATISTIQUES DU SITE
 ===================================================== */
 
 async function compterPartie(nomJeu) {
@@ -332,10 +306,6 @@ async function compterPartie(nomJeu) {
             nomJeu
         );
 
-
-        /*
-           On récupère la ligne du jeu.
-        */
 
         const resultat =
             await supabaseClient
@@ -383,10 +353,6 @@ async function compterPartie(nomJeu) {
                 resultat.data.nombre_parties || 0
             ) + 1;
 
-
-        /*
-           Mise à jour.
-        */
 
         const miseAJour =
             await supabaseClient
@@ -720,10 +686,6 @@ function modeUnJoueur() {
     score2 = 0;
 
 
-    /*
-       UNE seule fois par partie.
-    */
-
     compterPartieJeu5();
 
 
@@ -747,6 +709,11 @@ function modeUnJoueur() {
     arreterJoueur2();
 
 
+    /*
+       MODE 1 JOUEUR :
+       on retire la classe 2 joueurs.
+    */
+
     if (controlesMobile) {
 
         controlesMobile.classList.remove(
@@ -759,7 +726,9 @@ function modeUnJoueur() {
     if (messageElement) {
 
         messageElement.textContent =
-            "🏓 Joue contre l'ordinateur !";
+            pseudo
+                ? "🏓 Joue contre l'ordinateur !"
+                : "🏓 Mode visiteur : joue contre l'ordinateur !";
 
     }
 
@@ -827,6 +796,11 @@ function modeDeuxJoueurs() {
     arreterJoueur2();
 
 
+    /*
+       MODE 2 JOUEURS :
+       on ajoute la classe.
+    */
+
     if (controlesMobile) {
 
         controlesMobile.classList.add(
@@ -839,7 +813,9 @@ function modeDeuxJoueurs() {
     if (messageElement) {
 
         messageElement.textContent =
-            "👥 Mode 2 joueurs !";
+            pseudo
+                ? "👥 Mode 2 joueurs !"
+                : "👥 Mode visiteur : 2 joueurs !";
 
     }
 
@@ -1375,8 +1351,19 @@ function verifierVictoire() {
 
         if (messageElement) {
 
-            messageElement.textContent =
-                "🏆 🧑 TU AS GAGNÉ ! 🏆";
+            if (pseudo) {
+
+                messageElement.textContent =
+                    "🏆 🧑 TU AS GAGNÉ ! 🏆";
+
+            }
+
+            else {
+
+                messageElement.textContent =
+                    "🏆 🧑 TU AS GAGNÉ ! (Mode visiteur)";
+
+            }
 
         }
 
@@ -1396,7 +1383,8 @@ function verifierVictoire() {
 
         if (
             mode === 1 &&
-            !victoireEnregistree
+            !victoireEnregistree &&
+            pseudo
         ) {
 
             victoireEnregistree = true;
@@ -1471,7 +1459,7 @@ async function enregistrerVictoire() {
     if (!pseudoActuel) {
 
         console.log(
-            "ℹ️ Aucun pseudo connecté."
+            "ℹ️ Mode visiteur : victoire non enregistrée."
         );
 
         return;
@@ -1693,10 +1681,6 @@ async function chargerClassement() {
             resultat.data;
 
 
-        /* =================================================
-           AUCUN SCORE
-        ================================================= */
-
         if (
             !data ||
             data.length === 0
@@ -1730,10 +1714,6 @@ async function chargerClassement() {
 
         }
 
-
-        /* =================================================
-           AFFICHAGE
-        ================================================= */
 
         classementBody.innerHTML =
             "";
@@ -1890,12 +1870,8 @@ function rejouer() {
 
     victoireEnregistree = false;
 
-    /*
-       Nouvelle partie =
-       nouveau comptage.
-    */
-
     partieComptee = false;
+
 
     compterPartieJeu5();
 
@@ -1922,10 +1898,19 @@ function rejouer() {
 
     if (messageElement) {
 
-        messageElement.textContent =
-            mode === 1
-                ? "🏓 La partie recommence contre l'ordinateur !"
-                : "🏓 La partie recommence !";
+        if (mode === 1) {
+
+            messageElement.textContent =
+                "🏓 La partie recommence contre l'ordinateur !";
+
+        }
+
+        else {
+
+            messageElement.textContent =
+                "🏓 La partie recommence !";
+
+        }
 
     }
 
@@ -1952,10 +1937,6 @@ function dessiner() {
 
     }
 
-
-    /* =================================================
-       FOND
-    ================================================= */
 
     contexte.fillStyle =
         "black";
@@ -2134,7 +2115,15 @@ console.log(
     "✅ script5.js chargé correctement."
 );
 
+
 console.log(
     "🎮 Jeu :",
     NOM_JEU_STATISTIQUE
+);
+
+
+console.log(
+    pseudo
+        ? "👤 Joueur connecté : " + pseudo
+        : "👤 Mode visiteur"
 );

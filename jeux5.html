@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
     <title>GameZone - Pong</title>
 
@@ -18,198 +18,198 @@
 </head>
 
 
-<body class="page-pong">
+<body class="page-jeu">
 
 
-    <!-- =========================
-         PROTECTION
-    ========================= -->
+<!-- =====================================================
+     MENU
+===================================================== -->
 
-    <script>
+<nav>
 
-        if (!localStorage.getItem("pseudoGameZone")) {
+    <a href="index.html">
+        🏠 Accueil
+    </a>
 
-            window.location.href = "index.html";
+    <a href="liste-jeux.html">
+        🎮 Jeux
+    </a>
 
-        }
+</nav>
 
-    </script>
 
+<!-- =====================================================
+     JEU
+===================================================== -->
 
-    <!-- =========================
-         MENU
-    ========================= -->
+<main class="page-jeu-pong">
 
-    <nav>
 
-        <a href="index.html">
-            🏠 Accueil
-        </a>
+    <h1>
+        🏓 Pong
+    </h1>
 
-        <a href="liste-jeux.html">
-            🎮 Jeux
-        </a>
 
-    </nav>
+    <a
+        href="liste-jeux.html"
+        class="retour-jeux">
 
+        ⬅️ Retour aux jeux
 
-    <!-- =========================
-         PONG
-    ========================= -->
+    </a>
 
-    <main class="pong-container">
 
-        <h1>
-            🏓 Pong
-        </h1>
+    <!-- =================================================
+         PSEUDO
+    ================================================== -->
 
+    <p>
 
-        <!-- =========================
-             RETOUR
-        ========================= -->
+        👤 Joueur :
 
-        <div class="retour">
+        <strong id="pseudoJoueur">
+            Visiteur
+        </strong>
 
-            <a href="liste-jeux.html">
+    </p>
 
-                <button>
-                    ⬅️ Retour aux jeux
-                </button>
 
-            </a>
+    <!-- =================================================
+         MESSAGE VISITEUR
+    ================================================== -->
 
-        </div>
+    <p
+        id="messageVisiteur"
+        style="display:none;">
 
+        👤 Tu joues en mode visiteur.
+        Connecte-toi pour enregistrer tes victoires
+        dans le classement.
 
-        <!-- =========================
-             PSEUDO
-        ========================= -->
+    </p>
 
-        <p class="pseudo-joueur">
 
-            👤 Joueur :
+    <!-- =================================================
+         CHOIX DU MODE
+    ================================================== -->
 
-            <strong id="pseudoJoueur">
-                Chargement...
-            </strong>
+    <div class="choix-mode-pong">
 
-        </p>
+        <h2>
+            🎮 Choisis ton mode
+        </h2>
 
-
-        <!-- =========================
-             MODES
-        ========================= -->
-
-        <div class="choix-mode">
-
-            <button onclick="modeUnJoueur()">
-
-                🤖 1 Joueur
-
-            </button>
-
-
-            <button onclick="modeDeuxJoueurs()">
-
-                👥 2 Joueurs
-
-            </button>
-
-        </div>
-
-
-        <!-- =========================
-             SCORE
-        ========================= -->
-
-        <div class="score-pong">
-
-            <div>
-
-                🧑 Joueur 1 :
-
-                <span id="scoreJoueur1">
-                    0
-                </span>
-
-            </div>
-
-
-            <div>
-
-                🧑‍💻 Joueur 2 :
-
-                <span id="scoreJoueur2">
-                    0
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             CANVAS
-        ========================= -->
-
-        <canvas
-            id="pong"
-            width="800"
-            height="450">
-
-            Ton navigateur ne supporte pas
-            le jeu Pong.
-
-        </canvas>
-
-
-        <!-- =========================
-             MESSAGE
-        ========================= -->
-
-        <p id="message">
-
-            Choisis un mode pour commencer !
-
-        </p>
-
-
-        <!-- =========================
-             REJOUER
-        ========================= -->
 
         <button
-            id="boutonRejouer"
-            onclick="rejouer()"
-            style="display:none;">
+            onclick="modeUnJoueur()">
 
-            🔄 Rejouer
+            🤖 1 Joueur
 
         </button>
 
 
-        <!-- =========================
-             CONTROLES MOBILE
-        ========================= -->
+        <button
+            onclick="modeDeuxJoueurs()">
+
+            👥 2 Joueurs
+
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         SCORE
+    ================================================== -->
+
+    <div class="scores-pong">
+
+        <div>
+
+            <strong>
+                🧑 Toi
+            </strong>
+
+            <span id="scoreJoueur1">
+                0
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                🧑‍💻 Adversaire
+            </strong>
+
+            <span id="scoreJoueur2">
+                0
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MESSAGE
+    ================================================== -->
+
+    <p id="message">
+
+        Choisis un mode pour commencer.
+
+    </p>
+
+
+    <!-- =================================================
+         CANVAS
+    ================================================== -->
+
+    <canvas
+        id="pong"
+        width="800"
+        height="600">
+
+    </canvas>
+
+
+    <!-- =================================================
+         INSTRUCTIONS
+    ================================================== -->
+
+    <p id="instruction">
+
+        🎮 Choisis un mode pour commencer.
+
+    </p>
+
+
+    <!-- =================================================
+         CONTROLES MOBILE
+    ================================================== -->
+
+    <div
+        id="controlesMobile"
+        class="controles-pong">
+
+
+        <!-- =================================================
+             JOUEUR 1
+        ================================================== -->
 
         <div
-            class="controles-mobile"
-            id="controlesMobile">
+            class="controle-joueur-pong joueur1-mobile">
+
+            <h3>
+                🧑 Joueur 1
+            </h3>
 
 
-            <!-- =========================
-                 JOUEUR 1
-            ========================= -->
-
-            <div class="controle-joueur1">
-
-                <h3>
-                    🧑 Joueur 1
-                </h3>
-
+            <div class="boutons-pong-mobile">
 
                 <button
-                    type="button"
                     ontouchstart="demarrerMonterJoueur1(event)"
                     ontouchend="arreterJoueur1(event)"
                     ontouchcancel="arreterJoueur1(event)"
@@ -223,7 +223,6 @@
 
 
                 <button
-                    type="button"
                     ontouchstart="demarrerDescendreJoueur1(event)"
                     ontouchend="arreterJoueur1(event)"
                     ontouchcancel="arreterJoueur1(event)"
@@ -237,22 +236,24 @@
 
             </div>
 
+        </div>
 
-            <!-- =========================
-                 JOUEUR 2
-            ========================= -->
 
-            <div
-                class="controle-joueur2"
-                id="controleJoueur2">
+        <!-- =================================================
+             JOUEUR 2
+        ================================================== -->
 
-                <h3>
-                    🧑‍💻 Joueur 2
-                </h3>
+        <div
+            class="controle-joueur-pong joueur2-mobile">
 
+            <h3>
+                🧑‍💻 Joueur 2
+            </h3>
+
+
+            <div class="boutons-pong-mobile">
 
                 <button
-                    type="button"
                     ontouchstart="demarrerMonterJoueur2(event)"
                     ontouchend="arreterJoueur2(event)"
                     ontouchcancel="arreterJoueur2(event)"
@@ -266,7 +267,6 @@
 
 
                 <button
-                    type="button"
                     ontouchstart="demarrerDescendreJoueur2(event)"
                     ontouchend="arreterJoueur2(event)"
                     ontouchcancel="arreterJoueur2(event)"
@@ -282,80 +282,132 @@
 
         </div>
 
-
-        <!-- =========================
-             INSTRUCTIONS
-        ========================= -->
-
-        <div class="instructions">
-
-            <p id="instruction">
-
-                🎮 Choisis un mode de jeu.
-
-            </p>
-
-        </div>
+    </div>
 
 
-        <!-- =========================
-             CLASSEMENT
-        ========================= -->
+    <!-- =================================================
+         REJOUER
+    ================================================== -->
 
-        <section class="classement">
+    <button
+        id="boutonRejouer"
+        style="display:none;">
 
-            <h2>
-                🌍 🏆 TOP 10 - VICTOIRES CONTRE L'ORDINATEUR
-            </h2>
+        🔄 Rejouer
 
-            <p class="classement-info">
-
-                Seules les victoires en mode 🤖
-                1 Joueur sont comptabilisées.
-
-            </p>
+    </button>
 
 
-            <table id="tableauClassement">
+    <!-- =================================================
+         CLASSEMENT
+    ================================================== -->
 
-                <thead>
+    <section class="classement">
 
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>👤 Pseudo</th>
-
-                        <th>🏆 Victoires</th>
-
-                    </tr>
-
-                </thead>
+        <h2>
+            🌍 🏆 TOP 10 MONDIAL - PONG
+        </h2>
 
 
-                <tbody id="classementBody">
+        <table id="tableauClassement">
 
-                    <tr>
+            <thead>
 
-                        <td colspan="3">
-                            ⏳ Chargement...
-                        </td>
+                <tr>
 
-                    </tr>
+                    <th>
+                        #
+                    </th>
 
-                </tbody>
+                    <th>
+                        👤 Pseudo
+                    </th>
 
-            </table>
+                    <th>
+                        🏆 Victoires
+                    </th>
+
+                </tr>
+
+            </thead>
 
 
-            <p id="messageClassement"></p>
+            <tbody id="classementBody">
 
-        </section>
+                <tr>
+
+                    <td colspan="3">
+
+                        ⏳ Chargement...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
 
 
-    </main>
+        <p
+            id="messageClassement"
+            class="message-classement">
+
+        </p>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     SCRIPT PONG
+===================================================== -->
 
 <script src="script5.js"></script>
+
+
+<!-- =====================================================
+     GESTION VISITEUR
+===================================================== -->
+
+<script>
+
+const pseudoGameZone =
+    localStorage.getItem("pseudoGameZone");
+
+
+const pseudoJoueur =
+    document.getElementById("pseudoJoueur");
+
+
+const messageVisiteur =
+    document.getElementById("messageVisiteur");
+
+
+if (pseudoGameZone) {
+
+    pseudoJoueur.textContent =
+        pseudoGameZone;
+
+}
+else {
+
+    pseudoJoueur.textContent =
+        "Visiteur";
+
+
+    if (messageVisiteur) {
+
+        messageVisiteur.style.display =
+            "block";
+
+    }
+
+}
+
+</script>
 
 
 </body>

@@ -1,3 +1,7 @@
+/* =====================================================
+   GAMEZONE — JEU 3
+   PIERRE FEUILLE CISEAUX
+===================================================== */
 
 
 /* =====================================================
@@ -10,6 +14,7 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -17,69 +22,118 @@ const supabaseClient =
     );
 
 
-
 /* =====================================================
    IDENTIFICATION DU JEU
 ===================================================== */
 
-const JEU = "pierre-feuille-ciseaux";
+const JEU =
+    "pierre-feuille-ciseaux";
+
 
 /* =====================================================
-   ELEMENTS
+   ELEMENTS HTML
 ===================================================== */
 
 const pseudoJoueurElement =
-    document.getElementById("pseudoJoueur");
+    document.getElementById(
+        "pseudoJoueur"
+    );
+
 
 const scoreJoueurElement =
-    document.getElementById("scoreJoueur");
+    document.getElementById(
+        "scoreJoueur"
+    );
+
 
 const scoreOrdinateurElement =
-    document.getElementById("scoreOrdinateur");
+    document.getElementById(
+        "scoreOrdinateur"
+    );
+
 
 const manchesJoueurElement =
-    document.getElementById("manchesJoueur");
+    document.getElementById(
+        "manchesJoueur"
+    );
+
 
 const manchesOrdinateurElement =
-    document.getElementById("manchesOrdinateur");
+    document.getElementById(
+        "manchesOrdinateur"
+    );
+
 
 const choixJoueurElement =
-    document.getElementById("choixJoueur");
+    document.getElementById(
+        "choixJoueur"
+    );
+
 
 const choixOrdinateurElement =
-    document.getElementById("choixOrdinateur");
+    document.getElementById(
+        "choixOrdinateur"
+    );
+
 
 const message =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
+
 
 const boutonNouvelleManche =
-    document.getElementById("boutonNouvelleManche");
+    document.getElementById(
+        "boutonNouvelleManche"
+    );
+
 
 const zoneEnregistrement =
-    document.getElementById("zoneEnregistrement");
+    document.getElementById(
+        "zoneEnregistrement"
+    );
+
 
 const manchesFinales =
-    document.getElementById("manchesFinales");
+    document.getElementById(
+        "manchesFinales"
+    );
+
 
 const messageEnregistrement =
-    document.getElementById("messageEnregistrement");
+    document.getElementById(
+        "messageEnregistrement"
+    );
+
 
 const classementBody =
-    document.getElementById("classementBody");
+    document.getElementById(
+        "classementBody"
+    );
+
 
 const messageClassement =
-    document.getElementById("messageClassement");
+    document.getElementById(
+        "messageClassement"
+    );
 
 
 /* =====================================================
-   PSEUDO
+   PSEUDO / VISITEUR
 ===================================================== */
 
 const pseudo =
-    localStorage.getItem("pseudoGameZone");
+    localStorage.getItem(
+        "pseudoGameZone"
+    );
 
-pseudoJoueurElement.textContent =
-    pseudo || "Joueur";
+
+if (pseudoJoueurElement) {
+
+    pseudoJoueurElement.textContent =
+        pseudo || "👤 Visiteur";
+
+}
 
 
 /* =====================================================
@@ -100,8 +154,8 @@ let scoreEnregistre = false;
 
 
 /*
-   Empêche de compter deux fois
-   la même partie.
+    Permet de compter une seule fois
+    la manche terminée.
 */
 
 let partieComptee = false;
@@ -120,17 +174,36 @@ actualiserAffichage();
 
 function actualiserAffichage() {
 
-    scoreJoueurElement.textContent =
-        scoreJoueur;
+    if (scoreJoueurElement) {
 
-    scoreOrdinateurElement.textContent =
-        scoreOrdinateur;
+        scoreJoueurElement.textContent =
+            scoreJoueur;
 
-    manchesJoueurElement.textContent =
-        manchesGagneesJoueur;
+    }
 
-    manchesOrdinateurElement.textContent =
-        manchesGagneesOrdinateur;
+
+    if (scoreOrdinateurElement) {
+
+        scoreOrdinateurElement.textContent =
+            scoreOrdinateur;
+
+    }
+
+
+    if (manchesJoueurElement) {
+
+        manchesJoueurElement.textContent =
+            manchesGagneesJoueur;
+
+    }
+
+
+    if (manchesOrdinateurElement) {
+
+        manchesOrdinateurElement.textContent =
+            manchesGagneesOrdinateur;
+
+    }
 
 }
 
@@ -142,15 +215,22 @@ function actualiserAffichage() {
 function choixOrdinateur() {
 
     const choix = [
+
         "pierre",
+
         "feuille",
+
         "ciseaux"
+
     ];
+
 
     const hasard =
         Math.floor(
-            Math.random() * choix.length
+            Math.random() *
+            choix.length
         );
+
 
     return choix[hasard];
 
@@ -164,16 +244,25 @@ function choixOrdinateur() {
 function afficherChoix(choix) {
 
     if (choix === "pierre") {
+
         return "✊ Pierre";
+
     }
+
 
     if (choix === "feuille") {
+
         return "📄 Feuille";
+
     }
 
+
     if (choix === "ciseaux") {
+
         return "✂️ Ciseaux";
+
     }
+
 
     return "-";
 
@@ -187,19 +276,32 @@ function afficherChoix(choix) {
 function jouer(choix) {
 
     if (mancheTerminee) {
+
         return;
+
     }
+
 
     const ordinateur =
         choixOrdinateur();
 
-    choixJoueurElement.textContent =
-        "👤 Ton choix : " +
-        afficherChoix(choix);
 
-    choixOrdinateurElement.textContent =
-        "🤖 Choix ordinateur : " +
-        afficherChoix(ordinateur);
+    if (choixJoueurElement) {
+
+        choixJoueurElement.textContent =
+            "👤 Ton choix : " +
+            afficherChoix(choix);
+
+    }
+
+
+    if (choixOrdinateurElement) {
+
+        choixOrdinateurElement.textContent =
+            "🤖 Choix ordinateur : " +
+            afficherChoix(ordinateur);
+
+    }
 
 
     /* =================================================
@@ -208,8 +310,12 @@ function jouer(choix) {
 
     if (choix === ordinateur) {
 
-        message.textContent =
-            "🤝 Égalité !";
+        if (message) {
+
+            message.textContent =
+                "🤝 Égalité !";
+
+        }
 
         return;
 
@@ -217,44 +323,60 @@ function jouer(choix) {
 
 
     /* =================================================
-       JOUEUR GAGNE
+       JOUEUR GAGNE LE POINT
     ================================================= */
 
     if (
 
-        (choix === "pierre" &&
-            ordinateur === "ciseaux")
+        (
+            choix === "pierre" &&
+            ordinateur === "ciseaux"
+        )
 
         ||
 
-        (choix === "feuille" &&
-            ordinateur === "pierre")
+        (
+            choix === "feuille" &&
+            ordinateur === "pierre"
+        )
 
         ||
 
-        (choix === "ciseaux" &&
-            ordinateur === "feuille")
+        (
+            choix === "ciseaux" &&
+            ordinateur === "feuille"
+        )
 
     ) {
 
         scoreJoueur++;
 
-        message.textContent =
-            "🎉 Tu gagnes le point !";
+
+        if (message) {
+
+            message.textContent =
+                "🎉 Tu gagnes le point !";
+
+        }
 
     }
 
 
     /* =================================================
-       ORDINATEUR GAGNE
+       ORDINATEUR GAGNE LE POINT
     ================================================= */
 
     else {
 
         scoreOrdinateur++;
 
-        message.textContent =
-            "🤖 L'ordinateur gagne le point !";
+
+        if (message) {
+
+            message.textContent =
+                "🤖 L'ordinateur gagne le point !";
+
+        }
 
     }
 
@@ -263,7 +385,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       JOUEUR ARRIVE A 5
+       JOUEUR ARRIVE À 5
     ================================================= */
 
     if (scoreJoueur >= 5) {
@@ -276,7 +398,7 @@ function jouer(choix) {
 
 
     /* =================================================
-       ORDINATEUR ARRIVE A 5
+       ORDINATEUR ARRIVE À 5
     ================================================= */
 
     if (scoreOrdinateur >= 5) {
@@ -294,35 +416,66 @@ function jouer(choix) {
    TERMINER UNE MANCHE
 ===================================================== */
 
-async function terminerManche(joueurGagne) {
+async function terminerManche(
+    joueurGagne
+) {
 
     mancheTerminee = true;
 
-    boutonNouvelleManche.style.display =
-        "inline-block";
 
-    zoneEnregistrement.style.display =
-        "block";
+    if (boutonNouvelleManche) {
 
+        boutonNouvelleManche.style.display =
+            "inline-block";
+
+    }
+
+
+    if (zoneEnregistrement) {
+
+        zoneEnregistrement.style.display =
+            "block";
+
+    }
+
+
+    /* =================================================
+       JOUEUR GAGNE
+    ================================================= */
 
     if (joueurGagne) {
 
         manchesGagneesJoueur++;
 
-        message.textContent =
-            "🏆 Tu as gagné cette manche ! " +
-            "🎉 Tu as maintenant " +
-            manchesGagneesJoueur +
-            " manche(s) gagnée(s).";
+
+        if (message) {
+
+            message.textContent =
+                "🏆 Tu as gagné cette manche ! " +
+                "🎉 Tu as maintenant " +
+                manchesGagneesJoueur +
+                " manche(s) gagnée(s).";
+
+        }
 
     }
+
+
+    /* =================================================
+       ORDINATEUR GAGNE
+    ================================================= */
 
     else {
 
         manchesGagneesOrdinateur++;
 
-        message.textContent =
-            "💀 L'ordinateur a gagné cette manche !";
+
+        if (message) {
+
+            message.textContent =
+                "💀 L'ordinateur a gagné cette manche !";
+
+        }
 
     }
 
@@ -330,8 +483,12 @@ async function terminerManche(joueurGagne) {
     actualiserAffichage();
 
 
-    manchesFinales.textContent =
-        manchesGagneesJoueur;
+    if (manchesFinales) {
+
+        manchesFinales.textContent =
+            manchesGagneesJoueur;
+
+    }
 
 
     /* =================================================
@@ -342,7 +499,7 @@ async function terminerManche(joueurGagne) {
 
         partieComptee = true;
 
-        await compterPartieJeu3();;
+        await compterPartieJeu3();
 
     }
 
@@ -350,22 +507,14 @@ async function terminerManche(joueurGagne) {
 
 
 /* =====================================================
-   COMPTER UNE PARTIE POUR
-   « JEUX DU MOMENT »
-===================================================== */
-
-/* =========================================================
    STATISTIQUES — JEU 3
-========================================================= */
-
-/* =====================================================
-   COMPTER UNE PARTIE — JEU 3
-   Pierre Feuille Ciseaux
 ===================================================== */
 
 async function compterPartieJeu3() {
 
-    const nomJeu = "Pierre Feuille Ciseaux";
+    const nomJeu =
+        "Pierre Feuille Ciseaux";
+
 
     try {
 
@@ -374,37 +523,37 @@ async function compterPartieJeu3() {
             nomJeu
         );
 
-        /* =================================================
-           RECHERCHE DU JEU
-        ================================================= */
 
-        const recherche = await fetch(
+        const recherche =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?nom_jeu=eq." +
-            encodeURIComponent(nomJeu) +
-            "&select=id,nom_jeu,nombre_parties",
+                SUPABASE_URL +
+                "/rest/v1/statistiques_jeux" +
+                "?nom_jeu=eq." +
+                encodeURIComponent(nomJeu) +
+                "&select=id,nom_jeu,nombre_parties",
 
-            {
-                method: "GET",
+                {
 
-                headers: {
+                    method: "GET",
 
-                    "apikey":
-                        SUPABASE_ANON_KEY,
+                    headers: {
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_ANON_KEY,
+                        "apikey":
+                            SUPABASE_ANON_KEY,
 
-                    "Accept":
-                        "application/json"
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_ANON_KEY,
+
+                        "Accept":
+                            "application/json"
+
+                    }
 
                 }
-            }
 
-        );
+            );
 
 
         if (!recherche.ok) {
@@ -420,19 +569,16 @@ async function compterPartieJeu3() {
             await recherche.json();
 
 
-        console.log(
-            "📊 Statistiques reçues :",
-            statistiques
-        );
-
-
-        /* =================================================
-           JEU INTROUVABLE
-        ================================================= */
-
         if (
-            !Array.isArray(statistiques) ||
+
+            !Array.isArray(
+                statistiques
+            )
+
+            ||
+
             statistiques.length === 0
+
         ) {
 
             console.error(
@@ -444,10 +590,6 @@ async function compterPartieJeu3() {
         }
 
 
-        /* =================================================
-           JEU TROUVÉ
-        ================================================= */
-
         const jeu =
             statistiques[0];
 
@@ -458,48 +600,48 @@ async function compterPartieJeu3() {
             ) + 1;
 
 
-        /* =================================================
-           MISE À JOUR
-        ================================================= */
+        const miseAJour =
+            await fetch(
 
-        const miseAJour = await fetch(
+                SUPABASE_URL +
+                "/rest/v1/statistiques_jeux" +
+                "?id=eq." +
+                encodeURIComponent(
+                    jeu.id
+                ),
 
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?id=eq." +
-            encodeURIComponent(jeu.id),
+                {
 
-            {
-                method: "PATCH",
+                    method: "PATCH",
 
-                headers: {
+                    headers: {
 
-                    "apikey":
-                        SUPABASE_ANON_KEY,
+                        "apikey":
+                            SUPABASE_ANON_KEY,
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_ANON_KEY,
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_ANON_KEY,
 
-                    "Content-Type":
-                        "application/json",
+                        "Content-Type":
+                            "application/json",
 
-                    "Prefer":
-                        "return=minimal"
+                        "Prefer":
+                            "return=minimal"
 
-                },
+                    },
 
-                body:
-                    JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        nombre_parties:
-                            nouveauNombre
+                            nombre_parties:
+                                nouveauNombre
 
-                    })
+                        })
 
-            }
+                }
 
-        );
+            );
 
 
         if (!miseAJour.ok) {
@@ -530,12 +672,15 @@ async function compterPartieJeu3() {
 
 }
 
+
 /* =====================================================
    NOUVELLE MANCHE
 ===================================================== */
 
 function nouvelleManche() {
+
     compterPartieJeu3();
+
 
     scoreJoueur = 0;
 
@@ -545,68 +690,116 @@ function nouvelleManche() {
 
     scoreEnregistre = false;
 
-    /*
-       Nouvelle partie :
-       le prochain duel sera compté
-       lorsqu'il sera terminé.
-    */
-
     partieComptee = false;
+
 
     actualiserAffichage();
 
 
-    choixJoueurElement.textContent =
-        "👤 Ton choix : -";
+    if (choixJoueurElement) {
 
-    choixOrdinateurElement.textContent =
-        "🤖 Choix ordinateur : -";
+        choixJoueurElement.textContent =
+            "👤 Ton choix : -";
 
-    message.textContent =
-        "🎮 Nouvelle manche !";
+    }
 
-    boutonNouvelleManche.style.display =
-        "none";
 
-    zoneEnregistrement.style.display =
-        "none";
+    if (choixOrdinateurElement) {
 
-    messageEnregistrement.textContent =
-        "";
+        choixOrdinateurElement.textContent =
+            "🤖 Choix ordinateur : -";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+            "🎮 Nouvelle manche !";
+
+    }
+
+
+    if (boutonNouvelleManche) {
+
+        boutonNouvelleManche.style.display =
+            "none";
+
+    }
+
+
+    if (zoneEnregistrement) {
+
+        zoneEnregistrement.style.display =
+            "none";
+
+    }
+
+
+    if (messageEnregistrement) {
+
+        messageEnregistrement.textContent =
+            "";
+
+    }
 
 }
 
 
 /* =====================================================
-   ENREGISTRER LES MANCHES GAGNEES
+   ENREGISTRER LES MANCHES GAGNÉES
 ===================================================== */
 
 async function enregistrerManches() {
 
+    /*
+       VISITEUR
+    */
+
     if (!pseudo) {
 
-        messageEnregistrement.textContent =
-            "❌ Aucun pseudo trouvé.";
+        if (messageEnregistrement) {
+
+            messageEnregistrement.textContent =
+                "👤 Tu joues actuellement en visiteur. Crée un compte pour enregistrer ton score dans le classement mondial.";
+
+        }
 
         return;
 
     }
 
+
+    /*
+       Aucun résultat
+    */
 
     if (manchesGagneesJoueur <= 0) {
 
-        messageEnregistrement.textContent =
-            "⚠️ Tu dois gagner au moins une manche.";
+        if (messageEnregistrement) {
+
+            messageEnregistrement.textContent =
+                "⚠️ Tu dois gagner au moins une manche.";
+
+        }
 
         return;
 
     }
 
 
+    /*
+       Score déjà enregistré
+    */
+
     if (scoreEnregistre) {
 
-        messageEnregistrement.textContent =
-            "ℹ️ Ton résultat a déjà été enregistré.";
+        if (messageEnregistrement) {
+
+            messageEnregistrement.textContent =
+                "ℹ️ Ton résultat a déjà été enregistré.";
+
+        }
 
         return;
 
@@ -615,40 +808,52 @@ async function enregistrerManches() {
 
     scoreEnregistre = true;
 
-    messageEnregistrement.textContent =
-        "⏳ Enregistrement...";
+
+    if (messageEnregistrement) {
+
+        messageEnregistrement.textContent =
+            "⏳ Enregistrement...";
+
+    }
 
 
     try {
 
         const {
+
             data: anciensScores,
+
             error: erreurRecherche
+
         } =
 
             await supabaseClient
+
                 .from("scores")
+
                 .select(
                     "id,pseudo,score,jeu"
                 )
+
                 .eq(
                     "pseudo",
                     pseudo
                 )
+
                 .eq(
                     "jeu",
                     JEU
                 )
+
                 .limit(1);
 
 
         if (erreurRecherche) {
 
             console.error(
+                "❌ Erreur recherche :",
                 erreurRecherche
             );
-
-            scoreEnregistre = false;
 
             throw new Error(
                 "Recherche impossible."
@@ -664,15 +869,23 @@ async function enregistrerManches() {
         if (
 
             anciensScores &&
+
             anciensScores.length > 0
 
         ) {
 
             const ancienNombreManches =
                 Number(
-                    anciensScores[0].score
+                    anciensScores[0].score || 0
                 );
 
+
+            /*
+               On conserve le fonctionnement
+               de ton ancien système :
+               les nouvelles manches gagnées
+               sont ajoutées au total.
+            */
 
             const nouveauNombreManches =
                 ancienNombreManches +
@@ -684,11 +897,15 @@ async function enregistrerManches() {
 
 
             const {
+
                 error: erreurUpdate
+
             } =
 
                 await supabaseClient
+
                     .from("scores")
+
                     .update({
 
                         score:
@@ -699,6 +916,7 @@ async function enregistrerManches() {
                                 .toISOString()
 
                     })
+
                     .eq(
                         "id",
                         id
@@ -708,10 +926,9 @@ async function enregistrerManches() {
             if (erreurUpdate) {
 
                 console.error(
+                    "❌ Erreur modification score :",
                     erreurUpdate
                 );
-
-                scoreEnregistre = false;
 
                 throw new Error(
                     "Modification impossible."
@@ -720,11 +937,15 @@ async function enregistrerManches() {
             }
 
 
-            messageEnregistrement.textContent =
-                "🏆 Résultat enregistré ! " +
-                "Tu as maintenant " +
-                nouveauNombreManches +
-                " manche(s) gagnée(s) au classement.";
+            if (messageEnregistrement) {
+
+                messageEnregistrement.textContent =
+                    "🏆 Résultat enregistré ! " +
+                    "Tu as maintenant " +
+                    nouveauNombreManches +
+                    " manche(s) gagnée(s) au classement.";
+
+            }
 
         }
 
@@ -736,11 +957,15 @@ async function enregistrerManches() {
         else {
 
             const {
+
                 error: erreurInsertion
+
             } =
 
                 await supabaseClient
+
                     .from("scores")
+
                     .insert({
 
                         pseudo:
@@ -762,10 +987,9 @@ async function enregistrerManches() {
             if (erreurInsertion) {
 
                 console.error(
+                    "❌ Erreur insertion score :",
                     erreurInsertion
                 );
-
-                scoreEnregistre = false;
 
                 throw new Error(
                     "Insertion impossible."
@@ -774,10 +998,14 @@ async function enregistrerManches() {
             }
 
 
-            messageEnregistrement.textContent =
-                "✅ " +
-                manchesGagneesJoueur +
-                " manche(s) gagnée(s) enregistrée(s) !";
+            if (messageEnregistrement) {
+
+                messageEnregistrement.textContent =
+                    "✅ " +
+                    manchesGagneesJoueur +
+                    " manche(s) gagnée(s) enregistrée(s) !";
+
+            }
 
         }
 
@@ -789,13 +1017,20 @@ async function enregistrerManches() {
     catch (erreur) {
 
         console.error(
+            "❌ Erreur enregistrement :",
             erreur
         );
 
+
         scoreEnregistre = false;
 
-        messageEnregistrement.textContent =
-            "❌ Erreur lors de l'enregistrement.";
+
+        if (messageEnregistrement) {
+
+            messageEnregistrement.textContent =
+                "❌ Erreur lors de l'enregistrement.";
+
+        }
 
     }
 
@@ -807,6 +1042,13 @@ async function enregistrerManches() {
 ===================================================== */
 
 async function chargerClassement() {
+
+    if (!classementBody) {
+
+        return;
+
+    }
+
 
     classementBody.innerHTML = `
 
@@ -826,31 +1068,40 @@ async function chargerClassement() {
     try {
 
         const {
+
             data,
+
             error
+
         } =
 
             await supabaseClient
+
                 .from("scores")
+
                 .select(
                     "pseudo,score"
                 )
+
                 .eq(
                     "jeu",
                     JEU
                 )
+
                 .order(
                     "score",
                     {
                         ascending: false
                     }
                 )
+
                 .limit(10);
 
 
         if (error) {
 
             console.error(
+                "❌ Erreur classement :",
                 error
             );
 
@@ -868,6 +1119,7 @@ async function chargerClassement() {
         if (
 
             !data ||
+
             data.length === 0
 
         ) {
@@ -886,8 +1138,13 @@ async function chargerClassement() {
 
             `;
 
-            messageClassement.textContent =
-                "🌍 Aucun score pour le moment.";
+
+            if (messageClassement) {
+
+                messageClassement.textContent =
+                    "🌍 Aucun score pour le moment.";
+
+            }
 
             return;
 
@@ -895,7 +1152,7 @@ async function chargerClassement() {
 
 
         /* =================================================
-           AFFICHER LE TOP 10
+           AFFICHER TOP 10
         ================================================= */
 
         classementBody.innerHTML =
@@ -903,6 +1160,7 @@ async function chargerClassement() {
 
 
         data.forEach(
+
             function(
                 joueur,
                 index
@@ -973,9 +1231,11 @@ async function chargerClassement() {
                     position
                 );
 
+
                 ligne.appendChild(
                     pseudoCell
                 );
+
 
                 ligne.appendChild(
                     manchesCell
@@ -987,17 +1247,23 @@ async function chargerClassement() {
                 );
 
             }
+
         );
 
 
-        messageClassement.textContent =
-            "🌍 Classement actualisé.";
+        if (messageClassement) {
+
+            messageClassement.textContent =
+                "🌍 Classement actualisé.";
+
+        }
 
     }
 
     catch (erreur) {
 
         console.error(
+            "❌ Erreur classement :",
             erreur
         );
 
@@ -1018,8 +1284,12 @@ async function chargerClassement() {
         `;
 
 
-        messageClassement.textContent =
-            "❌ Erreur lors du chargement.";
+        if (messageClassement) {
+
+            messageClassement.textContent =
+                "❌ Erreur lors du chargement.";
+
+        }
 
     }
 
@@ -1027,8 +1297,27 @@ async function chargerClassement() {
 
 
 /* =====================================================
+   RENDRE LES FONCTIONS ACCESSIBLES AU HTML
+===================================================== */
+
+window.jouer =
+    jouer;
+
+
+window.nouvelleManche =
+    nouvelleManche;
+
+
+window.enregistrerManches =
+    enregistrerManches;
+
+
+window.chargerClassement =
+    chargerClassement;
+
+
+/* =====================================================
    DEMARRAGE
 ===================================================== */
 
 chargerClassement();
-

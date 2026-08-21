@@ -19,21 +19,6 @@
 
 
 <!-- =========================================================
-     PROTECTION
-========================================================= -->
-
-<script>
-
-if (!localStorage.getItem("pseudoGameZone")) {
-
-    window.location.href = "index.html";
-
-}
-
-</script>
-
-
-<!-- =========================================================
      MENU
 ========================================================= -->
 
@@ -63,7 +48,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 
 <!-- =========================================================
-     PSEUDO
+     PSEUDO / VISITEUR
 ========================================================= -->
 
 <p class="pseudo-joueur">
@@ -71,7 +56,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
     👤 Joueur :
 
     <strong id="pseudoAffiche">
-        Chargement...
+        Visiteur
     </strong>
 
 </p>
@@ -184,7 +169,8 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
     <button
         id="boutonRejouer"
-        onclick="rejouer()">
+        onclick="rejouer()"
+        style="display:none;">
 
         🔄 Rejouer
 
@@ -200,23 +186,15 @@ if (!localStorage.getItem("pseudoGameZone")) {
 <div class="commandes">
 
     <p>
-
         ⌨️ PC : Q / D ou ← / →
-
     </p>
 
-
     <p>
-
         🖱️ Clic gauche : tirer
-
     </p>
 
-
     <p>
-
         📱 Téléphone : utilise les boutons
-
     </p>
 
 </div>
@@ -229,23 +207,17 @@ if (!localStorage.getItem("pseudoGameZone")) {
 <div class="controles-mobile">
 
     <button id="gauche">
-
         ⬅️
-
     </button>
 
 
     <button id="tirer">
-
         🔥
-
     </button>
 
 
     <button id="droite">
-
         ➡️
-
     </button>
 
 </div>
@@ -258,9 +230,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
 <section class="classement">
 
     <h2>
-
         🌍 🏆 TOP 10 MONDIAL - SPACE INVADERS
-
     </h2>
 
 
@@ -286,9 +256,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
             <tr>
 
                 <td colspan="3">
-
-                    Chargement...
-
+                    ⏳ Chargement...
                 </td>
 
             </tr>
@@ -310,6 +278,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 
 </main>
+
 
 <script src="script6.js"></script>
 

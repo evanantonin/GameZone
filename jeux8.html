@@ -3,26 +3,19 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>GameZone - Tetris</title>
+    <title>GameZone - Tetris</title>
 
-<link rel="stylesheet" href="style.css">
-
-
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 
 <body class="page-tetris">
-
-
-<!-- =========================================================
-     PROTECTION
-========================================================= -->
 
 
 <!-- =========================================================
@@ -49,248 +42,316 @@
 <main class="container">
 
 
-<h1>
-    🧱 Tetris
-</h1>
+    <h1>
+        🧱 Tetris
+    </h1>
 
 
-<p class="pseudo-joueur">
+    <!-- =====================================================
+         JOUEUR
+    ====================================================== -->
 
-    👤 Joueur :
+    <p class="pseudo-joueur">
 
-    <strong id="pseudoAffiche">
-        Chargement...
-    </strong>
+        👤 Joueur :
 
-</p>
+        <strong id="pseudoAffiche">
+            Visiteur
+        </strong>
+
+    </p>
 
 
-<!-- =========================================================
-     RETOUR
-========================================================= -->
+    <!-- =====================================================
+         RETOUR
+    ====================================================== -->
 
-<div>
+    <div>
 
-    <a href="liste-jeux.html">
+        <a href="liste-jeux.html">
 
-        <button style="padding:10px 18px;">
+            <button style="padding:10px 18px;">
 
-            ⬅️ Retour aux jeux
+                ⬅️ Retour aux jeux
+
+            </button>
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATIONS
+    ====================================================== -->
+
+    <div class="infos-tetris">
+
+
+        <div>
+
+            🎯 Score :
+
+            <span id="score">
+                0
+            </span>
+
+        </div>
+
+
+        <div>
+
+            🏆 Meilleur :
+
+            <span id="meilleurScore">
+                0
+            </span>
+
+        </div>
+
+
+        <div>
+
+            📈 Niveau :
+
+            <span id="niveau">
+                1
+            </span>
+
+        </div>
+
+
+        <div>
+
+            🧹 Lignes :
+
+            <span id="lignes">
+                0
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         CANVAS
+    ====================================================== -->
+
+    <canvas
+        id="jeuTetris"
+        width="300"
+        height="600">
+
+        Ton navigateur ne supporte pas le canvas.
+
+    </canvas>
+
+
+    <!-- =====================================================
+         MESSAGE
+    ====================================================== -->
+
+    <p id="message">
+
+        🧱 Fais tomber les pièces !
+
+    </p>
+
+
+    <!-- =====================================================
+         BOUTONS
+    ====================================================== -->
+
+    <div class="boutons">
+
+
+        <button id="boutonPause">
+
+            ⏸️ Pause
 
         </button>
 
-    </a>
 
-</div>
+        <button
+            id="boutonRejouer"
+            style="display:none;">
 
+            🔄 Rejouer
 
-<!-- =========================================================
-     INFORMATIONS
-========================================================= -->
+        </button>
 
-<div class="infos-tetris">
-
-    <div>
-
-        🎯 Score :
-
-        <span id="score">
-            0
-        </span>
 
     </div>
 
 
-    <div>
+    <!-- =====================================================
+         COMMANDES
+    ====================================================== -->
 
-        🏆 Meilleur :
+    <div class="commandes">
 
-        <span id="meilleurScore">
-            0
-        </span>
+        <p>
+            ⌨️ PC :
+        </p>
+
+
+        <p>
+
+            ⬆️ Z = Rotation
+            &nbsp;&nbsp;
+
+            ⬇️ S = Bas
+
+        </p>
+
+
+        <p>
+
+            ⬅️ Q = Gauche
+            &nbsp;&nbsp;
+
+            ➡️ D = Droite
+
+        </p>
+
+
+        <p>
+
+            ⏬ ESPACE = Chute rapide
+
+        </p>
+
+
+        <p>
+
+            📱 Téléphone :
+            utilise les boutons tactiles
+
+        </p>
 
     </div>
 
 
-    <div>
+    <!-- =====================================================
+         CONTROLES MOBILES
+    ====================================================== -->
 
-        📈 Niveau :
+    <div class="controles-tetris-mobile">
 
-        <span id="niveau">
-            1
-        </span>
+
+        <button id="tetrisGauche">
+
+            ⬅️
+
+        </button>
+
+
+        <button id="tetrisRotation">
+
+            🔄
+
+        </button>
+
+
+        <button id="tetrisDroite">
+
+            ➡️
+
+        </button>
+
+
+        <button id="tetrisDescendre">
+
+            ⬇️
+
+        </button>
+
+
+        <button id="tetrisChute">
+
+            ⏬
+
+        </button>
+
 
     </div>
 
 
-    <div>
+    <!-- =====================================================
+         CLASSEMENT
+    ====================================================== -->
 
-        🧹 Lignes :
-
-        <span id="lignes">
-            0
-        </span>
-
-    </div>
-
-</div>
+    <section class="classement">
 
 
-<!-- =========================================================
-     CANVAS
-========================================================= -->
+        <h2>
 
-<canvas
-    id="jeuTetris"
-    width="300"
-    height="600">
+            🌍 🏆 TOP 10 MONDIAL - TETRIS
 
-    Ton navigateur ne supporte pas le canvas.
-
-</canvas>
+        </h2>
 
 
-<p id="message">
-
-    🧱 Fais tomber les pièces !
-
-</p>
+        <table id="tableauScores">
 
 
-<!-- =========================================================
-     BOUTONS
-========================================================= -->
+            <thead>
 
-<div class="boutons">
+                <tr>
 
-    <button id="boutonPause">
+                    <th>
+                        #
+                    </th>
 
-        ⏸️ Pause
+                    <th>
+                        👤 Pseudo
+                    </th>
 
-    </button>
+                    <th>
+                        🎯 Score
+                    </th>
 
+                </tr>
 
-    <button
-        id="boutonRejouer"
-        onclick="rejouer()"
-        style="display:none;">
-
-        🔄 Rejouer
-
-    </button>
-
-</div>
-
-<div class="commandes">
-
-    <p>
-        ⌨️ PC :
-    </p>
-
-    <p>
-        ⬆️ Z = Haut
-        &nbsp;&nbsp;
-        ⬇️ S = Bas
-    </p>
-
-    <p>
-        ⬅️ Q = Gauche
-        &nbsp;&nbsp;
-        ➡️ D = Droite
-    </p>
-
-    <p>
-        📱 Téléphone : utilise les boutons tactiles
-    </p>
-
-</div>
-<!-- =========================================================
-     CONTROLES MOBILES FIXES
-========================================================= -->
-
-<div class="controles-tetris-mobile">
-
-    <button id="tetrisGauche">
-        ⬅️
-    </button>
-
-    <button id="tetrisRotation">
-        🔄
-    </button>
-
-    <button id="tetrisDroite">
-        ➡️
-    </button>
-
-    <button id="tetrisDescendre">
-        ⬇️
-    </button>
-
-    <button id="tetrisChute">
-        ⏬
-    </button>
-
-</div>
+            </thead>
 
 
-<!-- =========================================================
-     CLASSEMENT
-========================================================= -->
+            <tbody id="listeScores">
 
-<section class="classement">
+                <tr>
 
-    <h2>
-        🌍 🏆 TOP 10 MONDIAL - TETRIS
-    </h2>
+                    <td colspan="3">
 
+                        Chargement...
 
-    <table id="tableauScores">
+                    </td>
 
-        <thead>
+                </tr>
 
-            <tr>
-
-                <th>#</th>
-
-                <th>👤 Pseudo</th>
-
-                <th>🎯 Score</th>
-
-            </tr>
-
-        </thead>
+            </tbody>
 
 
-        <tbody id="listeScores">
-
-            <tr>
-
-                <td colspan="3">
-                    Chargement...
-                </td>
-
-            </tr>
-
-        </tbody>
-
-    </table>
+        </table>
 
 
-    <div
-        class="statut"
-        id="statutClassement">
+        <div
+            class="statut"
+            id="statutClassement">
 
-        🌍 Chargement du classement...
+            👤 Mode visiteur — tu peux jouer sans compte.
 
-    </div>
+        </div>
 
-</section>
+
+    </section>
 
 
 </main>
 
 
 <script src="script8.js"></script>
+
 
 </body>
 

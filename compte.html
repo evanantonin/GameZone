@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -13,13 +12,414 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <style>
+
+        /* =====================================================
+           PAGE COMPTE
+        ===================================================== */
+
+        .compte-container {
+
+            width: min(600px, 94%);
+
+            margin: 50px auto;
+
+            text-align: center;
+
+        }
+
+
+        .compte-container h1 {
+
+            color: #00eaff;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .compte-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #080b12
+                );
+
+            border:
+                1px solid
+                rgba(0, 234, 255, 0.35);
+
+            border-radius: 18px;
+
+            padding: 30px 25px;
+
+            box-shadow:
+                0 0 25px
+                rgba(0, 234, 255, 0.15);
+
+        }
+
+
+        .avatar-compte {
+
+            font-size: 70px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .compte-card h2 {
+
+            color: #00eaff;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .compte-card p {
+
+            color: #b8c7d9;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           INFORMATIONS
+        ===================================================== */
+
+        .info-compte {
+
+            margin: 25px 0;
+
+        }
+
+
+        .info-ligne {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px;
+
+            margin-bottom: 10px;
+
+            background: rgba(255,255,255,0.04);
+
+            border-radius: 10px;
+
+            text-align: left;
+
+        }
+
+
+        .info-ligne span {
+
+            color: #aebdcc;
+
+        }
+
+
+        .info-ligne strong {
+
+            color: white;
+
+            word-break: break-word;
+
+        }
+
+
+        /* =====================================================
+           FORMULAIRES
+        ===================================================== */
+
+        .form-compte {
+
+            margin-top: 25px;
+
+            text-align: left;
+
+        }
+
+
+        .form-compte label {
+
+            display: block;
+
+            color: #b8c7d9;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+        }
+
+
+        .form-compte input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid #26364d;
+
+            border-radius: 9px;
+
+            background: #080b12;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 16px;
+
+        }
+
+
+        .form-compte input:focus {
+
+            border-color: #00eaff;
+
+            box-shadow:
+                0 0 10px
+                rgba(0, 234, 255, 0.2);
+
+        }
+
+
+        /* =====================================================
+           BOUTONS
+        ===================================================== */
+
+        .bouton-compte,
+        .bouton-deconnexion-compte {
+
+            display: inline-block;
+
+            width: 100%;
+
+            border: none;
+
+            text-decoration: none;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0077ff,
+                    #00eaff
+                );
+
+            padding: 13px 20px;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            margin-top: 8px;
+
+        }
+
+
+        .bouton-compte:hover,
+        .bouton-deconnexion-compte:hover {
+
+            transform: scale(1.02);
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 234, 255, 0.55);
+
+        }
+
+
+        .bouton-deconnexion-compte {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3333,
+                    #ff0055
+                );
+
+        }
+
+
+        .bouton-secondaire {
+
+            display: inline-block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 10px;
+
+            border: 1px solid #00eaff;
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: #00eaff;
+
+            font-weight: bold;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .bouton-secondaire:hover {
+
+            background: #00eaff;
+
+            color: #050505;
+
+        }
+
+
+        .bouton-secondaire:disabled,
+        .bouton-compte:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        #messageCompte {
+
+            min-height: 25px;
+
+            margin: 15px 0;
+
+            font-weight: bold;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           SEPARATEUR
+        ===================================================== */
+
+        .separateur {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 25px 0;
+
+            color: #66758a;
+
+        }
+
+
+        .separateur::before,
+        .separateur::after {
+
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #26364d;
+
+        }
+
+
+        /* =====================================================
+           PETIT TEXTE
+        ===================================================== */
+
+        .texte-secondaire {
+
+            font-size: 14px;
+
+            color: #7f91a7;
+
+            margin-top: 15px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 550px) {
+
+            .compte-container {
+
+                margin-top: 30px;
+
+            }
+
+
+            .compte-card {
+
+                padding: 25px 18px;
+
+            }
+
+
+            .info-ligne {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body class="page-compte">
 
-    <!-- =========================
+
+    <!-- =====================================================
          MENU
-    ========================= -->
+    ===================================================== -->
 
     <nav>
 
@@ -35,9 +435,11 @@
 
         </div>
 
-        <a href="compte.html"
-           class="icone-compte"
-           title="Mon compte">
+
+        <a
+            href="compte.html"
+            class="icone-compte"
+            title="Mon compte">
 
             👤
 
@@ -46,9 +448,9 @@
     </nav>
 
 
-    <!-- =========================
-         COMPTE
-    ========================= -->
+    <!-- =====================================================
+         CONTENU
+    ===================================================== -->
 
     <main class="compte-container">
 
@@ -57,7 +459,263 @@
         </h1>
 
 
-        <!-- UTILISATEUR CONNECTÉ -->
+        <!-- =================================================
+             MESSAGE GLOBAL
+        ================================================= -->
+
+        <div id="messageCompte"></div>
+
+
+        <!-- =================================================
+             MODE VISITEUR
+        ================================================= -->
+
+        <section
+            id="compteVisiteur"
+            class="compte-card"
+            style="display: none;">
+
+            <div class="avatar-compte">
+                👤
+            </div>
+
+
+            <h2>
+                Mode visiteur
+            </h2>
+
+
+            <p>
+
+                Tu utilises actuellement
+                GameZone sans compte.
+
+            </p>
+
+
+            <p>
+
+                🎮 Tu peux jouer à tous les jeux
+                sans créer de compte.
+
+            </p>
+
+
+            <p class="texte-secondaire">
+
+                Tu pourras créer un compte plus tard
+                pour profiter des fonctionnalités
+                liées à ton profil.
+
+            </p>
+
+
+            <button
+                class="bouton-compte"
+                onclick="afficherConnexion()">
+
+                🔐 Se connecter
+
+            </button>
+
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherInscription()">
+
+                📝 Créer un compte
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             FORMULAIRE CONNEXION
+        ================================================= -->
+
+        <section
+            id="formConnexion"
+            class="compte-card"
+            style="display: none;">
+
+            <div class="avatar-compte">
+                🔐
+            </div>
+
+
+            <h2>
+                Se connecter
+            </h2>
+
+
+            <div class="form-compte">
+
+                <label for="emailConnexion">
+                    📧 Email
+                </label>
+
+                <input
+                    type="email"
+                    id="emailConnexion"
+                    placeholder="Ton adresse email"
+                    autocomplete="email">
+
+
+                <label for="motDePasseConnexion">
+                    🔑 Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    id="motDePasseConnexion"
+                    placeholder="Ton mot de passe"
+                    autocomplete="current-password">
+
+
+                <button
+                    id="boutonConnexion"
+                    class="bouton-compte"
+                    onclick="seConnecter()">
+
+                    🔐 Se connecter
+
+                </button>
+
+            </div>
+
+
+            <div class="separateur">
+                ou
+            </div>
+
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherInscription()">
+
+                📝 Créer un compte
+
+            </button>
+
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherVisiteur()">
+
+                👤 Continuer en visiteur
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             FORMULAIRE INSCRIPTION
+        ================================================= -->
+
+        <section
+            id="formInscription"
+            class="compte-card"
+            style="display: none;">
+
+            <div class="avatar-compte">
+                📝
+            </div>
+
+
+            <h2>
+                Créer un compte
+            </h2>
+
+
+            <div class="form-compte">
+
+                <label for="pseudoInscription">
+                    👤 Pseudo
+                </label>
+
+                <input
+                    type="text"
+                    id="pseudoInscription"
+                    placeholder="Ton pseudo"
+                    maxlength="20"
+                    autocomplete="nickname">
+
+
+                <label for="emailInscription">
+                    📧 Email
+                </label>
+
+                <input
+                    type="email"
+                    id="emailInscription"
+                    placeholder="Ton adresse email"
+                    autocomplete="email">
+
+
+                <label for="motDePasseInscription">
+                    🔑 Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    id="motDePasseInscription"
+                    placeholder="Minimum 6 caractères"
+                    autocomplete="new-password">
+
+
+                <label for="confirmationMotDePasse">
+                    🔑 Confirmer le mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmationMotDePasse"
+                    placeholder="Retape ton mot de passe"
+                    autocomplete="new-password">
+
+
+                <button
+                    id="boutonInscription"
+                    class="bouton-compte"
+                    onclick="creerCompte()">
+
+                    📝 Créer mon compte
+
+                </button>
+
+            </div>
+
+
+            <div class="separateur">
+                ou
+            </div>
+
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherConnexion()">
+
+                🔐 J'ai déjà un compte
+
+            </button>
+
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherVisiteur()">
+
+                👤 Continuer en visiteur
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPTE CONNECTÉ
+        ================================================= -->
 
         <section
             id="compteConnecte"
@@ -68,9 +726,11 @@
                 👤
             </div>
 
+
             <h2>
                 Ton profil
             </h2>
+
 
             <div class="info-compte">
 
@@ -102,6 +762,13 @@
             </div>
 
 
+            <p class="texte-secondaire">
+
+                ✅ Tu es connecté à ton compte GameZone.
+
+            </p>
+
+
             <button
                 class="bouton-deconnexion-compte"
                 onclick="seDeconnecterCompte()">
@@ -112,49 +779,25 @@
 
         </section>
 
-
-        <!-- PAS CONNECTÉ -->
-
-        <section
-            id="compteNonConnecte"
-            class="compte-card">
-
-            <div class="avatar-compte">
-                🔐
-            </div>
-
-            <h2>
-                Tu n'es pas connecté
-            </h2>
-
-            <p>
-                Connecte-toi pour accéder
-                aux informations de ton compte.
-            </p>
-
-            <a
-                href="index.html"
-                class="bouton-compte">
-
-                🔐 Se connecter
-
-            </a>
-
-        </section>
-
     </main>
 
 
-    <!-- =========================
+    <!-- =====================================================
          SUPABASE
-    ========================= -->
+    ===================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
     <script>
+
+        /* =====================================================
+           CONFIGURATION SUPABASE
+        ===================================================== */
 
         const SUPABASE_URL =
             "https://pxgymcwpbesqyjochwgd.supabase.co";
+
 
         const SUPABASE_KEY =
             "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
@@ -167,76 +810,406 @@
             );
 
 
-        async function chargerCompte() {
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
 
-            const resultat =
-                await supabaseClient.auth.getUser();
+        const compteVisiteur =
+            document.getElementById(
+                "compteVisiteur"
+            );
+
+
+        const formConnexion =
+            document.getElementById(
+                "formConnexion"
+            );
+
+
+        const formInscription =
+            document.getElementById(
+                "formInscription"
+            );
+
+
+        const compteConnecte =
+            document.getElementById(
+                "compteConnecte"
+            );
+
+
+        const messageCompte =
+            document.getElementById(
+                "messageCompte"
+            );
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        function afficherMessage(
+            texte,
+            couleur = "#ffffff"
+        ) {
+
+            if (!messageCompte) {
+                return;
+            }
+
+
+            messageCompte.textContent =
+                texte;
+
+
+            messageCompte.style.color =
+                couleur;
+
+        }
+
+
+        /* =====================================================
+           CACHER TOUS LES BLOCS
+        ===================================================== */
+
+        function cacherTousLesBlocs() {
+
+            compteVisiteur.style.display =
+                "none";
+
+
+            formConnexion.style.display =
+                "none";
+
+
+            formInscription.style.display =
+                "none";
+
+
+            compteConnecte.style.display =
+                "none";
+
+        }
+
+
+        /* =====================================================
+           MODE VISITEUR
+        ===================================================== */
+
+        function afficherVisiteur() {
+
+            cacherTousLesBlocs();
+
+
+            compteVisiteur.style.display =
+                "block";
+
+
+            afficherMessage(
+                "",
+                "#ffffff"
+            );
+
+        }
+
+
+        /* =====================================================
+           AFFICHER CONNEXION
+        ===================================================== */
+
+        function afficherConnexion() {
+
+            cacherTousLesBlocs();
+
+
+            formConnexion.style.display =
+                "block";
+
+
+            afficherMessage(
+                "",
+                "#ffffff"
+            );
+
+
+            const email =
+                document.getElementById(
+                    "emailConnexion"
+                );
+
+
+            if (email) {
+
+                email.focus();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           AFFICHER INSCRIPTION
+        ===================================================== */
+
+        function afficherInscription() {
+
+            cacherTousLesBlocs();
+
+
+            formInscription.style.display =
+                "block";
+
+
+            afficherMessage(
+                "",
+                "#ffffff"
+            );
+
+
+            const pseudo =
+                document.getElementById(
+                    "pseudoInscription"
+                );
+
+
+            if (pseudo) {
+
+                pseudo.focus();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TRADUCTION ERREURS SUPABASE
+        ===================================================== */
+
+        function traduireErreur(message) {
+
+            if (!message) {
+
+                return "Une erreur est survenue.";
+
+            }
+
+
+            const texte =
+                message.toLowerCase();
 
 
             if (
-                resultat.error ||
-                !resultat.data.user
+                texte.includes(
+                    "invalid login credentials"
+                )
             ) {
 
-                document.getElementById(
-                    "compteConnecte"
-                ).style.display = "none";
+                return "Email ou mot de passe incorrect.";
 
-                document.getElementById(
-                    "compteNonConnecte"
-                ).style.display = "block";
+            }
+
+
+            if (
+                texte.includes(
+                    "email not confirmed"
+                )
+            ) {
+
+                return "📧 Ton email n'est pas encore confirmé. Vérifie ta boîte mail.";
+
+            }
+
+
+            if (
+                texte.includes(
+                    "user already registered"
+                )
+            ) {
+
+                return "⚠️ Cette adresse email possède déjà un compte.";
+
+            }
+
+
+            if (
+                texte.includes(
+                    "password should be at least"
+                )
+            ) {
+
+                return "⚠️ Le mot de passe est trop court.";
+
+            }
+
+
+            if (
+                texte.includes(
+                    "invalid email"
+                )
+            ) {
+
+                return "⚠️ L'adresse email n'est pas valide.";
+
+            }
+
+
+            if (
+                texte.includes(
+                    "rate limit"
+                )
+            ) {
+
+                return "⚠️ Trop de tentatives. Réessaie plus tard.";
+
+            }
+
+
+            if (
+                texte.includes(
+                    "duplicate key"
+                )
+            ) {
+
+                return "⚠️ Ce pseudo est déjà utilisé.";
+
+            }
+
+
+            return message;
+
+        }
+
+
+        /* =====================================================
+           RÉCUPÉRER / CRÉER LE PROFIL
+        ===================================================== */
+
+        async function recupererProfil(user) {
+
+            if (!user) {
+
+                return null;
+
+            }
+
+
+            const recherche =
+                await supabaseClient
+                    .from("profils")
+                    .select("id,pseudo")
+                    .eq("id", user.id)
+                    .maybeSingle();
+
+
+            if (recherche.error) {
+
+                console.error(
+                    "Erreur recherche profil :",
+                    recherche.error
+                );
+
+                return null;
+
+            }
+
+
+            if (recherche.data) {
+
+                return recherche.data;
+
+            }
+
+
+            let pseudo =
+                user.user_metadata?.pseudo;
+
+
+            if (!pseudo) {
+
+                pseudo =
+                    user.email
+                        ? user.email.split("@")[0]
+                        : "Joueur";
+
+            }
+
+
+            pseudo =
+                pseudo
+                    .trim()
+                    .substring(0, 20);
+
+
+            const insertion =
+                await supabaseClient
+                    .from("profils")
+                    .insert({
+
+                        id: user.id,
+
+                        pseudo: pseudo
+
+                    })
+                    .select("id,pseudo")
+                    .single();
+
+
+            if (insertion.error) {
+
+                console.error(
+                    "Erreur création profil :",
+                    insertion.error
+                );
+
+                return null;
+
+            }
+
+
+            return insertion.data;
+
+        }
+
+
+        /* =====================================================
+           AFFICHER LE COMPTE CONNECTÉ
+        ===================================================== */
+
+        async function afficherUtilisateur(user) {
+
+            if (!user) {
+
+                afficherVisiteur();
 
                 return;
 
             }
 
 
-            const user =
-                resultat.data.user;
-
-
-            /* =========================
-               RÉCUPÉRER LE PROFIL
-            ========================= */
-
             const profil =
-                await supabaseClient
-                    .from("profils")
-                    .select("pseudo")
-                    .eq("id", user.id)
-                    .maybeSingle();
+                await recupererProfil(user);
 
 
-            let pseudo = "Joueur";
+            let pseudo =
+                user.user_metadata?.pseudo ||
+                "Joueur";
 
 
             if (
-                profil.data &&
-                profil.data.pseudo
+                profil &&
+                profil.pseudo
             ) {
 
                 pseudo =
-                    profil.data.pseudo;
-
-            }
-            else if (
-                user.user_metadata &&
-                user.user_metadata.pseudo
-            ) {
-
-                pseudo =
-                    user.user_metadata.pseudo;
+                    profil.pseudo;
 
             }
 
-
-            /* =========================
-               AFFICHER LES INFORMATIONS
-            ========================= */
 
             document.getElementById(
                 "comptePseudo"
-            ).textContent = pseudo;
+            ).textContent =
+                pseudo;
 
 
             document.getElementById(
@@ -245,33 +1218,82 @@
                 user.email || "-";
 
 
-            document.getElementById(
-                "compteConnecte"
-            ).style.display = "block";
+            localStorage.setItem(
+                "pseudoGameZone",
+                pseudo
+            );
 
 
-            document.getElementById(
-                "compteNonConnecte"
-            ).style.display = "none";
+            cacherTousLesBlocs();
+
+
+            compteConnecte.style.display =
+                "block";
+
+
+            afficherMessage(
+                "✅ Tu es connecté.",
+                "#00ff88"
+            );
 
         }
 
 
-        /* =========================
-           DÉCONNEXION
-        ========================= */
+        /* =====================================================
+           CRÉER UN COMPTE
+        ===================================================== */
 
-        async function seDeconnecterCompte() {
+        async function creerCompte() {
 
-            const resultat =
-                await supabaseClient.auth.signOut();
+            const pseudoElement =
+                document.getElementById(
+                    "pseudoInscription"
+                );
 
 
-            if (resultat.error) {
+            const emailElement =
+                document.getElementById(
+                    "emailInscription"
+                );
 
-                console.error(
-                    "Erreur déconnexion :",
-                    resultat.error
+
+            const motDePasseElement =
+                document.getElementById(
+                    "motDePasseInscription"
+                );
+
+
+            const confirmationElement =
+                document.getElementById(
+                    "confirmationMotDePasse"
+                );
+
+
+            const pseudo =
+                pseudoElement.value.trim();
+
+
+            const email =
+                emailElement.value.trim();
+
+
+            const motDePasse =
+                motDePasseElement.value;
+
+
+            const confirmation =
+                confirmationElement.value;
+
+
+            /* =========================
+               VALIDATIONS
+            ========================= */
+
+            if (!pseudo) {
+
+                afficherMessage(
+                    "⚠️ Entre un pseudo.",
+                    "#ffaa00"
                 );
 
                 return;
@@ -279,16 +1301,447 @@
             }
 
 
-            localStorage.removeItem(
-                "pseudoGameZone"
-            );
+            if (pseudo.length < 3) {
+
+                afficherMessage(
+                    "⚠️ Le pseudo doit contenir au moins 3 caractères.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
 
 
-            window.location.href =
-                "index.html";
+            if (!email) {
+
+                afficherMessage(
+                    "⚠️ Entre ton adresse email.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
+
+
+            if (motDePasse.length < 6) {
+
+                afficherMessage(
+                    "⚠️ Le mot de passe doit contenir au moins 6 caractères.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
+
+
+            if (motDePasse !== confirmation) {
+
+                afficherMessage(
+                    "⚠️ Les deux mots de passe ne correspondent pas.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
+
+
+            const bouton =
+                document.getElementById(
+                    "boutonInscription"
+                );
+
+
+            bouton.disabled = true;
+
+            bouton.textContent =
+                "⏳ Création...";
+
+
+            try {
+
+                const resultat =
+                    await supabaseClient.auth.signUp({
+
+                        email: email,
+
+                        password: motDePasse,
+
+                        options: {
+
+                            data: {
+
+                                pseudo: pseudo
+
+                            },
+
+                            emailRedirectTo:
+                                window.location.origin +
+                                window.location.pathname
+
+                        }
+
+                    });
+
+
+                if (resultat.error) {
+
+                    throw resultat.error;
+
+                }
+
+
+                /*
+                   Si Supabase demande une
+                   confirmation email.
+                */
+
+                if (
+                    resultat.data &&
+                    resultat.data.session
+                ) {
+
+                    await afficherUtilisateur(
+                        resultat.data.user
+                    );
+
+                }
+
+                else {
+
+                    afficherMessage(
+                        "📧 Compte créé ! Vérifie ton adresse email pour confirmer ton compte.",
+                        "#00ff88"
+                    );
+
+                    pseudoElement.value = "";
+                    emailElement.value = "";
+                    motDePasseElement.value = "";
+                    confirmationElement.value = "";
+
+                }
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur inscription :",
+                    erreur
+                );
+
+
+                afficherMessage(
+                    "❌ " +
+                    traduireErreur(
+                        erreur.message
+                    ),
+                    "#ff4444"
+                );
+
+            }
+
+            finally {
+
+                bouton.disabled = false;
+
+                bouton.textContent =
+                    "📝 Créer mon compte";
+
+            }
 
         }
 
+
+        /* =====================================================
+           CONNEXION
+        ===================================================== */
+
+        async function seConnecter() {
+
+            const emailElement =
+                document.getElementById(
+                    "emailConnexion"
+                );
+
+
+            const motDePasseElement =
+                document.getElementById(
+                    "motDePasseConnexion"
+                );
+
+
+            const email =
+                emailElement.value.trim();
+
+
+            const motDePasse =
+                motDePasseElement.value;
+
+
+            if (!email) {
+
+                afficherMessage(
+                    "⚠️ Entre ton adresse email.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
+
+
+            if (!motDePasse) {
+
+                afficherMessage(
+                    "⚠️ Entre ton mot de passe.",
+                    "#ffaa00"
+                );
+
+                return;
+
+            }
+
+
+            const bouton =
+                document.getElementById(
+                    "boutonConnexion"
+                );
+
+
+            bouton.disabled = true;
+
+            bouton.textContent =
+                "⏳ Connexion...";
+
+
+            try {
+
+                const resultat =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+
+                            email: email,
+
+                            password: motDePasse
+
+                        });
+
+
+                if (resultat.error) {
+
+                    throw resultat.error;
+
+                }
+
+
+                await afficherUtilisateur(
+                    resultat.data.user
+                );
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur connexion :",
+                    erreur
+                );
+
+
+                afficherMessage(
+                    "❌ " +
+                    traduireErreur(
+                        erreur.message
+                    ),
+                    "#ff4444"
+                );
+
+            }
+
+            finally {
+
+                bouton.disabled = false;
+
+                bouton.textContent =
+                    "🔐 Se connecter";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DÉCONNEXION
+        ===================================================== */
+
+        async function seDeconnecterCompte() {
+
+            try {
+
+                const resultat =
+                    await supabaseClient.auth.signOut();
+
+
+                if (resultat.error) {
+
+                    throw resultat.error;
+
+                }
+
+
+                localStorage.removeItem(
+                    "pseudoGameZone"
+                );
+
+
+                /*
+                   Après déconnexion :
+                   retour en mode visiteur.
+                */
+
+                afficherVisiteur();
+
+
+                afficherMessage(
+                    "👋 Tu es déconnecté. Tu peux continuer à jouer en visiteur.",
+                    "#00eaff"
+                );
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur déconnexion :",
+                    erreur
+                );
+
+
+                afficherMessage(
+                    "❌ Impossible de se déconnecter.",
+                    "#ff4444"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           VÉRIFIER LA SESSION AU CHARGEMENT
+        ===================================================== */
+
+        async function chargerCompte() {
+
+            try {
+
+                const resultat =
+                    await supabaseClient.auth
+                        .getSession();
+
+
+                const session =
+                    resultat.data.session;
+
+
+                if (
+                    session &&
+                    session.user
+                ) {
+
+                    await afficherUtilisateur(
+                        session.user
+                    );
+
+                }
+
+                else {
+
+                    /*
+                       Pas de compte :
+                       MODE VISITEUR.
+                    */
+
+                    afficherVisiteur();
+
+                }
+
+            }
+
+            catch (erreur) {
+
+                console.error(
+                    "Erreur chargement session :",
+                    erreur
+                );
+
+
+                /*
+                   Même en cas d'erreur,
+                   on laisse jouer en visiteur.
+                */
+
+                afficherVisiteur();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CHANGEMENT DE SESSION
+        ===================================================== */
+
+        supabaseClient.auth.onAuthStateChange(
+            function(event, session) {
+
+                console.log(
+                    "Auth event :",
+                    event
+                );
+
+
+                if (
+                    session &&
+                    session.user
+                ) {
+
+                    /*
+                       Petit délai pour éviter
+                       les problèmes de concurrence
+                       avec Supabase.
+                    */
+
+                    setTimeout(
+                        function() {
+
+                            afficherUtilisateur(
+                                session.user
+                            );
+
+                        },
+                        0
+                    );
+
+                }
+
+                else {
+
+                    afficherVisiteur();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           DÉMARRAGE
+        ===================================================== */
 
         chargerCompte();
 
@@ -297,4 +1750,3 @@
 </body>
 
 </html>
-

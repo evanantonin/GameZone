@@ -1,7 +1,8 @@
-
 /* =====================================================
-   SUPABASE
+   GAMEZONE — SNAKE
+   script4.js
 ===================================================== */
+
 
 /* =====================================================
    SUPABASE
@@ -12,6 +13,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -24,35 +26,90 @@ const supabaseClient =
    IDENTIFICATION DU JEU
 ===================================================== */
 
-const JEU = "jeux4";
+const JEU =
+    "jeux4";
+
 
 const NOM_JEU_STATISTIQUE =
     "Snake";
 
 
 /* =====================================================
-   PSEUDO
+   ELEMENTS HTML
 ===================================================== */
 
-const pseudo =
+const canvas =
+    document.getElementById("jeu");
+
+
+const ctx =
+    canvas.getContext("2d");
+
+
+const pseudoJoueurElement =
+    document.getElementById("pseudoJoueur");
+
+
+const pseudoAfficheElement =
+    document.getElementById("pseudoAffiche");
+
+
+const scoreElement =
+    document.getElementById("score");
+
+
+const meilleurScoreElement =
+    document.getElementById("meilleurScore");
+
+
+const scoreFinalElement =
+    document.getElementById("scoreFinal");
+
+
+const zoneEnregistrement =
+    document.getElementById("zoneEnregistrement");
+
+
+const zoneVisiteur =
+    document.getElementById("zoneVisiteur");
+
+
+const zoneCompte =
+    document.getElementById("zoneCompte");
+
+
+const messageEnregistrement =
+    document.getElementById("messageEnregistrement");
+
+
+const classementBody =
+    document.getElementById("classementBody");
+
+
+const messageClassement =
+    document.getElementById("messageClassement");
+
+
+/* =====================================================
+   COMPTE / VISITEUR
+===================================================== */
+
+let pseudo =
     localStorage.getItem(
         "pseudoGameZone"
     );
 
 
-const pseudoJoueurElement =
-    document.getElementById(
-        "pseudoJoueur"
-    );
+let utilisateurConnecte =
+    !!pseudo;
 
 
-const pseudoAfficheElement =
-    document.getElementById(
-        "pseudoAffiche"
-    );
+/*
+   Si aucun compte :
+   mode visiteur
+*/
 
-
-if (pseudo) {
+if (utilisateurConnecte) {
 
     if (pseudoJoueurElement) {
 
@@ -60,7 +117,6 @@ if (pseudo) {
             pseudo;
 
     }
-
 
     if (pseudoAfficheElement) {
 
@@ -76,35 +132,18 @@ else {
     if (pseudoJoueurElement) {
 
         pseudoJoueurElement.textContent =
-            "Joueur";
+            "Visiteur";
 
     }
-
 
     if (pseudoAfficheElement) {
 
         pseudoAfficheElement.textContent =
-            "Joueur";
+            "Visiteur";
 
     }
 
 }
-
-
-/* =====================================================
-   CANVAS
-===================================================== */
-
-const canvas =
-    document.getElementById(
-        "jeu"
-    );
-
-
-const ctx =
-    canvas.getContext(
-        "2d"
-    );
 
 
 /* =====================================================
@@ -180,18 +219,6 @@ let meilleurScore =
     ) || 0;
 
 
-const scoreElement =
-    document.getElementById(
-        "score"
-    );
-
-
-const meilleurScoreElement =
-    document.getElementById(
-        "meilleurScore"
-    );
-
-
 if (scoreElement) {
 
     scoreElement.textContent =
@@ -209,7 +236,7 @@ if (meilleurScoreElement) {
 
 
 /* =====================================================
-   ÉTAT DU JEU
+   ETAT DU JEU
 ===================================================== */
 
 let jeuTermine =
@@ -232,72 +259,128 @@ let scoreEnregistre =
    COMPTER UNE PARTIE
 ===================================================== */
 
-/* =========================================================
-   STATISTIQUES — JEU 4
-========================================================= */
-
 async function compterPartieJeu4() {
 
     try {
 
-        const recherche = await fetch(
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?nom_jeu=eq.Snake" +
-            "&select=id,nom_jeu,nombre_parties",
-            {
-                method: "GET",
+        const recherche =
+            await fetch(
 
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization": "Bearer " + SUPABASE_KEY,
-                    "Accept": "application/json"
+                SUPABASE_URL +
+                "/rest/v1/statistiques_jeux" +
+                "?nom_jeu=eq.Snake" +
+                "&select=id,nom_jeu,nombre_parties",
+
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Accept":
+                            "application/json"
+
+                    }
+
                 }
-            }
-        );
+
+            );
+
 
         if (!recherche.ok) {
-            throw new Error(await recherche.text());
+
+            throw new Error(
+                await recherche.text()
+            );
+
         }
+
 
         const statistiques =
             await recherche.json();
 
-        if (!statistiques.length) {
+
+        if (
+            !statistiques ||
+            statistiques.length === 0
+        ) {
+
             console.error(
                 "❌ Snake n'existe pas dans statistiques_jeux"
             );
+
             return;
+
         }
 
-        const jeu = statistiques[0];
+
+        const jeu =
+            statistiques[0];
+
 
         const nouveauNombre =
-            Number(jeu.nombre_parties || 0) + 1;
+            Number(
+                jeu.nombre_parties || 0
+            ) + 1;
 
-        const miseAJour = await fetch(
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?id=eq." + jeu.id,
-            {
-                method: "PATCH",
 
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization": "Bearer " + SUPABASE_KEY,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=minimal"
-                },
+        const miseAJour =
+            await fetch(
 
-                body: JSON.stringify({
-                    nombre_parties: nouveauNombre
-                })
-            }
-        );
+                SUPABASE_URL +
+                "/rest/v1/statistiques_jeux" +
+                "?id=eq." +
+                jeu.id,
+
+                {
+
+                    method: "PATCH",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Prefer":
+                            "return=minimal"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            nombre_parties:
+                                nouveauNombre
+
+                        })
+
+                }
+
+            );
+
 
         if (!miseAJour.ok) {
-            throw new Error(await miseAJour.text());
+
+            throw new Error(
+                await miseAJour.text()
+            );
+
         }
+
 
         console.log(
             "✅ Snake : " +
@@ -305,15 +388,20 @@ async function compterPartieJeu4() {
             " parties"
         );
 
-    } catch (erreur) {
+    }
+
+    catch (erreur) {
 
         console.error(
-            "❌ Erreur statistiques Jeu 4 :",
+            "❌ Erreur statistiques Snake :",
             erreur
         );
 
     }
+
 }
+
+
 /* =====================================================
    NOUVELLE NOURRITURE
 ===================================================== */
@@ -324,9 +412,7 @@ function nouvelleNourriture() {
         false;
 
 
-    while (
-        !positionValide
-    ) {
+    while (!positionValide) {
 
         nourriture.x =
             Math.floor(
@@ -383,7 +469,7 @@ function nouvelleNourriture() {
 function dessiner() {
 
     /*
-     Fond
+       Fond
     */
 
     ctx.fillStyle =
@@ -401,7 +487,7 @@ function dessiner() {
 
 
     /*
-     Nourriture
+       Nourriture
     */
 
     ctx.fillStyle =
@@ -419,7 +505,7 @@ function dessiner() {
 
 
     /*
-     Serpent
+       Serpent
     */
 
     serpent.forEach(
@@ -477,7 +563,7 @@ function dessiner() {
 
 
 /* =====================================================
-   DÉPLACEMENT
+   DEPLACEMENT
 ===================================================== */
 
 function avancer() {
@@ -508,10 +594,6 @@ function avancer() {
 
     };
 
-
-    /*
-     Déplacement
-    */
 
     if (
         direction === "haut"
@@ -554,7 +636,7 @@ function avancer() {
 
 
     /*
-     Passage à travers les bords
+       Traverser les bords
     */
 
     if (
@@ -600,7 +682,7 @@ function avancer() {
 
 
     /*
-     Collision avec soi-même
+       Collision avec le serpent
     */
 
     for (
@@ -632,17 +714,13 @@ function avancer() {
     }
 
 
-    /*
-     Ajouter la tête
-    */
-
     serpent.unshift(
         tete
     );
 
 
     /*
-     Manger
+       Nourriture
     */
 
     if (
@@ -667,7 +745,7 @@ function avancer() {
 
 
         /*
-         Nouveau meilleur score
+           Nouveau record
         */
 
         if (
@@ -857,10 +935,6 @@ document.addEventListener(
         }
 
 
-        /*
-         Espace = pause
-        */
-
         else if (
             event.code === "Space"
         ) {
@@ -976,16 +1050,66 @@ function terminerJeu() {
     }
 
 
-    const zoneEnregistrement =
-        document.getElementById(
-            "zoneEnregistrement"
-        );
+    if (scoreFinalElement) {
+
+        scoreFinalElement.textContent =
+            score;
+
+    }
 
 
     if (zoneEnregistrement) {
 
         zoneEnregistrement.style.display =
             "block";
+
+    }
+
+
+    /*
+       VISITEUR
+    */
+
+    if (!utilisateurConnecte) {
+
+        if (zoneVisiteur) {
+
+            zoneVisiteur.style.display =
+                "block";
+
+        }
+
+
+        if (zoneCompte) {
+
+            zoneCompte.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /*
+       COMPTE CONNECTÉ
+    */
+
+    else {
+
+        if (zoneVisiteur) {
+
+            zoneVisiteur.style.display =
+                "none";
+
+        }
+
+
+        if (zoneCompte) {
+
+            zoneCompte.style.display =
+                "block";
+
+        }
 
     }
 
@@ -997,19 +1121,17 @@ function terminerJeu() {
 ===================================================== */
 
 function recommencer() {
-   compterPartieJeu4();
+
+    /*
+       Nouvelle partie
+    */
+
+    compterPartieJeu4();
+
 
     clearInterval(
         intervalleJeu
     );
-
-
-    /*
-     Une nouvelle partie =
-     +1 dans les statistiques.
-    */
-
-  
 
 
     serpent = [
@@ -1064,6 +1186,14 @@ function recommencer() {
     }
 
 
+    if (scoreFinalElement) {
+
+        scoreFinalElement.textContent =
+            "0";
+
+    }
+
+
     const messageSnake =
         document.getElementById(
             "messageSnake"
@@ -1092,12 +1222,6 @@ function recommencer() {
     }
 
 
-    const zoneEnregistrement =
-        document.getElementById(
-            "zoneEnregistrement"
-        );
-
-
     if (zoneEnregistrement) {
 
         zoneEnregistrement.style.display =
@@ -1106,10 +1230,20 @@ function recommencer() {
     }
 
 
-    const messageEnregistrement =
-        document.getElementById(
-            "messageEnregistrement"
-        );
+    if (zoneVisiteur) {
+
+        zoneVisiteur.style.display =
+            "none";
+
+    }
+
+
+    if (zoneCompte) {
+
+        zoneCompte.style.display =
+            "none";
+
+    }
 
 
     if (messageEnregistrement) {
@@ -1132,7 +1266,7 @@ function recommencer() {
 
 
 /* =====================================================
-   DÉMARRER LE JEU
+   DEMARRER LE JEU
 ===================================================== */
 
 function demarrerJeu() {
@@ -1155,7 +1289,7 @@ function demarrerJeu() {
 
 
 /* =====================================================
-   ENREGISTRER LE MEILLEUR SCORE
+   ENREGISTRER LE SCORE
 ===================================================== */
 
 async function enregistrerMeilleurScore() {
@@ -1166,6 +1300,26 @@ async function enregistrerMeilleurScore() {
         );
 
 
+    /*
+       Sécurité :
+       un visiteur ne peut pas enregistrer
+       de score.
+    */
+
+    if (!utilisateurConnecte) {
+
+        if (message) {
+
+            message.textContent =
+                "🔐 Connecte-toi pour enregistrer ton score.";
+
+        }
+
+        return;
+
+    }
+
+
     const pseudoActuel =
         localStorage.getItem(
             "pseudoGameZone"
@@ -1174,8 +1328,12 @@ async function enregistrerMeilleurScore() {
 
     if (!pseudoActuel) {
 
-        message.textContent =
-            "❌ Aucun compte trouvé.";
+        if (message) {
+
+            message.textContent =
+                "❌ Aucun compte trouvé.";
+
+        }
 
         return;
 
@@ -1184,8 +1342,12 @@ async function enregistrerMeilleurScore() {
 
     if (score <= 0) {
 
-        message.textContent =
-            "⚠️ Ton score doit être supérieur à 0.";
+        if (message) {
+
+            message.textContent =
+                "⚠️ Ton score doit être supérieur à 0.";
+
+        }
 
         return;
 
@@ -1194,8 +1356,12 @@ async function enregistrerMeilleurScore() {
 
     if (scoreEnregistre) {
 
-        message.textContent =
-            "ℹ️ Ce score a déjà été enregistré.";
+        if (message) {
+
+            message.textContent =
+                "ℹ️ Ce score a déjà été enregistré.";
+
+        }
 
         return;
 
@@ -1206,14 +1372,18 @@ async function enregistrerMeilleurScore() {
         true;
 
 
-    message.textContent =
-        "⏳ Enregistrement...";
+    if (message) {
+
+        message.textContent =
+            "⏳ Enregistrement...";
+
+    }
 
 
     try {
 
         /*
-         Rechercher le score existant
+           Recherche du score existant
         */
 
         const {
@@ -1246,24 +1416,13 @@ async function enregistrerMeilleurScore() {
 
         if (erreurRecherche) {
 
-            console.error(
-                erreurRecherche
-            );
-
-
-            scoreEnregistre =
-                false;
-
-
-            throw new Error(
-                "Recherche impossible."
-            );
+            throw erreurRecherche;
 
         }
 
 
         /*
-         Score existant
+           SCORE EXISTANT
         */
 
         if (
@@ -1276,12 +1435,12 @@ async function enregistrerMeilleurScore() {
 
             const scoreExistant =
                 Number(
-                    ancienScore[0].score
+                    ancienScore[0].score || 0
                 );
 
 
             /*
-             Nouveau record
+               Nouveau record
             */
 
             if (
@@ -1316,18 +1475,7 @@ async function enregistrerMeilleurScore() {
 
                 if (erreurUpdate) {
 
-                    console.error(
-                        erreurUpdate
-                    );
-
-
-                    scoreEnregistre =
-                        false;
-
-
-                    throw new Error(
-                        "Modification impossible."
-                    );
+                    throw erreurUpdate;
 
                 }
 
@@ -1348,7 +1496,7 @@ async function enregistrerMeilleurScore() {
 
 
         /*
-         Premier score
+           PREMIER SCORE
         */
 
         else {
@@ -1382,18 +1530,7 @@ async function enregistrerMeilleurScore() {
 
             if (erreurInsertion) {
 
-                console.error(
-                    erreurInsertion
-                );
-
-
-                scoreEnregistre =
-                    false;
-
-
-                throw new Error(
-                    "Insertion impossible."
-                );
+                throw erreurInsertion;
 
             }
 
@@ -1404,19 +1541,14 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        /*
-         Actualiser le classement
-        */
-
         await chargerClassement();
 
     }
 
-
     catch (erreur) {
 
         console.error(
-            "Erreur :",
+            "❌ Erreur enregistrement score :",
             erreur
         );
 
@@ -1425,8 +1557,12 @@ async function enregistrerMeilleurScore() {
             false;
 
 
-        message.textContent =
-            "❌ Erreur lors de l'enregistrement.";
+        if (message) {
+
+            message.textContent =
+                "❌ Erreur lors de l'enregistrement.";
+
+        }
 
     }
 
@@ -1439,20 +1575,14 @@ async function enregistrerMeilleurScore() {
 
 async function chargerClassement() {
 
-    const tbody =
-        document.getElementById(
-            "classementBody"
-        );
-
-
-    if (!tbody) {
+    if (!classementBody) {
 
         return;
 
     }
 
 
-    tbody.innerHTML = `
+    classementBody.innerHTML = `
 
         <tr>
 
@@ -1481,7 +1611,7 @@ async function chargerClassement() {
                 .from("scores")
 
                 .select(
-                    "pseudo,score,date_creation"
+                    "pseudo,score"
                 )
 
                 .eq(
@@ -1504,20 +1634,13 @@ async function chargerClassement() {
 
         if (error) {
 
-            console.error(
-                error
-            );
-
-
-            throw new Error(
-                "Classement impossible."
-            );
+            throw error;
 
         }
 
 
         /*
-         Aucun score
+           Aucun score
         */
 
         if (
@@ -1528,7 +1651,7 @@ async function chargerClassement() {
 
         ) {
 
-            tbody.innerHTML = `
+            classementBody.innerHTML = `
 
                 <tr>
 
@@ -1543,16 +1666,23 @@ async function chargerClassement() {
             `;
 
 
+            if (messageClassement) {
+
+                messageClassement.textContent =
+                    "🌍 Aucun score pour le moment.";
+
+            }
+
             return;
 
         }
 
 
         /*
-         Afficher les scores
+           Affichage
         */
 
-        tbody.innerHTML =
+        classementBody.innerHTML =
             "";
 
 
@@ -1568,10 +1698,6 @@ async function chargerClassement() {
                         "tr"
                     );
 
-
-                /*
-                 Position
-                */
 
                 const position =
                     document.createElement(
@@ -1614,10 +1740,6 @@ async function chargerClassement() {
                 }
 
 
-                /*
-                 Pseudo
-                */
-
                 const pseudoCell =
                     document.createElement(
                         "td"
@@ -1627,10 +1749,6 @@ async function chargerClassement() {
                 pseudoCell.textContent =
                     joueur.pseudo;
 
-
-                /*
-                 Score
-                */
 
                 const scoreCell =
                     document.createElement(
@@ -1657,7 +1775,7 @@ async function chargerClassement() {
                 );
 
 
-                tbody.appendChild(
+                classementBody.appendChild(
                     ligne
                 );
 
@@ -1665,16 +1783,25 @@ async function chargerClassement() {
 
         );
 
+
+        if (messageClassement) {
+
+            messageClassement.textContent =
+                "🌍 Classement actualisé.";
+
+        }
+
     }
 
     catch (erreur) {
 
         console.error(
+            "❌ Erreur classement :",
             erreur
         );
 
 
-        tbody.innerHTML = `
+        classementBody.innerHTML = `
 
             <tr>
 
@@ -1689,9 +1816,41 @@ async function chargerClassement() {
 
         `;
 
+
+        if (messageClassement) {
+
+            messageClassement.textContent =
+                "❌ Erreur lors du chargement.";
+
+        }
+
     }
 
 }
+
+
+/* =====================================================
+   FONCTIONS DISPONIBLES DANS LE HTML
+===================================================== */
+
+window.changerDirection =
+    changerDirection;
+
+
+window.pauseJeu =
+    pauseJeu;
+
+
+window.recommencer =
+    recommencer;
+
+
+window.enregistrerMeilleurScore =
+    enregistrerMeilleurScore;
+
+
+window.chargerClassement =
+    chargerClassement;
 
 
 /* =====================================================
@@ -1706,15 +1865,14 @@ demarrerJeu();
 
 
 /*
- La partie est comptée au lancement
- de la page.
+   La partie est comptée au lancement.
 */
+
 compterPartieJeu4();
 
 
 /*
- Charger le classement.
+   Charger le classement.
 */
 
 chargerClassement();
-

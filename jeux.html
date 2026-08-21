@@ -21,7 +21,7 @@
 <body class="page-jeu">
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <!-- =====================================================
      MENU
@@ -88,12 +88,9 @@
 
         👤 Joueur :
 
-        <strong id="pseudoJoueur">
-
-            Chargement...
-
-        </strong>
-
+       <strong id="pseudoJoueur">
+    👻 Visiteur
+</strong>
     </p>
 
 
@@ -194,45 +191,28 @@
          ENREGISTREMENT DU SCORE
     ================================================== -->
 
-    <div
-        id="zoneEnregistrement"
-        style="display:none;">
+    <div id="zoneEnregistrement" style="display:none;">
 
+    <h2>
+        🏆 Enregistrer ton score
+    </h2>
 
-        <h2>
+    <p>
+        👤 Joueur :
+        <strong id="pseudoAffiche"></strong>
+    </p>
 
-            🏆 Enregistrer ton score
+    <button
+        id="enregistrerScore"
+        onclick="enregistrerMeilleurScore()">
 
-        </h2>
+        💾 Enregistrer le score
 
+    </button>
 
-        <p>
+    <p id="messageEnregistrement"></p>
 
-            👤 Pseudo :
-
-            <strong id="pseudoAffiche">
-
-            </strong>
-
-        </p>
-
-
-        <button
-            id="enregistrerScore"
-            onclick="enregistrerMeilleurScore()">
-
-            💾 Enregistrer le score
-
-        </button>
-
-
-        <p
-            id="messageEnregistrement">
-
-        </p>
-
-
-    </div>
+</div>
 
 
     <!-- =================================================

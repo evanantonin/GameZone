@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -7,7 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
     <title>GameZone - Devine le nombre</title>
 
@@ -23,21 +22,6 @@
 
 
 <!-- =====================================================
-     PROTECTION
-===================================================== -->
-
-<script>
-
-if (!localStorage.getItem("pseudoGameZone")) {
-
-    window.location.href = "index.html";
-
-}
-
-</script>
-
-
-<!-- =====================================================
      MENU
 ===================================================== -->
 
@@ -49,6 +33,14 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
     <a href="liste-jeux.html">
         🎮 Jeux
+    </a>
+
+    <a href="compte.html"
+       class="icone-compte"
+       title="Mon compte">
+
+        👤
+
     </a>
 
 </nav>
@@ -84,7 +76,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
         👤 Joueur :
 
         <strong id="pseudoAffiche">
-            Chargement...
+            Visiteur
         </strong>
 
     </p>
@@ -356,9 +348,6 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 <!-- =====================================================
      SCRIPT DU JEU
-     
-     IMPORTANT :
-     script2.js doit être chargé après le HTML.
 ===================================================== -->
 
 <script src="script2.js"></script>

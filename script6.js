@@ -33,21 +33,25 @@ const statutClassement =
 document.getElementById("statutClassement");
 
 
+
 /* =========================================================
-   PSEUDO
+   PSEUDO / MODE VISITEUR
 ========================================================= */
 
 const pseudo =
-localStorage.getItem("pseudoGameZone");
-
+    localStorage.getItem("pseudoGameZone");
 
 if (pseudo) {
 
     pseudoAffiche.textContent =
-    pseudo;
+        pseudo;
+
+} else {
+
+    pseudoAffiche.textContent =
+        "Visiteur";
 
 }
-
 
 /* =========================================================
    MEILLEUR SCORE LOCAL

@@ -1,12 +1,7 @@
 /* =========================================================
-   VERIFICATION DU PSEUDO
+   GAMEZONE — TETRIS
+   MODE VISITEUR
 ========================================================= */
-
-if (!localStorage.getItem("pseudoGameZone")) {
-
-    window.location.href = "index.html";
-
-}
 
 
 /* =========================================================
@@ -83,7 +78,7 @@ const boutonRejouer =
 
 
 /* =========================================================
-   PSEUDO
+   MODE VISITEUR
 ========================================================= */
 
 const pseudo =
@@ -96,19 +91,30 @@ if (pseudo && pseudoAffiche) {
         pseudo;
 
 }
+else if (pseudoAffiche) {
+
+    pseudoAffiche.textContent =
+        "Visiteur";
+
+}
 
 
 /* =========================================================
    MEILLEUR SCORE LOCAL
-   Un meilleur score différent pour chaque pseudo
 ========================================================= */
 
+/*
+   Si un joueur possède un pseudo :
+   meilleur score personnel.
+
+   Sinon :
+   meilleur score du visiteur sur cet appareil.
+*/
+
 const cleMeilleurScore =
-    "meilleurScoreTetris_" +
-    (
-        pseudo ||
-        "joueur"
-    );
+    pseudo
+        ? "meilleurScoreTetris_" + pseudo
+        : "meilleurScoreTetris_visiteur";
 
 
 let meilleurScore =
@@ -132,11 +138,9 @@ if (meilleurScoreElement) {
 ========================================================= */
 
 const clePartiesJouees =
-    "partiesJoueesTetris_" +
-    (
-        pseudo ||
-        "joueur"
-    );
+    pseudo
+        ? "partiesJoueesTetris_" + pseudo
+        : "partiesJoueesTetris_visiteur";
 
 
 let partiesJouees =
@@ -183,8 +187,8 @@ async function compterPartie() {
 
 
     /* =====================================================
-       COMPTEUR GLOBAL JEUX DU MOMENT
-       TABLE : statistiques_jeux
+       COMPTEUR GLOBAL
+       JEUX DU MOMENT
     ===================================================== */
 
     try {
@@ -570,8 +574,6 @@ function nouvellePiece() {
         0;
 
 
-    /* VERIFICATION GAME OVER */
-
     if (
         collisionPiece()
     ) {
@@ -628,8 +630,6 @@ function collisionPiece(
                 decalageY;
 
 
-            /* MURS */
-
             if (
 
                 nouveauX < 0 ||
@@ -646,8 +646,6 @@ function collisionPiece(
 
             }
 
-
-            /* BLOCS */
 
             if (
 
@@ -713,7 +711,6 @@ function fixerPiece() {
 
     supprimerLignes();
 
-
     nouvellePiece();
 
 }
@@ -725,8 +722,7 @@ function fixerPiece() {
 
 function supprimerLignes() {
 
-    let nombre =
-        0;
+    let nombre = 0;
 
 
     for (
@@ -822,10 +818,6 @@ function supprimerLignes() {
 
         }
 
-
-        /* =================================================
-           NIVEAU
-        ================================================= */
 
         const nouveauNiveau =
             Math.floor(
@@ -1033,9 +1025,6 @@ function tourner() {
         nouvelle;
 
 
-    /* SI LA ROTATION PROVOQUE
-       UNE COLLISION */
-
     if (
         collisionPiece()
     ) {
@@ -1113,8 +1102,6 @@ function ajouterScore(
         points;
 
 
-    /* MEILLEUR SCORE */
-
     if (
         score >
         meilleurScore
@@ -1151,7 +1138,7 @@ function ajouterScore(
 
 
 /* =========================================================
-   CLAVIER AZERTY + FLECHES
+   CLAVIER
 ========================================================= */
 
 document.addEventListener(
@@ -1161,8 +1148,6 @@ document.addEventListener(
         const touche =
             event.key.toLowerCase();
 
-
-        /* GAUCHE */
 
         if (
 
@@ -1180,8 +1165,6 @@ document.addEventListener(
         }
 
 
-        /* DROITE */
-
         else if (
 
             touche === "d" ||
@@ -1197,8 +1180,6 @@ document.addEventListener(
 
         }
 
-
-        /* DESCENDRE */
 
         else if (
 
@@ -1216,8 +1197,6 @@ document.addEventListener(
         }
 
 
-        /* ROTATION */
-
         else if (
 
             touche === "z" ||
@@ -1233,8 +1212,6 @@ document.addEventListener(
 
         }
 
-
-        /* CHUTE RAPIDE */
 
         else if (
             event.code === "Space"
@@ -1256,8 +1233,6 @@ document.addEventListener(
 
 function dessinerGrille() {
 
-    /* FOND */
-
     contexte.fillStyle =
         "#050510";
 
@@ -1271,10 +1246,6 @@ function dessinerGrille() {
 
     );
 
-
-    /* =====================================================
-       GRILLE VERTICALE
-    ===================================================== */
 
     contexte.strokeStyle =
         "rgba(0,234,255,0.12)";
@@ -1314,10 +1285,6 @@ function dessinerGrille() {
     }
 
 
-    /* =====================================================
-       GRILLE HORIZONTALE
-    ===================================================== */
-
     for (
         let y = 0;
         y <= LIGNES;
@@ -1347,10 +1314,6 @@ function dessinerGrille() {
 
     }
 
-
-    /* =====================================================
-       BLOCS DEJA POSES
-    ===================================================== */
 
     for (
         let y = 0;
@@ -1382,10 +1345,6 @@ function dessinerGrille() {
 
     }
 
-
-    /* =====================================================
-       PIECE ACTUELLE
-    ===================================================== */
 
     if (
         piece
@@ -1487,7 +1446,7 @@ function dessinerBloc(
 
 
 /* =========================================================
-   BOUCLE DU JEU
+   BOUCLE
 ========================================================= */
 
 function boucle(
@@ -1495,8 +1454,11 @@ function boucle(
 ) {
 
     if (
+
         !jeuTermine &&
+
         !jeuEnPause
+
     ) {
 
         if (
@@ -1643,6 +1605,26 @@ async function terminerJeu() {
     }
 
 
+    /*
+       IMPORTANT :
+       Le visiteur ne sauvegarde PAS
+       son score dans Supabase.
+    */
+
+    if (!pseudo) {
+
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "👤 Mode visiteur : le score n'est pas enregistré dans le classement.";
+
+        }
+
+        return;
+
+    }
+
+
     await enregistrerMeilleurScore();
 
 }
@@ -1653,8 +1635,6 @@ async function terminerJeu() {
 ========================================================= */
 
 function rejouer() {
-
-    /* NOUVELLE PARTIE */
 
     compterPartie();
 
@@ -1739,14 +1719,31 @@ function rejouer() {
     }
 
 
+    if (statutClassement) {
+
+        if (pseudo) {
+
+            statutClassement.textContent =
+                "🌍 Tu peux améliorer ton meilleur score.";
+
+        }
+
+        else {
+
+            statutClassement.textContent =
+                "👤 Mode visiteur activé.";
+
+        }
+
+    }
+
+
     nouvellePiece();
 
 
     tempsDerniereChute =
         performance.now();
 
-
-    /* RELANCE LA BOUCLE */
 
     cancelAnimationFrame(
         animationID
@@ -1919,19 +1916,13 @@ boutonMobile(
 
 
 /* =========================================================
-   ENREGISTRER MEILLEUR SCORE SUPABASE
+   ENREGISTRER SCORE
+   UNIQUEMENT POUR LES JOUEURS AVEC PSEUDO
 ========================================================= */
 
 async function enregistrerMeilleurScore() {
 
     if (!pseudo) {
-
-        if (statutClassement) {
-
-            statutClassement.textContent =
-                "❌ Aucun pseudo enregistré.";
-
-        }
 
         return;
 
@@ -1947,10 +1938,6 @@ async function enregistrerMeilleurScore() {
 
         }
 
-
-        /* =================================================
-           RECHERCHE DU MEILLEUR SCORE DU JOUEUR
-        ================================================= */
 
         const urlRecherche =
 
@@ -1999,9 +1986,7 @@ async function enregistrerMeilleurScore() {
             );
 
 
-        if (
-            !recherche.ok
-        ) {
+        if (!recherche.ok) {
 
             throw new Error(
                 await recherche.text()
@@ -2068,9 +2053,7 @@ async function enregistrerMeilleurScore() {
                 );
 
 
-            if (
-                !insertion.ok
-            ) {
+            if (!insertion.ok) {
 
                 throw new Error(
                     await insertion.text()
@@ -2100,10 +2083,6 @@ async function enregistrerMeilleurScore() {
                     anciensScores[0].score
                 );
 
-
-            /* =================================================
-               NOUVEAU RECORD
-            ================================================= */
 
             if (
                 score > ancien
@@ -2159,9 +2138,7 @@ async function enregistrerMeilleurScore() {
                     );
 
 
-                if (
-                    !miseAJour.ok
-                ) {
+                if (!miseAJour.ok) {
 
                     throw new Error(
                         await miseAJour.text()
@@ -2180,11 +2157,6 @@ async function enregistrerMeilleurScore() {
                 }
 
             }
-
-
-            /* =================================================
-               PAS DE NOUVEAU RECORD
-            ================================================= */
 
             else {
 
@@ -2299,9 +2271,7 @@ async function chargerClassement() {
             );
 
 
-        if (
-            !resultat.ok
-        ) {
+        if (!resultat.ok) {
 
             throw new Error(
                 await resultat.text()
@@ -2317,10 +2287,6 @@ async function chargerClassement() {
         listeScores.innerHTML =
             "";
 
-
-        /* =================================================
-           AUCUN SCORE
-        ================================================= */
 
         if (
             scores.length === 0
@@ -2340,22 +2306,10 @@ async function chargerClassement() {
 
             `;
 
-
-            if (statutClassement) {
-
-                statutClassement.textContent =
-                    "🌍 Aucun score enregistré pour le jeu 8.";
-
-            }
-
             return;
 
         }
 
-
-        /* =================================================
-           AFFICHER TOP 10
-        ================================================= */
 
         scores.forEach(
 
@@ -2369,8 +2323,6 @@ async function chargerClassement() {
                         "tr"
                     );
 
-
-                /* POSITION */
 
                 const numero =
                     document.createElement(
@@ -2413,8 +2365,6 @@ async function chargerClassement() {
                 }
 
 
-                /* PSEUDO */
-
                 const pseudoCellule =
                     document.createElement(
                         "td"
@@ -2424,8 +2374,6 @@ async function chargerClassement() {
                 pseudoCellule.textContent =
                     joueurScore.pseudo;
 
-
-                /* SCORE */
 
                 const scoreCellule =
                     document.createElement(
@@ -2439,12 +2387,9 @@ async function chargerClassement() {
                     );
 
 
-                /* =================================================
-                   METTRE LE JOUEUR ACTUEL EN EVIDENCE
-                ================================================= */
-
                 if (
 
+                    pseudo &&
                     joueurScore.pseudo ===
                     pseudo
 
@@ -2488,8 +2433,19 @@ async function chargerClassement() {
 
         if (statutClassement) {
 
-            statutClassement.textContent =
-                "🌍 Classement Tetris actualisé.";
+            if (pseudo) {
+
+                statutClassement.textContent =
+                    "🌍 Classement Tetris actualisé.";
+
+            }
+
+            else {
+
+                statutClassement.textContent =
+                    "👤 Mode visiteur — le score visiteur n'est pas enregistré.";
+
+            }
 
         }
 
@@ -2533,31 +2489,21 @@ async function chargerClassement() {
 
 
 /* =========================================================
-   DEMARRAGE DU JEU
+   DEMARRAGE
 ========================================================= */
-
-/* Création de la grille */
 
 grille =
     creerGrille();
 
 
-/* Une partie commence */
-
 compterPartie();
 
-
-/* Première pièce */
 
 nouvellePiece();
 
 
-/* Chargement du classement */
-
 chargerClassement();
 
-
-/* Lancement de la boucle */
 
 animationID =
     requestAnimationFrame(

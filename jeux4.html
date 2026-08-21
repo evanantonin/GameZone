@@ -21,23 +21,6 @@
 <body class="page-jeu">
 
 
-<script>
-
-/* =====================================================
-   PROTECTION DU JEU
-   Si aucun compte n'est connecté,
-   retour automatique à l'accueil.
-===================================================== */
-
-if (!localStorage.getItem("pseudoGameZone")) {
-
-    window.location.href = "index.html";
-
-}
-
-</script>
-
-
 <!-- =====================================================
      MENU
 ===================================================== -->
@@ -50,6 +33,15 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
     <a href="liste-jeux.html">
         🎮 Jeux
+    </a>
+
+    <a
+        href="compte.html"
+        class="icone-compte"
+        title="Mon compte">
+
+        👤
+
     </a>
 
 </nav>
@@ -77,7 +69,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
 
 
     <!-- =================================================
-         PSEUDO
+         JOUEUR
     ================================================= -->
 
     <p>
@@ -85,7 +77,7 @@ if (!localStorage.getItem("pseudoGameZone")) {
         👤 Joueur :
 
         <strong id="pseudoJoueur">
-            Chargement...
+            Visiteur
         </strong>
 
     </p>
@@ -216,29 +208,88 @@ if (!localStorage.getItem("pseudoGameZone")) {
         style="display:none;">
 
         <h2>
-            🏆 Enregistrer ton score
+            🏆 Partie terminée !
         </h2>
 
 
         <p>
 
-            👤 Pseudo :
+            🎯 Ton score :
 
-            <strong id="pseudoAffiche"></strong>
+            <strong id="scoreFinal">
+                0
+            </strong>
 
         </p>
 
 
-        <button
-            id="enregistrerScore"
-            onclick="enregistrerMeilleurScore()">
+        <!-- ================================
+             VISITEUR
+        ================================= -->
 
-            💾 Enregistrer le score
+        <div
+            id="zoneVisiteur"
+            style="display:none;">
 
-        </button>
+            <p>
+
+                👤 Tu joues actuellement en
+                <strong>mode visiteur</strong>.
+
+            </p>
 
 
-        <p id="messageEnregistrement"></p>
+            <p>
+
+                🔐 Crée un compte ou connecte-toi
+                pour enregistrer ton score dans
+                le classement mondial.
+
+            </p>
+
+
+            <a
+                href="compte.html"
+                class="bouton">
+
+                👤 Créer un compte / Se connecter
+
+            </a>
+
+        </div>
+
+
+        <!-- ================================
+             UTILISATEUR CONNECTÉ
+        ================================= -->
+
+        <div
+            id="zoneCompte"
+            style="display:none;">
+
+            <p>
+
+                👤 Pseudo :
+
+                <strong id="pseudoAffiche">
+                    -
+                </strong>
+
+            </p>
+
+
+            <button
+                id="enregistrerScore"
+                onclick="enregistrerMeilleurScore()">
+
+                💾 Enregistrer le score
+
+            </button>
+
+
+            <p id="messageEnregistrement"></p>
+
+        </div>
 
     </div>
 
@@ -305,7 +356,12 @@ if (!localStorage.getItem("pseudoGameZone")) {
 </main>
 
 
+<!-- =====================================================
+     SCRIPT
+===================================================== -->
+
 <script src="script4.js"></script>
+
 
 </body>
 
