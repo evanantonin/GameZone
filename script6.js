@@ -1,3 +1,21 @@
+/* =========================================================
+   GAMEZONE — SPACE INVADERS
+   script6.js
+
+   VISITEUR :
+   - peut jouer normalement
+   - meilleur score uniquement en localStorage
+   - aucun score envoyé dans Supabase
+   - aucune partie comptée dans statistiques_jeux
+
+   COMPTE :
+   - récupération du score local
+   - récupération du score Supabase
+   - meilleur des deux conservé
+   - score envoyé dans scores si nécessaire
+   - parties comptées dans statistiques_jeux
+========================================================= */
+
 
 /* =========================================================
    SUPABASE
@@ -10,11 +28,9 @@ const SUPABASE_KEY =
 "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
-/*
-    IDENTIFICATION DU JEU
-
-    Space Invaders = jeu 6
-*/
+/* =========================================================
+   IDENTIFICATION DU JEU
+========================================================= */
 
 const JEU_ID = "6";
 
@@ -33,25 +49,48 @@ const statutClassement =
 document.getElementById("statutClassement");
 
 
-
 /* =========================================================
    PSEUDO / MODE VISITEUR
 ========================================================= */
 
-const pseudo =
-    localStorage.getItem("pseudoGameZone");
+function recupererPseudo() {
 
-if (pseudo) {
-
-    pseudoAffiche.textContent =
-        pseudo;
-
-} else {
-
-    pseudoAffiche.textContent =
-        "Visiteur";
+    return localStorage.getItem(
+        "pseudoGameZone"
+    );
 
 }
+
+
+let pseudo =
+recupererPseudo();
+
+
+function mettreAJourPseudoAffiche() {
+
+    pseudo =
+    recupererPseudo();
+
+
+    if (pseudo) {
+
+        pseudoAffiche.textContent =
+        pseudo;
+
+    }
+
+    else {
+
+        pseudoAffiche.textContent =
+        "Visiteur";
+
+    }
+
+}
+
+
+mettreAJourPseudoAffiche();
+
 
 /* =========================================================
    MEILLEUR SCORE LOCAL
@@ -816,11 +855,9 @@ function verifierCollisions() {
 
 
                     ajouterScore(
-
                         ennemi.type === "fort"
                         ? 20
                         : 10
-
                     );
 
                 }
@@ -994,6 +1031,15 @@ function ajouterScore(points) {
         score;
 
 
+        /*
+         * TOUJOURS sauvegarder le meilleur score
+         * en localStorage.
+         *
+         * Cela fonctionne pour :
+         * - visiteur
+         * - joueur connecté
+         */
+
         localStorage.setItem(
             "meilleurScoreSpaceInvaders",
             meilleurScore
@@ -1154,6 +1200,35 @@ async function terminerJeu() {
     false;
 
 
+    /*
+     * IMPORTANT :
+     *
+     * Le score actuel est toujours sauvegardé
+     * localement.
+     *
+     * Si le joueur est visiteur :
+     *     -> rien n'est envoyé à Supabase.
+     *
+     * Si le joueur est connecté :
+     *     -> on fusionne avec son score Supabase.
+     */
+
+    if (
+        score > meilleurScore
+    ) {
+
+        meilleurScore =
+        score;
+
+
+        localStorage.setItem(
+            "meilleurScoreSpaceInvaders",
+            meilleurScore
+        );
+
+    }
+
+
     document.getElementById(
         "message"
     ).textContent =
@@ -1173,7 +1248,27 @@ async function terminerJeu() {
     "none";
 
 
-    await enregistrerMeilleurScore();
+    /*
+     * ENREGISTREMENT SUPABASE UNIQUEMENT
+     * POUR UN JOUEUR AVEC PSEUDO
+     */
+
+    pseudo =
+    recupererPseudo();
+
+
+    if (pseudo) {
+
+        await enregistrerMeilleurScore();
+
+    }
+
+    else {
+
+        statutClassement.textContent =
+        "👻 Mode visiteur : score sauvegardé uniquement sur cet appareil.";
+
+    }
 
 }
 
@@ -1243,7 +1338,26 @@ document.getElementById(
 ========================================================= */
 
 function rejouer() {
-    compterPartieJeu6();
+
+    /*
+     * IMPORTANT :
+     *
+     * Une nouvelle partie est comptée uniquement
+     * si un pseudo est présent.
+     *
+     * Un visiteur peut rejouer sans être compté.
+     */
+
+    pseudo =
+    recupererPseudo();
+
+
+    if (pseudo) {
+
+        compterPartieJeu6();
+
+    }
+
 
     score = 0;
 
@@ -1624,8 +1738,6 @@ function dessinerJoueur() {
     contexte.stroke();
 
 
-    /* COCKPIT */
-
     contexte.shadowBlur =
     15;
 
@@ -1663,8 +1775,6 @@ function dessinerJoueur() {
     contexte.fill();
 
 
-    /* LIGNE DU COCKPIT */
-
     contexte.strokeStyle =
     "#00ffff";
 
@@ -1689,8 +1799,6 @@ function dessinerJoueur() {
 
     contexte.stroke();
 
-
-    /* MOTEURS */
 
     contexte.shadowBlur =
     20;
@@ -1725,8 +1833,6 @@ function dessinerJoueur() {
         7
     );
 
-
-    /* FLAMMES */
 
     contexte.shadowColor =
     "#ff1744";
@@ -1848,8 +1954,6 @@ function dessinerEnnemi(ennemi) {
     couleurPrincipale;
 
 
-    /* CORPS */
-
     const gradient =
     contexte.createLinearGradient(
         x,
@@ -1897,8 +2001,6 @@ function dessinerEnnemi(ennemi) {
     contexte.fill();
 
 
-    /* CONTOUR */
-
     contexte.strokeStyle =
     couleurClaire;
 
@@ -1907,8 +2009,6 @@ function dessinerEnnemi(ennemi) {
 
     contexte.stroke();
 
-
-    /* ANTENNES */
 
     contexte.strokeStyle =
     couleurClaire;
@@ -1953,8 +2053,6 @@ function dessinerEnnemi(ennemi) {
     contexte.stroke();
 
 
-    /* YEUX */
-
     contexte.shadowBlur =
     12;
 
@@ -1986,8 +2084,6 @@ function dessinerEnnemi(ennemi) {
     );
 
 
-    /* PUPILLES */
-
     contexte.fillStyle =
     "#050505";
 
@@ -2011,8 +2107,6 @@ function dessinerEnnemi(ennemi) {
         5
     );
 
-
-    /* BOUCHE */
 
     contexte.strokeStyle =
     couleurClaire;
@@ -2056,8 +2150,6 @@ function dessinerEnnemi(ennemi) {
 
     contexte.stroke();
 
-
-    /* LUMIERES */
 
     contexte.fillStyle =
     "#ffffff";
@@ -2126,8 +2218,6 @@ function dessinerBoss() {
     "#ff004c";
 
 
-    /* CORPS */
-
     const gradient =
     contexte.createLinearGradient(
         x,
@@ -2181,8 +2271,6 @@ function dessinerBoss() {
     contexte.fill();
 
 
-    /* CONTOUR */
-
     contexte.strokeStyle =
     "#ff5577";
 
@@ -2191,8 +2279,6 @@ function dessinerBoss() {
 
     contexte.stroke();
 
-
-    /* AILES */
 
     contexte.fillStyle =
     "#67003e";
@@ -2268,8 +2354,6 @@ function dessinerBoss() {
     contexte.stroke();
 
 
-    /* YEUX */
-
     contexte.shadowBlur =
     20;
 
@@ -2301,8 +2385,6 @@ function dessinerBoss() {
     );
 
 
-    /* PUPILLES */
-
     contexte.fillStyle =
     "#ff3300";
 
@@ -2326,8 +2408,6 @@ function dessinerBoss() {
         12
     );
 
-
-    /* NOYAU CENTRAL */
 
     contexte.shadowBlur =
     25;
@@ -2382,8 +2462,6 @@ function dessinerBoss() {
     contexte.fill();
 
 
-    /* BARRE DE VIE */
-
     contexte.shadowBlur =
     0;
 
@@ -2432,8 +2510,6 @@ function dessinerBoss() {
         9
     );
 
-
-    /* CIRCUITS */
 
     contexte.strokeStyle =
     "#ff5577";
@@ -2963,71 +3039,70 @@ boutonTirer.addEventListener(
 
 /* =========================================================
    SUPABASE
-   ENREGISTREMENT MEILLEUR SCORE
+   FONCTION UTILITAIRE
 ========================================================= */
 
-async function enregistrerMeilleurScore() {
+function headersSupabase() {
 
-    if (!pseudo) {
+    return {
 
-        statutClassement.textContent =
-        "❌ Aucun pseudo enregistré.";
+        "apikey":
+        SUPABASE_KEY,
 
-        return;
+        "Authorization":
+        "Bearer " +
+        SUPABASE_KEY,
 
-    }
+        "Accept":
+        "application/json"
 
+    };
+
+}
+
+
+/* =========================================================
+   RECUPERER LE MEILLEUR SCORE DU COMPTE
+========================================================= */
+
+async function recupererScoreCompte(
+    pseudoCompte
+) {
 
     try {
 
-        statutClassement.textContent =
-        "⏳ Enregistrement du score...";
-
-
-        const urlRecherche =
+        const url =
         SUPABASE_URL +
         "/rest/v1/scores" +
         "?pseudo=eq." +
-        encodeURIComponent(pseudo) +
+        encodeURIComponent(
+            pseudoCompte
+        ) +
         "&jeu=eq.6" +
         "&select=id,pseudo,score,jeu" +
         "&order=score.desc" +
         "&limit=1";
 
 
-        const recherche =
+        const resultat =
         await fetch(
-            urlRecherche,
+            url,
             {
 
                 method:
                 "GET",
 
-                headers: {
-
-                    "apikey":
-                    SUPABASE_KEY,
-
-                    "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY
-
-                }
+                headers:
+                headersSupabase()
 
             }
         );
 
 
-        if (!recherche.ok) {
+        if (!resultat.ok) {
 
             const texte =
-            await recherche.text();
-
-
-            console.error(
-                "ERREUR RECHERCHE :",
-                texte
-            );
+            await resultat.text();
 
 
             throw new Error(
@@ -3037,132 +3112,182 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        const anciensScores =
-        await recherche.json();
+        const scores =
+        await resultat.json();
 
-
-        /* =================================================
-           PREMIER SCORE
-        ================================================= */
 
         if (
-            anciensScores.length === 0
+            scores.length === 0
         ) {
 
-            const insertion =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/scores",
-                {
-
-                    method:
-                    "POST",
-
-                    headers: {
-
-                        "apikey":
-                        SUPABASE_KEY,
-
-                        "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY,
-
-                        "Content-Type":
-                        "application/json",
-
-                        "Prefer":
-                        "return=minimal"
-
-                    },
-
-                    body:
-                    JSON.stringify({
-
-                        pseudo:
-                        pseudo,
-
-                        score:
-                        score,
-
-                        jeu:
-                        "6"
-
-                    })
-
-                }
-            );
-
-
-            if (!insertion.ok) {
-
-                const texte =
-                await insertion.text();
-
-
-                console.error(
-                    "ERREUR INSERT :",
-                    texte
-                );
-
-
-                throw new Error(
-                    texte
-                );
-
-            }
-
-
-            statutClassement.textContent =
-            "🏆 Premier score enregistré !";
+            return null;
 
         }
 
 
-        /* =================================================
-           SCORE EXISTANT
-        ================================================= */
+        return scores[0];
 
-        else {
+    }
 
-            const ancien =
+    catch (erreur) {
+
+        console.error(
+            "Erreur récupération score compte :",
+            erreur
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   FUSION SCORE VISITEUR + SCORE COMPTE
+========================================================= */
+
+async function enregistrerMeilleurScore() {
+
+    /*
+     * Vérification du pseudo au moment précis
+     * de l'enregistrement.
+     */
+
+    pseudo =
+    recupererPseudo();
+
+
+    /*
+     * VISITEUR
+     *
+     * Absolument rien dans Supabase.
+     */
+
+    if (!pseudo) {
+
+        statutClassement.textContent =
+        "👻 Visiteur : score conservé uniquement sur cet appareil.";
+
+        return;
+
+    }
+
+
+    try {
+
+        statutClassement.textContent =
+        "⏳ Synchronisation du meilleur score...";
+
+
+        /*
+         * SCORE LOCAL
+         */
+
+        const scoreLocal =
+        Number(
+            localStorage.getItem(
+                "meilleurScoreSpaceInvaders"
+            )
+        ) || 0;
+
+
+        /*
+         * SCORE SUPABASE
+         */
+
+        const ancienScore =
+        await recupererScoreCompte(
+            pseudo
+        );
+
+
+        let scoreCompte = 0;
+
+        let idCompte = null;
+
+
+        if (ancienScore) {
+
+            scoreCompte =
             Number(
-                anciensScores[0].score
-            );
+                ancienScore.score
+            ) || 0;
 
 
-            /* =============================================
-               NOUVEAU RECORD
-            ============================================= */
+            idCompte =
+            ancienScore.id;
+
+        }
+
+
+        /*
+         * MEILLEUR DES DEUX
+         */
+
+        const meilleur =
+        Math.max(
+            scoreLocal,
+            scoreCompte
+        );
+
+
+        /*
+         * Mettre à jour le meilleur local
+         * également.
+         */
+
+        meilleurScore =
+        meilleur;
+
+
+        localStorage.setItem(
+            "meilleurScoreSpaceInvaders",
+            meilleur
+        );
+
+
+        document.getElementById(
+            "meilleurScore"
+        ).textContent =
+        meilleur;
+
+
+        /*
+         * AUCUN SCORE SUPABASE
+         *
+         * On crée le score seulement si
+         * aucun score n'existe encore.
+         */
+
+        if (
+            !ancienScore
+        ) {
 
             if (
-                score > ancien
+                meilleur <= 0
             ) {
 
-                const id =
-                anciensScores[0].id;
+                statutClassement.textContent =
+                "ℹ️ Aucun score à synchroniser.";
 
+            }
 
-                const miseAJour =
+            else {
+
+                const insertion =
                 await fetch(
-
                     SUPABASE_URL +
-                    "/rest/v1/scores" +
-                    "?id=eq." +
-                    encodeURIComponent(id),
-
+                    "/rest/v1/scores",
                     {
 
                         method:
-                        "PATCH",
+                        "POST",
 
                         headers: {
 
-                            "apikey":
-                            SUPABASE_KEY,
-
-                            "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY,
+                            ...headersSupabase(),
 
                             "Content-Type":
                             "application/json",
@@ -3175,8 +3300,11 @@ async function enregistrerMeilleurScore() {
                         body:
                         JSON.stringify({
 
+                            pseudo:
+                            pseudo,
+
                             score:
-                            score,
+                            meilleur,
 
                             jeu:
                             "6"
@@ -3184,20 +3312,13 @@ async function enregistrerMeilleurScore() {
                         })
 
                     }
-
                 );
 
 
-                if (!miseAJour.ok) {
+                if (!insertion.ok) {
 
                     const texte =
-                    await miseAJour.text();
-
-
-                    console.error(
-                        "ERREUR UPDATE :",
-                        texte
-                    );
+                    await insertion.text();
 
 
                     throw new Error(
@@ -3208,28 +3329,116 @@ async function enregistrerMeilleurScore() {
 
 
                 statutClassement.textContent =
-                "🔥 NOUVEAU RECORD ! " +
-                score +
-                " points !";
-
-            }
-
-
-            /* =============================================
-               PAS DE NOUVEAU RECORD
-            ============================================= */
-
-            else {
-
-                statutClassement.textContent =
-                "ℹ️ Ton meilleur score reste " +
-                ancien +
-                " points.";
+                "🏆 Ton meilleur score visiteur a été ajouté au classement !";
 
             }
 
         }
 
+
+        /*
+         * SCORE LOCAL SUPÉRIEUR AU SCORE DU COMPTE
+         */
+
+        else if (
+            scoreLocal > scoreCompte
+        ) {
+
+            const miseAJour =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/scores" +
+                "?id=eq." +
+                encodeURIComponent(
+                    idCompte
+                ),
+
+                {
+
+                    method:
+                    "PATCH",
+
+                    headers: {
+
+                        ...headersSupabase(),
+
+                        "Content-Type":
+                        "application/json",
+
+                        "Prefer":
+                        "return=minimal"
+
+                    },
+
+                    body:
+                    JSON.stringify({
+
+                        score:
+                        scoreLocal,
+
+                        jeu:
+                        "6"
+
+                    })
+
+                }
+
+            );
+
+
+            if (!miseAJour.ok) {
+
+                const texte =
+                await miseAJour.text();
+
+
+                throw new Error(
+                    texte
+                );
+
+            }
+
+
+            statutClassement.textContent =
+            "🔥 Ton meilleur score local a remplacé ton ancien record !";
+
+        }
+
+
+        /*
+         * SCORE DU COMPTE SUPÉRIEUR
+         */
+
+        else if (
+            scoreCompte > scoreLocal
+        ) {
+
+            statutClassement.textContent =
+            "🏆 Ton record du compte est conservé : " +
+            scoreCompte +
+            " points.";
+
+        }
+
+
+        /*
+         * SCORES IDENTIQUES
+         */
+
+        else {
+
+            statutClassement.textContent =
+            "🏆 Ton meilleur score est de " +
+            meilleur +
+            " points.";
+
+        }
+
+
+        /*
+         * ACTUALISER LE TOP 10
+         */
 
         await chargerClassement();
 
@@ -3239,13 +3448,13 @@ async function enregistrerMeilleurScore() {
     catch (erreur) {
 
         console.error(
-            "ERREUR ENREGISTREMENT :",
+            "ERREUR SYNCHRONISATION SCORE :",
             erreur
         );
 
 
         statutClassement.textContent =
-        "❌ Erreur lors de l'enregistrement.";
+        "❌ Erreur lors de la synchronisation du score.";
 
     }
 
@@ -3253,7 +3462,6 @@ async function enregistrerMeilleurScore() {
 
 
 /* =========================================================
-   SUPABASE
    TOP 10 SPACE INVADERS
 ========================================================= */
 
@@ -3282,19 +3490,8 @@ async function chargerClassement() {
                 method:
                 "GET",
 
-                headers: {
-
-                    "apikey":
-                    SUPABASE_KEY,
-
-                    "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY,
-
-                    "Accept":
-                    "application/json"
-
-                }
+                headers:
+                headersSupabase()
 
             }
         );
@@ -3327,10 +3524,6 @@ async function chargerClassement() {
         "";
 
 
-        /* =================================================
-           AUCUN SCORE
-        ================================================= */
-
         if (
             scores.length === 0
         ) {
@@ -3359,10 +3552,6 @@ async function chargerClassement() {
 
         }
 
-
-        /* =================================================
-           AFFICHER TOP 10
-        ================================================= */
 
         scores.forEach(
             function(
@@ -3462,8 +3651,26 @@ async function chargerClassement() {
         );
 
 
-        statutClassement.textContent =
-        "🌍 Classement Space Invaders actualisé.";
+        /*
+         * Ne pas afficher un message disant
+         * que le visiteur a envoyé son score.
+         */
+
+        if (
+            !recupererPseudo()
+        ) {
+
+            statutClassement.textContent =
+            "🌍 TOP 10 mondial — ton score visiteur reste local.";
+
+        }
+
+        else {
+
+            statutClassement.textContent =
+            "🌍 Classement Space Invaders actualisé.";
+
+        }
 
     }
 
@@ -3507,60 +3714,73 @@ async function chargerClassement() {
 
 async function compterPartieJeu6() {
 
-    try {
+    /*
+     * DOUBLE SÉCURITÉ :
+     *
+     * Même si cette fonction est appelée par erreur,
+     * un visiteur ne sera JAMAIS compté.
+     */
 
-        console.log("🔄 Comptage Space Invaders...");
-
-        const url =
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?id=eq.22" +
-            "&select=id,nom_jeu,nombre_parties,ordre";
-
-        console.log("🌐 URL :", url);
+    const pseudoActuel =
+    recupererPseudo();
 
 
-        const recherche =
-            await fetch(
-                url,
-                {
-                    method: "GET",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + SUPABASE_KEY,
-                        "Accept":
-                            "application/json"
-                    }
-                }
-            );
-
+    if (!pseudoActuel) {
 
         console.log(
-            "📡 Statut :",
-            recherche.status
+            "👻 Visiteur : partie non comptée."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        console.log(
+            "🔄 Comptage Space Invaders pour :",
+            pseudoActuel
         );
 
 
-        const texte =
-            await recherche.text();
+        const url =
+        SUPABASE_URL +
+        "/rest/v1/statistiques_jeux" +
+        "?id=eq.22" +
+        "&select=id,nom_jeu,nombre_parties,ordre";
 
-        console.log(
-            "📦 Réponse brute :",
-            texte
+
+        const recherche =
+        await fetch(
+            url,
+            {
+
+                method:
+                "GET",
+
+                headers:
+                headersSupabase()
+
+            }
         );
 
 
         if (!recherche.ok) {
 
-            throw new Error(texte);
+            const texte =
+            await recherche.text();
+
+
+            throw new Error(
+                texte
+            );
 
         }
 
 
         const statistiques =
-            JSON.parse(texte);
+        await recherche.json();
 
 
         if (
@@ -3569,7 +3789,7 @@ async function compterPartieJeu6() {
         ) {
 
             console.error(
-                "❌ Supabase ne retourne aucune ligne pour id=22."
+                "❌ Aucune ligne trouvée pour id=22."
             );
 
             return;
@@ -3578,63 +3798,62 @@ async function compterPartieJeu6() {
 
 
         const jeu =
-            statistiques[0];
-
-
-        console.log(
-            "🎮 Jeu trouvé :",
-            jeu
-        );
+        statistiques[0];
 
 
         const nouveauNombre =
-            Number(jeu.nombre_parties) + 1;
+        Number(
+            jeu.nombre_parties
+        ) + 1;
 
-
-        /* =========================================
-           MISE À JOUR
-        ========================================= */
 
         const updateUrl =
-            SUPABASE_URL +
-            "/rest/v1/statistiques_jeux" +
-            "?id=eq.22";
+        SUPABASE_URL +
+        "/rest/v1/statistiques_jeux" +
+        "?id=eq.22";
 
 
         const miseAJour =
-            await fetch(
-                updateUrl,
-                {
-                    method: "PATCH",
+        await fetch(
+            updateUrl,
+            {
 
-                    headers: {
-                        "apikey": SUPABASE_KEY,
+                method:
+                "PATCH",
 
-                        "Authorization":
-                            "Bearer " + SUPABASE_KEY,
+                headers: {
 
-                        "Content-Type":
-                            "application/json",
+                    ...headersSupabase(),
 
-                        "Prefer":
-                            "return=minimal"
-                    },
+                    "Content-Type":
+                    "application/json",
 
-                    body:
-                        JSON.stringify({
-                            nombre_parties:
-                                nouveauNombre
-                        })
-                }
-            );
+                    "Prefer":
+                    "return=minimal"
+
+                },
+
+                body:
+                JSON.stringify({
+
+                    nombre_parties:
+                    nouveauNombre
+
+                })
+
+            }
+        );
 
 
         if (!miseAJour.ok) {
 
             const erreur =
-                await miseAJour.text();
+            await miseAJour.text();
 
-            throw new Error(erreur);
+
+            throw new Error(
+                erreur
+            );
 
         }
 
@@ -3657,6 +3876,73 @@ async function compterPartieJeu6() {
     }
 
 }
+
+
+/* =========================================================
+   DETECTION D'UN CHANGEMENT DE COMPTE
+========================================================= */
+
+/*
+ * Le pseudo peut être changé depuis une autre page.
+ *
+ * On vérifie périodiquement si le joueur est passé
+ * de Visiteur à un compte connecté.
+ */
+
+let pseudoAvant =
+recupererPseudo();
+
+
+setInterval(
+    async function() {
+
+        const nouveauPseudo =
+        recupererPseudo();
+
+
+        if (
+            nouveauPseudo !== pseudoAvant
+        ) {
+
+            pseudoAvant =
+            nouveauPseudo;
+
+
+            pseudo =
+            nouveauPseudo;
+
+
+            mettreAJourPseudoAffiche();
+
+
+            /*
+             * Un nouveau compte vient d'être connecté.
+             *
+             * On fusionne alors le score local
+             * avec le score du compte.
+             */
+
+            if (
+                nouveauPseudo
+            ) {
+
+                console.log(
+                    "🔐 Compte détecté :",
+                    nouveauPseudo
+                );
+
+
+                await enregistrerMeilleurScore();
+
+            }
+
+        }
+
+    },
+    1000
+);
+
+
 /* =========================================================
    DEMARRAGE
 ========================================================= */
@@ -3668,10 +3954,16 @@ dessiner();
 chargerClassement();
 
 /*
-    Comptage du Jeu 6 dans
-    "Jeux du moment"
-*/
-
-compterPartieJeu6();
+ * IMPORTANT :
+ *
+ * PAS de :
+ *
+ * compterPartieJeu6();
+ *
+ * ici.
+ *
+ * Sinon une partie serait comptée simplement
+ * en ouvrant la page.
+ */
 
 boucle();

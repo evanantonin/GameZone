@@ -1,6 +1,7 @@
 /* =====================================================
    GAMEZONE — JEU 3
    PIERRE FEUILLE CISEAUX
+   MODE VISITEUR + LOCAL STORAGE
 ===================================================== */
 
 
@@ -28,6 +29,24 @@ const supabaseClient =
 
 const JEU =
     "pierre-feuille-ciseaux";
+
+const NOM_JEU_STATISTIQUE =
+    "Pierre Feuille Ciseaux";
+
+
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
+/*
+   Score maximum du visiteur.
+
+   Ce score correspond au nombre total
+   de manches gagnées par le joueur.
+*/
+
+const CLE_MEILLEUR_SCORE_VISITEUR =
+    "meilleurScorePFCVisiteur";
 
 
 /* =====================================================
@@ -119,13 +138,17 @@ const messageClassement =
 
 
 /* =====================================================
-   PSEUDO / VISITEUR
+   PSEUDO / MODE VISITEUR
 ===================================================== */
 
 const pseudo =
     localStorage.getItem(
         "pseudoGameZone"
     );
+
+
+const modeVisiteur =
+    !pseudo;
 
 
 if (pseudoJoueurElement) {
@@ -152,13 +175,302 @@ let mancheTerminee = false;
 
 let scoreEnregistre = false;
 
+let partieComptee = false;
+
+
+/* =====================================================
+   MEILLEUR SCORE LOCAL
+===================================================== */
+
+let meilleurScoreVisiteur =
+    Number(
+        localStorage.getItem(
+            CLE_MEILLEUR_SCORE_VISITEUR
+        )
+    ) || 0;
+
+
+/* =====================================================
+   SAUVEGARDER LE MEILLEUR SCORE LOCAL
+===================================================== */
+
+function sauvegarderMeilleurScoreLocal() {
+
+    if (
+        manchesGagneesJoueur >
+        meilleurScoreVisiteur
+    ) {
+
+        meilleurScoreVisiteur =
+            manchesGagneesJoueur;
+
+
+        localStorage.setItem(
+
+            CLE_MEILLEUR_SCORE_VISITEUR,
+
+            meilleurScoreVisiteur
+
+        );
+
+
+        console.log(
+            "💾 Nouveau meilleur score PFC visiteur :",
+            meilleurScoreVisiteur
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SYNCHRONISER LE SCORE LOCAL AVEC SUPABASE
+===================================================== */
 
 /*
-    Permet de compter une seule fois
-    la manche terminée.
+   Cette fonction est appelée lorsqu'un pseudo
+   existe.
+
+   Exemple :
+
+   Visiteur :
+   meilleur local = 8
+
+   Puis création d'un compte :
+   pseudoGameZone = "Evan"
+
+   Le script récupère le 8 et l'envoie
+   automatiquement dans Supabase.
 */
 
-let partieComptee = false;
+async function synchroniserScoreLocalAvecCompte() {
+
+    const pseudoActuel =
+        localStorage.getItem(
+            "pseudoGameZone"
+        );
+
+
+    if (!pseudoActuel) {
+
+        return;
+
+    }
+
+
+    const scoreLocal =
+        Number(
+            localStorage.getItem(
+                CLE_MEILLEUR_SCORE_VISITEUR
+            )
+        ) || 0;
+
+
+    if (scoreLocal <= 0) {
+
+        return;
+
+    }
+
+
+    console.log(
+        "🔄 Synchronisation PFC :",
+        scoreLocal
+    );
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+
+                .from("scores")
+
+                .select(
+                    "id,pseudo,score,jeu"
+                )
+
+                .eq(
+                    "pseudo",
+                    pseudoActuel
+                )
+
+                .eq(
+                    "jeu",
+                    JEU
+                )
+
+                .limit(1);
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erreur recherche score PFC :",
+                error
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           SCORE EXISTANT
+        ================================================= */
+
+        if (
+            data &&
+            data.length > 0
+        ) {
+
+            const scoreSupabase =
+                Number(
+                    data[0].score || 0
+                );
+
+
+            /*
+               On ne remplace le score Supabase
+               que si le score local est meilleur.
+            */
+
+            if (
+                scoreLocal >
+                scoreSupabase
+            ) {
+
+                const {
+                    error: erreurUpdate
+                } =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .update({
+
+                            score:
+                                scoreLocal,
+
+                            date_creation:
+                                new Date()
+                                    .toISOString()
+
+                        })
+
+                        .eq(
+                            "id",
+                            data[0].id
+                        );
+
+
+                if (erreurUpdate) {
+
+                    console.error(
+                        "❌ Erreur mise à jour score PFC :",
+                        erreurUpdate
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "🏆 Meilleur score local transféré :",
+                    scoreLocal
+                );
+
+            }
+
+            else {
+
+                console.log(
+                    "ℹ️ Le score Supabase est déjà meilleur ou égal."
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           AUCUN SCORE SUPABASE
+        ================================================= */
+
+        else {
+
+            const {
+                error: erreurInsertion
+            } =
+                await supabaseClient
+
+                    .from("scores")
+
+                    .insert({
+
+                        pseudo:
+                            pseudoActuel,
+
+                        score:
+                            scoreLocal,
+
+                        jeu:
+                            JEU,
+
+                        date_creation:
+                            new Date()
+                                .toISOString()
+
+                    });
+
+
+            if (erreurInsertion) {
+
+                console.error(
+                    "❌ Erreur transfert score PFC :",
+                    erreurInsertion
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "✅ Score visiteur transféré dans Supabase :",
+                scoreLocal
+            );
+
+        }
+
+
+        /*
+           Le score local reste volontairement
+           conservé.
+
+           Cela évite de perdre le meilleur score
+           si l'utilisateur se déconnecte.
+        */
+
+        await chargerClassement();
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur synchronisation PFC :",
+            erreur
+        );
+
+    }
+
+}
 
 
 /* =====================================================
@@ -448,13 +760,33 @@ async function terminerManche(
         manchesGagneesJoueur++;
 
 
+        /*
+           Sauvegarde automatique du meilleur
+           score en local.
+        */
+
+        sauvegarderMeilleurScoreLocal();
+
+
         if (message) {
 
-            message.textContent =
-                "🏆 Tu as gagné cette manche ! " +
-                "🎉 Tu as maintenant " +
-                manchesGagneesJoueur +
-                " manche(s) gagnée(s).";
+            if (modeVisiteur) {
+
+                message.textContent =
+                    "🏆 Tu as gagné cette manche ! " +
+                    "💾 Score sauvegardé sur cet appareil.";
+
+            }
+
+            else {
+
+                message.textContent =
+                    "🏆 Tu as gagné cette manche ! " +
+                    "🎉 Tu as maintenant " +
+                    manchesGagneesJoueur +
+                    " manche(s) gagnée(s).";
+
+            }
 
         }
 
@@ -487,6 +819,22 @@ async function terminerManche(
 
         manchesFinales.textContent =
             manchesGagneesJoueur;
+
+    }
+
+
+    /*
+       Message différent pour visiteur.
+    */
+
+    if (
+        modeVisiteur &&
+        messageEnregistrement
+    ) {
+
+        messageEnregistrement.textContent =
+            "💾 Ton meilleur score est sauvegardé automatiquement sur cet appareil. " +
+            "Crée un compte pour l'afficher dans le classement mondial.";
 
     }
 
@@ -679,7 +1027,10 @@ async function compterPartieJeu3() {
 
 function nouvelleManche() {
 
-    compterPartieJeu3();
+    /*
+       On ne compte PAS immédiatement ici.
+       La partie sera comptée lorsqu'elle sera terminée.
+    */
 
 
     scoreJoueur = 0;
@@ -752,27 +1103,42 @@ function nouvelleManche() {
 
 async function enregistrerManches() {
 
-    /*
-       VISITEUR
-    */
+    const pseudoActuel =
+        localStorage.getItem(
+            "pseudoGameZone"
+        );
 
-    if (!pseudo) {
+
+    /* =================================================
+       VISITEUR
+    ================================================= */
+
+    if (!pseudoActuel) {
+
+        /*
+           Sauvegarde locale supplémentaire.
+        */
+
+        sauvegarderMeilleurScoreLocal();
+
 
         if (messageEnregistrement) {
 
             messageEnregistrement.textContent =
-                "👤 Tu joues actuellement en visiteur. Crée un compte pour enregistrer ton score dans le classement mondial.";
+                "💾 Score sauvegardé sur cet appareil. " +
+                "Crée un compte pour l'envoyer au classement mondial.";
 
         }
+
 
         return;
 
     }
 
 
-    /*
-       Aucun résultat
-    */
+    /* =================================================
+       AUCUN RESULTAT
+    ================================================= */
 
     if (manchesGagneesJoueur <= 0) {
 
@@ -788,9 +1154,9 @@ async function enregistrerManches() {
     }
 
 
-    /*
-       Score déjà enregistré
-    */
+    /* =================================================
+       SCORE DEJA ENREGISTRE
+    ================================================= */
 
     if (scoreEnregistre) {
 
@@ -837,7 +1203,7 @@ async function enregistrerManches() {
 
                 .eq(
                     "pseudo",
-                    pseudo
+                    pseudoActuel
                 )
 
                 .eq(
@@ -863,7 +1229,7 @@ async function enregistrerManches() {
 
 
         /* =================================================
-           JOUEUR EXISTANT
+           SCORE EXISTANT
         ================================================= */
 
         if (
@@ -881,10 +1247,8 @@ async function enregistrerManches() {
 
 
             /*
-               On conserve le fonctionnement
-               de ton ancien système :
-               les nouvelles manches gagnées
-               sont ajoutées au total.
+               On ajoute les manches gagnées
+               comme dans ton système actuel.
             */
 
             const nouveauNombreManches =
@@ -969,7 +1333,7 @@ async function enregistrerManches() {
                     .insert({
 
                         pseudo:
-                            pseudo,
+                            pseudoActuel,
 
                         score:
                             manchesGagneesJoueur,
@@ -1146,6 +1510,7 @@ async function chargerClassement() {
 
             }
 
+
             return;
 
         }
@@ -1320,4 +1685,35 @@ window.chargerClassement =
    DEMARRAGE
 ===================================================== */
 
+/*
+   Si l'utilisateur vient de créer/se connecter
+   à un compte, on tente de transférer son
+   meilleur score visiteur vers Supabase.
+*/
+
+synchroniserScoreLocalAvecCompte();
+
+
+/*
+   Chargement du classement.
+*/
+
 chargerClassement();
+
+
+console.log(
+    "✅ script3.js chargé correctement."
+);
+
+
+console.log(
+    modeVisiteur
+        ? "👻 Mode visiteur PFC"
+        : "👤 Joueur connecté : " + pseudo
+);
+
+
+console.log(
+    "🏆 Meilleur score local PFC :",
+    meilleurScoreVisiteur
+);

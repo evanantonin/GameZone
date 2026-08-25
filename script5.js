@@ -1,7 +1,7 @@
 /* =====================================================
    GAMEZONE — PONG
    script5.js
-   MODE VISITEUR
+   MODE VISITEUR + SCORE LOCAL + SUPABASE
 ===================================================== */
 
 
@@ -11,7 +11,6 @@
 
 const SUPABASE_URL =
     "https://pxgymcwpbesqyjochwgd.supabase.co";
-
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
@@ -37,13 +36,47 @@ const NOM_JEU_STATISTIQUE =
 
 
 /* =====================================================
+   SCORE LOCAL
+===================================================== */
+
+const CLE_SCORE_VISITEUR =
+    "meilleurScorePongVisiteur";
+
+
+function obtenirCleScoreCompte(pseudoCompte) {
+
+    if (!pseudoCompte) {
+
+        return null;
+
+    }
+
+
+    return (
+        "meilleurScorePong_" +
+        pseudoCompte
+            .trim()
+            .toLowerCase()
+    );
+
+}
+
+
+/* =====================================================
    PSEUDO
 ===================================================== */
 
-const pseudo =
-    localStorage.getItem(
+function obtenirPseudoActuel() {
+
+    return localStorage.getItem(
         "pseudoGameZone"
     );
+
+}
+
+
+let pseudo =
+    obtenirPseudoActuel();
 
 
 const pseudoJoueurElement =
@@ -56,6 +89,105 @@ if (pseudoJoueurElement) {
 
     pseudoJoueurElement.textContent =
         pseudo || "Visiteur";
+
+}
+
+
+/* =====================================================
+   SCORE VISITEUR
+===================================================== */
+
+function obtenirScoreVisiteurLocal() {
+
+    return Number(
+        localStorage.getItem(
+            CLE_SCORE_VISITEUR
+        )
+    ) || 0;
+
+}
+
+
+function enregistrerScoreVisiteurLocal(
+    score
+) {
+
+    const ancienScore =
+        obtenirScoreVisiteurLocal();
+
+
+    if (score > ancienScore) {
+
+        localStorage.setItem(
+            CLE_SCORE_VISITEUR,
+            String(score)
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SCORE LOCAL DU COMPTE
+===================================================== */
+
+function obtenirScoreCompteLocal(
+    pseudoCompte
+) {
+
+    const cle =
+        obtenirCleScoreCompte(
+            pseudoCompte
+        );
+
+
+    if (!cle) {
+
+        return 0;
+
+    }
+
+
+    return Number(
+        localStorage.getItem(cle)
+    ) || 0;
+
+}
+
+
+function enregistrerScoreCompteLocal(
+    pseudoCompte,
+    score
+) {
+
+    const cle =
+        obtenirCleScoreCompte(
+            pseudoCompte
+        );
+
+
+    if (!cle) {
+
+        return;
+
+    }
+
+
+    const ancienScore =
+        obtenirScoreCompteLocal(
+            pseudoCompte
+        );
+
+
+    if (score > ancienScore) {
+
+        localStorage.setItem(
+            cle,
+            String(score)
+        );
+
+    }
 
 }
 
@@ -153,7 +285,7 @@ let partieComptee = false;
 
 
 /* =====================================================
-   SCORE
+   SCORE DE LA PARTIE
 ===================================================== */
 
 let score1 = 0;
@@ -190,7 +322,7 @@ const hauteurRaquette =
 
 
 /* =====================================================
-   VITESSE
+   VITESSE RAQUETTES
 ===================================================== */
 
 const vitesseRaquette =
@@ -221,7 +353,7 @@ const balle = {
 
 
 /* =====================================================
-   ACCELERATION
+   ACCELERATION BALLE
 ===================================================== */
 
 const acceleration =
@@ -410,6 +542,34 @@ async function compterPartie(nomJeu) {
 ===================================================== */
 
 async function compterPartieJeu5() {
+
+    const pseudoActuel =
+        obtenirPseudoActuel();
+
+
+    /*
+       VISITEUR :
+
+       AUCUNE écriture dans Supabase.
+
+       La partie n'est donc PAS comptabilisée
+       dans statistiques_jeux.
+    */
+
+    if (!pseudoActuel) {
+
+        console.log(
+            "👻 Visiteur : partie non comptabilisée dans Supabase."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       JOUEUR CONNECTÉ
+    */
 
     if (partieComptee) {
 
@@ -709,11 +869,6 @@ function modeUnJoueur() {
     arreterJoueur2();
 
 
-    /*
-       MODE 1 JOUEUR :
-       on retire la classe 2 joueurs.
-    */
-
     if (controlesMobile) {
 
         controlesMobile.classList.remove(
@@ -795,11 +950,6 @@ function modeDeuxJoueurs() {
 
     arreterJoueur2();
 
-
-    /*
-       MODE 2 JOUEURS :
-       on ajoute la classe.
-    */
 
     if (controlesMobile) {
 
@@ -1381,10 +1531,19 @@ function verifierVictoire() {
         arreterJoueur2();
 
 
+        /*
+           En mode 1 joueur, le joueur 1 gagne.
+
+           Visiteur :
+           → localStorage uniquement.
+
+           Connecté :
+           → Supabase.
+        */
+
         if (
-            mode === 1 &&
             !victoireEnregistree &&
-            pseudo
+            mode === 1
         ) {
 
             victoireEnregistree = true;
@@ -1445,24 +1604,16 @@ function verifierVictoire() {
 
 
 /* =====================================================
-   ENREGISTRER VICTOIRE
+   RECUPERER SCORE SUPABASE
 ===================================================== */
 
-async function enregistrerVictoire() {
+async function obtenirScoreSupabase(
+    pseudoCompte
+) {
 
-    const pseudoActuel =
-        localStorage.getItem(
-            "pseudoGameZone"
-        );
+    if (!pseudoCompte) {
 
-
-    if (!pseudoActuel) {
-
-        console.log(
-            "ℹ️ Mode visiteur : victoire non enregistrée."
-        );
-
-        return;
+        return null;
 
     }
 
@@ -1475,12 +1626,12 @@ async function enregistrerVictoire() {
                 .from("scores")
 
                 .select(
-                    "id,pseudo,score,jeu"
+                    "id,pseudo,score,jeu,date_creation"
                 )
 
                 .eq(
                     "pseudo",
-                    pseudoActuel
+                    pseudoCompte
                 )
 
                 .eq(
@@ -1494,71 +1645,196 @@ async function enregistrerVictoire() {
         if (resultat.error) {
 
             console.error(
-                "❌ Erreur recherche score :",
+                "❌ Erreur récupération score Supabase :",
                 resultat.error
             );
+
+            return null;
+
+        }
+
+
+        if (
+            !resultat.data ||
+            resultat.data.length === 0
+        ) {
+
+            return null;
+
+        }
+
+
+        return {
+
+            id:
+                resultat.data[0].id,
+
+            score:
+                Number(
+                    resultat.data[0].score
+                ) || 0
+
+        };
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur obtenirScoreSupabase :",
+            erreur
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   SYNCHRONISATION À LA CONNEXION
+===================================================== */
+
+async function synchroniserScoreCompte() {
+
+    const pseudoActuel =
+        obtenirPseudoActuel();
+
+
+    /*
+       Visiteur :
+       aucune synchronisation.
+    */
+
+    if (!pseudoActuel) {
+
+        console.log(
+            "👻 Visiteur : aucune synchronisation Supabase."
+        );
+
+        return;
+
+    }
+
+
+    pseudo =
+        pseudoActuel;
+
+
+    try {
+
+        /*
+           SCORE VISITEUR LOCAL
+        */
+
+        const scoreVisiteur =
+            obtenirScoreVisiteurLocal();
+
+
+        /*
+           SCORE LOCAL DU COMPTE
+        */
+
+        const scoreCompteLocal =
+            obtenirScoreCompteLocal(
+                pseudoActuel
+            );
+
+
+        /*
+           SCORE SUPABASE
+        */
+
+        const scoreSupabase =
+            await obtenirScoreSupabase(
+                pseudoActuel
+            );
+
+
+        const scoreSupabaseValeur =
+            scoreSupabase
+                ? scoreSupabase.score
+                : 0;
+
+
+        /*
+           MEILLEUR DES TROIS
+        */
+
+        const meilleurScore =
+            Math.max(
+                scoreVisiteur,
+                scoreCompteLocal,
+                scoreSupabaseValeur
+            );
+
+
+        console.log(
+            "🔄 Synchronisation Pong :",
+            {
+                scoreVisiteur:
+                    scoreVisiteur,
+
+                scoreCompte:
+                    scoreCompteLocal,
+
+                scoreSupabase:
+                    scoreSupabaseValeur,
+
+                meilleur:
+                    meilleurScore
+            }
+        );
+
+
+        /*
+           On garde toujours le meilleur
+           en local pour le compte.
+        */
+
+        enregistrerScoreCompteLocal(
+            pseudoActuel,
+            meilleurScore
+        );
+
+
+        /*
+           Si Supabase possède déjà le meilleur,
+           on ne fait rien.
+        */
+
+        if (
+            scoreSupabase &&
+            scoreSupabase.score >= meilleurScore
+        ) {
+
+            console.log(
+                "🏆 Score Supabase conservé :",
+                scoreSupabase.score
+            );
+
+            await chargerClassement();
 
             return;
 
         }
 
 
-        /* =================================================
-           SCORE EXISTANT
-        ================================================= */
+        /*
+           Aucun score dans Supabase.
+        */
 
-        if (
-            resultat.data &&
-            resultat.data.length > 0
-        ) {
+        if (!scoreSupabase) {
 
-            const ancienScore =
-                Number(
-                    resultat.data[0].score
-                ) || 0;
+            if (meilleurScore <= 0) {
 
-
-            const miseAJour =
-                await supabaseClient
-
-                    .from("scores")
-
-                    .update({
-
-                        score:
-                            ancienScore + 1,
-
-                        date_creation:
-                            new Date()
-                                .toISOString()
-
-                    })
-
-                    .eq(
-                        "id",
-                        resultat.data[0].id
-                    );
-
-
-            if (miseAJour.error) {
-
-                console.error(
-                    "❌ Erreur update score :",
-                    miseAJour.error
-                );
+                await chargerClassement();
 
                 return;
 
             }
 
-        }
-
-
-        /* =================================================
-           PREMIER SCORE
-        ================================================= */
-
-        else {
 
             const insertion =
                 await supabaseClient
@@ -1571,7 +1847,7 @@ async function enregistrerVictoire() {
                             pseudoActuel,
 
                         score:
-                            1,
+                            meilleurScore,
 
                         jeu:
                             JEU,
@@ -1594,6 +1870,61 @@ async function enregistrerVictoire() {
 
             }
 
+
+            console.log(
+                "☁️ Score local envoyé à Supabase :",
+                meilleurScore
+            );
+
+        }
+
+
+        /*
+           Le score local est supérieur
+           au score Supabase.
+        */
+
+        else {
+
+            const miseAJour =
+                await supabaseClient
+
+                    .from("scores")
+
+                    .update({
+
+                        score:
+                            meilleurScore,
+
+                        date_creation:
+                            new Date()
+                                .toISOString()
+
+                    })
+
+                    .eq(
+                        "id",
+                        scoreSupabase.id
+                    );
+
+
+            if (miseAJour.error) {
+
+                console.error(
+                    "❌ Erreur mise à jour score :",
+                    miseAJour.error
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "☁️ Meilleur score synchronisé :",
+                meilleurScore
+            );
+
         }
 
 
@@ -1604,7 +1935,278 @@ async function enregistrerVictoire() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur enregistrement victoire :",
+            "❌ Erreur synchronisation compte :",
+            erreur
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ENREGISTRER VICTOIRE
+===================================================== */
+
+async function enregistrerVictoire() {
+
+    const pseudoActuel =
+        obtenirPseudoActuel();
+
+
+    /* =================================================
+       VISITEUR
+    ================================================= */
+
+    if (!pseudoActuel) {
+
+        /*
+           TRÈS IMPORTANT :
+
+           AUCUNE écriture Supabase.
+
+           Ni scores.
+           Ni statistiques_jeux.
+        */
+
+
+        const ancienScore =
+            obtenirScoreVisiteurLocal();
+
+
+        const nouveauScore =
+            ancienScore + 1;
+
+
+        enregistrerScoreVisiteurLocal(
+            nouveauScore
+        );
+
+
+        console.log(
+            "👻 Victoire visiteur enregistrée localement :",
+            nouveauScore
+        );
+
+
+        if (messageElement) {
+
+            messageElement.textContent =
+                "🏆 Victoire ! " +
+                "Score visiteur : " +
+                nouveauScore +
+                " — Connecte-toi pour apparaître dans le classement.";
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       JOUEUR CONNECTÉ
+    ================================================= */
+
+    try {
+
+        /*
+           Récupération du score visiteur.
+        */
+
+        const scoreVisiteur =
+            obtenirScoreVisiteurLocal();
+
+
+        /*
+           Récupération du score local du compte.
+        */
+
+        const scoreCompteLocal =
+            obtenirScoreCompteLocal(
+                pseudoActuel
+            );
+
+
+        /*
+           Récupération du score Supabase.
+        */
+
+        const scoreSupabase =
+            await obtenirScoreSupabase(
+                pseudoActuel
+            );
+
+
+        const scoreSupabaseValeur =
+            scoreSupabase
+                ? scoreSupabase.score
+                : 0;
+
+
+        /*
+           Meilleur score existant AVANT
+           la nouvelle victoire.
+        */
+
+        const meilleurAvantVictoire =
+            Math.max(
+                scoreVisiteur,
+                scoreCompteLocal,
+                scoreSupabaseValeur
+            );
+
+
+        /*
+           La nouvelle victoire augmente
+           le meilleur score d'une unité.
+        */
+
+        const nouveauMeilleurScore =
+            meilleurAvantVictoire + 1;
+
+
+        /*
+           Sauvegarde locale du compte.
+        */
+
+        enregistrerScoreCompteLocal(
+            pseudoActuel,
+            nouveauMeilleurScore
+        );
+
+
+        /*
+           SCORE SUPABASE EXISTANT
+        */
+
+        if (scoreSupabase) {
+
+            /*
+               On met à jour uniquement si
+               le nouveau score est supérieur.
+            */
+
+            if (
+                nouveauMeilleurScore >
+                scoreSupabase.score
+            ) {
+
+                const miseAJour =
+                    await supabaseClient
+
+                        .from("scores")
+
+                        .update({
+
+                            score:
+                                nouveauMeilleurScore,
+
+                            date_creation:
+                                new Date()
+                                    .toISOString()
+
+                        })
+
+                        .eq(
+                            "id",
+                            scoreSupabase.id
+                        );
+
+
+                if (miseAJour.error) {
+
+                    console.error(
+                        "❌ Erreur mise à jour score :",
+                        miseAJour.error
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "☁️ Nouveau meilleur score :",
+                    nouveauMeilleurScore
+                );
+
+            }
+
+            else {
+
+                console.log(
+                    "🏆 Score Supabase conservé :",
+                    scoreSupabase.score
+                );
+
+            }
+
+        }
+
+
+        /*
+           AUCUN SCORE SUPABASE
+        */
+
+        else {
+
+            const insertion =
+                await supabaseClient
+
+                    .from("scores")
+
+                    .insert({
+
+                        pseudo:
+                            pseudoActuel,
+
+                        score:
+                            nouveauMeilleurScore,
+
+                        jeu:
+                            JEU,
+
+                        date_creation:
+                            new Date()
+                                .toISOString()
+
+                    });
+
+
+            if (insertion.error) {
+
+                console.error(
+                    "❌ Erreur insertion score :",
+                    insertion.error
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "☁️ Score créé dans Supabase :",
+                nouveauMeilleurScore
+            );
+
+        }
+
+
+        /*
+           Actualisation du classement.
+        */
+
+        await chargerClassement();
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur enregistrerVictoire :",
             erreur
         );
 
@@ -1692,8 +2294,8 @@ async function chargerClassement() {
 
                     <td colspan="3">
 
-                        🏆 Aucune victoire
-                        enregistrée pour le moment.
+                        🏆 Aucun joueur classé
+                        pour le moment.
 
                     </td>
 
@@ -1872,6 +2474,12 @@ function rejouer() {
 
     partieComptee = false;
 
+
+    /*
+       Ici aussi :
+       visiteur = aucune écriture Supabase
+       connecté = statistiques_jeux
+    */
 
     compterPartieJeu5();
 
@@ -2108,8 +2716,30 @@ dessiner();
 
 boucle();
 
+
+/*
+   Le TOP 10 est visible pour tout le monde.
+*/
+
 chargerClassement();
 
+
+/*
+   Si un compte est connecté,
+   on synchronise son score local
+   avec Supabase.
+*/
+
+if (pseudo) {
+
+    synchroniserScoreCompte();
+
+}
+
+
+/* =====================================================
+   LOGS
+===================================================== */
 
 console.log(
     "✅ script5.js chargé correctement."
@@ -2125,5 +2755,5 @@ console.log(
 console.log(
     pseudo
         ? "👤 Joueur connecté : " + pseudo
-        : "👤 Mode visiteur"
+        : "👻 Mode visiteur"
 );

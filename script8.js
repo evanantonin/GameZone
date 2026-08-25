@@ -1,6 +1,10 @@
 /* =========================================================
-   GAMEZONE — TETRIS
-   MODE VISITEUR
+   GAMEZONE — SCRIPT 8 — TETRIS
+   👤 MODE VISITEUR AUTORISÉ
+   🏆 CLASSEMENT MONDIAL
+   📊 COMPTEUR GLOBAL DES PARTIES
+   💾 MEILLEUR SCORE LOCAL
+   📱 PC + MOBILE
 ========================================================= */
 
 
@@ -15,11 +19,21 @@ const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
 
+const supabaseClient =
+    window.supabase
+        ? window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        )
+        : null;
+
+
 /* =========================================================
    IDENTIFICATION DU JEU
 ========================================================= */
 
 const JEU_ID = "8";
+const NOM_JEU = "Tetris";
 
 
 /* =========================================================
@@ -29,60 +43,98 @@ const JEU_ID = "8";
 const canvas =
     document.getElementById("jeuTetris");
 
+
+if (!canvas) {
+
+    console.error(
+        "❌ Canvas #jeuTetris introuvable."
+    );
+
+    throw new Error(
+        "Canvas Tetris introuvable."
+    );
+
+}
+
+
 const contexte =
     canvas.getContext("2d");
 
 
 const pseudoAffiche =
-    document.getElementById("pseudoAffiche");
+    document.getElementById(
+        "pseudoAffiche"
+    );
 
 
 const listeScores =
-    document.getElementById("listeScores");
+    document.getElementById(
+        "listeScores"
+    );
 
 
 const statutClassement =
-    document.getElementById("statutClassement");
+    document.getElementById(
+        "statutClassement"
+    );
 
 
 const message =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 
 const scoreElement =
-    document.getElementById("score");
+    document.getElementById(
+        "score"
+    );
 
 
 const meilleurScoreElement =
-    document.getElementById("meilleurScore");
+    document.getElementById(
+        "meilleurScore"
+    );
 
 
 const niveauElement =
-    document.getElementById("niveau");
+    document.getElementById(
+        "niveau"
+    );
 
 
 const lignesElement =
-    document.getElementById("lignes");
+    document.getElementById(
+        "lignes"
+    );
 
 
 const partiesJoueesElement =
-    document.getElementById("partiesJouees");
+    document.getElementById(
+        "partiesJouees"
+    );
 
 
 const boutonPause =
-    document.getElementById("boutonPause");
+    document.getElementById(
+        "boutonPause"
+    );
 
 
 const boutonRejouer =
-    document.getElementById("boutonRejouer");
+    document.getElementById(
+        "boutonRejouer"
+    );
 
 
 /* =========================================================
-   MODE VISITEUR
+   UTILISATEUR / VISITEUR
 ========================================================= */
 
-const pseudo =
-    localStorage.getItem("pseudoGameZone");
+let pseudo =
+    localStorage.getItem(
+        "pseudoGameZone"
+    );
 
 
 if (pseudo && pseudoAffiche) {
@@ -103,18 +155,24 @@ else if (pseudoAffiche) {
    MEILLEUR SCORE LOCAL
 ========================================================= */
 
-/*
-   Si un joueur possède un pseudo :
-   meilleur score personnel.
+function obtenirCleMeilleurScore() {
 
-   Sinon :
-   meilleur score du visiteur sur cet appareil.
-*/
+    if (pseudo) {
 
-const cleMeilleurScore =
-    pseudo
-        ? "meilleurScoreTetris_" + pseudo
-        : "meilleurScoreTetris_visiteur";
+        return (
+            "meilleurScoreTetris_" +
+            pseudo
+        );
+
+    }
+
+    return "meilleurScoreTetris_visiteur";
+
+}
+
+
+let cleMeilleurScore =
+    obtenirCleMeilleurScore();
 
 
 let meilleurScore =
@@ -137,10 +195,24 @@ if (meilleurScoreElement) {
    PARTIES JOUEES
 ========================================================= */
 
+function obtenirClePartiesJouees() {
+
+    if (pseudo) {
+
+        return (
+            "partiesJoueesTetris_" +
+            pseudo
+        );
+
+    }
+
+    return "partiesJoueesTetris_visiteur";
+
+}
+
+
 const clePartiesJouees =
-    pseudo
-        ? "partiesJoueesTetris_" + pseudo
-        : "partiesJoueesTetris_visiteur";
+    obtenirClePartiesJouees();
 
 
 let partiesJouees =
@@ -165,9 +237,9 @@ if (partiesJoueesElement) {
 
 async function compterPartie() {
 
-    /* =====================================================
-       COMPTEUR LOCAL
-    ===================================================== */
+    /*
+       Compteur local
+    */
 
     partiesJouees++;
 
@@ -186,189 +258,145 @@ async function compterPartie() {
     }
 
 
-    /* =====================================================
-       COMPTEUR GLOBAL
-       JEUX DU MOMENT
-    ===================================================== */
+    /*
+       Compteur global
+    */
+
+    await compterPartieTetris();
+
+}
+
+
+/* =========================================================
+   COMPTEUR GLOBAL TETRIS
+========================================================= */
+
+async function compterPartieTetris() {
+
+    if (!supabaseClient) {
+
+        console.warn(
+            "⚠️ Supabase indisponible pour le compteur Tetris."
+        );
+
+        return;
+
+    }
+
 
     try {
 
-        const recherche =
-            await fetch(
+        const resultat =
+            await supabaseClient
+                .from("statistiques_jeux")
+                .select(
+                    "id,nom_jeu,nombre_parties"
+                )
+                .eq(
+                    "nom_jeu",
+                    NOM_JEU
+                )
+                .limit(1);
 
-                SUPABASE_URL +
-                "/rest/v1/statistiques_jeux" +
-                "?nom_jeu=eq.Tetris" +
-                "&select=id,nom_jeu,nombre_parties",
 
-                {
+        if (resultat.error) {
 
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY,
-
-                        "Accept":
-                            "application/json"
-
-                    }
-
-                }
-
+            console.error(
+                "❌ Erreur recherche statistiques Tetris :",
+                resultat.error
             );
 
-
-        if (!recherche.ok) {
-
-            throw new Error(
-                await recherche.text()
-            );
+            return;
 
         }
 
 
-        const resultat =
-            await recherche.json();
+        /*
+           Tetris existe
+        */
 
-
-        /* =================================================
-           TETRIS EXISTE
-        ================================================= */
-
-        if (resultat.length > 0) {
+        if (
+            resultat.data &&
+            resultat.data.length > 0
+        ) {
 
             const jeu =
-                resultat[0];
+                resultat.data[0];
+
+
+            const ancienNombre =
+                Number(
+                    jeu.nombre_parties
+                ) || 0;
 
 
             const nouveauNombre =
-                Number(
-                    jeu.nombre_parties
-                ) + 1;
+                ancienNombre + 1;
 
 
             const miseAJour =
-                await fetch(
+                await supabaseClient
+                    .from("statistiques_jeux")
+                    .update({
 
-                    SUPABASE_URL +
-                    "/rest/v1/statistiques_jeux" +
-                    "?id=eq." +
-                    encodeURIComponent(
+                        nombre_parties:
+                            nouveauNombre
+
+                    })
+                    .eq(
+                        "id",
                         jeu.id
-                    ),
+                    );
 
-                    {
 
-                        method: "PATCH",
+            if (miseAJour.error) {
 
-                        headers: {
-
-                            "apikey":
-                                SUPABASE_KEY,
-
-                            "Authorization":
-                                "Bearer " +
-                                SUPABASE_KEY,
-
-                            "Content-Type":
-                                "application/json",
-
-                            "Prefer":
-                                "return=minimal"
-
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                nombre_parties:
-                                    nouveauNombre
-
-                            })
-
-                    }
-
+                console.error(
+                    "❌ Erreur mise à jour statistiques Tetris :",
+                    miseAJour.error
                 );
 
-
-            if (!miseAJour.ok) {
-
-                throw new Error(
-                    await miseAJour.text()
-                );
+                return;
 
             }
 
 
             console.log(
-                "🎮 Tetris : " +
-                nouveauNombre +
-                " parties"
+                "🎮 Tetris :",
+                nouveauNombre,
+                "parties"
             );
 
         }
 
-
-        /* =================================================
-           TETRIS N'EXISTE PAS
-        ================================================= */
+        /*
+           Tetris n'existe pas
+        */
 
         else {
 
             const insertion =
-                await fetch(
+                await supabaseClient
+                    .from("statistiques_jeux")
+                    .insert({
 
-                    SUPABASE_URL +
-                    "/rest/v1/statistiques_jeux",
+                        nom_jeu:
+                            NOM_JEU,
 
-                    {
+                        nombre_parties:
+                            1
 
-                        method: "POST",
+                    });
 
-                        headers: {
 
-                            "apikey":
-                                SUPABASE_KEY,
+            if (insertion.error) {
 
-                            "Authorization":
-                                "Bearer " +
-                                SUPABASE_KEY,
-
-                            "Content-Type":
-                                "application/json",
-
-                            "Prefer":
-                                "return=minimal"
-
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                nom_jeu:
-                                    "Tetris",
-
-                                nombre_parties:
-                                    1
-
-                            })
-
-                    }
-
+                console.error(
+                    "❌ Erreur création statistiques Tetris :",
+                    insertion.error
                 );
 
-
-            if (!insertion.ok) {
-
-                throw new Error(
-                    await insertion.text()
-                );
+                return;
 
             }
 
@@ -384,7 +412,7 @@ async function compterPartie() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur statistiques Tetris :",
+            "❌ Erreur compteur Tetris :",
             erreur
         );
 
@@ -514,7 +542,7 @@ let tempsDerniereChute = 0;
 
 let vitesse = 800;
 
-let animationID;
+let animationID = null;
 
 
 /* =========================================================
@@ -574,9 +602,7 @@ function nouvellePiece() {
         0;
 
 
-    if (
-        collisionPiece()
-    ) {
+    if (collisionPiece()) {
 
         terminerJeu();
 
@@ -609,9 +635,7 @@ function collisionPiece(
             x++
         ) {
 
-            if (
-                !piece[y][x]
-            ) {
+            if (!piece[y][x]) {
 
                 continue;
 
@@ -695,12 +719,34 @@ function fixerPiece() {
                 piece[y][x]
             ) {
 
-                grille[
-                    pieceY + y
-                ][
-                    pieceX + x
-                ] =
-                    pieceCouleur;
+                const grilleY =
+                    pieceY + y;
+
+
+                const grilleX =
+                    pieceX + x;
+
+
+                if (
+
+                    grilleY >= 0 &&
+
+                    grilleY < LIGNES &&
+
+                    grilleX >= 0 &&
+
+                    grilleX < COLONNES
+
+                ) {
+
+                    grille[
+                        grilleY
+                    ][
+                        grilleX
+                    ] =
+                        pieceCouleur;
+
+                }
 
             }
 
@@ -711,7 +757,12 @@ function fixerPiece() {
 
     supprimerLignes();
 
-    nouvellePiece();
+
+    if (!jeuTermine) {
+
+        nouvellePiece();
+
+    }
 
 }
 
@@ -762,108 +813,101 @@ function supprimerLignes() {
     }
 
 
+    if (nombre <= 0) {
+
+        return;
+
+    }
+
+
+    lignesSupprimees +=
+        nombre;
+
+
+    let points = 0;
+
+
+    if (nombre === 1) {
+
+        points = 100;
+
+    }
+
+    else if (nombre === 2) {
+
+        points = 300;
+
+    }
+
+    else if (nombre === 3) {
+
+        points = 500;
+
+    }
+
+    else if (nombre === 4) {
+
+        points = 800;
+
+    }
+
+
+    ajouterScore(
+        points * niveau
+    );
+
+
+    if (lignesElement) {
+
+        lignesElement.textContent =
+            lignesSupprimees;
+
+    }
+
+
+    const nouveauNiveau =
+        Math.floor(
+            lignesSupprimees / 10
+        ) + 1;
+
+
     if (
-        nombre > 0
+        nouveauNiveau >
+        niveau
     ) {
 
-        lignesSupprimees +=
-            nombre;
+        niveau =
+            nouveauNiveau;
 
 
-        let points = 0;
+        vitesse =
+            Math.max(
+
+                100,
+
+                800 -
+                (
+                    niveau - 1
+                ) *
+                70
+
+            );
 
 
-        if (
-            nombre === 1
-        ) {
+        if (niveauElement) {
 
-            points = 100;
-
-        }
-
-        else if (
-            nombre === 2
-        ) {
-
-            points = 300;
-
-        }
-
-        else if (
-            nombre === 3
-        ) {
-
-            points = 500;
-
-        }
-
-        else if (
-            nombre === 4
-        ) {
-
-            points = 800;
+            niveauElement.textContent =
+                niveau;
 
         }
 
 
-        ajouterScore(
-            points * niveau
-        );
+        if (message) {
 
-
-        if (lignesElement) {
-
-            lignesElement.textContent =
-                lignesSupprimees;
-
-        }
-
-
-        const nouveauNiveau =
-            Math.floor(
-                lignesSupprimees / 10
-            ) + 1;
-
-
-        if (
-            nouveauNiveau >
-            niveau
-        ) {
-
-            niveau =
-                nouveauNiveau;
-
-
-            vitesse =
-                Math.max(
-
-                    100,
-
-                    800 -
-                    (
-                        niveau - 1
-                    ) *
-                    70
-
-                );
-
-
-            if (niveauElement) {
-
-                niveauElement.textContent =
-                    niveau;
-
-            }
-
-
-            if (message) {
-
-                message.textContent =
-                    "🔥 Niveau " +
-                    niveau +
-                    " !";
-
-            }
+            message.textContent =
+                "🔥 Niveau " +
+                niveau +
+                " !";
 
         }
 
@@ -1025,9 +1069,32 @@ function tourner() {
         nouvelle;
 
 
+    /*
+       Petite correction de position
+       pour éviter les rotations
+       impossibles près des bords.
+    */
+
     if (
-        collisionPiece()
+        pieceX + piece[0].length >
+        COLONNES
     ) {
+
+        pieceX =
+            COLONNES -
+            piece[0].length;
+
+    }
+
+
+    if (pieceX < 0) {
+
+        pieceX = 0;
+
+    }
+
+
+    if (collisionPiece()) {
 
         piece =
             anciennePiece;
@@ -1060,8 +1127,7 @@ function chuteRapide() {
     }
 
 
-    let distance =
-        0;
+    let distance = 0;
 
 
     while (
@@ -1112,8 +1178,11 @@ function ajouterScore(
 
 
         localStorage.setItem(
+
             cleMeilleurScore,
+
             meilleurScore
+
         );
 
     }
@@ -1142,7 +1211,9 @@ function ajouterScore(
 ========================================================= */
 
 document.addEventListener(
+
     "keydown",
+
     function(event) {
 
         const touche =
@@ -1224,6 +1295,7 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
@@ -1251,8 +1323,7 @@ function dessinerGrille() {
         "rgba(0,234,255,0.12)";
 
 
-    contexte.lineWidth =
-        1;
+    contexte.lineWidth = 1;
 
 
     for (
@@ -1315,6 +1386,10 @@ function dessinerGrille() {
     }
 
 
+    /*
+       Blocs déjà posés
+    */
+
     for (
         let y = 0;
         y < LIGNES;
@@ -1346,9 +1421,11 @@ function dessinerGrille() {
     }
 
 
-    if (
-        piece
-    ) {
+    /*
+       Pièce actuelle
+    */
+
+    if (piece) {
 
         for (
             let y = 0;
@@ -1426,8 +1503,7 @@ function dessinerBloc(
         "#ffffff";
 
 
-    contexte.lineWidth =
-        1;
+    contexte.lineWidth = 1;
 
 
     contexte.strokeRect(
@@ -1498,12 +1574,12 @@ function boucle(
 if (boutonPause) {
 
     boutonPause.addEventListener(
+
         "click",
+
         function() {
 
-            if (
-                jeuTermine
-            ) {
+            if (jeuTermine) {
 
                 return;
 
@@ -1514,9 +1590,7 @@ if (boutonPause) {
                 !jeuEnPause;
 
 
-            if (
-                jeuEnPause
-            ) {
+            if (jeuEnPause) {
 
                 this.textContent =
                     "▶️ Reprendre";
@@ -1551,6 +1625,7 @@ if (boutonPause) {
             }
 
         }
+
     );
 
 }
@@ -1562,9 +1637,7 @@ if (boutonPause) {
 
 async function terminerJeu() {
 
-    if (
-        jeuTermine
-    ) {
+    if (jeuTermine) {
 
         return;
 
@@ -1575,9 +1648,16 @@ async function terminerJeu() {
         true;
 
 
-    cancelAnimationFrame(
-        animationID
-    );
+    if (animationID !== null) {
+
+        cancelAnimationFrame(
+            animationID
+        );
+
+        animationID =
+            null;
+
+    }
 
 
     if (message) {
@@ -1606,9 +1686,7 @@ async function terminerJeu() {
 
 
     /*
-       IMPORTANT :
-       Le visiteur ne sauvegarde PAS
-       son score dans Supabase.
+       VISITEUR
     */
 
     if (!pseudo) {
@@ -1625,6 +1703,10 @@ async function terminerJeu() {
     }
 
 
+    /*
+       JOUEUR CONNECTÉ
+    */
+
     await enregistrerMeilleurScore();
 
 }
@@ -1634,37 +1716,30 @@ async function terminerJeu() {
    REJOUER
 ========================================================= */
 
-function rejouer() {
+async function rejouer() {
 
-    compterPartie();
+    /*
+       Compter la nouvelle partie
+    */
+
+    await compterPartie();
 
 
     grille =
         creerGrille();
 
 
-    score =
-        0;
+    score = 0;
 
+    niveau = 1;
 
-    niveau =
-        1;
+    lignesSupprimees = 0;
 
+    vitesse = 800;
 
-    lignesSupprimees =
-        0;
+    jeuTermine = false;
 
-
-    vitesse =
-        800;
-
-
-    jeuTermine =
-        false;
-
-
-    jeuEnPause =
-        false;
+    jeuEnPause = false;
 
 
     if (scoreElement) {
@@ -1745,9 +1820,13 @@ function rejouer() {
         performance.now();
 
 
-    cancelAnimationFrame(
-        animationID
-    );
+    if (animationID !== null) {
+
+        cancelAnimationFrame(
+            animationID
+        );
+
+    }
 
 
     animationID =
@@ -1765,12 +1844,15 @@ function rejouer() {
 if (boutonRejouer) {
 
     boutonRejouer.addEventListener(
+
         "click",
+
         function() {
 
             rejouer();
 
         }
+
     );
 
 }
@@ -1780,7 +1862,7 @@ if (boutonRejouer) {
    CONTROLES MOBILES
 ========================================================= */
 
-function boutonMobile(
+function configurerBoutonMobile(
 
     id,
     action
@@ -1798,9 +1880,7 @@ function boutonMobile(
     }
 
 
-    function appuyer(
-        event
-    ) {
+    function appuyer(event) {
 
         event.preventDefault();
 
@@ -1812,7 +1892,9 @@ function boutonMobile(
     bouton.addEventListener(
 
         "touchstart",
+
         appuyer,
+
         {
             passive: false
         }
@@ -1823,6 +1905,7 @@ function boutonMobile(
     bouton.addEventListener(
 
         "mousedown",
+
         appuyer
 
     );
@@ -1834,7 +1917,7 @@ function boutonMobile(
    MOBILE — GAUCHE
 ========================================================= */
 
-boutonMobile(
+configurerBoutonMobile(
 
     "tetrisGauche",
 
@@ -1851,7 +1934,7 @@ boutonMobile(
    MOBILE — ROTATION
 ========================================================= */
 
-boutonMobile(
+configurerBoutonMobile(
 
     "tetrisRotation",
 
@@ -1868,7 +1951,7 @@ boutonMobile(
    MOBILE — DROITE
 ========================================================= */
 
-boutonMobile(
+configurerBoutonMobile(
 
     "tetrisDroite",
 
@@ -1885,7 +1968,7 @@ boutonMobile(
    MOBILE — DESCENDRE
 ========================================================= */
 
-boutonMobile(
+configurerBoutonMobile(
 
     "tetrisDescendre",
 
@@ -1902,7 +1985,7 @@ boutonMobile(
    MOBILE — CHUTE RAPIDE
 ========================================================= */
 
-boutonMobile(
+configurerBoutonMobile(
 
     "tetrisChute",
 
@@ -1917,12 +2000,28 @@ boutonMobile(
 
 /* =========================================================
    ENREGISTRER SCORE
-   UNIQUEMENT POUR LES JOUEURS AVEC PSEUDO
+   TABLE : scores
+   COLONNES UTILISÉES :
+   id / pseudo / score / jeu
+
+   IMPORTANT :
+   Aucun user_id utilisé.
 ========================================================= */
 
 async function enregistrerMeilleurScore() {
 
     if (!pseudo) {
+
+        return;
+
+    }
+
+
+    if (!supabaseClient) {
+
+        console.error(
+            "❌ Supabase indisponible."
+        );
 
         return;
 
@@ -1939,125 +2038,99 @@ async function enregistrerMeilleurScore() {
         }
 
 
-        const urlRecherche =
+        /*
+           Recherche du meilleur score
+           du pseudo pour Tetris.
+        */
 
-            SUPABASE_URL +
-
-            "/rest/v1/scores" +
-
-            "?pseudo=eq." +
-            encodeURIComponent(pseudo) +
-
-            "&jeu=eq." +
-            encodeURIComponent(JEU_ID) +
-
-            "&select=id,pseudo,score,jeu" +
-
-            "&order=score.desc" +
-
-            "&limit=1";
-
-
-        const recherche =
-            await fetch(
-
-                urlRecherche,
-
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY,
-
-                        "Accept":
-                            "application/json"
-
+        const resultat =
+            await supabaseClient
+                .from("scores")
+                .select(
+                    "id,pseudo,score,jeu"
+                )
+                .eq(
+                    "pseudo",
+                    pseudo
+                )
+                .eq(
+                    "jeu",
+                    NOM_JEU
+                )
+                .order(
+                    "score",
+                    {
+                        ascending: false
                     }
+                )
+                .limit(1);
 
-                }
 
+        if (resultat.error) {
+
+            console.error(
+                "❌ Erreur recherche score Tetris :",
+                resultat.error
             );
 
+            if (statutClassement) {
 
-        if (!recherche.ok) {
+                statutClassement.textContent =
+                    "❌ Impossible de récupérer ton score.";
 
-            throw new Error(
-                await recherche.text()
-            );
+            }
+
+            return;
 
         }
 
 
         const anciensScores =
-            await recherche.json();
+            resultat.data || [];
 
 
-        /* =================================================
+        /*
+           =================================================
            PREMIER SCORE
-        ================================================= */
+        =================================================
+        */
 
         if (
             anciensScores.length === 0
         ) {
 
             const insertion =
-                await fetch(
+                await supabaseClient
+                    .from("scores")
+                    .insert({
 
-                    SUPABASE_URL +
-                    "/rest/v1/scores",
+                        pseudo:
+                            pseudo,
 
-                    {
+                        score:
+                            score,
 
-                        method: "POST",
+                        jeu:
+                            NOM_JEU
 
-                        headers: {
+                    });
 
-                            "apikey":
-                                SUPABASE_KEY,
 
-                            "Authorization":
-                                "Bearer " +
-                                SUPABASE_KEY,
+            if (insertion.error) {
 
-                            "Content-Type":
-                                "application/json",
-
-                            "Prefer":
-                                "return=minimal"
-
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                pseudo:
-                                    pseudo,
-
-                                score:
-                                    score,
-
-                                jeu:
-                                    JEU_ID
-
-                            })
-
-                    }
-
+                console.error(
+                    "❌ Erreur insertion score Tetris :",
+                    insertion.error
                 );
 
+                if (statutClassement) {
 
-            if (!insertion.ok) {
+                    statutClassement.textContent =
+                        "❌ Impossible d'enregistrer le score.";
 
-                throw new Error(
-                    await insertion.text()
-                );
+                }
+
+                return;
 
             }
 
@@ -2065,27 +2138,33 @@ async function enregistrerMeilleurScore() {
             if (statutClassement) {
 
                 statutClassement.textContent =
-                    "🏆 Premier score enregistré !";
+                    "🏆 Premier score Tetris enregistré !";
 
             }
 
         }
 
 
-        /* =================================================
+        /*
+           =================================================
            SCORE EXISTANT
-        ================================================= */
+        =================================================
+        */
 
         else {
 
-            const ancien =
+            const ancienScore =
                 Number(
                     anciensScores[0].score
-                );
+                ) || 0;
 
+
+            /*
+               Nouveau record
+            */
 
             if (
-                score > ancien
+                score > ancienScore
             ) {
 
                 const id =
@@ -2093,56 +2172,35 @@ async function enregistrerMeilleurScore() {
 
 
                 const miseAJour =
-                    await fetch(
+                    await supabaseClient
+                        .from("scores")
+                        .update({
 
-                        SUPABASE_URL +
-                        "/rest/v1/scores" +
+                            score:
+                                score
 
-                        "?id=eq." +
-                        encodeURIComponent(id),
+                        })
+                        .eq(
+                            "id",
+                            id
+                        );
 
-                        {
 
-                            method: "PATCH",
+                if (miseAJour.error) {
 
-                            headers: {
-
-                                "apikey":
-                                    SUPABASE_KEY,
-
-                                "Authorization":
-                                    "Bearer " +
-                                    SUPABASE_KEY,
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "Prefer":
-                                    "return=minimal"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    score:
-                                        score,
-
-                                    jeu:
-                                        JEU_ID
-
-                                })
-
-                        }
-
+                    console.error(
+                        "❌ Erreur mise à jour score Tetris :",
+                        miseAJour.error
                     );
 
+                    if (statutClassement) {
 
-                if (!miseAJour.ok) {
+                        statutClassement.textContent =
+                            "❌ Impossible de mettre à jour le score.";
 
-                    throw new Error(
-                        await miseAJour.text()
-                    );
+                    }
+
+                    return;
 
                 }
 
@@ -2158,13 +2216,17 @@ async function enregistrerMeilleurScore() {
 
             }
 
+            /*
+               Ancien record conservé
+            */
+
             else {
 
                 if (statutClassement) {
 
                     statutClassement.textContent =
                         "ℹ️ Ton meilleur score reste " +
-                        ancien +
+                        ancienScore +
                         " points.";
 
                 }
@@ -2178,11 +2240,10 @@ async function enregistrerMeilleurScore() {
 
     }
 
-
     catch (erreur) {
 
         console.error(
-            "❌ ERREUR SCORE :",
+            "❌ ERREUR SCORE TETRIS :",
             erreur
         );
 
@@ -2200,12 +2261,31 @@ async function enregistrerMeilleurScore() {
 
 
 /* =========================================================
-   TOP 10
+   TOP 10 TETRIS
 ========================================================= */
 
 async function chargerClassement() {
 
     if (!listeScores) {
+
+        return;
+
+    }
+
+
+    if (!supabaseClient) {
+
+        listeScores.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+                    ❌ Classement indisponible.
+                </td>
+
+            </tr>
+
+        `;
 
         return;
 
@@ -2227,79 +2307,38 @@ async function chargerClassement() {
         `;
 
 
-        const url =
-
-            SUPABASE_URL +
-
-            "/rest/v1/scores" +
-
-            "?jeu=eq." +
-            encodeURIComponent(JEU_ID) +
-
-            "&select=pseudo,score,jeu" +
-
-            "&order=score.desc" +
-
-            "&limit=10";
-
-
         const resultat =
-            await fetch(
-
-                url,
-
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY,
-
-                        "Accept":
-                            "application/json"
-
+            await supabaseClient
+                .from("scores")
+                .select(
+                    "pseudo,score,jeu"
+                )
+                .eq(
+                    "jeu",
+                    NOM_JEU
+                )
+                .order(
+                    "score",
+                    {
+                        ascending: false
                     }
+                )
+                .limit(10);
 
-                }
 
+        if (resultat.error) {
+
+            console.error(
+                "❌ Erreur classement Tetris :",
+                resultat.error
             );
-
-
-        if (!resultat.ok) {
-
-            throw new Error(
-                await resultat.text()
-            );
-
-        }
-
-
-        const scores =
-            await resultat.json();
-
-
-        listeScores.innerHTML =
-            "";
-
-
-        if (
-            scores.length === 0
-        ) {
 
             listeScores.innerHTML = `
 
                 <tr>
 
                     <td colspan="3">
-
-                        Aucun score pour Tetris.
-
+                        ❌ Impossible de charger le classement.
                     </td>
 
                 </tr>
@@ -2310,6 +2349,43 @@ async function chargerClassement() {
 
         }
 
+
+        const scores =
+            resultat.data || [];
+
+
+        listeScores.innerHTML =
+            "";
+
+
+        /*
+           Aucun score
+        */
+
+        if (
+            scores.length === 0
+        ) {
+
+            listeScores.innerHTML = `
+
+                <tr>
+
+                    <td colspan="3">
+                        Aucun score pour Tetris.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        /*
+           Afficher Top 10
+        */
 
         scores.forEach(
 
@@ -2330,27 +2406,21 @@ async function chargerClassement() {
                     );
 
 
-                if (
-                    index === 0
-                ) {
+                if (index === 0) {
 
                     numero.textContent =
                         "🥇";
 
                 }
 
-                else if (
-                    index === 1
-                ) {
+                else if (index === 1) {
 
                     numero.textContent =
                         "🥈";
 
                 }
 
-                else if (
-                    index === 2
-                ) {
+                else if (index === 2) {
 
                     numero.textContent =
                         "🥉";
@@ -2387,9 +2457,15 @@ async function chargerClassement() {
                     );
 
 
+                /*
+                   Mettre en évidence
+                   le joueur actuel
+                */
+
                 if (
 
                     pseudo &&
+
                     joueurScore.pseudo ===
                     pseudo
 
@@ -2403,6 +2479,10 @@ async function chargerClassement() {
                     scoreCellule.classList.add(
                         "mon-score"
                     );
+
+
+                    pseudoCellule.textContent +=
+                        " 👈";
 
                 }
 
@@ -2443,7 +2523,7 @@ async function chargerClassement() {
             else {
 
                 statutClassement.textContent =
-                    "👤 Mode visiteur — le score visiteur n'est pas enregistré.";
+                    "👤 Mode visiteur — ton score n'est pas enregistré.";
 
             }
 
@@ -2451,11 +2531,10 @@ async function chargerClassement() {
 
     }
 
-
     catch (erreur) {
 
         console.error(
-            "❌ ERREUR CLASSEMENT :",
+            "❌ ERREUR CLASSEMENT TETRIS :",
             erreur
         );
 
@@ -2465,10 +2544,7 @@ async function chargerClassement() {
             <tr>
 
                 <td colspan="3">
-
-                    ❌ Impossible de charger
-                    le classement.
-
+                    ❌ Impossible de charger le classement.
                 </td>
 
             </tr>
@@ -2492,20 +2568,123 @@ async function chargerClassement() {
    DEMARRAGE
 ========================================================= */
 
-grille =
-    creerGrille();
+async function demarrerTetris() {
+
+    /*
+       Créer la grille
+    */
+
+    grille =
+        creerGrille();
 
 
-compterPartie();
+    /*
+       Réinitialisation
+    */
+
+    score = 0;
+
+    niveau = 1;
+
+    lignesSupprimees = 0;
+
+    vitesse = 800;
+
+    jeuTermine = false;
+
+    jeuEnPause = false;
 
 
-nouvellePiece();
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            "0";
+
+    }
 
 
-chargerClassement();
+    if (niveauElement) {
+
+        niveauElement.textContent =
+            "1";
+
+    }
 
 
-animationID =
-    requestAnimationFrame(
-        boucle
-    );
+    if (lignesElement) {
+
+        lignesElement.textContent =
+            "0";
+
+    }
+
+
+    if (boutonRejouer) {
+
+        boutonRejouer.style.display =
+            "none";
+
+    }
+
+
+    if (boutonPause) {
+
+        boutonPause.style.display =
+            "inline-block";
+
+        boutonPause.textContent =
+            "⏸️ Pause";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+            "🧱 Bonne chance !";
+
+    }
+
+
+    /*
+       Compter la première partie
+    */
+
+    await compterPartie();
+
+
+    /*
+       Première pièce
+    */
+
+    nouvellePiece();
+
+
+    /*
+       Classement
+    */
+
+    await chargerClassement();
+
+
+    /*
+       Boucle
+    */
+
+    tempsDerniereChute =
+        performance.now();
+
+
+    animationID =
+        requestAnimationFrame(
+            boucle
+        );
+
+}
+
+
+/* =========================================================
+   LANCEMENT
+========================================================= */
+
+demarrerTetris();
