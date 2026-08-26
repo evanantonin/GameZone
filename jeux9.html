@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GameZone - Cube Runner 3D</title>
+
+    <link rel="stylesheet" href="style.css">
+
+   <!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="liste-jeux.html">Jeux</a>
+    </nav>
+
+
+    <main class="jeu3d-container">
+
+        <h1>🎮 Cube Runner 3D</h1>
+
+        <p>
+            👤 Joueur :
+            <strong id="pseudoAffiche">Visiteur</strong>
+        </p>
+
+
+        <div class="jeu3d-stats">
+
+            <div>
+                Score
+                <strong id="score">0</strong>
+            </div>
+
+            <div>
+                Meilleur
+                <strong id="meilleurScore">0</strong>
+            </div>
+
+        </div>
+
+
+        <div id="jeu3d">
+
+            <div id="message3D">
+                🏃 Évite les obstacles !
+            </div>
+
+        </div>
+
+
+        <!-- CONTROLES MOBILE -->
+
+        <div class="controles-3d">
+
+            <button id="boutonGauche3D">
+                ◀️
+            </button>
+
+            <button id="boutonSaut3D">
+                🔼
+            </button>
+
+            <button id="boutonDroite3D">
+                ▶️
+            </button>
+
+        </div>
+
+
+        <div class="boutons-jeu3d">
+
+            <button id="boutonPause3D">
+                ⏸️ Pause
+            </button>
+
+            <button id="boutonRejouer3D"
+                style="display:none;">
+                🔄 Rejouer
+            </button>
+
+        </div>
+
+
+        <p id="statutClassement3D">
+            Chargement du classement...
+        </p>
+
+
+        <!-- CLASSEMENT -->
+
+        <div class="classement3d">
+
+            <h2>🏆 TOP 10 MONDIAL</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Pseudo</th>
+                        <th>Score</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="listeScores3D">
+
+                    <tr>
+                        <td colspan="3">
+                            Chargement...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+
+    <script src="script9.js"></script>
+
+</body>
+
+</html>

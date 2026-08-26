@@ -3202,6 +3202,302 @@ body.page-flappy {
     }
 
 }
+/* =========================================================
+   CUBE RUNNER 3D
+========================================================= */
+
+.jeu3d-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.jeu3d-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 15px 0;
+}
+
+.jeu3d-stats div {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #00eaff;
+    border-radius: 12px;
+    padding: 10px 25px;
+    min-width: 120px;
+}
+
+.jeu3d-stats strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+#jeu3d {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border: 3px solid #00eaff;
+    border-radius: 15px;
+    background: #03030c;
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.4);
+}
+
+#jeu3d canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#message3D {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 20px #00eaff;
+    pointer-events: none;
+}
+
+.controles-3d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.controles-3d button {
+    width: 80px;
+    height: 60px;
+    border: 2px solid #00eaff;
+    border-radius: 12px;
+    background: #101020;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.controles-3d button:active {
+    transform: scale(0.92);
+}
+
+.boutons-jeu3d {
+    margin-top: 15px;
+}
+
+.boutons-jeu3d button {
+    padding: 12px 25px;
+    margin: 5px;
+    border: 2px solid #00eaff;
+    border-radius: 10px;
+    background: #101020;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.boutons-jeu3d button:hover {
+    box-shadow:
+        0 0 15px #00eaff;
+}
+
+#statutClassement3D {
+    margin: 15px;
+}
+
+.classement3d {
+    margin-top: 25px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.classement3d table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.classement3d th,
+.classement3d td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 234, 255, 0.25);
+}
+
+.classement3d th {
+    color: #00eaff;
+}
+
+.mon-score {
+    color: #00eaff;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .jeu3d-container {
+        padding: 10px;
+    }
+
+    #jeu3d {
+        height: 70vh;
+        min-height: 450px;
+        max-height: 650px;
+    }
+
+    .jeu3d-stats {
+        gap: 10px;
+    }
+
+    .jeu3d-stats div {
+        padding: 8px 15px;
+        min-width: 100px;
+    }
+
+    .controles-3d button {
+        width: 75px;
+        height: 60px;
+    }
+
+    #message3D {
+        font-size: 22px;
+        white-space: nowrap;
+    }
+
+}
+/* =========================================================
+   CUBE RUNNER 3D — CONTROLES MOBILE
+========================================================= */
+
+/* PC : contrôles mobiles cachés */
+.controles-3d {
+    display: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .controles-3d {
+
+        display: flex;
+
+        position: fixed;
+
+        left: 0;
+
+        right: 0;
+
+        bottom: 20px;
+
+        width: 100%;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 25px;
+
+        z-index: 9999;
+
+        pointer-events: none;
+
+    }
+
+
+    .controles-3d button {
+
+        width: 70px;
+
+        height: 70px;
+
+        border: 2px solid #00eaff;
+
+        border-radius: 18px;
+
+        background: rgba(0, 0, 0, 0.75);
+
+        color: white;
+
+        font-size: 30px;
+
+        font-weight: bold;
+
+        box-shadow:
+            0 0 15px
+            rgba(0, 234, 255, 0.5);
+
+        cursor: pointer;
+
+        pointer-events: auto;
+
+        touch-action: manipulation;
+
+        -webkit-tap-highlight-color: transparent;
+
+    }
+
+
+    .controles-3d button:active {
+
+        transform: scale(0.9);
+
+        background: rgba(
+            0,
+            234,
+            255,
+            0.35
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .controles-3d {
+
+        bottom: 15px;
+
+        gap: 15px;
+
+    }
+
+
+    .controles-3d button {
+
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 26px;
+
+    }
+
+}
 
 
 /* =========================================================

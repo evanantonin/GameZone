@@ -7,6 +7,86 @@
    📱 PC + MOBILE
 ========================================================= */
 
+(() => {
+
+"use strict";
+
+
+/* =========================================================
+   ÉVITER LE DOUBLE CHARGEMENT DU SCRIPT
+========================================================= */
+
+if (window.gameZoneTetrisCharge) {
+
+    console.warn(
+        "⚠️ script8.js est déjà chargé. Deuxième chargement ignoré."
+    );
+
+    return;
+
+}
+
+window.gameZoneTetrisCharge = true;
+
+
+/* =========================================================
+   ATTENDRE QUE LE HTML SOIT CHARGÉ
+========================================================= */
+
+function lancerQuandPret() {
+
+    const canvas =
+        document.getElementById("jeuTetris");
+
+
+    if (!canvas) {
+
+        console.error(
+            "❌ Canvas #jeuTetris introuvable."
+        );
+
+        console.error(
+            "Vérifie que ton HTML contient :"
+        );
+
+        console.error(
+            '<canvas id="jeuTetris"></canvas>'
+        );
+
+        return;
+
+    }
+
+
+    demarrerScriptTetris(canvas);
+
+}
+
+
+if (
+    document.readyState === "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        lancerQuandPret
+    );
+
+}
+
+else {
+
+    lancerQuandPret();
+
+}
+
+
+/* =========================================================
+   SCRIPT PRINCIPAL
+========================================================= */
+
+function demarrerScriptTetris(canvas) {
+
 
 /* =========================================================
    SUPABASE
@@ -33,33 +113,32 @@ const supabaseClient =
 ========================================================= */
 
 const JEU_ID = "8";
+
 const NOM_JEU = "Tetris";
+
+
+/* =========================================================
+   CONTEXTE CANVAS
+========================================================= */
+
+const contexte =
+    canvas.getContext("2d");
+
+
+if (!contexte) {
+
+    console.error(
+        "❌ Impossible de récupérer le contexte 2D du canvas."
+    );
+
+    return;
+
+}
 
 
 /* =========================================================
    ELEMENTS HTML
 ========================================================= */
-
-const canvas =
-    document.getElementById("jeuTetris");
-
-
-if (!canvas) {
-
-    console.error(
-        "❌ Canvas #jeuTetris introuvable."
-    );
-
-    throw new Error(
-        "Canvas Tetris introuvable."
-    );
-
-}
-
-
-const contexte =
-    canvas.getContext("2d");
-
 
 const pseudoAffiche =
     document.getElementById(
@@ -137,16 +216,18 @@ let pseudo =
     );
 
 
-if (pseudo && pseudoAffiche) {
+if (pseudo) {
 
-    pseudoAffiche.textContent =
-        pseudo;
+    pseudo =
+        pseudo.trim();
 
 }
-else if (pseudoAffiche) {
+
+
+if (pseudoAffiche) {
 
     pseudoAffiche.textContent =
-        "Visiteur";
+        pseudo || "Visiteur";
 
 }
 
@@ -192,7 +273,7 @@ if (meilleurScoreElement) {
 
 
 /* =========================================================
-   PARTIES JOUEES
+   PARTIES JOUÉES LOCAL
 ========================================================= */
 
 function obtenirClePartiesJouees() {
@@ -211,7 +292,7 @@ function obtenirClePartiesJouees() {
 }
 
 
-const clePartiesJouees =
+let clePartiesJouees =
     obtenirClePartiesJouees();
 
 
@@ -232,10 +313,163 @@ if (partiesJoueesElement) {
 
 
 /* =========================================================
+   GRILLE
+========================================================= */
+
+const COLONNES = 10;
+
+const LIGNES = 20;
+
+const TAILLE = 30;
+
+
+/*
+   S'assurer que le canvas possède
+   les bonnes dimensions.
+*/
+
+canvas.width =
+    COLONNES * TAILLE;
+
+canvas.height =
+    LIGNES * TAILLE;
+
+
+/* =========================================================
+   PIECES
+========================================================= */
+
+const pieces = [
+
+    /* I */
+
+    [
+        [1, 1, 1, 1]
+    ],
+
+
+    /* O */
+
+    [
+        [1, 1],
+        [1, 1]
+    ],
+
+
+    /* T */
+
+    [
+        [0, 1, 0],
+        [1, 1, 1]
+    ],
+
+
+    /* L */
+
+    [
+        [1, 0, 0],
+        [1, 1, 1]
+    ],
+
+
+    /* J */
+
+    [
+        [0, 0, 1],
+        [1, 1, 1]
+    ],
+
+
+    /* S */
+
+    [
+        [0, 1, 1],
+        [1, 1, 0]
+    ],
+
+
+    /* Z */
+
+    [
+        [1, 1, 0],
+        [0, 1, 1]
+    ]
+
+];
+
+
+const couleurs = [
+
+    "#00eaff",
+
+    "#ffff00",
+
+    "#b000ff",
+
+    "#ff8800",
+
+    "#0066ff",
+
+    "#00ff66",
+
+    "#ff3355"
+
+];
+
+
+/* =========================================================
+   VARIABLES DU JEU
+========================================================= */
+
+let grille = null;
+
+let piece = null;
+
+let pieceX = 0;
+
+let pieceY = 0;
+
+let pieceCouleur = null;
+
+let score = 0;
+
+let niveau = 1;
+
+let lignesSupprimees = 0;
+
+let jeuTermine = false;
+
+let jeuEnPause = false;
+
+let tempsDerniereChute = 0;
+
+let vitesse = 800;
+
+let animationID = null;
+
+let partieComptee = false;
+
+
+/* =========================================================
    COMPTER UNE PARTIE
 ========================================================= */
 
 async function compterPartie() {
+
+    /*
+       Évite de compter deux fois
+       la même partie.
+    */
+
+    if (partieComptee) {
+
+        return;
+
+    }
+
+
+    partieComptee = true;
+
 
     /*
        Compteur local
@@ -259,7 +493,7 @@ async function compterPartie() {
 
 
     /*
-       Compteur global
+       Compteur Supabase
     */
 
     await compterPartieTetris();
@@ -422,130 +656,6 @@ async function compterPartieTetris() {
 
 
 /* =========================================================
-   GRILLE
-========================================================= */
-
-const COLONNES = 10;
-
-const LIGNES = 20;
-
-const TAILLE = 30;
-
-
-/* =========================================================
-   PIECES
-========================================================= */
-
-const pieces = [
-
-    /* I */
-
-    [
-        [1, 1, 1, 1]
-    ],
-
-
-    /* O */
-
-    [
-        [1, 1],
-        [1, 1]
-    ],
-
-
-    /* T */
-
-    [
-        [0, 1, 0],
-        [1, 1, 1]
-    ],
-
-
-    /* L */
-
-    [
-        [1, 0, 0],
-        [1, 1, 1]
-    ],
-
-
-    /* J */
-
-    [
-        [0, 0, 1],
-        [1, 1, 1]
-    ],
-
-
-    /* S */
-
-    [
-        [0, 1, 1],
-        [1, 1, 0]
-    ],
-
-
-    /* Z */
-
-    [
-        [1, 1, 0],
-        [0, 1, 1]
-    ]
-
-];
-
-
-const couleurs = [
-
-    "#00eaff",
-
-    "#ffff00",
-
-    "#b000ff",
-
-    "#ff8800",
-
-    "#0066ff",
-
-    "#00ff66",
-
-    "#ff3355"
-
-];
-
-
-/* =========================================================
-   VARIABLES DU JEU
-========================================================= */
-
-let grille;
-
-let piece;
-
-let pieceX;
-
-let pieceY;
-
-let pieceCouleur;
-
-let score = 0;
-
-let niveau = 1;
-
-let lignesSupprimees = 0;
-
-let jeuTermine = false;
-
-let jeuEnPause = false;
-
-let tempsDerniereChute = 0;
-
-let vitesse = 800;
-
-let animationID = null;
-
-
-/* =========================================================
    CREER GRILLE
 ========================================================= */
 
@@ -598,8 +708,7 @@ function nouvellePiece() {
         );
 
 
-    pieceY =
-        0;
+    pieceY = 0;
 
 
     if (collisionPiece()) {
@@ -612,7 +721,7 @@ function nouvellePiece() {
 
 
 /* =========================================================
-   COLLISION PIECE
+   COLLISION
 ========================================================= */
 
 function collisionPiece(
@@ -622,6 +731,13 @@ function collisionPiece(
     decalageY = 0
 
 ) {
+
+    if (!piece || !grille) {
+
+        return false;
+
+    }
+
 
     for (
         let y = 0;
@@ -715,38 +831,39 @@ function fixerPiece() {
             x++
         ) {
 
+            if (!piece[y][x]) {
+
+                continue;
+
+            }
+
+
+            const grilleY =
+                pieceY + y;
+
+
+            const grilleX =
+                pieceX + x;
+
+
             if (
-                piece[y][x]
+
+                grilleY >= 0 &&
+
+                grilleY < LIGNES &&
+
+                grilleX >= 0 &&
+
+                grilleX < COLONNES
+
             ) {
 
-                const grilleY =
-                    pieceY + y;
-
-
-                const grilleX =
-                    pieceX + x;
-
-
-                if (
-
-                    grilleY >= 0 &&
-
-                    grilleY < LIGNES &&
-
-                    grilleX >= 0 &&
-
-                    grilleX < COLONNES
-
-                ) {
-
-                    grille[
-                        grilleY
-                    ][
-                        grilleX
-                    ] =
-                        pieceCouleur;
-
-                }
+                grille[
+                    grilleY
+                ][
+                    grilleX
+                ] =
+                    pieceCouleur;
 
             }
 
@@ -783,12 +900,10 @@ function supprimerLignes() {
     ) {
 
         if (
-
             grille[y].every(
                 cellule =>
                     cellule !== 0
             )
-
         ) {
 
             grille.splice(
@@ -813,7 +928,7 @@ function supprimerLignes() {
     }
 
 
-    if (nombre <= 0) {
+    if (nombre === 0) {
 
         return;
 
@@ -882,15 +997,12 @@ function supprimerLignes() {
 
         vitesse =
             Math.max(
-
                 100,
-
                 800 -
                 (
                     niveau - 1
                 ) *
                 70
-
             );
 
 
@@ -923,11 +1035,9 @@ function supprimerLignes() {
 function descendre() {
 
     if (
-
         jeuTermine ||
-
-        jeuEnPause
-
+        jeuEnPause ||
+        !piece
     ) {
 
         return;
@@ -936,12 +1046,7 @@ function descendre() {
 
 
     if (
-
-        !collisionPiece(
-            0,
-            1
-        )
-
+        !collisionPiece(0, 1)
     ) {
 
         pieceY++;
@@ -966,11 +1071,9 @@ function deplacer(
 ) {
 
     if (
-
         jeuTermine ||
-
-        jeuEnPause
-
+        jeuEnPause ||
+        !piece
     ) {
 
         return;
@@ -979,12 +1082,10 @@ function deplacer(
 
 
     if (
-
         !collisionPiece(
             direction,
             0
         )
-
     ) {
 
         pieceX +=
@@ -1002,11 +1103,9 @@ function deplacer(
 function tourner() {
 
     if (
-
         jeuTermine ||
-
-        jeuEnPause
-
+        jeuEnPause ||
+        !piece
     ) {
 
         return;
@@ -1049,11 +1148,8 @@ function tourner() {
         for (
             let y =
                 hauteur - 1;
-
             y >= 0;
-
             y--
-
         ) {
 
             nouvelle[x].push(
@@ -1069,14 +1165,9 @@ function tourner() {
         nouvelle;
 
 
-    /*
-       Petite correction de position
-       pour éviter les rotations
-       impossibles près des bords.
-    */
-
     if (
-        pieceX + piece[0].length >
+        pieceX +
+        piece[0].length >
         COLONNES
     ) {
 
@@ -1115,11 +1206,9 @@ function tourner() {
 function chuteRapide() {
 
     if (
-
         jeuTermine ||
-
-        jeuEnPause
-
+        jeuEnPause ||
+        !piece
     ) {
 
         return;
@@ -1131,12 +1220,10 @@ function chuteRapide() {
 
 
     while (
-
         !collisionPiece(
             0,
             1
         )
-
     ) {
 
         pieceY++;
@@ -1146,9 +1233,13 @@ function chuteRapide() {
     }
 
 
-    ajouterScore(
-        distance * 2
-    );
+    if (distance > 0) {
+
+        ajouterScore(
+            distance * 2
+        );
+
+    }
 
 
     fixerPiece();
@@ -1178,11 +1269,8 @@ function ajouterScore(
 
 
         localStorage.setItem(
-
             cleMeilleurScore,
-
             meilleurScore
-
         );
 
     }
@@ -1210,92 +1298,76 @@ function ajouterScore(
    CLAVIER
 ========================================================= */
 
-document.addEventListener(
+function gestionClavier(event) {
 
-    "keydown",
-
-    function(event) {
-
-        const touche =
-            event.key.toLowerCase();
+    const touche =
+        event.key.toLowerCase();
 
 
-        if (
+    if (
+        touche === "q" ||
+        event.key === "ArrowLeft"
+    ) {
 
-            touche === "q" ||
+        event.preventDefault();
 
-            event.key ===
-            "ArrowLeft"
-
-        ) {
-
-            event.preventDefault();
-
-            deplacer(-1);
-
-        }
-
-
-        else if (
-
-            touche === "d" ||
-
-            event.key ===
-            "ArrowRight"
-
-        ) {
-
-            event.preventDefault();
-
-            deplacer(1);
-
-        }
-
-
-        else if (
-
-            touche === "s" ||
-
-            event.key ===
-            "ArrowDown"
-
-        ) {
-
-            event.preventDefault();
-
-            descendre();
-
-        }
-
-
-        else if (
-
-            touche === "z" ||
-
-            event.key ===
-            "ArrowUp"
-
-        ) {
-
-            event.preventDefault();
-
-            tourner();
-
-        }
-
-
-        else if (
-            event.code === "Space"
-        ) {
-
-            event.preventDefault();
-
-            chuteRapide();
-
-        }
+        deplacer(-1);
 
     }
 
+
+    else if (
+        touche === "d" ||
+        event.key === "ArrowRight"
+    ) {
+
+        event.preventDefault();
+
+        deplacer(1);
+
+    }
+
+
+    else if (
+        touche === "s" ||
+        event.key === "ArrowDown"
+    ) {
+
+        event.preventDefault();
+
+        descendre();
+
+    }
+
+
+    else if (
+        touche === "z" ||
+        event.key === "ArrowUp"
+    ) {
+
+        event.preventDefault();
+
+        tourner();
+
+    }
+
+
+    else if (
+        event.code === "Space"
+    ) {
+
+        event.preventDefault();
+
+        chuteRapide();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "keydown",
+    gestionClavier
 );
 
 
@@ -1310,12 +1382,10 @@ function dessinerGrille() {
 
 
     contexte.fillRect(
-
         0,
         0,
         canvas.width,
         canvas.height
-
     );
 
 
@@ -1336,18 +1406,14 @@ function dessinerGrille() {
 
 
         contexte.moveTo(
-
             x * TAILLE,
             0
-
         );
 
 
         contexte.lineTo(
-
             x * TAILLE,
             canvas.height
-
         );
 
 
@@ -1366,18 +1432,14 @@ function dessinerGrille() {
 
 
         contexte.moveTo(
-
             0,
             y * TAILLE
-
         );
 
 
         contexte.lineTo(
-
             canvas.width,
             y * TAILLE
-
         );
 
 
@@ -1387,32 +1449,32 @@ function dessinerGrille() {
 
 
     /*
-       Blocs déjà posés
+       Blocs posés
     */
 
-    for (
-        let y = 0;
-        y < LIGNES;
-        y++
-    ) {
+    if (grille) {
 
         for (
-            let x = 0;
-            x < COLONNES;
-            x++
+            let y = 0;
+            y < LIGNES;
+            y++
         ) {
 
-            if (
-                grille[y][x]
+            for (
+                let x = 0;
+                x < COLONNES;
+                x++
             ) {
 
-                dessinerBloc(
+                if (grille[y][x]) {
 
-                    x,
-                    y,
-                    grille[y][x]
+                    dessinerBloc(
+                        x,
+                        y,
+                        grille[y][x]
+                    );
 
-                );
+                }
 
             }
 
@@ -1443,13 +1505,21 @@ function dessinerGrille() {
                     piece[y][x]
                 ) {
 
-                    dessinerBloc(
+                    const dessinY =
+                        pieceY + y;
 
-                        pieceX + x,
-                        pieceY + y,
-                        pieceCouleur
 
-                    );
+                    if (
+                        dessinY >= 0
+                    ) {
+
+                        dessinerBloc(
+                            pieceX + x,
+                            dessinY,
+                            pieceCouleur
+                        );
+
+                    }
 
                 }
 
@@ -1467,11 +1537,9 @@ function dessinerGrille() {
 ========================================================= */
 
 function dessinerBloc(
-
     x,
     y,
     couleur
-
 ) {
 
     contexte.save();
@@ -1490,12 +1558,10 @@ function dessinerBloc(
 
 
     contexte.fillRect(
-
         x * TAILLE + 2,
         y * TAILLE + 2,
         TAILLE - 4,
         TAILLE - 4
-
     );
 
 
@@ -1507,12 +1573,10 @@ function dessinerBloc(
 
 
     contexte.strokeRect(
-
         x * TAILLE + 3,
         y * TAILLE + 3,
         TAILLE - 6,
         TAILLE - 6
-
     );
 
 
@@ -1525,24 +1589,17 @@ function dessinerBloc(
    BOUCLE
 ========================================================= */
 
-function boucle(
-    temps
-) {
+function boucle(temps) {
 
     if (
-
         !jeuTermine &&
-
         !jeuEnPause
-
     ) {
 
         if (
-
             temps -
             tempsDerniereChute >
             vitesse
-
         ) {
 
             descendre();
@@ -1574,9 +1631,7 @@ function boucle(
 if (boutonPause) {
 
     boutonPause.addEventListener(
-
         "click",
-
         function() {
 
             if (jeuTermine) {
@@ -1625,7 +1680,6 @@ if (boutonPause) {
             }
 
         }
-
     );
 
 }
@@ -1644,8 +1698,7 @@ async function terminerJeu() {
     }
 
 
-    jeuTermine =
-        true;
+    jeuTermine = true;
 
 
     if (animationID !== null) {
@@ -1654,8 +1707,7 @@ async function terminerJeu() {
             animationID
         );
 
-        animationID =
-            null;
+        animationID = null;
 
     }
 
@@ -1686,7 +1738,8 @@ async function terminerJeu() {
 
 
     /*
-       VISITEUR
+       Visiteur :
+       jamais envoyé à Supabase.
     */
 
     if (!pseudo) {
@@ -1694,7 +1747,7 @@ async function terminerJeu() {
         if (statutClassement) {
 
             statutClassement.textContent =
-                "👤 Mode visiteur : le score n'est pas enregistré dans le classement.";
+                "👤 Mode visiteur : ton score reste uniquement sur cet appareil.";
 
         }
 
@@ -1704,7 +1757,8 @@ async function terminerJeu() {
 
 
     /*
-       JOUEUR CONNECTÉ
+       Compte connecté :
+       enregistrement du meilleur score.
     */
 
     await enregistrerMeilleurScore();
@@ -1719,8 +1773,11 @@ async function terminerJeu() {
 async function rejouer() {
 
     /*
-       Compter la nouvelle partie
+       Nouvelle partie
     */
+
+    partieComptee = false;
+
 
     await compterPartie();
 
@@ -1770,7 +1827,6 @@ async function rejouer() {
 
         boutonPause.style.display =
             "inline-block";
-
 
         boutonPause.textContent =
             "⏸️ Pause";
@@ -1844,15 +1900,8 @@ async function rejouer() {
 if (boutonRejouer) {
 
     boutonRejouer.addEventListener(
-
         "click",
-
-        function() {
-
-            rejouer();
-
-        }
-
+        rejouer
     );
 
 }
@@ -1863,10 +1912,8 @@ if (boutonRejouer) {
 ========================================================= */
 
 function configurerBoutonMobile(
-
     id,
     action
-
 ) {
 
     const bouton =
@@ -1890,24 +1937,17 @@ function configurerBoutonMobile(
 
 
     bouton.addEventListener(
-
         "touchstart",
-
         appuyer,
-
         {
             passive: false
         }
-
     );
 
 
     bouton.addEventListener(
-
         "mousedown",
-
         appuyer
-
     );
 
 }
@@ -1918,15 +1958,8 @@ function configurerBoutonMobile(
 ========================================================= */
 
 configurerBoutonMobile(
-
     "tetrisGauche",
-
-    function() {
-
-        deplacer(-1);
-
-    }
-
+    () => deplacer(-1)
 );
 
 
@@ -1935,15 +1968,8 @@ configurerBoutonMobile(
 ========================================================= */
 
 configurerBoutonMobile(
-
     "tetrisRotation",
-
-    function() {
-
-        tourner();
-
-    }
-
+    () => tourner()
 );
 
 
@@ -1952,15 +1978,8 @@ configurerBoutonMobile(
 ========================================================= */
 
 configurerBoutonMobile(
-
     "tetrisDroite",
-
-    function() {
-
-        deplacer(1);
-
-    }
-
+    () => deplacer(1)
 );
 
 
@@ -1969,43 +1988,23 @@ configurerBoutonMobile(
 ========================================================= */
 
 configurerBoutonMobile(
-
     "tetrisDescendre",
-
-    function() {
-
-        descendre();
-
-    }
-
+    () => descendre()
 );
 
 
 /* =========================================================
-   MOBILE — CHUTE RAPIDE
+   MOBILE — CHUTE
 ========================================================= */
 
 configurerBoutonMobile(
-
     "tetrisChute",
-
-    function() {
-
-        chuteRapide();
-
-    }
-
+    () => chuteRapide()
 );
 
 
 /* =========================================================
    ENREGISTRER SCORE
-   TABLE : scores
-   COLONNES UTILISÉES :
-   id / pseudo / score / jeu
-
-   IMPORTANT :
-   Aucun user_id utilisé.
 ========================================================= */
 
 async function enregistrerMeilleurScore() {
@@ -2037,11 +2036,6 @@ async function enregistrerMeilleurScore() {
 
         }
 
-
-        /*
-           Recherche du meilleur score
-           du pseudo pour Tetris.
-        */
 
         const resultat =
             await supabaseClient
@@ -2090,9 +2084,7 @@ async function enregistrerMeilleurScore() {
 
 
         /*
-           =================================================
-           PREMIER SCORE
-        =================================================
+           Aucun score existant
         */
 
         if (
@@ -2146,9 +2138,7 @@ async function enregistrerMeilleurScore() {
 
 
         /*
-           =================================================
-           SCORE EXISTANT
-        =================================================
+           Score existant
         */
 
         else {
@@ -2158,10 +2148,6 @@ async function enregistrerMeilleurScore() {
                     anciensScores[0].score
                 ) || 0;
 
-
-            /*
-               Nouveau record
-            */
 
             if (
                 score > ancienScore
@@ -2215,10 +2201,6 @@ async function enregistrerMeilleurScore() {
                 }
 
             }
-
-            /*
-               Ancien record conservé
-            */
 
             else {
 
@@ -2278,11 +2260,9 @@ async function chargerClassement() {
         listeScores.innerHTML = `
 
             <tr>
-
                 <td colspan="3">
                     ❌ Classement indisponible.
                 </td>
-
             </tr>
 
         `;
@@ -2297,11 +2277,9 @@ async function chargerClassement() {
         listeScores.innerHTML = `
 
             <tr>
-
                 <td colspan="3">
                     ⏳ Chargement...
                 </td>
-
             </tr>
 
         `;
@@ -2333,14 +2311,13 @@ async function chargerClassement() {
                 resultat.error
             );
 
+
             listeScores.innerHTML = `
 
                 <tr>
-
                     <td colspan="3">
                         ❌ Impossible de charger le classement.
                     </td>
-
                 </tr>
 
             `;
@@ -2358,10 +2335,6 @@ async function chargerClassement() {
             "";
 
 
-        /*
-           Aucun score
-        */
-
         if (
             scores.length === 0
         ) {
@@ -2369,11 +2342,9 @@ async function chargerClassement() {
             listeScores.innerHTML = `
 
                 <tr>
-
                     <td colspan="3">
                         Aucun score pour Tetris.
                     </td>
-
                 </tr>
 
             `;
@@ -2383,16 +2354,11 @@ async function chargerClassement() {
         }
 
 
-        /*
-           Afficher Top 10
-        */
-
         scores.forEach(
-
-            function(
+            (
                 joueurScore,
                 index
-            ) {
+            ) => {
 
                 const ligne =
                     document.createElement(
@@ -2454,21 +2420,13 @@ async function chargerClassement() {
                 scoreCellule.textContent =
                     Number(
                         joueurScore.score
-                    );
+                    ) || 0;
 
-
-                /*
-                   Mettre en évidence
-                   le joueur actuel
-                */
 
                 if (
-
                     pseudo &&
-
                     joueurScore.pseudo ===
                     pseudo
-
                 ) {
 
                     pseudoCellule.classList.add(
@@ -2507,7 +2465,6 @@ async function chargerClassement() {
                 );
 
             }
-
         );
 
 
@@ -2542,22 +2499,12 @@ async function chargerClassement() {
         listeScores.innerHTML = `
 
             <tr>
-
                 <td colspan="3">
                     ❌ Impossible de charger le classement.
                 </td>
-
             </tr>
 
         `;
-
-
-        if (statutClassement) {
-
-            statutClassement.textContent =
-                "❌ Erreur lors du chargement du classement.";
-
-        }
 
     }
 
@@ -2570,17 +2517,9 @@ async function chargerClassement() {
 
 async function demarrerTetris() {
 
-    /*
-       Créer la grille
-    */
-
     grille =
         creerGrille();
 
-
-    /*
-       Réinitialisation
-    */
 
     score = 0;
 
@@ -2593,6 +2532,8 @@ async function demarrerTetris() {
     jeuTermine = false;
 
     jeuEnPause = false;
+
+    partieComptee = false;
 
 
     if (scoreElement) {
@@ -2647,28 +2588,28 @@ async function demarrerTetris() {
 
 
     /*
-       Compter la première partie
+       Compter la première partie.
     */
 
     await compterPartie();
 
 
     /*
-       Première pièce
+       Première pièce.
     */
 
     nouvellePiece();
 
 
     /*
-       Classement
+       Charger le classement.
     */
 
     await chargerClassement();
 
 
     /*
-       Boucle
+       Lancer la boucle.
     */
 
     tempsDerniereChute =
@@ -2688,3 +2629,9 @@ async function demarrerTetris() {
 ========================================================= */
 
 demarrerTetris();
+
+
+} // fin demarrerScriptTetris
+
+
+})(); // fin protection globale

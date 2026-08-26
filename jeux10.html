@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GameZone - 3D Racing</title>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- THREE.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- CSS GLOBAL -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         NAVIGATION
+    ===================================================== -->
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="liste-jeux.html">
+            Jeux
+        </a>
+
+        <a href="compte.html">
+            👤
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         JEU
+    ===================================================== -->
+
+    <main class="racing-container">
+
+        <h1>
+            🏎️ 3D Racing
+        </h1>
+
+
+        <p class="racing-joueur">
+
+            👤 Joueur :
+            <strong id="pseudoAffiche10">
+                Visiteur
+            </strong>
+
+        </p>
+
+
+        <!-- =================================================
+             STATISTIQUES
+        ================================================= -->
+
+        <div class="racing-stats">
+
+            <div>
+
+                🏁 Score
+
+                <strong id="score10">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                🏆 Meilleur
+
+                <strong id="meilleurScore10">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                💨 Vitesse
+
+                <strong id="vitesse10">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CANVAS 3D
+        ================================================= -->
+
+        <div id="jeuRacing3D">
+
+            <div
+                id="messageRacing10"
+                class="message-racing"
+            >
+                🏎️ Évite les voitures !
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTROLES MOBILE
+        ================================================= -->
+
+        <div class="controles-racing">
+
+            <button id="boutonGauche10">
+                ◀️
+            </button>
+
+
+            <button id="boutonDroite10">
+                ▶️
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             BOUTONS
+        ================================================= -->
+
+        <div class="boutons-racing">
+
+            <button id="boutonPause10">
+                ⏸️ Pause
+            </button>
+
+
+            <button
+                id="boutonRejouer10"
+                style="display:none;"
+            >
+                🔄 Rejouer
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             STATUT CLASSEMENT
+        ================================================= -->
+
+        <p id="statutClassement10">
+
+            Chargement du classement...
+
+        </p>
+
+
+        <!-- =================================================
+             CLASSEMENT
+        ================================================= -->
+
+        <section class="classement-racing">
+
+            <h2>
+                🏆 TOP 10 MONDIAL
+            </h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Pseudo
+                        </th>
+
+                        <th>
+                            Score
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="listeScores10">
+
+                    <tr>
+
+                        <td colspan="3">
+                            Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         SCRIPT
+    ===================================================== -->
+
+    <script src="script10.js"></script>
+
+</body>
+
+</html>
