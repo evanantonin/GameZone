@@ -1,6 +1,7 @@
+
 /* =========================================================
    GAMEZONE — JEU 10
-   3D RACING
+   RACING 3D — VERSION GRAPHISME AMÉLIORÉ
    THREE.JS
 
    👤 VISITEUR
@@ -11,6 +12,8 @@
    ⏸️ PAUSE
    💀 GAME OVER
    🎮 COMPTEUR DE PARTIES
+   ⛶ PLEIN ÉCRAN
+   🏎️ VOITURES DE COURSE
 ========================================================= */
 
 
@@ -24,25 +27,14 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
-
 let supabaseClient10 = null;
 
-
 if (window.supabase) {
-
     supabaseClient10 =
         window.supabase.createClient(
             SUPABASE_URL,
             SUPABASE_KEY
         );
-
-}
-else {
-
-    console.error(
-        "❌ Bibliothèque Supabase non chargée."
-    );
-
 }
 
 
@@ -51,7 +43,6 @@ else {
 ========================================================= */
 
 const JEU_ID = "10";
-
 const NOM_JEU = "3D Racing";
 
 
@@ -60,75 +51,40 @@ const NOM_JEU = "3D Racing";
 ========================================================= */
 
 const zoneRacing =
-    document.getElementById(
-        "jeuRacing3D"
-    );
-
+    document.getElementById("game10-canvas-zone");
 
 const messageRacing =
-    document.getElementById(
-        "messageRacing10"
-    );
-
+    document.getElementById("game10-message");
 
 const scoreElement =
-    document.getElementById(
-        "score10"
-    );
-
+    document.getElementById("game10-score");
 
 const meilleurScoreElement =
-    document.getElementById(
-        "meilleurScore10"
-    );
-
-
-const vitesseElement =
-    document.getElementById(
-        "vitesse10"
-    );
-
+    document.getElementById("game10-best");
 
 const pseudoAffiche =
-    document.getElementById(
-        "pseudoAffiche10"
-    );
-
+    document.getElementById("game10-pseudo");
 
 const boutonPause =
-    document.getElementById(
-        "boutonPause10"
-    );
-
+    document.getElementById("game10-pause");
 
 const boutonRejouer =
-    document.getElementById(
-        "boutonRejouer10"
-    );
-
+    document.getElementById("game10-restart");
 
 const boutonGauche =
-    document.getElementById(
-        "boutonGauche10"
-    );
-
+    document.getElementById("game10-left");
 
 const boutonDroite =
-    document.getElementById(
-        "boutonDroite10"
-    );
+    document.getElementById("game10-right");
 
+const boutonAccelerer =
+    document.getElementById("game10-accelerate");
 
 const listeScores =
-    document.getElementById(
-        "listeScores10"
-    );
-
+    document.getElementById("game10-ranking-list");
 
 const statutClassement =
-    document.getElementById(
-        "statutClassement10"
-    );
+    document.getElementById("game10-classement-statut");
 
 
 /* =========================================================
@@ -136,22 +92,15 @@ const statutClassement =
 ========================================================= */
 
 let pseudo =
-    localStorage.getItem(
-        "pseudoGameZone"
-    );
-
+    localStorage.getItem("pseudoGameZone");
 
 if (pseudo) {
-
-    pseudoAffiche.textContent =
-        pseudo;
-
+    pseudo = pseudo.trim();
 }
-else {
 
+if (pseudoAffiche) {
     pseudoAffiche.textContent =
-        "Visiteur";
-
+        pseudo || "Visiteur";
 }
 
 
@@ -159,70 +108,62 @@ else {
    MEILLEUR SCORE
 ========================================================= */
 
-function obtenirCleMeilleurScore() {
+function obtenirCleMeilleurScore10() {
 
     if (pseudo) {
-
-        return (
-            "meilleurScore3DRacing_" +
-            pseudo
-        );
-
+        return "meilleurScore3DRacing_" + pseudo;
     }
 
-    return (
-        "meilleurScore3DRacing_visiteur"
-    );
-
+    return "meilleurScore3DRacing_visiteur";
 }
 
-
 const cleMeilleurScore =
-    obtenirCleMeilleurScore();
-
+    obtenirCleMeilleurScore10();
 
 let meilleurScore =
     Number(
-        localStorage.getItem(
-            cleMeilleurScore
-        )
+        localStorage.getItem(cleMeilleurScore)
     ) || 0;
 
-
-meilleurScoreElement.textContent =
-    meilleurScore;
+if (meilleurScoreElement) {
+    meilleurScoreElement.textContent =
+        meilleurScore;
+}
 
 
 /* =========================================================
    THREE.JS
 ========================================================= */
 
-let scene;
+let scene = null;
+let camera = null;
+let renderer = null;
 
-let camera;
-
-let renderer;
-
-let voiture;
-
-let route;
-
-let lignesRoute = [];
+let voiture = null;
 
 let voituresEnnemies = [];
 
-let arbres = [];
+let lignesRoute = [];
+let bandesRoute = [];
+let vibreursGauche = [];
+let vibreursDroite = [];
 
-let animationID;
+let arbres = [];
+let lampes = [];
+let panneaux = [];
+
+let nuages = [];
+
+let animationID = null;
 
 
 /* =========================================================
-   VARIABLES DU JEU
+   VARIABLES JEU
 ========================================================= */
 
 let score = 0;
 
-let vitesse = 0.35;
+let vitesse = 0.45;
 
 let jeuTermine = false;
 
@@ -232,144 +173,365 @@ let dernierTemps = 0;
 
 let positionVoitureX = 0;
 
-let compteurObstacle = 0;
+let accelerationActive = false;
 
 
 /* =========================================================
    CONFIGURATION
 ========================================================= */
 
-const LARGEUR_ROUTE = 12;
+const LARGEUR_ROUTE = 14;
 
-const LONGUEUR_ROUTE = 220;
+const LONGUEUR_ROUTE = 300;
 
 const VOIES = [
-    -4,
+    -4.2,
     0,
-    4
+    4.2
 ];
 
 
 /* =========================================================
-   INITIALISATION
+   COULEURS
+========================================================= */
+
+const COULEUR_CIEL =
+    0x6fa8dc;
+
+const COULEUR_ROUTE =
+    0x252525;
+
+const COULEUR_BORD =
+    0xffffff;
+
+const COULEUR_HERBE =
+    0x183d20;
+
+
+/* =========================================================
+   PLEIN ECRAN
+========================================================= */
+
+let boutonPleinEcran10 = null;
+
+function creerBoutonPleinEcran10() {
+
+    if (!zoneRacing) return;
+
+    const ancien =
+        document.getElementById(
+            "game10-fullscreen"
+        );
+
+    if (ancien) {
+        boutonPleinEcran10 = ancien;
+        return;
+    }
+
+    boutonPleinEcran10 =
+        document.createElement("button");
+
+    boutonPleinEcran10.id =
+        "game10-fullscreen";
+
+    boutonPleinEcran10.type =
+        "button";
+
+    boutonPleinEcran10.textContent =
+        "⛶ Plein écran";
+
+    Object.assign(
+        boutonPleinEcran10.style,
+        {
+            position: "fixed",
+            right: "20px",
+            bottom: "20px",
+            zIndex: "999999",
+            padding: "12px 18px",
+            border: "2px solid rgba(255,255,255,.3)",
+            borderRadius: "12px",
+            background: "rgba(10,15,25,.9)",
+            color: "white",
+            fontSize: "15px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            backdropFilter: "blur(8px)",
+            boxShadow: "0 5px 25px rgba(0,0,0,.5)"
+        }
+    );
+
+    boutonPleinEcran10.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            basculerPleinEcran10();
+        }
+    );
+
+    document.body.appendChild(
+        boutonPleinEcran10
+    );
+}
+
+
+async function basculerPleinEcran10() {
+
+    if (!zoneRacing) return;
+
+    try {
+
+        if (!document.fullscreenElement) {
+
+            if (
+                zoneRacing.requestFullscreen
+            ) {
+
+                await zoneRacing.requestFullscreen();
+
+            }
+
+            else if (
+                zoneRacing.webkitRequestFullscreen
+            ) {
+
+                zoneRacing.webkitRequestFullscreen();
+
+            }
+
+        }
+
+        else {
+
+            if (document.exitFullscreen) {
+                await document.exitFullscreen();
+            }
+
+            else if (
+                document.webkitExitFullscreen
+            ) {
+
+                document.webkitExitFullscreen();
+
+            }
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "Erreur plein écran :",
+            erreur
+        );
+
+    }
+}
+
+
+function mettreAJourBoutonPleinEcran10() {
+
+    if (!boutonPleinEcran10) return;
+
+    if (document.fullscreenElement) {
+
+        boutonPleinEcran10.textContent =
+            "✕ Quitter";
+
+    }
+
+    else {
+
+        boutonPleinEcran10.textContent =
+            "⛶ Plein écran";
+
+    }
+
+    setTimeout(
+        redimensionnerRacing,
+        100
+    );
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    mettreAJourBoutonPleinEcran10
+);
+
+
+/* =========================================================
+   SCENE
 ========================================================= */
 
 function initialiserRacing() {
 
+    if (!zoneRacing || renderer) {
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       SCENE
+    ----------------------------------------------------- */
+
     scene =
         new THREE.Scene();
 
-
     scene.background =
         new THREE.Color(
-            0x101827
+            COULEUR_CIEL
         );
-
 
     scene.fog =
         new THREE.Fog(
-            0x101827,
-            30,
-            180
+            COULEUR_CIEL,
+            45,
+            230
         );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        CAMERA
-    ===================================================== */
+    ----------------------------------------------------- */
+
+    const largeur =
+        Math.max(
+            zoneRacing.clientWidth,
+            1
+        );
+
+    const hauteur =
+        Math.max(
+            zoneRacing.clientHeight,
+            1
+        );
 
     camera =
         new THREE.PerspectiveCamera(
-            65,
-            zoneRacing.clientWidth /
-            zoneRacing.clientHeight,
+            62,
+            largeur / hauteur,
             0.1,
-            300
+            400
         );
-
 
     camera.position.set(
         0,
-        5,
+        4.4,
         10
     );
-
 
     camera.lookAt(
         0,
         1,
-        -25
+        -35
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        RENDERER
-    ===================================================== */
+    ----------------------------------------------------- */
 
     renderer =
         new THREE.WebGLRenderer({
             antialias: true
         });
 
-
     renderer.setPixelRatio(
         Math.min(
-            window.devicePixelRatio,
+            window.devicePixelRatio || 1,
             2
         )
     );
 
-
     renderer.setSize(
-        zoneRacing.clientWidth,
-        zoneRacing.clientHeight
+        largeur,
+        hauteur
     );
 
+    renderer.shadowMap.enabled = true;
+
+    renderer.shadowMap.type =
+        THREE.PCFSoftShadowMap;
+
+    renderer.outputEncoding =
+        THREE.sRGBEncoding;
+
+    renderer.domElement.style.display =
+        "block";
+
+    renderer.domElement.style.width =
+        "100%";
+
+    renderer.domElement.style.height =
+        "100%";
 
     zoneRacing.appendChild(
         renderer.domElement
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        LUMIERES
-    ===================================================== */
+    ----------------------------------------------------- */
 
-    const lumiereAmbiante =
+    const lumiereCiel =
         new THREE.HemisphereLight(
-            0xffffff,
-            0x333344,
-            1.6
+            0xddeeff,
+            0x203020,
+            2
         );
 
-
     scene.add(
-        lumiereAmbiante
+        lumiereCiel
     );
 
 
-    const lumiere =
+    const soleil =
         new THREE.DirectionalLight(
             0xffffff,
-            1.2
+            2.2
         );
 
-
-    lumiere.position.set(
-        5,
-        12,
-        5
+    soleil.position.set(
+        -40,
+        80,
+        30
     );
 
+    soleil.castShadow = true;
+
+    soleil.shadow.mapSize.width =
+        2048;
+
+    soleil.shadow.mapSize.height =
+        2048;
+
+    soleil.shadow.camera.left =
+        -80;
+
+    soleil.shadow.camera.right =
+        80;
+
+    soleil.shadow.camera.top =
+        80;
+
+    soleil.shadow.camera.bottom =
+        -80;
 
     scene.add(
-        lumiere
+        soleil
     );
 
 
-    /* =====================================================
-       CREATION DU MONDE
-    ===================================================== */
+    /* -----------------------------------------------------
+       MONDE
+    ----------------------------------------------------- */
+
+    creerSol();
 
     creerRoute();
 
@@ -379,10 +541,23 @@ function initialiserRacing() {
 
     creerDecor();
 
+    creerLampes();
 
-    /* =====================================================
+    creerPanneaux();
+
+    creerNuages();
+
+
+    /* -----------------------------------------------------
+       PLEIN ECRAN
+    ----------------------------------------------------- */
+
+    creerBoutonPleinEcran10();
+
+
+    /* -----------------------------------------------------
        RESIZE
-    ===================================================== */
+    ----------------------------------------------------- */
 
     window.addEventListener(
         "resize",
@@ -394,7 +569,45 @@ function initialiserRacing() {
         scene,
         camera
     );
+}
 
+
+/* =========================================================
+   SOL
+========================================================= */
+
+function creerSol() {
+
+    const geometrie =
+        new THREE.PlaneGeometry(
+            500,
+            500
+        );
+
+    const materiau =
+        new THREE.MeshStandardMaterial({
+            color: COULEUR_HERBE,
+            roughness: 1
+        });
+
+    const sol =
+        new THREE.Mesh(
+            geometrie,
+            materiau
+        );
+
+    sol.rotation.x =
+        -Math.PI / 2;
+
+    sol.position.y =
+        -0.45;
+
+    sol.position.z =
+        -100;
+
+    sol.receiveShadow = true;
+
+    scene.add(sol);
 }
 
 
@@ -407,146 +620,239 @@ function creerRoute() {
     const geometrie =
         new THREE.BoxGeometry(
             LARGEUR_ROUTE,
-            0.3,
+            0.35,
             LONGUEUR_ROUTE
         );
 
-
     const materiau =
         new THREE.MeshStandardMaterial({
-            color: 0x222222
+            color: COULEUR_ROUTE,
+            roughness: 0.85
         });
 
-
-    route =
+    const route =
         new THREE.Mesh(
             geometrie,
             materiau
         );
 
-
     route.position.set(
         0,
-        -0.25,
-        -90
+        -0.2,
+        -120
     );
 
+    route.receiveShadow = true;
 
-    scene.add(
-        route
-    );
+    scene.add(route);
 
 
-    /* =====================================================
-       BORDS
-    ===================================================== */
+    /* -----------------------------------------------------
+       ACCOTEMENTS
+    ----------------------------------------------------- */
 
-    const geometrieBord =
+    const geometrieAccotement =
         new THREE.BoxGeometry(
-            0.3,
-            0.3,
+            1.5,
+            0.08,
             LONGUEUR_ROUTE
         );
 
-
-    const materiauBord =
+    const materiauAccotement =
         new THREE.MeshStandardMaterial({
-            color: 0xff3333
+            color: 0x333333
         });
 
-
-    const bordGauche =
+    const accotementGauche =
         new THREE.Mesh(
-            geometrieBord,
-            materiauBord
+            geometrieAccotement,
+            materiauAccotement
         );
 
-
-    bordGauche.position.set(
-        -6,
-        0,
-        -90
+    accotementGauche.position.set(
+        -7.7,
+        -0.05,
+        -120
     );
-
 
     scene.add(
-        bordGauche
+        accotementGauche
     );
 
 
-    const bordDroite =
-        new THREE.Mesh(
-            geometrieBord,
-            materiauBord
-        );
+    const accotementDroite =
+        accotementGauche.clone();
 
-
-    bordDroite.position.set(
-        6,
-        0,
-        -90
-    );
-
+    accotementDroite.position.x =
+        7.7;
 
     scene.add(
-        bordDroite
+        accotementDroite
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        LIGNES CENTRALES
-    ===================================================== */
+    ----------------------------------------------------- */
 
     for (
         let i = 0;
-        i < 30;
+        i < 45;
         i++
     ) {
 
-        const geometrieLigne =
-            new THREE.BoxGeometry(
-                0.15,
-                0.04,
-                4
-            );
-
-
-        const materiauLigne =
-            new THREE.MeshBasicMaterial({
-                color: 0xffffff
-            });
-
-
         const ligne =
             new THREE.Mesh(
-                geometrieLigne,
-                materiauLigne
-            );
 
+                new THREE.BoxGeometry(
+                    0.18,
+                    0.04,
+                    5
+                ),
+
+                new THREE.MeshBasicMaterial({
+                    color: 0xffffff
+                })
+
+            );
 
         ligne.position.set(
             0,
-            -0.08,
+            0.01,
             -i * 7
         );
 
-
-        scene.add(
-            ligne
-        );
-
+        scene.add(ligne);
 
         lignesRoute.push(
             ligne
         );
-
     }
 
+
+    /* -----------------------------------------------------
+       LIGNES DE VOIES
+    ----------------------------------------------------- */
+
+    [-2, 2].forEach(
+        function(x) {
+
+            for (
+                let i = 0;
+                i < 35;
+                i++
+            ) {
+
+                const bande =
+                    new THREE.Mesh(
+
+                        new THREE.BoxGeometry(
+                            0.06,
+                            0.025,
+                            3
+                        ),
+
+                        new THREE.MeshBasicMaterial({
+                            color: 0xdddddd
+                        })
+
+                    );
+
+                bande.position.set(
+                    x,
+                    0.015,
+                    -i * 9 - 3
+                );
+
+                scene.add(bande);
+
+                bandesRoute.push(
+                    bande
+                );
+            }
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       VIBREURS
+    ----------------------------------------------------- */
+
+    for (
+        let i = 0;
+        i < 55;
+        i++
+    ) {
+
+        creerVibreur(
+            -6.7,
+            -i * 5
+        );
+
+        creerVibreur(
+            6.7,
+            -i * 5
+        );
+
+    }
 }
 
 
 /* =========================================================
-   VOITURE DU JOUEUR
+   VIBREUR
+========================================================= */
+
+function creerVibreur(
+    x,
+    z
+) {
+
+    const couleur =
+        Math.floor(
+            Math.abs(z / 5)
+        ) % 2 === 0
+            ? 0xffffff
+            : 0xd71919;
+
+    const vibreur =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                0.65,
+                0.12,
+                2.5
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: couleur,
+                roughness: 0.7
+            })
+
+        );
+
+    vibreur.position.set(
+        x,
+        -0.01,
+        z
+    );
+
+    scene.add(vibreur);
+
+    if (x < 0) {
+        vibreursGauche.push(
+            vibreur
+        );
+    }
+    else {
+        vibreursDroite.push(
+            vibreur
+        );
+    }
+}
+
+
+/* =========================================================
+   VOITURE JOUEUR
 ========================================================= */
 
 function creerVoiture() {
@@ -555,115 +861,212 @@ function creerVoiture() {
         new THREE.Group();
 
 
-    /* =====================================================
-       CARROSSERIE
-    ===================================================== */
+    /* -----------------------------------------------------
+       CHASSIS
+    ----------------------------------------------------- */
 
-    const geometrieCarrosserie =
-        new THREE.BoxGeometry(
-            2.2,
-            0.7,
-            3.8
-        );
-
-
-    const materiauCarrosserie =
-        new THREE.MeshStandardMaterial({
-            color: 0x00aaff,
-            metalness: 0.5,
-            roughness: 0.3
-        });
-
-
-    const carrosserie =
+    const chassis =
         new THREE.Mesh(
-            geometrieCarrosserie,
-            materiauCarrosserie
+
+            new THREE.BoxGeometry(
+                2.25,
+                0.38,
+                4.4
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0xe10600,
+                metalness: 0.75,
+                roughness: 0.2
+            })
+
         );
 
+    chassis.position.y =
+        0.58;
 
-    carrosserie.position.y =
+    chassis.castShadow = true;
+
+    voiture.add(chassis);
+
+
+    /* -----------------------------------------------------
+       NEZ
+    ----------------------------------------------------- */
+
+    const nez =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                1.45,
+                0.32,
+                1.5
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0xc90000,
+                metalness: 0.7,
+                roughness: 0.2
+            })
+
+        );
+
+    nez.position.set(
+        0,
+        0.72,
+        -1.65
+    );
+
+    nez.castShadow = true;
+
+    voiture.add(nez);
+
+
+    /* -----------------------------------------------------
+       COCKPIT
+    ----------------------------------------------------- */
+
+    const cockpit =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                0.9,
+                20,
+                12
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x101820,
+                metalness: 0.4,
+                roughness: 0.15
+            })
+
+        );
+
+    cockpit.scale.set(
+        0.8,
+        0.45,
+        1.15
+    );
+
+    cockpit.position.set(
+        0,
+        1.05,
+        0.25
+    );
+
+    cockpit.castShadow = true;
+
+    voiture.add(cockpit);
+
+
+    /* -----------------------------------------------------
+       AILERON
+    ----------------------------------------------------- */
+
+    const supportGauche =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                0.12,
+                0.65,
+                0.12
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x222222
+            })
+
+        );
+
+    supportGauche.position.set(
+        -0.7,
+        1.0,
+        1.75
+    );
+
+    voiture.add(
+        supportGauche
+    );
+
+
+    const supportDroite =
+        supportGauche.clone();
+
+    supportDroite.position.x =
         0.7;
 
-
     voiture.add(
-        carrosserie
+        supportDroite
     );
 
 
-    /* =====================================================
-       TOIT
-    ===================================================== */
-
-    const geometrieToit =
-        new THREE.BoxGeometry(
-            1.6,
-            0.55,
-            1.7
-        );
-
-
-    const materiauToit =
-        new THREE.MeshStandardMaterial({
-            color: 0x1166aa,
-            metalness: 0.4
-        });
-
-
-    const toit =
+    const aileron =
         new THREE.Mesh(
-            geometrieToit,
-            materiauToit
+
+            new THREE.BoxGeometry(
+                2.8,
+                0.16,
+                0.45
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x151515,
+                metalness: 0.5,
+                roughness: 0.3
+            })
+
         );
 
-
-    toit.position.set(
+    aileron.position.set(
         0,
-        1.25,
-        0
+        1.28,
+        1.8
     );
 
+    aileron.castShadow = true;
 
     voiture.add(
-        toit
+        aileron
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        ROUES
-    ===================================================== */
+    ----------------------------------------------------- */
 
-    creerRoue(
+    creerRoueCourse(
         voiture,
-        -1.15,
+        -1.18,
         0.45,
-        -1.15
+        -1.25
+    );
+
+    creerRoueCourse(
+        voiture,
+        1.18,
+        0.45,
+        -1.25
+    );
+
+    creerRoueCourse(
+        voiture,
+        -1.18,
+        0.45,
+        1.25
+    );
+
+    creerRoueCourse(
+        voiture,
+        1.18,
+        0.45,
+        1.25
     );
 
 
-    creerRoue(
-        voiture,
-        1.15,
-        0.45,
-        -1.15
-    );
-
-
-    creerRoue(
-        voiture,
-        -1.15,
-        0.45,
-        1.15
-    );
-
-
-    creerRoue(
-        voiture,
-        1.15,
-        0.45,
-        1.15
-    );
-
+    /* -----------------------------------------------------
+       POSITION
+    ----------------------------------------------------- */
 
     voiture.position.set(
         0,
@@ -671,62 +1074,82 @@ function creerVoiture() {
         5
     );
 
-
     scene.add(
         voiture
     );
-
 }
 
 
 /* =========================================================
-   ROUE
+   ROUE COURSE
 ========================================================= */
 
-function creerRoue(
+function creerRoueCourse(
     parent,
     x,
     y,
     z
 ) {
 
-    const geometrie =
-        new THREE.CylinderGeometry(
-            0.42,
-            0.42,
-            0.28,
-            16
-        );
-
-
-    const materiau =
-        new THREE.MeshStandardMaterial({
-            color: 0x050505
-        });
-
-
-    const roue =
+    const pneu =
         new THREE.Mesh(
-            geometrie,
-            materiau
+
+            new THREE.CylinderGeometry(
+                0.48,
+                0.48,
+                0.34,
+                24
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x090909,
+                roughness: 0.9
+            })
+
         );
 
-
-    roue.rotation.z =
+    pneu.rotation.z =
         Math.PI / 2;
 
-
-    roue.position.set(
+    pneu.position.set(
         x,
         y,
         z
     );
 
+    pneu.castShadow = true;
 
-    parent.add(
-        roue
+    parent.add(pneu);
+
+
+    const jante =
+        new THREE.Mesh(
+
+            new THREE.CylinderGeometry(
+                0.22,
+                0.22,
+                0.36,
+                16
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0xbfc4c8,
+                metalness: 0.9,
+                roughness: 0.2
+            })
+
+        );
+
+    jante.rotation.z =
+        Math.PI / 2;
+
+    jante.position.set(
+        x,
+        y,
+        z
     );
 
+    parent.add(jante);
 }
 
 
@@ -738,22 +1161,19 @@ function creerVoituresEnnemies() {
 
     for (
         let i = 0;
-        i < 8;
+        i < 9;
         i++
     ) {
 
         creerVoitureEnnemie(
-            -25 -
-            i * 22
+            -35 - i * 25
         );
-
     }
-
 }
 
 
 /* =========================================================
-   CREER UNE VOITURE ENNEMIE
+   VOITURE ENNEMIE
 ========================================================= */
 
 function creerVoitureEnnemie(
@@ -764,22 +1184,14 @@ function creerVoitureEnnemie(
         new THREE.Group();
 
 
-    const geometrie =
-        new THREE.BoxGeometry(
-            2.2,
-            0.8,
-            3.5
-        );
-
-
     const couleurs = [
-        0xff2222,
-        0xff8800,
-        0xffdd00,
-        0xaa22ff,
-        0x22dd66
+        0x0066ff,
+        0xffcc00,
+        0xffffff,
+        0x111111,
+        0x22aa55,
+        0xff6600
     ];
-
 
     const couleur =
         couleurs[
@@ -790,73 +1202,164 @@ function creerVoitureEnnemie(
         ];
 
 
-    const materiau =
-        new THREE.MeshStandardMaterial({
-            color: couleur,
-            metalness: 0.4,
-            roughness: 0.4
-        });
-
+    /* -----------------------------------------------------
+       CARROSSERIE
+    ----------------------------------------------------- */
 
     const carrosserie =
         new THREE.Mesh(
-            geometrie,
-            materiau
+
+            new THREE.BoxGeometry(
+                2.15,
+                0.55,
+                4
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: couleur,
+                metalness: 0.7,
+                roughness: 0.22
+            })
+
         );
 
-
     carrosserie.position.y =
-        0.7;
+        0.62;
 
+    carrosserie.castShadow = true;
 
     ennemi.add(
         carrosserie
     );
 
 
-    const toit =
+    /* -----------------------------------------------------
+       COCKPIT
+    ----------------------------------------------------- */
+
+    const cockpit =
         new THREE.Mesh(
-            new THREE.BoxGeometry(
-                1.5,
-                0.5,
-                1.5
+
+            new THREE.SphereGeometry(
+                0.8,
+                18,
+                10
             ),
+
             new THREE.MeshStandardMaterial({
-                color: 0x222222
+                color: 0x111111,
+                roughness: 0.15,
+                metalness: 0.3
             })
+
         );
 
+    cockpit.scale.set(
+        0.8,
+        0.42,
+        1.1
+    );
 
-    toit.position.y =
-        1.25;
-
+    cockpit.position.set(
+        0,
+        1.02,
+        0
+    );
 
     ennemi.add(
-        toit
+        cockpit
     );
 
 
+    /* -----------------------------------------------------
+       AILERON
+    ----------------------------------------------------- */
+
+    const aileron =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                2.6,
+                0.15,
+                0.4
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x181818
+            })
+
+        );
+
+    aileron.position.set(
+        0,
+        1.2,
+        1.65
+    );
+
+    ennemi.add(
+        aileron
+    );
+
+
+    /* -----------------------------------------------------
+       ROUES
+    ----------------------------------------------------- */
+
+    creerRoueCourse(
+        ennemi,
+        -1.12,
+        0.43,
+        -1.15
+    );
+
+    creerRoueCourse(
+        ennemi,
+        1.12,
+        0.43,
+        -1.15
+    );
+
+    creerRoueCourse(
+        ennemi,
+        -1.12,
+        0.43,
+        1.15
+    );
+
+    creerRoueCourse(
+        ennemi,
+        1.12,
+        0.43,
+        1.15
+    );
+
+
+    /* -----------------------------------------------------
+       POSITION
+    ----------------------------------------------------- */
+
     ennemi.position.set(
+
         VOIES[
             Math.floor(
                 Math.random() *
                 VOIES.length
             )
         ],
-        0,
-        z
-    );
 
+        0,
+
+        z
+
+    );
 
     scene.add(
         ennemi
     );
 
-
     voituresEnnemies.push(
         ennemi
     );
-
 }
 
 
@@ -868,23 +1371,20 @@ function creerDecor() {
 
     for (
         let i = 0;
-        i < 40;
+        i < 45;
         i++
     ) {
 
         creerArbre(
-            -i * 6 - 10,
-            -10
+            -10,
+            -i * 7 - 10
         );
-
 
         creerArbre(
-            -i * 6 - 13,
-            10
+            10,
+            -i * 7 - 13
         );
-
     }
-
 }
 
 
@@ -893,8 +1393,8 @@ function creerDecor() {
 ========================================================= */
 
 function creerArbre(
-    z,
-    x
+    x,
+    z
 ) {
 
     const arbre =
@@ -903,43 +1403,48 @@ function creerArbre(
 
     const tronc =
         new THREE.Mesh(
+
             new THREE.CylinderGeometry(
                 0.25,
                 0.35,
-                2,
-                8
+                2.5,
+                10
             ),
+
             new THREE.MeshStandardMaterial({
-                color: 0x663311
+                color: 0x5b351f
             })
+
         );
 
-
     tronc.position.y =
-        1;
+        1.1;
 
+    tronc.castShadow = true;
 
-    arbre.add(
-        tronc
-    );
+    arbre.add(tronc);
 
 
     const feuillage =
         new THREE.Mesh(
+
             new THREE.ConeGeometry(
-                1.4,
-                3,
-                8
+                1.8,
+                4,
+                10
             ),
+
             new THREE.MeshStandardMaterial({
-                color: 0x16833b
+                color: 0x126b35,
+                roughness: 1
             })
+
         );
 
-
     feuillage.position.y =
-        3;
+        3.6;
 
+    feuillage.castShadow = true;
 
     arbre.add(
         feuillage
@@ -952,16 +1457,269 @@ function creerArbre(
         z
     );
 
-
     scene.add(
         arbre
     );
 
-
     arbres.push(
         arbre
     );
+}
 
+
+/* =========================================================
+   LAMPES
+========================================================= */
+
+function creerLampes() {
+
+    for (
+        let i = 0;
+        i < 20;
+        i++
+    ) {
+
+        creerLampe(
+            -9,
+            -i * 15 - 15
+        );
+
+        creerLampe(
+            9,
+            -i * 15 - 22
+        );
+    }
+}
+
+
+function creerLampe(
+    x,
+    z
+) {
+
+    const groupe =
+        new THREE.Group();
+
+
+    const poteau =
+        new THREE.Mesh(
+
+            new THREE.CylinderGeometry(
+                0.08,
+                0.12,
+                5,
+                8
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x444444,
+                metalness: 0.8
+            })
+
+        );
+
+    poteau.position.y =
+        2.5;
+
+    groupe.add(
+        poteau
+    );
+
+
+    const lampe =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                0.25,
+                12,
+                8
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color: 0xffffcc
+            })
+
+        );
+
+    lampe.position.set(
+        0,
+        5,
+        0
+    );
+
+    groupe.add(
+        lampe
+    );
+
+
+    groupe.position.set(
+        x,
+        0,
+        z
+    );
+
+    scene.add(
+        groupe
+    );
+
+    lampes.push(
+        groupe
+    );
+}
+
+
+/* =========================================================
+   PANNEAUX
+========================================================= */
+
+function creerPanneaux() {
+
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+
+        creerPanneau(
+            -9.2,
+            -i * 25 - 20
+        );
+    }
+}
+
+
+function creerPanneau(
+    x,
+    z
+) {
+
+    const groupe =
+        new THREE.Group();
+
+
+    const poteau =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                0.15,
+                3,
+                0.15
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x555555
+            })
+
+        );
+
+    poteau.position.y =
+        1.5;
+
+    groupe.add(poteau);
+
+
+    const panneau =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                2.5,
+                1.1,
+                0.12
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0xffd400
+            })
+
+        );
+
+    panneau.position.y =
+        3;
+
+    groupe.add(
+        panneau
+    );
+
+
+    groupe.position.set(
+        x,
+        0,
+        z
+    );
+
+    scene.add(
+        groupe
+    );
+
+    panneaux.push(
+        groupe
+    );
+}
+
+
+/* =========================================================
+   NUAGE
+========================================================= */
+
+function creerNuages() {
+
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+
+        const nuage =
+            new THREE.Group();
+
+        for (
+            let j = 0;
+            j < 4;
+            j++
+        ) {
+
+            const boule =
+                new THREE.Mesh(
+
+                    new THREE.SphereGeometry(
+                        3 + Math.random() * 2,
+                        12,
+                        8
+                    ),
+
+                    new THREE.MeshBasicMaterial({
+                        color: 0xffffff,
+                        transparent: true,
+                        opacity: 0.65
+                    })
+
+                );
+
+            boule.position.x =
+                j * 3;
+
+            boule.position.y =
+                Math.random() * 2;
+
+            nuage.add(
+                boule
+            );
+        }
+
+        nuage.position.set(
+            Math.random() * 160 - 80,
+            35 + Math.random() * 15,
+            -Math.random() * 200
+        );
+
+        scene.add(
+            nuage
+        );
+
+        nuages.push(
+            nuage
+        );
+    }
 }
 
 
@@ -975,18 +1733,14 @@ function allerGauche10() {
         jeuTermine ||
         jeuEnPause
     ) {
-
         return;
-
     }
-
 
     positionVoitureX =
         Math.max(
-            -4,
-            positionVoitureX - 4
+            -4.2,
+            positionVoitureX - 4.2
         );
-
 }
 
 
@@ -1000,18 +1754,109 @@ function allerDroite10() {
         jeuTermine ||
         jeuEnPause
     ) {
-
         return;
-
     }
-
 
     positionVoitureX =
         Math.min(
-            4,
-            positionVoitureX + 4
+            4.2,
+            positionVoitureX + 4.2
         );
+}
 
+
+/* =========================================================
+   ACCELERATION
+========================================================= */
+
+function activerAcceleration10() {
+
+    if (
+        jeuTermine ||
+        jeuEnPause
+    ) {
+        return;
+    }
+
+    accelerationActive =
+        true;
+}
+
+
+function desactiverAcceleration10() {
+
+    accelerationActive =
+        false;
+}
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+function basculerPause10() {
+
+    if (jeuTermine) {
+        return;
+    }
+
+    jeuEnPause =
+        !jeuEnPause;
+
+    if (jeuEnPause) {
+
+        accelerationActive =
+            false;
+
+        if (boutonPause) {
+            boutonPause.textContent =
+                "▶️ Reprendre";
+        }
+
+        if (messageRacing) {
+
+            messageRacing.textContent =
+                "⏸️ PAUSE";
+
+            messageRacing.style.display =
+                "block";
+        }
+
+    }
+
+    else {
+
+        if (boutonPause) {
+            boutonPause.textContent =
+                "⏸️ Pause";
+        }
+
+        if (messageRacing) {
+            messageRacing.style.display =
+                "none";
+        }
+
+        dernierTemps =
+            performance.now();
+    }
+}
+
+
+/* =========================================================
+   BOUTON PAUSE
+========================================================= */
+
+if (boutonPause) {
+
+    boutonPause.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            basculerPause10();
+        }
+    );
 }
 
 
@@ -1039,7 +1884,6 @@ document.addEventListener(
 
         }
 
-
         else if (
             touche === "d" ||
             event.key === "ArrowRight"
@@ -1051,12 +1895,35 @@ document.addEventListener(
 
         }
 
+        else if (
+            event.key === "ArrowUp" ||
+            touche === "z" ||
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            activerAcceleration10();
+
+        }
 
         else if (
             touche === "p"
         ) {
 
+            event.preventDefault();
+
             basculerPause10();
+
+        }
+
+        else if (
+            touche === "f"
+        ) {
+
+            event.preventDefault();
+
+            basculerPleinEcran10();
 
         }
 
@@ -1065,7 +1932,29 @@ document.addEventListener(
 
 
 /* =========================================================
-   MOBILE
+   KEYUP
+========================================================= */
+
+document.addEventListener(
+    "keyup",
+    function(event) {
+
+        if (
+            event.key === "ArrowUp" ||
+            event.key.toLowerCase() === "z" ||
+            event.code === "Space"
+        ) {
+
+            desactiverAcceleration10();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CONTROLES MOBILE
 ========================================================= */
 
 function ajouterControle10(
@@ -1073,10 +1962,7 @@ function ajouterControle10(
     action
 ) {
 
-    if (!bouton) {
-        return;
-    }
-
+    if (!bouton) return;
 
     bouton.addEventListener(
         "touchstart",
@@ -1103,7 +1989,6 @@ function ajouterControle10(
 
         }
     );
-
 }
 
 
@@ -1120,6 +2005,67 @@ ajouterControle10(
 
 
 /* =========================================================
+   ACCELERATION MOBILE
+========================================================= */
+
+if (boutonAccelerer) {
+
+    boutonAccelerer.addEventListener(
+        "touchstart",
+        function(event) {
+
+            event.preventDefault();
+
+            activerAcceleration10();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    boutonAccelerer.addEventListener(
+        "touchend",
+        function(event) {
+
+            event.preventDefault();
+
+            desactiverAcceleration10();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    boutonAccelerer.addEventListener(
+        "touchcancel",
+        desactiverAcceleration10
+    );
+
+
+    boutonAccelerer.addEventListener(
+        "mousedown",
+        activerAcceleration10
+    );
+
+
+    boutonAccelerer.addEventListener(
+        "mouseup",
+        desactiverAcceleration10
+    );
+
+
+    boutonAccelerer.addEventListener(
+        "mouseleave",
+        desactiverAcceleration10
+    );
+}
+
+
+/* =========================================================
    COLLISION
 ========================================================= */
 
@@ -1127,12 +2073,15 @@ function verifierCollision10(
     ennemi
 ) {
 
+    if (!voiture || !ennemi) {
+        return false;
+    }
+
     const distanceX =
         Math.abs(
             voiture.position.x -
             ennemi.position.x
         );
-
 
     const distanceZ =
         Math.abs(
@@ -1140,12 +2089,10 @@ function verifierCollision10(
             ennemi.position.z
         );
 
-
     return (
-        distanceX < 1.8 &&
-        distanceZ < 2.4
+        distanceX < 1.75 &&
+        distanceZ < 2.7
     );
-
 }
 
 
@@ -1159,31 +2106,32 @@ function augmenterScore10(
 
     score += valeur;
 
-
-    scoreElement.textContent =
+    const scoreEntier =
         Math.floor(score);
 
+    if (scoreElement) {
+        scoreElement.textContent =
+            scoreEntier;
+    }
 
     if (
-        Math.floor(score) >
+        scoreEntier >
         meilleurScore
     ) {
 
         meilleurScore =
-            Math.floor(score);
+            scoreEntier;
 
-
-        meilleurScoreElement.textContent =
-            meilleurScore;
-
+        if (meilleurScoreElement) {
+            meilleurScoreElement.textContent =
+                meilleurScore;
+        }
 
         localStorage.setItem(
             cleMeilleurScore,
             meilleurScore
         );
-
     }
-
 }
 
 
@@ -1197,39 +2145,50 @@ async function gameOver10() {
         return;
     }
 
+    jeuTermine =
+        true;
 
-    jeuTermine = true;
+    accelerationActive =
+        false;
 
-
-    messageRacing.textContent =
-        "💀 GAME OVER — Score : " +
+    const scoreFinal =
         Math.floor(score);
 
+    if (messageRacing) {
 
-    messageRacing.style.display =
-        "block";
+        messageRacing.textContent =
+            "💥 ACCIDENT — Score : " +
+            scoreFinal;
 
+        messageRacing.style.display =
+            "block";
+    }
 
-    boutonPause.style.display =
-        "none";
+    if (boutonPause) {
+        boutonPause.style.display =
+            "none";
+    }
 
-
-    boutonRejouer.style.display =
-        "inline-block";
+    if (boutonRejouer) {
+        boutonRejouer.style.display =
+            "inline-block";
+    }
 
 
     if (!pseudo) {
 
-        statutClassement.textContent =
-            "👤 Visiteur : ton score reste sur cet appareil.";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "👤 Visiteur : ton score reste uniquement sur cet appareil.";
+
+        }
 
         return;
-
     }
 
 
     await enregistrerScore10();
-
 }
 
 
@@ -1243,32 +2202,27 @@ async function enregistrerScore10() {
         !pseudo ||
         !supabaseClient10
     ) {
-
         return;
-
     }
-
 
     try {
 
-        statutClassement.textContent =
-            "⏳ Enregistrement du score...";
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "⏳ Enregistrement du score...";
+        }
+
+        const scoreFinal =
+            Math.floor(score);
 
 
         const resultat =
             await supabaseClient10
                 .from("scores")
-                .select(
-                    "id,pseudo,score,jeu"
-                )
-                .eq(
-                    "pseudo",
-                    pseudo
-                )
-                .eq(
-                    "jeu",
-                    NOM_JEU
-                )
+                .select("id,pseudo,score,jeu")
+                .eq("pseudo", pseudo)
+                .eq("jeu", NOM_JEU)
                 .order(
                     "score",
                     {
@@ -1281,26 +2235,17 @@ async function enregistrerScore10() {
         if (resultat.error) {
 
             console.error(
-                "❌ Recherche score :",
+                "Erreur recherche score :",
                 resultat.error
             );
 
             return;
-
         }
 
 
         const anciens =
             resultat.data || [];
 
-
-        const scoreFinal =
-            Math.floor(score);
-
-
-        /* =================================================
-           PREMIER SCORE
-        ================================================= */
 
         if (
             anciens.length === 0
@@ -1310,40 +2255,28 @@ async function enregistrerScore10() {
                 await supabaseClient10
                     .from("scores")
                     .insert({
-
-                        pseudo:
-                            pseudo,
-
-                        score:
-                            scoreFinal,
-
-                        jeu:
-                            NOM_JEU
-
+                        pseudo: pseudo,
+                        score: scoreFinal,
+                        jeu: NOM_JEU
                     });
 
 
             if (insertion.error) {
 
                 console.error(
-                    "❌ Insertion score :",
+                    "Erreur insertion :",
                     insertion.error
                 );
 
                 return;
-
             }
 
-
-            statutClassement.textContent =
-                "🏆 Score enregistré !";
+            if (statutClassement) {
+                statutClassement.textContent =
+                    "🏆 Score enregistré !";
+            }
 
         }
-
-
-        /* =================================================
-           SCORE EXISTANT
-        ================================================= */
 
         else {
 
@@ -1362,10 +2295,7 @@ async function enregistrerScore10() {
                     await supabaseClient10
                         .from("scores")
                         .update({
-
-                            score:
-                                scoreFinal
-
+                            score: scoreFinal
                         })
                         .eq(
                             "id",
@@ -1376,28 +2306,31 @@ async function enregistrerScore10() {
                 if (miseAJour.error) {
 
                     console.error(
-                        "❌ Mise à jour score :",
+                        "Erreur mise à jour :",
                         miseAJour.error
                     );
 
                     return;
-
                 }
 
+                if (statutClassement) {
 
-                statutClassement.textContent =
-                    "🔥 NOUVEAU RECORD !";
+                    statutClassement.textContent =
+                        "🔥 NOUVEAU RECORD !";
+                }
 
             }
 
             else {
 
-                statutClassement.textContent =
-                    "ℹ️ Ton meilleur score reste " +
-                    ancienScore;
+                if (statutClassement) {
+
+                    statutClassement.textContent =
+                        "ℹ️ Ton meilleur score reste " +
+                        ancienScore;
+                }
 
             }
-
         }
 
 
@@ -1408,17 +2341,15 @@ async function enregistrerScore10() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur score :",
+            "Erreur score 3D Racing :",
             erreur
         );
-
     }
-
 }
 
 
 /* =========================================================
-   CLASSEMENT TOP 10
+   CLASSEMENT
 ========================================================= */
 
 async function chargerClassement10() {
@@ -1427,24 +2358,16 @@ async function chargerClassement10() {
         !listeScores ||
         !supabaseClient10
     ) {
-
         return;
-
     }
-
 
     try {
 
         const resultat =
             await supabaseClient10
                 .from("scores")
-                .select(
-                    "pseudo,score,jeu"
-                )
-                .eq(
-                    "jeu",
-                    NOM_JEU
-                )
+                .select("pseudo,score,jeu")
+                .eq("jeu", NOM_JEU)
                 .order(
                     "score",
                     {
@@ -1456,13 +2379,15 @@ async function chargerClassement10() {
 
         if (resultat.error) {
 
-            console.error(
-                "❌ Erreur classement :",
-                resultat.error
-            );
+            listeScores.innerHTML = `
+                <tr>
+                    <td colspan="3">
+                        ❌ Erreur de chargement
+                    </td>
+                </tr>
+            `;
 
             return;
-
         }
 
 
@@ -1479,19 +2404,14 @@ async function chargerClassement10() {
         ) {
 
             listeScores.innerHTML = `
-
                 <tr>
-
                     <td colspan="3">
                         Aucun score.
                     </td>
-
                 </tr>
-
             `;
 
             return;
-
         }
 
 
@@ -1502,66 +2422,46 @@ async function chargerClassement10() {
             ) {
 
                 const ligne =
-                    document.createElement(
-                        "tr"
-                    );
+                    document.createElement("tr");
 
 
                 const position =
-                    document.createElement(
-                        "td"
-                    );
+                    document.createElement("td");
 
 
                 if (index === 0) {
-
-                    position.textContent =
-                        "🥇";
-
+                    position.textContent = "🥇";
                 }
 
                 else if (index === 1) {
-
-                    position.textContent =
-                        "🥈";
-
+                    position.textContent = "🥈";
                 }
 
                 else if (index === 2) {
-
-                    position.textContent =
-                        "🥉";
-
+                    position.textContent = "🥉";
                 }
 
                 else {
-
                     position.textContent =
                         index + 1;
-
                 }
 
 
                 const pseudoCellule =
-                    document.createElement(
-                        "td"
-                    );
-
+                    document.createElement("td");
 
                 pseudoCellule.textContent =
-                    joueurScore.pseudo;
+                    joueurScore.pseudo ||
+                    "Inconnu";
 
 
                 const scoreCellule =
-                    document.createElement(
-                        "td"
-                    );
-
+                    document.createElement("td");
 
                 scoreCellule.textContent =
                     Number(
                         joueurScore.score
-                    );
+                    ) || 0;
 
 
                 if (
@@ -1577,7 +2477,6 @@ async function chargerClassement10() {
                     scoreCellule.classList.add(
                         "mon-score"
                     );
-
                 }
 
 
@@ -1593,11 +2492,9 @@ async function chargerClassement10() {
                     scoreCellule
                 );
 
-
                 listeScores.appendChild(
                     ligne
                 );
-
             }
         );
 
@@ -1606,142 +2503,47 @@ async function chargerClassement10() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur classement 3D Racing :",
+            "Erreur classement :",
             erreur
         );
-
     }
-
 }
 
 
 /* =========================================================
-   COMPTER UNE PARTIE
+   COMPTEUR DE PARTIES
 ========================================================= */
 
 async function compterPartieJeu10() {
 
     if (!supabaseClient10) {
-
-        console.warn(
-            "⚠️ Supabase indisponible pour le compteur 3D Racing."
-        );
-
         return;
-
     }
-
 
     try {
 
         const resultat =
-            await supabaseClient10
-                .from("statistiques_jeux")
-                .select(
-                    "nombre_parties"
-                )
-                .eq(
-                    "nom_jeu",
-                    NOM_JEU
-                )
-                .maybeSingle();
+            await supabaseClient10.rpc(
+                "incrementer_parties_jeu",
+                {
+                    nom_du_jeu: NOM_JEU
+                }
+            );
 
 
         if (resultat.error) {
 
             console.error(
-                "❌ Erreur compteur 3D Racing :",
+                "Erreur compteur :",
                 resultat.error
             );
 
             return;
-
         }
-
-
-        /* =================================================
-           PREMIERE PARTIE
-        ================================================= */
-
-        if (!resultat.data) {
-
-            const insertion =
-                await supabaseClient10
-                    .from("statistiques_jeux")
-                    .insert({
-
-                        nom_jeu:
-                            NOM_JEU,
-
-                        nombre_parties:
-                            1
-
-                    });
-
-
-            if (insertion.error) {
-
-                console.error(
-                    "❌ Création compteur :",
-                    insertion.error
-                );
-
-                return;
-
-            }
-
-
-            console.log(
-                "🎮 Première partie 3D Racing enregistrée."
-            );
-
-            return;
-
-        }
-
-
-        /* =================================================
-           INCREMENT
-        ================================================= */
-
-        const nouveauNombre =
-            (
-                Number(
-                    resultat.data.nombre_parties
-                ) || 0
-            ) + 1;
-
-
-        const miseAJour =
-            await supabaseClient10
-                .from("statistiques_jeux")
-                .update({
-
-                    nombre_parties:
-                        nouveauNombre
-
-                })
-                .eq(
-                    "nom_jeu",
-                    NOM_JEU
-                );
-
-
-        if (miseAJour.error) {
-
-            console.error(
-                "❌ Erreur mise à jour compteur :",
-                miseAJour.error
-            );
-
-            return;
-
-        }
-
 
         console.log(
             "🎮 Partie 3D Racing comptée :",
-            nouveauNombre
+            resultat.data
         );
 
     }
@@ -1749,67 +2551,11 @@ async function compterPartieJeu10() {
     catch (erreur) {
 
         console.error(
-            "❌ Erreur compteur 3D Racing :",
+            "Erreur compteur :",
             erreur
         );
-
     }
-
 }
-
-
-/* =========================================================
-   PAUSE
-========================================================= */
-
-function basculerPause10() {
-
-    if (jeuTermine) {
-        return;
-    }
-
-
-    jeuEnPause =
-        !jeuEnPause;
-
-
-    if (jeuEnPause) {
-
-        boutonPause.textContent =
-            "▶️ Reprendre";
-
-
-        messageRacing.textContent =
-            "⏸️ PAUSE";
-
-
-        messageRacing.style.display =
-            "block";
-
-    }
-
-    else {
-
-        boutonPause.textContent =
-            "⏸️ Pause";
-
-
-        messageRacing.style.display =
-            "none";
-
-
-        dernierTemps =
-            performance.now();
-
-    }
-
-}
-
-
-boutonPause.addEventListener(
-    "click",
-    basculerPause10
-);
 
 
 /* =========================================================
@@ -1821,42 +2567,35 @@ function rejouer10(event) {
     if (event) {
 
         event.preventDefault();
-
         event.stopPropagation();
 
     }
 
 
-    console.log(
-        "🔄 Nouvelle partie 3D Racing"
-    );
-
-
-    /* =====================================================
-       RESET OBSTACLES
-    ===================================================== */
+    /* -----------------------------------------------------
+       SUPPRIMER ENNEMIS
+    ----------------------------------------------------- */
 
     voituresEnnemies.forEach(
         function(ennemi) {
 
-            scene.remove(
-                ennemi
-            );
+            if (scene) {
+                scene.remove(ennemi);
+            }
 
         }
     );
 
-
     voituresEnnemies = [];
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        RESET
-    ===================================================== */
+    ----------------------------------------------------- */
 
     score = 0;
 
-    vitesse = 0.35;
+    vitesse = 0.45;
 
     positionVoitureX = 0;
 
@@ -1864,86 +2603,104 @@ function rejouer10(event) {
 
     jeuEnPause = false;
 
-
-    /* =====================================================
-       RESET VOITURE
-    ===================================================== */
-
-    voiture.position.set(
-        0,
-        0,
-        5
-    );
+    accelerationActive = false;
 
 
-    voiture.rotation.set(
-        0,
-        0,
-        0
-    );
+    /* -----------------------------------------------------
+       VOITURE
+    ----------------------------------------------------- */
+
+    if (voiture) {
+
+        voiture.position.set(
+            0,
+            0,
+            5
+        );
+
+        voiture.rotation.set(
+            0,
+            0,
+            0
+        );
+    }
 
 
-    /* =====================================================
-       RESET AFFICHAGE
-    ===================================================== */
+    /* -----------------------------------------------------
+       SCORE
+    ----------------------------------------------------- */
 
-    scoreElement.textContent =
-        "0";
-
-
-    vitesseElement.textContent =
-        "0";
+    if (scoreElement) {
+        scoreElement.textContent =
+            "0";
+    }
 
 
-    messageRacing.style.display =
-        "none";
+    /* -----------------------------------------------------
+       MESSAGE
+    ----------------------------------------------------- */
+
+    if (messageRacing) {
+        messageRacing.style.display =
+            "none";
+    }
 
 
-    boutonPause.style.display =
-        "inline-block";
+    /* -----------------------------------------------------
+       PAUSE
+    ----------------------------------------------------- */
+
+    if (boutonPause) {
+
+        boutonPause.style.display =
+            "inline-block";
+
+        boutonPause.textContent =
+            "⏸️ Pause";
+    }
 
 
-    boutonPause.textContent =
-        "⏸️ Pause";
+    /* -----------------------------------------------------
+       REJOUER
+    ----------------------------------------------------- */
+
+    if (boutonRejouer) {
+
+        boutonRejouer.style.display =
+            "none";
+    }
 
 
-    boutonRejouer.style.display =
-        "none";
-
-
-    /* =====================================================
-       RECREER ENNEMIS
-    ===================================================== */
+    /* -----------------------------------------------------
+       NOUVEAUX ENNEMIS
+    ----------------------------------------------------- */
 
     creerVoituresEnnemies();
 
 
-    /* =====================================================
-       COMPTER NOUVELLE PARTIE
-    ===================================================== */
+    /* -----------------------------------------------------
+       COMPTER PARTIE
+    ----------------------------------------------------- */
 
     compterPartieJeu10();
 
 
     dernierTemps =
         performance.now();
-
-
-    console.log(
-        "✅ Nouvelle partie 3D Racing lancée !"
-    );
-
 }
 
 
-boutonRejouer.addEventListener(
-    "click",
-    rejouer10
-);
+if (boutonRejouer) {
+
+    boutonRejouer.addEventListener(
+        "click",
+        rejouer10
+    );
+}
 
 
 /* =========================================================
-   BOUCLE DU JEU
+   BOUCLE
 ========================================================= */
 
 function boucleRacing(
@@ -1957,10 +2714,8 @@ function boucleRacing(
 
 
     if (!dernierTemps) {
-
         dernierTemps =
             tempsActuel;
-
     }
 
 
@@ -1977,6 +2732,15 @@ function boucleRacing(
 
 
     if (
+        !renderer ||
+        !scene ||
+        !camera
+    ) {
+        return;
+    }
+
+
+    if (
         jeuEnPause ||
         jeuTermine
     ) {
@@ -1987,102 +2751,158 @@ function boucleRacing(
         );
 
         return;
-
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        SCORE
-    ===================================================== */
+    ----------------------------------------------------- */
 
     augmenterScore10(
-        delta * 0.015
+        delta * 0.018
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        VITESSE
-    ===================================================== */
+    ----------------------------------------------------- */
 
     vitesse =
-        0.35 +
+        0.42 +
         Math.min(
-            1.2,
-            score / 1000
+            1.35,
+            score / 800
         );
 
 
-    vitesseElement.textContent =
-        Math.floor(
-            vitesse * 100
-        );
+    if (accelerationActive) {
+
+        vitesse +=
+            1.1;
+    }
 
 
-    /* =====================================================
-       DEPLACEMENT VOITURE
-    ===================================================== */
+    /* -----------------------------------------------------
+       VOITURE
+    ----------------------------------------------------- */
 
-    voiture.position.x +=
-        (
-            positionVoitureX -
-            voiture.position.x
-        ) * 0.15;
+    if (voiture) {
 
-
-    /* =====================================================
-       ROTATION LEGERE
-    ===================================================== */
-
-    voiture.rotation.z =
-        (
-            positionVoitureX -
-            voiture.position.x
-        ) * -0.05;
+        const anciennePosition =
+            voiture.position.x;
 
 
-    /* =====================================================
-       LIGNES ROUTE
-    ===================================================== */
+        voiture.position.x +=
+
+            (
+                positionVoitureX -
+                voiture.position.x
+            ) * 0.13;
+
+
+        voiture.rotation.z =
+
+            (
+                anciennePosition -
+                voiture.position.x
+            ) * 0.15;
+
+
+        voiture.rotation.y =
+
+            (
+                anciennePosition -
+                voiture.position.x
+            ) * 0.025;
+    }
+
+
+    const mouvement =
+        vitesse *
+        delta /
+        16;
+
+
+    /* -----------------------------------------------------
+       LIGNES
+    ----------------------------------------------------- */
 
     lignesRoute.forEach(
         function(ligne) {
 
             ligne.position.z +=
-                vitesse *
-                delta /
-                16;
-
+                mouvement;
 
             if (
-                ligne.position.z > 10
+                ligne.position.z > 15
             ) {
 
                 ligne.position.z -=
-                    210;
-
+                    315;
             }
-
         }
     );
 
 
-    /* =====================================================
-       VOITURES ENNEMIES
-    ===================================================== */
+    bandesRoute.forEach(
+        function(bande) {
+
+            bande.position.z +=
+                mouvement;
+
+            if (
+                bande.position.z > 15
+            ) {
+
+                bande.position.z -=
+                    315;
+            }
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       VIBREURS
+    ----------------------------------------------------- */
+
+    [
+        ...vibreursGauche,
+        ...vibreursDroite
+    ].forEach(
+        function(vibreur) {
+
+            vibreur.position.z +=
+                mouvement;
+
+            if (
+                vibreur.position.z > 15
+            ) {
+
+                vibreur.position.z -=
+                    280;
+            }
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       ENNEMIS
+    ----------------------------------------------------- */
 
     voituresEnnemies.forEach(
         function(ennemi) {
 
+            if (!ennemi) return;
+
+
             ennemi.position.z +=
-                vitesse *
-                delta /
-                16;
+                mouvement;
 
 
             ennemi.rotation.y =
                 Math.sin(
                     tempsActuel * 0.001
-                ) * 0.01;
+                ) * 0.015;
 
 
             if (
@@ -2092,17 +2912,16 @@ function boucleRacing(
             ) {
 
                 gameOver10();
-
             }
 
 
             if (
-                ennemi.position.z > 15
+                ennemi.position.z > 18
             ) {
 
                 ennemi.position.z =
-                    -180 -
-                    Math.random() * 40;
+                    -210 -
+                    Math.random() * 80;
 
 
                 ennemi.position.x =
@@ -2112,66 +2931,133 @@ function boucleRacing(
                             VOIES.length
                         )
                     ];
-
             }
-
         }
     );
 
 
-    /* =====================================================
-       DECOR
-    ===================================================== */
+    /* -----------------------------------------------------
+       ARBRES
+    ----------------------------------------------------- */
 
     arbres.forEach(
         function(arbre) {
 
             arbre.position.z +=
-                vitesse *
-                delta /
-                16;
-
+                mouvement;
 
             if (
-                arbre.position.z > 15
+                arbre.position.z > 20
             ) {
 
                 arbre.position.z =
-                    -220;
-
+                    -300;
             }
-
         }
     );
 
 
-    /* =====================================================
-       CAMERA
-    ===================================================== */
+    /* -----------------------------------------------------
+       LAMPES
+    ----------------------------------------------------- */
 
-    camera.position.x +=
-        (
-            voiture.position.x -
-            camera.position.x
-        ) * 0.04;
+    lampes.forEach(
+        function(lampe) {
 
+            lampe.position.z +=
+                mouvement;
 
-    camera.lookAt(
-        voiture.position.x,
-        1,
-        -25
+            if (
+                lampe.position.z > 20
+            ) {
+
+                lampe.position.z =
+                    -300;
+            }
+        }
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
+       PANNEAUX
+    ----------------------------------------------------- */
+
+    panneaux.forEach(
+        function(panneau) {
+
+            panneau.position.z +=
+                mouvement;
+
+            if (
+                panneau.position.z > 20
+            ) {
+
+                panneau.position.z =
+                    -300;
+            }
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       NUAGES
+    ----------------------------------------------------- */
+
+    nuages.forEach(
+        function(nuage) {
+
+            nuage.position.x +=
+                0.003 * delta;
+
+            if (
+                nuage.position.x > 100
+            ) {
+
+                nuage.position.x =
+                    -100;
+            }
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       CAMERA DYNAMIQUE
+    ----------------------------------------------------- */
+
+    if (voiture) {
+
+        camera.position.x +=
+
+            (
+                voiture.position.x -
+                camera.position.x
+            ) * 0.035;
+
+
+        camera.position.y =
+
+            4.4 +
+            Math.sin(
+                tempsActuel * 0.004
+            ) * 0.025;
+
+
+        camera.lookAt(
+            voiture.position.x,
+            0.9,
+            -30
+        );
+    }
+
+
+    /* -----------------------------------------------------
        RENDU
-    ===================================================== */
+    ----------------------------------------------------- */
 
     renderer.render(
         scene,
         camera
     );
-
 }
 
 
@@ -2183,45 +3069,75 @@ function redimensionnerRacing() {
 
     if (
         !renderer ||
-        !camera
+        !camera ||
+        !zoneRacing
     ) {
-
         return;
-
     }
 
 
-    const largeur =
+    let largeur =
         zoneRacing.clientWidth;
 
-
-    const hauteur =
+    let hauteur =
         zoneRacing.clientHeight;
 
 
     if (
-        hauteur <= 0
+        document.fullscreenElement ===
+        zoneRacing
     ) {
 
-        return;
+        largeur =
+            window.innerWidth;
 
+        hauteur =
+            window.innerHeight;
     }
+
+
+    largeur =
+        Math.max(
+            largeur,
+            1
+        );
+
+    hauteur =
+        Math.max(
+            hauteur,
+            1
+        );
 
 
     camera.aspect =
         largeur /
         hauteur;
 
-
     camera.updateProjectionMatrix();
 
 
     renderer.setSize(
         largeur,
-        hauteur
+        hauteur,
+        false
     );
-
 }
+
+
+/* =========================================================
+   ORIENTATION
+========================================================= */
+
+window.addEventListener(
+    "orientationchange",
+    function() {
+
+        setTimeout(
+            redimensionnerRacing,
+            300
+        );
+    }
+);
 
 
 /* =========================================================
@@ -2230,42 +3146,20 @@ function redimensionnerRacing() {
 
 async function demarrerRacing() {
 
-    /* =====================================================
-       INITIALISATION
-    ===================================================== */
-
     initialiserRacing();
 
 
-    /* =====================================================
-       MESSAGE DE DEPART CACHÉ
-    ===================================================== */
-
     if (messageRacing) {
-
         messageRacing.style.display =
             "none";
-
     }
 
-
-    /* =====================================================
-       CLASSEMENT
-    ===================================================== */
 
     await chargerClassement10();
 
 
-    /* =====================================================
-       COMPTER LA PREMIERE PARTIE
-    ===================================================== */
-
     compterPartieJeu10();
 
-
-    /* =====================================================
-       LANCER LE JEU
-    ===================================================== */
 
     dernierTemps =
         performance.now();
@@ -2275,12 +3169,6 @@ async function demarrerRacing() {
         requestAnimationFrame(
             boucleRacing
         );
-
-
-    console.log(
-        "🏎️ 3D Racing démarré !"
-    );
-
 }
 
 
@@ -2288,4 +3176,20 @@ async function demarrerRacing() {
    LANCEMENT
 ========================================================= */
 
-demarrerRacing();
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        demarrerRacing
+    );
+
+}
+
+else {
+
+    demarrerRacing();
+
+}

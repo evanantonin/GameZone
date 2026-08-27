@@ -16,59 +16,18 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-
-    background: #080808;
+    background: #050510;
     color: white;
-
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
-/* =========================================================
-   MENU
-========================================================= */
-
-nav {
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    gap: 20px;
-
-    padding: 18px 25px;
-
-    background: #050505;
-
-    border-bottom: 2px solid #00ffff;
-
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.35);
+button,
+input {
+    font-family: inherit;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-
-    font-size: 18px;
-    font-weight: bold;
-
-    padding: 10px 18px;
-
-    border: 1px solid transparent;
-    border-radius: 10px;
-
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #00ffff;
-
-    border-color: #00ffff;
-
-    background: #101010;
-
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+button {
+    cursor: pointer;
 }
 
 
@@ -76,317 +35,361 @@ nav a:hover {
    TITRES
 ========================================================= */
 
+h1,
+h2,
+h3 {
+    text-align: center;
+}
+
 h1 {
-    margin: 40px auto 15px;
-
-    text-align: center;
-
-    color: #00ffff;
-
-    font-size: clamp(42px, 7vw, 70px);
-
-    letter-spacing: 3px;
-
+    color: #00eaff;
     text-shadow:
-        0 0 5px #00ffff,
-        0 0 15px #00ffff,
-        0 0 30px #00ffff;
-}
-
-h2 {
-    text-align: center;
-}
-
-body > p {
-    text-align: center;
+        0 0 10px #00eaff,
+        0 0 20px rgba(0, 234, 255, 0.5);
 }
 
 
 /* =========================================================
-   ACCUEIL — LISTE DES JEUX
+   MENU GLOBAL
+========================================================= */
+
+nav {
+    width: 100%;
+    min-height: 70px;
+    padding: 15px;
+    background: #080812;
+    border-bottom: 2px solid #00aaff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    z-index: 1000;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition:
+        color 0.2s,
+        background 0.2s,
+        transform 0.2s;
+}
+
+nav a:hover {
+    color: #00aaff;
+    background: #101025;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MENU GAUCHE
+========================================================= */
+
+.menu-gauche {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* =========================================================
+   ACCUEIL
+========================================================= */
+
+.page-accueil {
+    min-height: 100vh;
+    background: #050510;
+    color: white;
+    text-align: center;
+}
+
+.page-accueil .bienvenue {
+    margin: 10px 0 25px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #ddd;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   ICÔNE COMPTE — ACCUEIL
+========================================================= */
+
+.page-accueil nav {
+    position: relative;
+}
+
+.page-accueil .menu-gauche {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.page-accueil .icone-compte {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background: #101025;
+    border: 2px solid #00aaff;
+    border-radius: 50%;
+    color: white;
+    font-size: 22px;
+    text-decoration: none;
+    box-shadow:
+        0 0 10px rgba(0, 170, 255, 0.25);
+    transition:
+        transform 0.2s,
+        background 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.page-accueil .icone-compte:hover {
+    background: #00aaff;
+    border-color: #00aaff;
+    color: black;
+    transform:
+        translateY(-50%)
+        scale(1.08);
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.6);
+}
+
+
+/* =========================================================
+   LISTE DES JEUX
 ========================================================= */
 
 .liste-jeux {
-    width: 90%;
-    max-width: 1200px;
+    width: min(1200px, 94%);
+    margin: 0 auto;
+    text-align: center;
+}
 
-    margin: 0 auto 50px;
-
+.grille-jeux {
     display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 28px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
 }
 
 
 /* =========================================================
-   CARTES DES JEUX
+   CARTES DE JEUX
 ========================================================= */
 
 .jeu {
-    min-height: 390px;
-
-    padding: 22px;
-
-    background: #151515;
-
-    border: 2px solid #3a3a3a;
-
-    border-radius: 20px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
+    width: auto;
+    max-width: none;
+    background: #101020;
+    border: 2px solid #00aaff;
+    border-radius: 15px;
+    padding: 15px;
     text-align: center;
-
     box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.7);
-
-    transition: 0.3s;
+        0 0 12px rgba(0, 170, 255, 0.15);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
 .jeu:hover {
-    transform: translateY(-7px);
-
-    border-color: #00ffff;
-
+    transform: translateY(-5px);
     box-shadow:
-        0 0 12px rgba(0, 255, 255, 0.5),
-        0 10px 30px rgba(0, 0, 0, 0.9);
+        0 0 20px rgba(0, 170, 255, 0.4);
 }
 
 .jeu img {
     width: 100%;
-    max-width: 280px;
-
-    height: 170px;
-
-    object-fit: cover;
-
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
     display: block;
-
-    margin: 0 auto 18px;
-
-    border: 2px solid #444;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.7);
 }
 
-.jeu h2 {
-    margin: 8px 0 10px;
-
-    color: white;
-
-    font-size: 25px;
+.jeu h2,
+.jeu h3 {
+    color: #00eaff;
 }
 
 .jeu p {
-    margin: 5px 0 20px;
-
-    color: #aaa;
-
-    font-size: 15px;
-
-    line-height: 1.5;
-
-    text-align: center;
+    color: #ccc;
 }
 
 
 /* =========================================================
-   BOUTONS
+   BOUTONS GAMEZONE
 ========================================================= */
 
 button,
 .bouton-jeu {
-    display: inline-block;
+    border-radius: 10px;
+}
 
+.bouton-jeu {
+    display: inline-block;
     padding: 12px 25px;
-
-    border: 2px solid #00ffff;
-    border-radius: 12px;
-
-    background: #00ffff;
-
-    color: #000;
-
-    font-size: 17px;
-    font-weight: bold;
-
+    background: #101025;
+    border: 2px solid #00aaff;
+    color: white;
     text-decoration: none;
-
-    cursor: pointer;
-
-    transition: 0.3s;
+    font-weight: bold;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        box-shadow 0.2s,
+        transform 0.2s;
 }
 
-button:hover,
 .bouton-jeu:hover {
-    background: transparent;
-
-    color: #00ffff;
-
-    transform: scale(1.06);
-
-    box-shadow: 0 0 12px #00ffff;
-}
-
-button:active {
-    transform: scale(0.96);
-}
-
-button:disabled {
-    background: #333;
-
-    border-color: #555;
-
-    color: #777;
-
-    cursor: not-allowed;
-
-    box-shadow: none;
-
-    transform: none;
-}
-
-
-/* =========================================================
-   PAGES DES JEUX
-========================================================= */
-
-.page-jeu {
-    width: 92%;
-    max-width: 1000px;
-
-    margin: 35px auto;
-
-    padding: 30px;
-
-    background: #101010;
-
-    border: 3px solid #333;
-
-    border-radius: 25px;
-
-    text-align: center;
-
+    background: #00aaff;
+    color: black;
     box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.8);
+        0 0 15px rgba(0, 170, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 
 /* =========================================================
-   ZONE DE JEU
+   JEU DE CLICS
 ========================================================= */
 
-.zone-jeu {
-    width: 100%;
-
-    margin: 25px auto;
-
-    padding: 30px;
-
-    background: #080808;
-
-    border: 3px solid #00ffff;
-
-    border-radius: 20px;
-
+.page-clicker {
+    min-height: 100vh;
     text-align: center;
-
-    box-shadow:
-        inset 0 0 20px rgba(0, 255, 255, 0.08),
-        0 0 20px rgba(0, 255, 255, 0.25);
 }
 
+.clicker-container {
+    width: 95%;
+    max-width: 700px;
+    margin: 30px auto;
+    text-align: center;
+}
 
-/* =========================================================
-   SCORE
-========================================================= */
+.clicker-score {
+    font-size: 30px;
+    color: #00eaff;
+    font-weight: bold;
+}
 
-#score {
-    display: inline-block;
-
-    margin: 10px;
-
-    padding: 10px 20px;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 12px;
-
-    background: #111;
-
-    color: #00ffff;
-
+.bouton-clicker {
+    width: 200px;
+    height: 200px;
+    border: 4px solid #00eaff;
+    border-radius: 50%;
+    background: #101020;
+    color: white;
     font-size: 28px;
     font-weight: bold;
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.4);
+    transition:
+        transform 0.1s,
+        box-shadow 0.2s;
 }
 
-#meilleurScore {
-    display: inline-block;
-
-    margin: 10px;
-
-    padding: 8px 15px;
-
-    border: 2px solid #ffff00;
-
-    border-radius: 10px;
-
-    background: #111;
-
-    color: #ffff00;
+.bouton-clicker:hover {
+    box-shadow:
+        0 0 30px rgba(0, 234, 255, 0.7);
 }
 
-#temps {
-    display: inline-block;
-
-    margin: 10px;
-
-    padding: 8px 15px;
-
-    border: 2px solid #ff00ff;
-
-    border-radius: 10px;
-
-    background: #111;
-
-    color: #ff00ff;
-
-    font-size: 24px;
-    font-weight: bold;
+.bouton-clicker:active {
+    transform: scale(0.92);
 }
 
 
 /* =========================================================
-   MESSAGE
+   DEVINE LE NOMBRE
 ========================================================= */
 
-#message {
-    width: 90%;
-    max-width: 700px;
-
-    margin: 20px auto;
-
-    padding: 12px;
-
-    border: 2px solid #333;
-
-    border-radius: 12px;
-
-    background: #111;
-
-    color: white;
-
+.page-nombre {
+    min-height: 100vh;
     text-align: center;
+}
+
+.nombre-container {
+    width: 95%;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.nombre-container input {
+    width: 200px;
+    max-width: 100%;
+    padding: 12px;
+    background: #101020;
+    color: white;
+    border: 2px solid #00aaff;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.nombre-container button {
+    padding: 12px 20px;
+    background: #101025;
+    color: white;
+    border: 2px solid #00aaff;
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   PIERRE FEUILLE CISEAUX
+========================================================= */
+
+.page-pfc {
+    min-height: 100vh;
+    text-align: center;
+}
+
+.pfc-container {
+    width: 95%;
+    max-width: 700px;
+    margin: 30px auto;
+}
+
+.boutons-pfc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.boutons-pfc button {
+    min-width: 100px;
+    min-height: 60px;
+    background: #101025;
+    color: white;
+    border: 2px solid #00aaff;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.boutons-pfc button:hover {
+    background: #00aaff;
+    color: black;
 }
 
 
@@ -394,536 +397,133 @@ button:disabled {
    SNAKE
 ========================================================= */
 
+.page-snake {
+    min-height: 100vh;
+    text-align: center;
+}
+
+.snake-container {
+    width: 95%;
+    max-width: 700px;
+    margin: 20px auto;
+    text-align: center;
+}
+
 #jeu {
     display: block;
-
     width: 400px;
     max-width: 100%;
-
     height: auto;
-
-    margin: 25px auto;
-
-    background: #000;
-
-    border: 4px solid #00ffff;
-
-    border-radius: 15px;
-
+    margin: 20px auto;
+    background: #050510;
+    border: 3px solid #00ff66;
+    border-radius: 10px;
     box-shadow:
-        0 0 10px #00ffff,
-        0 0 25px rgba(0, 255, 255, 0.35);
+        0 0 20px rgba(0, 255, 102, 0.4);
 }
 
-
-/* =========================================================
-   CONTROLES SNAKE
-========================================================= */
-
-.controles {
-    width: max-content;
-
-    margin: 25px auto;
-
-    padding: 15px;
-
-    display: grid;
-
-    grid-template-columns: repeat(3, 65px);
-
-    gap: 8px;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    background: #111;
+.controles-snake {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px auto;
 }
 
-.controles button {
+.controles-snake button {
     width: 65px;
     height: 55px;
-
-    padding: 0;
-}
-
-
-/* =========================================================
-   PIERRE — FEUILLE — CISEAUX
-========================================================= */
-
-.choix {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 15px;
-
-    margin: 25px auto;
-
-    padding: 20px;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    background: #111;
-}
-
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-input {
-    padding: 12px 15px;
-
-    border: 2px solid #444;
-
+    background: #101020;
+    color: white;
+    border: 2px solid #00ff66;
     border-radius: 10px;
-
-    background: #080808;
-
-    color: white;
-
-    font-size: 16px;
-
-    text-align: center;
-
-    outline: none;
-}
-
-input:focus {
-    border-color: #00ffff;
-
-    box-shadow:
-        0 0 10px rgba(0, 255, 255, 0.4);
+    font-size: 24px;
 }
 
 
 /* =========================================================
-   TABLEAU DES SCORES
-========================================================= */
-
-table {
-    width: 95%;
-    max-width: 800px;
-
-    margin: 30px auto;
-
-    border-collapse: separate;
-    border-spacing: 0;
-
-    background: #101010;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    overflow: hidden;
-}
-
-th {
-    padding: 15px;
-
-    background: #00ffff;
-
-    color: #000;
-
-    text-align: center;
-}
-
-td {
-    padding: 14px;
-
-    color: white;
-
-    border-bottom: 1px solid #333;
-
-    text-align: center;
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-
-/* =========================================================
-   RETOUR
-========================================================= */
-
-.retour {
-    display: inline-block;
-
-    margin: 20px auto;
-
-    padding: 10px 20px;
-
-    color: white;
-
-    background: #111;
-
-    border: 2px solid #444;
-
-    border-radius: 10px;
-
-    text-decoration: none;
-}
-
-.retour:hover {
-    color: #00ffff;
-
-    border-color: #00ffff;
-
-    box-shadow:
-        0 0 10px rgba(0, 255, 255, 0.4);
-}
-
-
-/* =========================================================
-   PONG
-========================================================= */
-
-.pong {
-    width: 92%;
-    max-width: 900px;
-
-    margin: 35px auto;
-
-    padding: 30px;
-
-    background: #101010;
-
-    border: 3px solid #00ffff;
-
-    border-radius: 22px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    box-shadow:
-        0 0 20px rgba(0, 255, 255, 0.3);
-}
-
-.pong h1,
-.pong h2,
-.pong p {
-    text-align: center;
-
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.pong canvas,
-#pong,
-#jeuPong {
-    display: block;
-
-    margin: 25px auto;
-
-    max-width: 100%;
-
-    background: #000;
-
-    border: 4px solid #00ffff;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 0 12px #00ffff,
-        0 0 25px rgba(0, 255, 255, 0.3);
-}
-
-.pong button {
-    margin: 10px auto;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — BASE
+   SPACE INVADERS
 ========================================================= */
 
 .page-space {
+    min-height: 100vh;
+    background: #050510;
+    color: white;
     text-align: center;
-
-    overflow-x: hidden;
 }
 
 .page-space .container {
     width: 95%;
-    max-width: 950px;
-
-    margin: 20px auto;
-
-    padding: 20px 20px 50px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
     text-align: center;
 }
-
-
-/* =========================================================
-   SPACE INVADERS — TITRE
-========================================================= */
 
 .page-space h1 {
-    width: 100%;
-
-    margin: 20px auto 10px;
-
-    text-align: center;
+    color: #00eaff;
 }
-
-
-/* =========================================================
-   SPACE INVADERS — PSEUDO
-========================================================= */
-
-.page-space .pseudo-joueur {
-    width: max-content;
-    max-width: 100%;
-
-    margin: 8px auto 12px;
-
-    padding: 10px 20px;
-
-    background: #111;
-
-    border: 2px solid #444;
-
-    border-radius: 12px;
-
-    text-align: center;
-}
-
-.page-space .pseudo-joueur strong {
-    color: #00ffff;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — INFOS
-========================================================= */
 
 .page-space .infos {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 15px auto;
-
-    padding: 12px;
-
+    width: 100%;
     display: grid;
-
     grid-template-columns: repeat(4, 1fr);
-
     gap: 10px;
-
-    align-items: stretch;
-
-    background: #101010;
-
-    border: 3px solid #333;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 0 15px rgba(0, 255, 255, 0.12);
+    margin: 20px auto;
 }
 
 .page-space .infos > div {
-    width: 100%;
-    min-width: 0;
-
-    height: 55px;
-
-    margin: 0;
-    padding: 8px 10px;
-
+    min-height: 55px;
+    padding: 10px;
+    background: #101020;
+    border: 2px solid #00eaff;
+    border-radius: 10px;
     display: flex;
-
-    flex-direction: row;
-
     justify-content: center;
     align-items: center;
-
-    gap: 5px;
-
-    background: #101010;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 10px;
-
-    color: white;
-
-    font-size: 14px;
     font-weight: bold;
-
-    text-align: center;
-
-    white-space: nowrap;
 }
 
 .page-space .infos span {
-    display: inline;
-
-    margin: 0;
-
-    color: #00ffff;
-
-    font-size: 20px;
-    font-weight: bold;
+    color: #00eaff;
+    margin-left: 5px;
 }
 
-
-/* Meilleur score */
-
-.page-space .infos > div:nth-child(2) {
-    border-color: #ffff00;
-}
-
-.page-space .infos > div:nth-child(2) span {
-    color: #ffff00;
-}
-
-
-/* Niveau */
-
-.page-space .infos > div:nth-child(3) {
-    border-color: #a020f0;
-}
-
-.page-space .infos > div:nth-child(3) span {
-    color: #c86cff;
-}
-
-
-/* Vies */
-
-.page-space .infos > div:nth-child(4) {
-    border-color: #ff1744;
-}
-
-.page-space .infos > div:nth-child(4) span,
-.page-space #vies {
-    color: #ff4444;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — ÉCRAN DE JEU
-========================================================= */
-
-.page-space #jeuSpace {
+#jeuSpaceInvaders {
     display: block;
-
-    width: 720px;
-    height: 540px;
-
+    width: 800px;
     max-width: 100%;
-
-    margin: 10px auto 15px;
-
-    background: #02020a;
-
-    border: 4px solid #00ffff;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 0 12px #00ffff,
-        0 0 25px rgba(0, 255, 255, 0.35);
-
-    flex-shrink: 0;
-}
-
-
-/* =========================================================
-   SPACE INVADERS — MESSAGE
-========================================================= */
-
-.page-space #message {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 10px auto;
-
-    padding: 12px 20px;
-
-    background: #101010;
-
-    border: 2px solid #444;
-
+    height: auto;
+    margin: 20px auto;
+    background: #020208;
+    border: 3px solid #00eaff;
     border-radius: 12px;
-
-    color: white;
-
-    text-align: center;
+    box-shadow:
+        0 0 25px rgba(0, 234, 255, 0.4);
 }
-
-
-/* =========================================================
-   SPACE INVADERS — BOUTONS
-========================================================= */
 
 .page-space .boutons {
-    width: 100%;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 15px;
-
-    margin: 15px auto;
+    flex-wrap: wrap;
+    margin: 20px 0;
 }
 
 .page-space .boutons button {
-    margin: 0;
+    padding: 12px 25px;
+    background: #101020;
+    color: white;
+    border: 2px solid #00eaff;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
-
-/* =========================================================
-   SPACE INVADERS — COMMANDES
-========================================================= */
-
-.page-space .commandes {
-    width: 90%;
-    max-width: 800px;
-
-    margin: 15px auto;
-
-    padding: 15px 20px;
-
-    background: #101010;
-
-    border: 2px solid #333;
-
-    border-radius: 15px;
-
-    text-align: center;
-}
-
-.page-space .commandes p {
-    margin: 7px auto;
-
-    color: #aaa;
-
-    text-align: center;
+.page-space .boutons button:hover {
+    background: #00eaff;
+    color: black;
 }
 
 
@@ -931,1160 +531,78 @@ tr:last-child td {
    SPACE INVADERS — CONTROLES MOBILES
 ========================================================= */
 
-/* Position normale pour la structure */
-
 .page-space .controles-mobile {
-    width: 100%;
-    max-width: 800px;
-
-    display: flex !important;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 0 auto 25px;
-
-    position: relative;
-
-    z-index: 10;
-
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.page-space .controles-mobile button {
-    display: flex !important;
-
-    width: 80px;
-    height: 60px;
-
-    padding: 0;
-    margin: 0;
-
-    justify-content: center;
-    align-items: center;
-
-    font-size: 28px;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-
-    flex-shrink: 0;
+    display: none;
 }
 
 
 /* =========================================================
-   SPACE INVADERS — CLASSEMENT
-========================================================= */
-
-.page-space .classement {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 30px auto;
-
-    padding: 25px;
-
-    background: #101010;
-
-    border: 3px solid #333;
-
-    border-radius: 20px;
-
-    text-align: center;
-
-    box-shadow:
-        0 0 20px rgba(0, 255, 255, 0.12);
-}
-
-.page-space .classement h2 {
-    margin: 5px auto 20px;
-
-    color: #00ffff;
-
-    text-align: center;
-
-    font-size: 24px;
-}
-
-.page-space .classement table {
-    width: 100%;
-
-    margin: 20px auto;
-}
-
-.page-space .statut {
-    margin: 15px auto 0;
-
-    color: #aaa;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   PONG — PAGE COMPLÈTE
-========================================================= */
-
-body.page-pong {
-    text-align: center;
-}
-
-body.page-pong .container {
-    width: 95%;
-    max-width: 1000px;
-
-    margin: 20px auto;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-
-    text-align: center;
-}
-
-body.page-pong h1,
-body.page-pong h2,
-body.page-pong h3 {
-    width: 100%;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    text-align: center;
-}
-
-body.page-pong .pseudo-joueur {
-    width: 100%;
-
-    margin: 10px auto;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   PONG — INFOS
-========================================================= */
-
-body.page-pong .infos {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 15px auto;
-
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 10px;
-
-    justify-content: center;
-    align-items: stretch;
-}
-
-body.page-pong .infos > div {
-    width: 100%;
-    height: 55px;
-
-    margin: 0;
-    padding: 8px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 5px;
-
-    background: #101010;
-
-    border: 2px solid #00ffff;
-
-    border-radius: 10px;
-
-    color: white;
-
-    text-align: center;
-
-    font-weight: bold;
-}
-
-body.page-pong .infos span {
-    color: #00ffff;
-
-    font-size: 20px;
-}
-
-
-/* Meilleur score */
-
-body.page-pong .infos > div:nth-child(2) {
-    border-color: #ffff00;
-}
-
-body.page-pong .infos > div:nth-child(2) span {
-    color: #ffff00;
-}
-
-
-/* Vies */
-
-body.page-pong .infos > div:nth-child(4) {
-    border-color: #ff4444;
-}
-
-body.page-pong .infos > div:nth-child(4) span {
-    color: #ff4444;
-}
-
-
-/* =========================================================
-   PONG — CANVAS
-========================================================= */
-
-body.page-pong canvas,
-body.page-pong #jeuPong,
-body.page-pong #pong {
-    display: block;
-
-    width: 720px;
-    max-width: 100%;
-
-    height: auto;
-
-    margin: 20px auto;
-
-    background: #000;
-
-    border: 4px solid #00ffff;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 0 12px #00ffff,
-        0 0 25px rgba(0, 255, 255, 0.35);
-}
-
-
-/* =========================================================
-   PONG — MESSAGE
-========================================================= */
-
-body.page-pong #message {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 10px auto;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   PONG — BOUTONS
-========================================================= */
-
-body.page-pong .boutons {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 15px auto;
-}
-
-body.page-pong .boutons button {
-    margin: 0;
-}
-
-
-/* =========================================================
-   PONG — COMMANDES
-========================================================= */
-
-body.page-pong .commandes {
-    width: 100%;
-
-    margin: 15px auto;
-
-    text-align: center;
-}
-
-body.page-pong .commandes p {
-    text-align: center;
-}
-
-
-/* =========================================================
-   PONG — CLASSEMENT
-========================================================= */
-
-body.page-pong .classement {
-    width: 720px;
-    max-width: 100%;
-
-    margin: 30px auto;
-
-    text-align: center;
-}
-
-body.page-pong .classement h2 {
-    text-align: center;
-}
-
-body.page-pong .classement table {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-/* =========================================================
-   PONG — CONTROLES JOUEUR 2
-========================================================= */
-
-@media (min-width: 751px) {
-
-    body.page-pong .controles-mobile,
-    body.page-pong #controles-mobile,
-    body.page-pong .commandes-mobile,
-    body.page-pong .joueur2-controles,
-    body.page-pong .controles-joueur2,
-    body.page-pong #joueur2-controles,
-    body.page-pong #controles-joueur2,
-    body.page-pong #controleJoueur2 {
-        display: none !important;
-    }
-
-}
-
-@media (max-width: 750px) {
-
-    body.page-pong #controleJoueur2 {
-        display: none;
-    }
-
-    body.page-pong #controlesMobile.mode-2-joueurs #controleJoueur2 {
-        display: block;
-    }
-
-}
-
-
-/* =========================================================
-   ACCUEIL — PAGE
-========================================================= */
-
-body.page-accueil {
-    margin: 0;
-    min-height: 100vh;
-
-    background: #050510;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   ACCUEIL — MENU
-========================================================= */
-
-.page-accueil nav {
-    width: 100%;
-
-    padding: 15px 0;
-
-    background: #080812;
-
-    border-bottom: 2px solid #00aaff;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 30px;
-}
-
-.page-accueil nav a {
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.page-accueil nav a:hover {
-    color: #00aaff;
-}
-
-
-/* =========================================================
-   ACCUEIL — CONTENU
-========================================================= */
-
-.page-accueil .accueil {
-    width: min(95%, 1000px);
-
-    margin: 25px auto;
-}
-
-
-/* =========================================================
-   ACCUEIL — TITRE
-========================================================= */
-
-.page-accueil .accueil > h1 {
-    margin: 0 0 15px;
-
-    padding: 20px;
-
-    border: 2px solid #00aaff;
-
-    border-radius: 15px;
-
-    background: #09091a;
-
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.25);
-}
-
-
-/* =========================================================
-   ACCUEIL — BIENVENUE
-========================================================= */
-
-.page-accueil .bienvenue {
-    margin: 0 0 20px;
-
-    padding: 15px;
-
-    border: 2px solid #9c27ff;
-
-    border-radius: 12px;
-
-    background: #09091a;
-
-    font-size: 18px;
-}
-
-
-/* =========================================================
-   ACCUEIL — CONNEXION / INSCRIPTION
-========================================================= */
-
-.page-accueil .auth-container {
-    width: min(100%, 500px);
-
-    margin: 20px auto;
-
-    padding: 25px;
-
-    border: 2px solid #00ff88;
-
-    border-radius: 15px;
-
-    background: #09091a;
-
-    box-shadow:
-        0 0 15px rgba(0, 255, 136, 0.15);
-}
-
-.page-accueil .auth-container h2 {
-    margin-top: 0;
-
-    color: #00ff88;
-}
-
-
-/* =========================================================
-   ACCUEIL — CHAMPS
-========================================================= */
-
-.page-accueil .auth-container input {
-    display: block;
-
-    width: 100%;
-
-    padding: 13px;
-
-    margin: 10px 0;
-
-    border: 2px solid #444466;
-
-    border-radius: 8px;
-
-    background: #111122;
-
-    color: white;
-
-    font-size: 16px;
-
-    outline: none;
-}
-
-.page-accueil .auth-container input:focus {
-    border-color: #00aaff;
-
-    box-shadow:
-        0 0 8px rgba(0, 170, 255, 0.3);
-}
-
-.page-accueil .auth-container input::placeholder {
-    color: #999;
-}
-
-
-/* =========================================================
-   ACCUEIL — BOUTONS AUTH
-========================================================= */
-
-.page-accueil .auth-button {
-    width: 100%;
-
-    padding: 13px;
-
-    margin-top: 10px;
-
-    border: 2px solid #00aaff;
-
-    border-radius: 8px;
-
-    background: #101025;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-.page-accueil .auth-button:hover {
-    background: #00aaff;
-
-    color: black;
-}
-
-
-/* =========================================================
-   ACCUEIL — CHANGER AUTH
-========================================================= */
-
-.page-accueil .changer-auth {
-    margin-bottom: 0;
-
-    color: #00aaff;
-
-    cursor: pointer;
-
-    font-weight: bold;
-}
-
-.page-accueil .changer-auth:hover {
-    text-decoration: underline;
-}
-
-
-/* =========================================================
-   ACCUEIL — CONTENU CONNECTÉ
-========================================================= */
-
-.page-accueil #contenuConnecte {
-    width: 100%;
-}
-
-
-/* =========================================================
-   ACCUEIL — PSEUDO
-========================================================= */
-
-.page-accueil .pseudo-affiche {
-    padding: 20px;
-
-    margin: 20px 0;
-
-    border: 2px solid #ffaa00;
-
-    border-radius: 12px;
-
-    background: #09091a;
-
-    font-size: 18px;
-}
-
-.page-accueil #pseudoJoueur {
-    color: #00aaff;
-
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   ACCUEIL — DÉCONNEXION
-========================================================= */
-
-.page-accueil .bouton-deconnexion {
-    margin-top: 12px;
-
-    padding: 9px 15px;
-
-    border: 2px solid #ff4444;
-
-    border-radius: 8px;
-
-    background: #111122;
-
-    color: white;
-
-    cursor: pointer;
-}
-
-.page-accueil .bouton-deconnexion:hover {
-    background: #ff4444;
-}
-
-
-/* =========================================================
-   ACCUEIL — VOIR LES JEUX
-========================================================= */
-
-.page-accueil .bouton-jeux {
-    display: block;
-
-    width: fit-content;
-
-    margin: 20px auto;
-
-    padding: 15px 30px;
-
-    border: 2px solid #00aaff;
-
-    border-radius: 12px;
-
-    background: #09091a;
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    box-shadow:
-        0 0 12px rgba(0, 170, 255, 0.2);
-}
-
-.page-accueil .bouton-jeux:hover {
-    background: #00aaff;
-
-    color: black;
-}
-
-
-/* =========================================================
-   ACCUEIL — PRÉSENTATION
-========================================================= */
-
-.page-accueil .presentation {
-    margin: 20px 0;
-
-    padding: 20px;
-
-    border: 2px solid #9c27ff;
-
-    border-radius: 15px;
-
-    background: #09091a;
-}
-
-.page-accueil .presentation h2 {
-    margin-top: 0;
-
-    color: #c45cff;
-}
-
-.page-accueil .presentation p {
-    margin: 12px 0;
-}
-
-
-/* =========================================================
-   ACCUEIL — MES JEUX
-========================================================= */
-
-.page-accueil .accueil > #contenuConnecte > section:last-child {
-    margin-top: 20px;
-
-    padding: 20px;
-
-    border: 2px solid #ffd700;
-
-    border-radius: 15px;
-
-    background: #09091a;
-}
-
-.page-accueil .accueil > #contenuConnecte > section:last-child > h2 {
-    margin-top: 0;
-
-    color: #ffd700;
-}
-
-
-/* =========================================================
-   ACCUEIL — GRILLE DES JEUX
-========================================================= */
-
-.page-accueil .aperçu-jeux {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 15px;
-
-    margin-top: 15px;
-}
-
-
-/* =========================================================
-   ACCUEIL — CARTE DE JEU
-========================================================= */
-
-.page-accueil .carte-jeu {
-    min-height: 130px;
-
-    padding: 18px;
-
-    border: 2px solid #444466;
-
-    border-radius: 12px;
-
-    background: #0d0d22;
-
-    transition:
-        transform 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s;
-}
-
-.page-accueil .carte-jeu:hover {
-    transform: translateY(-3px);
-
-    border-color: #00aaff;
-
-    box-shadow:
-        0 0 12px rgba(0, 170, 255, 0.25);
-}
-
-.page-accueil .carte-jeu h3 {
-    margin-top: 0;
-
-    color: #00aaff;
-}
-
-.page-accueil .carte-jeu p {
-    color: #ddd;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   ACCUEIL — MESSAGE AUTH
-========================================================= */
-
-.page-accueil #messageAuth {
-    margin-bottom: 0;
-
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-    margin-top: 60px;
-
-    padding: 25px;
-
-    background: #050505;
-
-    border-top: 2px solid #222;
-
-    color: #777;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   TABLETTE — 900 PX
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .liste-jeux {
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 20px;
-    }
-
-    .jeu {
-        min-height: 370px;
-    }
-
-    .page-space .infos {
-        max-width: 700px;
-
-        gap: 10px;
-    }
-
-    .page-space .infos > div {
-        min-width: 140px;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE — 750 PX
-========================================================= */
-
-@media (max-width: 750px) {
-
-    /* -----------------------------------------------------
-       SPACE INVADERS
-    ----------------------------------------------------- */
-
-    .page-space .container {
-        width: 96%;
-
-        padding: 10px 5px 110px;
-    }
-
-    .page-space .infos {
-        width: 100%;
-
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 5px;
-    }
-
-    .page-space .infos > div {
-        height: 50px;
-
-        min-width: 0;
-
-        padding: 7px 4px;
-
-        font-size: 13px;
-    }
-
-    .page-space .infos span {
-        font-size: 16px;
-    }
-
-    .page-space #jeuSpace {
-        width: 100% !important;
-
-        height: 250px !important;
-        min-height: 250px !important;
-        max-height: 250px !important;
-
-        border-width: 3px;
-
-        border-radius: 12px;
-
-        margin: 0 auto 20px;
-    }
-
-    .page-space .boutons {
-        flex-wrap: wrap;
-
-        gap: 10px;
-    }
-
-    .page-space .boutons button {
-        padding: 10px 18px;
-    }
-
-    .page-space .commandes {
-        width: 100%;
-
-        padding: 10px;
-    }
-
-    .page-space .classement {
-        width: 100%;
-
-        padding: 15px;
-
-        border-radius: 15px;
-    }
-
-    .page-space .classement h2 {
-        font-size: 19px;
-    }
-
-    .page-space .classement table {
-        font-size: 14px;
-    }
-
-    .page-space .classement th,
-    .page-space .classement td {
-        padding: 9px 5px;
-    }
-
-
-    /* -----------------------------------------------------
-       PONG
-    ----------------------------------------------------- */
-
-    body.page-pong .container {
-        width: 96%;
-    }
-
-    body.page-pong .infos {
-        width: 100%;
-
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    body.page-pong canvas,
-    body.page-pong #jeuPong,
-    body.page-pong #pong {
-        width: 100%;
-
-        max-width: 100%;
-    }
-
-    body.page-pong .classement {
-        width: 100%;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE — 700 PX — ACCUEIL
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .page-accueil nav {
-        gap: 15px;
-    }
-
-    .page-accueil nav a {
-        font-size: 16px;
-    }
-
-    .page-accueil .accueil {
-        width: 94%;
-
-        margin: 15px auto;
-    }
-
-    .page-accueil .auth-container {
-        padding: 18px;
-    }
-
-    .page-accueil .aperçu-jeux {
-        grid-template-columns: 1fr;
-    }
-
-    .page-accueil .carte-jeu {
-        min-height: auto;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE — 600 PX
-========================================================= */
-
-@media (max-width: 600px) {
-
-    /* -----------------------------------------------------
-       MENU
-    ----------------------------------------------------- */
-
-    nav {
-        flex-direction: column;
-
-        gap: 8px;
-    }
-
-    nav a {
-        width: 90%;
-
-        text-align: center;
-    }
-
-
-    /* -----------------------------------------------------
-       TITRE
-    ----------------------------------------------------- */
-
-    h1 {
-        font-size: 40px;
-    }
-
-
-    /* -----------------------------------------------------
-       ACCUEIL — LISTE
-    ----------------------------------------------------- */
-
-    .liste-jeux {
-        width: 92%;
-
-        grid-template-columns: 1fr;
-
-        gap: 20px;
-    }
-
-    .jeu {
-        min-height: 370px;
-
-        padding: 20px;
-    }
-
-
-    /* -----------------------------------------------------
-       PAGE JEU
-    ----------------------------------------------------- */
-
-    .page-jeu {
-        width: 94%;
-
-        padding: 15px;
-
-        border-radius: 18px;
-    }
-
-    .zone-jeu {
-        padding: 20px;
-
-        border-radius: 15px;
-    }
-
-}
-
-
-/* =========================================================
-   SPACE INVADERS — CONTROLES MOBILES FIXES
+   SPACE INVADERS — MOBILE
 ========================================================= */
 
 @media (max-width: 768px) {
 
     .page-space .controles-mobile {
         position: fixed !important;
-
         left: 0 !important;
         right: 0 !important;
         bottom: 15px !important;
-
         width: 100% !important;
-
         display: flex !important;
-
         justify-content: center !important;
         align-items: center !important;
-
         gap: 25px !important;
-
         margin: 0 !important;
-
         padding: 0 15px !important;
-
         z-index: 99999 !important;
-
         pointer-events: none;
     }
 
     .page-space .controles-mobile button {
         pointer-events: auto;
-
         width: 70px !important;
         height: 70px !important;
-
         padding: 0 !important;
         margin: 0 !important;
-
         display: flex !important;
-
         justify-content: center !important;
         align-items: center !important;
-
         font-size: 32px !important;
-
         border-radius: 15px !important;
-
         touch-action: none;
-
         flex-shrink: 0;
     }
-
 }
 
-
-/* =========================================================
-   SPACE INVADERS — PC
-   Pas de contrôles mobiles
-========================================================= */
 
 @media (min-width: 769px) {
 
     .page-space .controles-mobile {
         display: none !important;
     }
-
 }
 
 
 /* =========================================================
-   SPACE INVADERS — ALIGNEMENT PETITS ÉCRANS
+   SPACE INVADERS — PETITS ÉCRANS
 ========================================================= */
 
 @media screen and (max-width: 750px) {
 
     body.page-space .infos {
         width: 100% !important;
-
-        grid-template-columns:
-            repeat(2, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 
     body.page-space .infos > div {
         height: 50px !important;
-
         font-size: 13px !important;
     }
-
 }
+
+
 /* =========================================================
-   FLAPPY BIRD — CENTRAGE COMPLET
+   FLAPPY BIRD
 ========================================================= */
 
 body.page-flappy {
@@ -2093,84 +611,64 @@ body.page-flappy {
     text-align: center;
 }
 
-/* CONTENEUR PRINCIPAL */
-
 .page-flappy .flappy-container {
     width: 95%;
     max-width: 900px;
-
     margin: 20px auto;
-
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
-
     text-align: center;
 }
-
-/* TITRE */
 
 .page-flappy h1 {
     width: 100%;
-
     margin: 20px auto;
-
     text-align: center;
 }
-
-/* PSEUDO */
 
 .page-flappy .pseudo-joueur {
     margin: 10px auto 15px;
-
     text-align: center;
 }
 
-/* INFORMATIONS */
+
+/* =========================================================
+   FLAPPY — INFORMATIONS
+========================================================= */
 
 .page-flappy .flappy-infos {
     width: 100%;
     max-width: 500px;
-
     margin: 10px auto 20px;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 15px;
 }
 
 .page-flappy .flappy-infos > div {
     flex: 1;
-
     padding: 10px;
-
     background: #101010;
-
     border: 2px solid #00ffff;
-
     border-radius: 12px;
-
     color: white;
-
     text-align: center;
-
     font-weight: bold;
 }
 
 .page-flappy .flappy-infos span {
     color: #00ffff;
-
     font-size: 22px;
-
     font-weight: bold;
 }
 
-/* MEILLEUR SCORE */
+
+/* =========================================================
+   FLAPPY — MEILLEUR SCORE
+========================================================= */
 
 .page-flappy .flappy-infos > div:nth-child(2) {
     border-color: #ffff00;
@@ -2182,43 +680,34 @@ body.page-flappy {
 
 
 /* =========================================================
-   ZONE DE JEU
+   FLAPPY — ZONE
 ========================================================= */
 
 .page-flappy .flappy-zone {
     position: relative;
-
     width: 400px;
     max-width: 100%;
-
     margin: 0 auto;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     text-align: center;
 }
 
-/* CANVAS */
+
+/* =========================================================
+   FLAPPY — CANVAS
+========================================================= */
 
 .page-flappy #jeuFlappy {
     display: block;
-
     width: 400px;
     max-width: 100%;
-
     height: auto;
-
     margin: 0 auto;
-
     background: #050520;
-
     border: 4px solid #00ffff;
-
     border-radius: 15px;
-
     box-shadow:
         0 0 12px #00ffff,
         0 0 25px rgba(0, 255, 255, 0.35);
@@ -2226,55 +715,38 @@ body.page-flappy {
 
 
 /* =========================================================
-   MESSAGE
+   FLAPPY — MESSAGE
 ========================================================= */
 
 .page-flappy #messageFlappy {
     position: absolute;
-
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
-
     width: 80%;
-
     padding: 15px;
-
     background: rgba(0, 0, 0, 0.85);
-
     border: 2px solid #00ffff;
-
     border-radius: 12px;
-
     color: white;
-
     text-align: center;
-
     font-weight: bold;
-
     z-index: 5;
 }
 
 
 /* =========================================================
-   BOUTONS
+   FLAPPY — BOUTONS
 ========================================================= */
 
 .page-flappy .flappy-boutons {
     width: 100%;
-
     margin: 20px auto;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 15px;
-
     flex-wrap: wrap;
-
     text-align: center;
 }
 
@@ -2285,92 +757,73 @@ body.page-flappy {
 
 
 /* =========================================================
-   CONTROLE MOBILE
+   FLAPPY — CONTROLE MOBILE
 ========================================================= */
 
 .page-flappy .flappy-mobile {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     width: 100%;
-
     margin: 10px auto 20px;
 }
 
 .page-flappy .flappy-mobile button {
     width: 75px;
     height: 60px;
-
     padding: 0;
-
     font-size: 28px;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
 }
 
 
 /* =========================================================
-   COMMANDES
+   FLAPPY — COMMANDES
 ========================================================= */
 
 .page-flappy .flappy-commandes {
     width: 100%;
     max-width: 500px;
-
     margin: 10px auto 30px;
-
     padding: 15px;
-
     background: #101010;
-
     border: 2px solid #333;
-
     border-radius: 15px;
-
     text-align: center;
 }
 
 .page-flappy .flappy-commandes p {
     margin: 7px auto;
-
     color: #aaa;
-
     text-align: center;
 }
 
 
 /* =========================================================
-   MOBILE
+   FLAPPY — MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
 
     .page-flappy .flappy-container {
         width: 94%;
-
         margin: 15px auto;
     }
 
     .page-flappy h1 {
         font-size: 38px;
-
         margin: 15px auto;
     }
 
     .page-flappy .flappy-infos {
         width: 100%;
-
         gap: 8px;
     }
 
     .page-flappy .flappy-infos > div {
         padding: 8px 5px;
-
         font-size: 14px;
     }
 
@@ -2384,9 +837,7 @@ body.page-flappy {
 
     .page-flappy #jeuFlappy {
         width: 100%;
-
         max-width: 400px;
-
         border-width: 3px;
     }
 
@@ -2397,19 +848,27 @@ body.page-flappy {
     .page-flappy .flappy-commandes {
         width: 100%;
     }
-
 }
+
+
+/* =========================================================
+   PLUS DE JEUX
+========================================================= */
+
 .plus-jeux {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
     margin-top: 25px;
 }
+
+
 /* =========================================================
-   JEU 8 — TETRIS
+   TETRIS
 ========================================================= */
 
 .page-tetris {
+    min-height: 100vh;
     background: #02020a;
     color: white;
 }
@@ -2423,13 +882,19 @@ body.page-flappy {
 
 .page-tetris h1 {
     color: #00eaff;
-    text-shadow: 0 0 15px #00eaff;
+    text-shadow:
+        0 0 15px #00eaff;
 }
 
 .page-tetris .pseudo-joueur {
     font-size: 18px;
     margin: 15px 0;
 }
+
+
+/* =========================================================
+   TETRIS — INFORMATIONS
+========================================================= */
 
 .page-tetris .infos {
     display: flex;
@@ -2444,8 +909,14 @@ body.page-flappy {
     border: 2px solid #00eaff;
     border-radius: 10px;
     padding: 10px 18px;
-    box-shadow: 0 0 10px rgba(0, 234, 255, 0.4);
+    box-shadow:
+        0 0 10px rgba(0, 234, 255, 0.4);
 }
+
+
+/* =========================================================
+   TETRIS — CANVAS
+========================================================= */
 
 .page-tetris #jeuTetris {
     display: block;
@@ -2453,7 +924,8 @@ body.page-flappy {
     background: #050510;
     border: 3px solid #00eaff;
     border-radius: 8px;
-    box-shadow: 0 0 25px rgba(0, 234, 255, 0.5);
+    box-shadow:
+        0 0 25px rgba(0, 234, 255, 0.5);
     max-width: 100%;
     height: auto;
 }
@@ -2463,6 +935,11 @@ body.page-flappy {
     font-weight: bold;
     margin: 15px;
 }
+
+
+/* =========================================================
+   TETRIS — BOUTONS
+========================================================= */
 
 .page-tetris .boutons {
     display: flex;
@@ -2483,24 +960,39 @@ body.page-flappy {
 
 
 /* =========================================================
-   CLASSEMENT
+   TETRIS — CLASSEMENT
 ========================================================= */
 
 .page-tetris .classement {
     max-width: 700px;
     margin: 30px auto;
     padding: 20px;
+    border: 2px solid #00eaff;
+    border-radius: 15px;
+    background: #080812;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.25);
+}
+
+.page-tetris .classement h2 {
+    color: #00eaff;
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
 }
 
 .page-tetris .classement table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border: 1px solid #00aaff;
+    border-radius: 10px;
 }
 
 .page-tetris .classement th,
 .page-tetris .classement td {
     padding: 10px;
-    border: 1px solid #333;
+    border-bottom: 1px solid #333;
 }
 
 .page-tetris .classement th {
@@ -2508,8 +1000,17 @@ body.page-flappy {
     color: #00eaff;
 }
 
+.page-tetris .classement tr:last-child td {
+    border-bottom: none;
+}
+
+.page-tetris .classement tr:hover td {
+    background: rgba(0, 234, 255, 0.08);
+}
+
+
 /* =========================================================
-   MOBILE
+   TETRIS — MOBILE
 ========================================================= */
 
 @media (max-width: 700px) {
@@ -2535,323 +1036,156 @@ body.page-flappy {
         width: min(95vw, 400px);
     }
 
-    
-
     .page-tetris .commandes {
         margin-bottom: 100px;
     }
-
 }
+
+
 /* =========================================================
-   CONTROLES MOBILES — TETRIS
+   TETRIS — CONTROLES MOBILES
 ========================================================= */
 
-/* Sur ordinateur : cachés */
 .controles-tetris-mobile {
     display: none;
 }
-
-
-/* =========================================================
-   MOBILE / TABLETTE
-========================================================= */
 
 @media (max-width: 768px) {
 
     .controles-tetris-mobile {
         position: fixed;
-
         left: 0;
         right: 0;
         bottom: 10px;
-
         width: 100%;
-
         display: flex;
-
         justify-content: center;
         align-items: center;
-
         gap: 8px;
-
         padding: 10px;
-
         z-index: 99999;
-
         pointer-events: none;
     }
 
     .controles-tetris-mobile button {
         pointer-events: auto;
-
         width: 58px;
         height: 58px;
-
         padding: 0;
-
         border: 2px solid #00eaff;
         border-radius: 12px;
-
         background: #11152b;
         color: white;
-
         font-size: 24px;
         font-weight: bold;
-
         box-shadow:
             0 0 12px rgba(0, 234, 255, 0.5);
-
         touch-action: manipulation;
-
         user-select: none;
         -webkit-user-select: none;
     }
 
     .controles-tetris-mobile button:active {
         transform: scale(0.92);
-
         background: #18264a;
     }
 }
-
-
-/* =========================================================
-   PETITS TELEPHONES
-========================================================= */
 
 @media (max-width: 480px) {
 
     .controles-tetris-mobile {
         bottom: 5px;
-
         gap: 5px;
-
         padding: 5px;
     }
 
     .controles-tetris-mobile button {
         width: 52px;
         height: 52px;
-
         font-size: 21px;
     }
 }
+
 
 /* =========================================================
    MENU — ICÔNE COMPTE
 ========================================================= */
 
-.page-accueil nav {
-    position: relative;
-}
-
-.page-accueil .menu-gauche {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-}
-
-.page-accueil .icone-compte {
-    position: absolute;
-
-    right: 20px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 45px;
-    height: 45px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 0;
-
-    background: #101025;
-
-    border: 2px solid #00aaff;
-    border-radius: 50%;
-
-    color: white;
-
-    font-size: 22px;
-
-    text-decoration: none;
-
-    box-shadow:
-        0 0 10px rgba(0, 170, 255, 0.25);
-
-    transition:
-        transform 0.2s,
-        background 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s;
-}
-
-.page-accueil .icone-compte:hover {
-    background: #00aaff;
-
-    border-color: #00aaff;
-
-    color: black;
-
-    transform:
-        translateY(-50%)
-        scale(1.08);
-
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.6);
-}
-
-
-/* =========================================================
-   MOBILE — ICÔNE COMPTE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .page-accueil nav {
-        min-height: 70px;
-
-        padding: 12px 70px 12px 10px;
-    }
-
-    .page-accueil .menu-gauche {
-        gap: 8px;
-    }
-
-    .page-accueil .menu-gauche a {
-        width: auto;
-
-        padding: 9px 12px;
-
-        font-size: 14px;
-    }
-
-    .page-accueil .icone-compte {
-        right: 12px;
-
-        width: 42px;
-        height: 42px;
-
-        font-size: 20px;
-    }
-
-}
-
-/* =========================================================
-   PAGE COMPTE
-========================================================= */
-
 .page-compte {
     min-height: 100vh;
-
     background: #050510;
-
     color: white;
-
     text-align: center;
 }
 
-
-/* MENU */
-
 .page-compte nav {
     position: relative;
-
     width: 100%;
-
     min-height: 70px;
-
     padding: 15px 70px 15px 15px;
-
     background: #080812;
-
     border-bottom: 2px solid #00aaff;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
 }
 
 .page-compte .menu-gauche {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 30px;
 }
 
 .page-compte nav a {
     color: white;
-
     text-decoration: none;
-
     font-size: 18px;
-
     font-weight: bold;
-
     padding: 10px 15px;
-
     border-radius: 8px;
-
     transition: 0.2s;
 }
 
 .page-compte nav a:hover {
     color: #00aaff;
-
     background: #101025;
 }
 
 
-/* ICÔNE */
+/* =========================================================
+   ICÔNE COMPTE
+========================================================= */
 
 .page-compte .icone-compte {
     position: absolute;
-
     right: 20px;
     top: 50%;
-
     transform: translateY(-50%);
-
     width: 45px;
     height: 45px;
-
     padding: 0;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     background: #101025;
-
     border: 2px solid #00aaff;
-
     border-radius: 50%;
-
     font-size: 22px;
-
     color: white;
-
     box-shadow:
         0 0 10px rgba(0, 170, 255, 0.25);
 }
 
 
-/* CONTENEUR */
+/* =========================================================
+   PAGE COMPTE
+========================================================= */
 
 .compte-container {
     width: 92%;
     max-width: 600px;
-
     margin: 45px auto;
-
     text-align: center;
 }
 
@@ -2860,58 +1194,53 @@ body.page-flappy {
 }
 
 
-/* CARTE */
+/* =========================================================
+   CARTE COMPTE
+========================================================= */
 
 .compte-card {
     padding: 30px;
-
     background: #09091a;
-
     border: 2px solid #00aaff;
-
     border-radius: 20px;
-
     box-shadow:
         0 0 25px rgba(0, 170, 255, 0.15);
 }
 
 
-/* AVATAR */
+/* =========================================================
+   AVATAR
+========================================================= */
 
 .avatar-compte {
     width: 80px;
     height: 80px;
-
     margin: 0 auto 20px;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     background: #101025;
-
     border: 3px solid #00aaff;
-
     border-radius: 50%;
-
     font-size: 38px;
-
     box-shadow:
         0 0 15px rgba(0, 170, 255, 0.3);
 }
 
 
-/* TITRE */
+/* =========================================================
+   TITRE COMPTE
+========================================================= */
 
 .compte-card h2 {
     margin: 10px 0 25px;
-
     color: #00aaff;
 }
 
 
-/* INFORMATIONS */
+/* =========================================================
+   INFORMATIONS COMPTE
+========================================================= */
 
 .info-compte {
     margin: 20px 0;
@@ -2919,22 +1248,14 @@ body.page-flappy {
 
 .info-ligne {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
     gap: 15px;
-
     margin: 10px 0;
-
     padding: 15px;
-
     background: #111122;
-
     border: 1px solid #333355;
-
     border-radius: 10px;
-
     text-align: left;
 }
 
@@ -2944,84 +1265,65 @@ body.page-flappy {
 
 .info-ligne strong {
     color: #00aaff;
-
     overflow-wrap: anywhere;
-
     text-align: right;
 }
 
 
-/* BOUTON DÉCONNEXION */
+/* =========================================================
+   BOUTON DÉCONNEXION
+========================================================= */
 
 .bouton-deconnexion-compte {
     width: 100%;
-
     margin-top: 15px;
-
     padding: 13px;
-
     background: #111122;
-
     border: 2px solid #ff4444;
-
     border-radius: 10px;
-
     color: white;
-
     font-size: 16px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
 .bouton-deconnexion-compte:hover {
     background: #ff4444;
-
     color: white;
-
     box-shadow:
         0 0 15px rgba(255, 68, 68, 0.4);
 }
 
 
-/* BOUTON CONNEXION */
+/* =========================================================
+   BOUTON CONNEXION
+========================================================= */
 
 .bouton-compte {
     display: inline-block;
-
     margin-top: 15px;
-
     padding: 13px 25px;
-
     background: #101025;
-
     border: 2px solid #00aaff;
-
     border-radius: 10px;
-
     color: white;
-
     text-decoration: none;
-
     font-weight: bold;
-
     transition: 0.2s;
 }
 
 .bouton-compte:hover {
     background: #00aaff;
-
     color: black;
-
     box-shadow:
         0 0 15px rgba(0, 170, 255, 0.5);
 }
 
 
-/* MOBILE */
+/* =========================================================
+   COMPTE — MOBILE
+========================================================= */
 
 @media (max-width: 600px) {
 
@@ -3036,20 +1338,17 @@ body.page-flappy {
 
     .page-compte nav a {
         font-size: 14px;
-
         padding: 8px 10px;
     }
 
     .page-compte .icone-compte {
         right: 10px;
-
         width: 42px;
         height: 42px;
     }
 
     .compte-container {
         width: 94%;
-
         margin-top: 30px;
     }
 
@@ -3059,60 +1358,24 @@ body.page-flappy {
 
     .info-ligne {
         flex-direction: column;
-
         align-items: flex-start;
     }
 
     .info-ligne strong {
         text-align: left;
     }
-
 }
+
 
 /* =========================================================
-   ACCUEIL — BIENVENUE SANS CADRE
-========================================================= */
-
-.page-accueil .bienvenue {
-    margin: 10px 0 25px;
-    padding: 0;
-
-    border: none;
-    border-radius: 0;
-
-    background: transparent;
-
-    box-shadow: none;
-
-    color: #ddd;
-
-    font-size: 18px;
-}
-/* =====================================================
    PONG — CONTROLES MOBILES
-===================================================== */
-
-/*
-   PAR DEFAUT :
-   Les contrôles mobiles sont complètement cachés.
-   Donc sur ordinateur : aucun bouton mobile.
-*/
+========================================================= */
 
 .controles-pong {
     display: none;
 }
 
-
-/* =====================================================
-   TELEPHONE / TABLETTE
-===================================================== */
-
 @media (max-width: 768px) {
-
-    /*
-       Sur téléphone/tablette,
-       on affiche la zone des contrôles.
-    */
 
     .controles-pong {
         display: block;
@@ -3120,59 +1383,29 @@ body.page-flappy {
         margin-top: 20px;
     }
 
-
-    /*
-       Joueur 1 :
-       toujours visible sur mobile.
-    */
-
     .joueur1-mobile {
         display: block;
     }
 
-
-    /*
-       Joueur 2 :
-       caché par défaut.
-    */
-
     .joueur2-mobile {
         display: none;
     }
-
-
-    /*
-       Quand le JavaScript ajoute
-       "mode-2-joueurs",
-       le Joueur 2 apparaît.
-    */
 
     .controles-pong.mode-2-joueurs
     .joueur2-mobile {
         display: block;
     }
 
-
-    /*
-       Style des zones joueurs
-    */
-
     .controle-joueur-pong {
         margin: 15px auto;
         text-align: center;
     }
-
-
-    /*
-       Boutons mobiles
-    */
 
     .boutons-pong-mobile {
         display: flex;
         justify-content: center;
         gap: 15px;
     }
-
 
     .boutons-pong-mobile button {
         width: 80px;
@@ -3182,26 +1415,16 @@ body.page-flappy {
         touch-action: none;
         user-select: none;
     }
-
 }
 
-
-/* =====================================================
-   ORDINATEUR
-===================================================== */
-
 @media (min-width: 769px) {
-
-    /*
-       Sécurité supplémentaire :
-       aucun contrôle mobile sur PC.
-    */
 
     .controles-pong {
         display: none !important;
     }
-
 }
+
+
 /* =========================================================
    CUBE RUNNER 3D
 ========================================================= */
@@ -3235,6 +1458,11 @@ body.page-flappy {
     margin-top: 5px;
 }
 
+
+/* =========================================================
+   CUBE RUNNER — ZONE
+========================================================= */
+
 #jeu3d {
     position: relative;
     width: 100%;
@@ -3253,6 +1481,11 @@ body.page-flappy {
     height: 100%;
 }
 
+
+/* =========================================================
+   CUBE RUNNER — MESSAGE
+========================================================= */
+
 #message3D {
     position: absolute;
     z-index: 10;
@@ -3268,12 +1501,13 @@ body.page-flappy {
     pointer-events: none;
 }
 
+
+/* =========================================================
+   CUBE RUNNER — CONTROLES
+========================================================= */
+
 .controles-3d {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 15px;
+    display: none;
 }
 
 .controles-3d button {
@@ -3291,6 +1525,11 @@ body.page-flappy {
 .controles-3d button:active {
     transform: scale(0.92);
 }
+
+
+/* =========================================================
+   CUBE RUNNER — BOUTONS
+========================================================= */
 
 .boutons-jeu3d {
     margin-top: 15px;
@@ -3312,6 +1551,11 @@ body.page-flappy {
         0 0 15px #00eaff;
 }
 
+
+/* =========================================================
+   CUBE RUNNER — CLASSEMENT
+========================================================= */
+
 #statutClassement3D {
     margin: 15px;
 }
@@ -3320,32 +1564,53 @@ body.page-flappy {
     margin-top: 25px;
     width: 100%;
     overflow-x: auto;
+    padding: 20px;
+    border: 2px solid #00eaff;
+    border-radius: 15px;
+    background: #080812;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.25);
 }
 
 .classement3d table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .classement3d th,
 .classement3d td {
     padding: 12px;
-    border-bottom: 1px solid rgba(0, 234, 255, 0.25);
+    border-bottom:
+        1px solid rgba(0, 234, 255, 0.25);
 }
 
 .classement3d th {
     color: #00eaff;
 }
 
+.classement3d tr:last-child td {
+    border-bottom: none;
+}
+
+.classement3d tr:hover td {
+    background: rgba(0, 234, 255, 0.08);
+}
+
 .mon-score {
     color: #00eaff;
     font-weight: bold;
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
 }
 
 
 /* =========================================================
-   MOBILE
+   CUBE RUNNER — MOBILE
 ========================================================= */
 
 @media (max-width: 700px) {
@@ -3369,134 +1634,967 @@ body.page-flappy {
         min-width: 100px;
     }
 
-    .controles-3d button {
-        width: 75px;
-        height: 60px;
-    }
-
     #message3D {
         font-size: 22px;
         white-space: nowrap;
     }
-
-}
-/* =========================================================
-   CUBE RUNNER 3D — CONTROLES MOBILE
-========================================================= */
-
-/* PC : contrôles mobiles cachés */
-.controles-3d {
-    display: none;
 }
 
 
 /* =========================================================
-   MOBILE
+   CUBE RUNNER — CONTROLES MOBILE
 ========================================================= */
 
 @media (max-width: 768px) {
 
     .controles-3d {
-
         display: flex;
-
         position: fixed;
-
         left: 0;
-
         right: 0;
-
         bottom: 20px;
-
         width: 100%;
-
         justify-content: center;
-
         align-items: center;
-
         gap: 25px;
-
         z-index: 9999;
-
         pointer-events: none;
-
     }
-
 
     .controles-3d button {
-
         width: 70px;
-
         height: 70px;
-
         border: 2px solid #00eaff;
-
         border-radius: 18px;
-
         background: rgba(0, 0, 0, 0.75);
-
         color: white;
-
         font-size: 30px;
-
         font-weight: bold;
-
         box-shadow:
-            0 0 15px
-            rgba(0, 234, 255, 0.5);
-
+            0 0 15px rgba(0, 234, 255, 0.5);
         cursor: pointer;
-
         pointer-events: auto;
-
         touch-action: manipulation;
-
         -webkit-tap-highlight-color: transparent;
-
     }
-
 
     .controles-3d button:active {
-
         transform: scale(0.9);
-
-        background: rgba(
-            0,
-            234,
-            255,
-            0.35
-        );
-
+        background:
+            rgba(0, 234, 255, 0.35);
     }
-
 }
-
-
-/* =========================================================
-   PETITS ÉCRANS
-========================================================= */
 
 @media (max-width: 450px) {
 
     .controles-3d {
-
         bottom: 15px;
-
         gap: 15px;
-
     }
-
 
     .controles-3d button {
-
         width: 62px;
-
         height: 62px;
-
         font-size: 26px;
+    }
+}
 
+
+/* =========================================================
+   JEU 10 — 3D RACING
+========================================================= */
+
+.racing3d-container {
+    width: min(1100px, 95%);
+    margin: 30px auto;
+    text-align: center;
+}
+
+.racing3d-container h1 {
+    color: #00eaff;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 25px #00eaff;
+}
+
+
+/* =========================================================
+   RACING — STATS
+========================================================= */
+
+.racing3d-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.racing3d-stat {
+    padding: 12px 25px;
+    border-radius: 12px;
+    background: #111827;
+    border: 1px solid #00eaff;
+}
+
+.racing3d-stat strong {
+    display: block;
+    color: #00eaff;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   RACING — JEU
+========================================================= */
+
+#jeuRacing3D {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+
+    /* HAUTEUR PC */
+    height: 450px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
+
+    margin: 20px auto;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+    border: 3px solid #00eaff !important;
+
+    background: #03040a;
+
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.35);
+}
+
+
+/* =========================================================
+   RACING — CANVAS
+========================================================= */
+
+#jeuRacing3D canvas {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+}
+
+
+/* =========================================================
+   RACING — MESSAGE
+========================================================= */
+
+#messageRacing3D {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow:
+        0 0 15px #00eaff;
+}
+
+
+/* =========================================================
+   RACING — CONTROLES
+========================================================= */
+
+.racing3d-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px auto;
+}
+
+.racing3d-controls button {
+    width: 80px;
+    height: 55px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        #0077ff,
+        #00eaff
+    );
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RACING — BOUTONS
+========================================================= */
+
+.racing3d-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.racing3d-buttons button {
+    padding: 12px 22px;
+    border: 1px solid #00eaff;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.racing3d-buttons button:hover {
+    background: #00eaff;
+    color: #050505;
+}
+
+
+/* =========================================================
+   RACING — CLASSEMENT
+========================================================= */
+
+.racing3d-ranking {
+    width: min(700px, 95%);
+    margin: 30px auto;
+    padding: 20px;
+    border: 2px solid #00eaff;
+    border-radius: 15px;
+    background: #080812;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.25);
+}
+
+.racing3d-ranking h2 {
+    color: #00eaff;
+}
+
+.racing3d-ranking table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #080b12;
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.racing3d-ranking th,
+.racing3d-ranking td {
+    padding: 12px;
+    border-bottom: 1px solid #222b3d;
+}
+
+.racing3d-ranking th {
+    color: #00eaff;
+}
+
+.racing3d-ranking td {
+    color: white;
+}
+
+.racing3d-ranking tr:last-child td {
+    border-bottom: none;
+}
+
+.racing3d-ranking tr:hover td {
+    background: rgba(0, 234, 255, 0.08);
+}
+
+.racing3d-ranking .mon-score {
+    color: #00eaff;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   RACING — MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .racing3d-container {
+        width: 96%;
     }
 
+    #jeuRacing3D {
+        width: 95%;
+
+        /* HAUTEUR MOBILE */
+        height: 400px !important;
+        min-height: 400px !important;
+        max-height: 400px !important;
+
+        margin: 15px auto;
+    }
+
+    #jeuRacing3D canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .racing3d-stats {
+        gap: 8px;
+    }
+
+    .racing3d-stat {
+        padding: 10px 15px;
+    }
+
+    .racing3d-controls button {
+        width: 70px;
+        height: 55px;
+    }
+}
+
+
+/* =========================================================
+   RACING — PETIT TELEPHONE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    #jeuRacing3D {
+        width: 96%;
+
+        height: 350px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
+    }
+}
+
+
+/* =========================================================
+   GAME 10 — AUTRE VERSION
+========================================================= */
+
+.game10-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   GAME 10 — CANVAS
+========================================================= */
+
+#game10-canvas-zone {
+    position: relative;
+    width: 100%;
+    height: 650px;
+    min-height: 650px;
+    overflow: hidden;
+    margin: 20px auto;
+    border-radius: 15px;
+    background: #101827;
+    border: 3px solid #00eaff;
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, 0.35);
+}
+
+#game10-canvas-zone canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#game10-message {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   GAME 10 — STATS
+========================================================= */
+
+.game10-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 15px 0;
+}
+
+.game10-stat {
+    min-width: 130px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: #151d2e;
+    border: 1px solid #00aaff;
+}
+
+.game10-stat strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   GAME 10 — CONTROLES
+========================================================= */
+
+.game10-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px auto;
+}
+
+.game10-controls button {
+    width: 75px;
+    height: 60px;
+    font-size: 25px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   GAME 10 — BOUTONS
+========================================================= */
+
+.game10-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.game10-buttons button {
+    padding: 12px 25px;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   GAME 10 — CLASSEMENT
+========================================================= */
+
+.game10-ranking {
+    width: 100%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 2px solid #00eaff;
+    border-radius: 15px;
+    background: #080812;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.25);
+}
+
+.game10-ranking h2 {
+    color: #00eaff;
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
+}
+
+.game10-ranking table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.game10-ranking th,
+.game10-ranking td {
+    padding: 12px;
+    border-bottom: 1px solid #222b3d;
+}
+
+.game10-ranking th {
+    color: #00eaff;
+    background: #11152b;
+}
+
+.game10-ranking tr:last-child td {
+    border-bottom: none;
+}
+
+.game10-ranking tr:hover td {
+    background: rgba(0, 234, 255, 0.08);
+}
+
+
+/* =========================================================
+   GAME 10 — MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .game10-page {
+        padding: 10px;
+    }
+
+    #game10-canvas-zone {
+        height: 500px;
+        min-height: 500px;
+        border-radius: 10px;
+    }
+
+    .game10-controls button {
+        width: 70px;
+        height: 55px;
+    }
+}
+
+
+/* =========================================================
+   ACCUEIL — AFFICHAGE PC
+========================================================= */
+
+@media (min-width: 901px) {
+
+    .grille-jeux {
+        display: grid !important;
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+
+    .jeu {
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    .liste-jeux {
+        width: min(1200px, 94%) !important;
+        margin: 0 auto !important;
+    }
+
+    nav {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    nav a {
+        font-size: 16px !important;
+    }
+}
+
+
+/* =========================================================
+   ACCUEIL — TABLETTE
+========================================================= */
+
+@media (min-width: 551px) and (max-width: 900px) {
+
+    .grille-jeux {
+        display: grid !important;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+}
+
+
+/* =========================================================
+   ACCUEIL — TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 550px) {
+
+    .grille-jeux {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+}
+
+
+/* =========================================================
+   ACCUEIL — ICÔNE COMPTE MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .page-accueil nav {
+        min-height: 70px;
+        padding:
+            12px
+            70px
+            12px
+            10px;
+    }
+
+    .page-accueil .menu-gauche {
+        gap: 8px;
+    }
+
+    .page-accueil .menu-gauche a {
+        width: auto;
+        padding: 9px 12px;
+        font-size: 14px;
+    }
+
+    .page-accueil .icone-compte {
+        right: 12px;
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+    }
+}
+
+
+/* =========================================================
+   GAMEZONE — CONTOURS DE TOUS LES ÉCRANS DE JEU
+========================================================= */
+
+#jeu,
+#jeuSpaceInvaders,
+#jeuFlappy,
+#jeuTetris,
+#jeu3d,
+#jeuRacing3D,
+#game10-canvas-zone {
+    border: 3px solid #00eaff !important;
+    border-radius: 15px !important;
+    box-shadow:
+        0 0 10px rgba(0, 234, 255, 0.35),
+        0 0 25px rgba(0, 234, 255, 0.15) !important;
+}
+
+
+/* =========================================================
+   GAMEZONE — CONTOURS DES CLASSEMENTS
+========================================================= */
+
+.classement,
+.classement3d,
+.racing3d-ranking,
+.game10-ranking {
+    border: 2px solid #00eaff !important;
+    border-radius: 15px !important;
+    background: #080812 !important;
+    padding: 20px !important;
+    box-shadow:
+        0 0 12px rgba(0, 234, 255, 0.25),
+        0 0 25px rgba(0, 234, 255, 0.08) !important;
+}
+
+
+/* =========================================================
+   TITRES DES CLASSEMENTS
+========================================================= */
+
+.classement h2,
+.classement3d h2,
+.racing3d-ranking h2,
+.game10-ranking h2 {
+    color: #00eaff !important;
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
+}
+
+
+/* =========================================================
+   TABLEAUX
+========================================================= */
+
+.classement table,
+.classement3d table,
+.racing3d-ranking table,
+.game10-ranking table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   EN-TÊTES
+========================================================= */
+
+.classement th,
+.classement3d th,
+.racing3d-ranking th,
+.game10-ranking th {
+    background: #11152b !important;
+    color: #00eaff !important;
+    border-bottom:
+        2px solid #00aaff !important;
+}
+
+
+/* =========================================================
+   CELLULES
+========================================================= */
+
+.classement td,
+.classement3d td,
+.racing3d-ranking td,
+.game10-ranking td {
+    color: white;
+    border-bottom:
+        1px solid #263044;
+}
+
+
+/* =========================================================
+   DERNIÈRE LIGNE
+========================================================= */
+
+.classement tr:last-child td,
+.classement3d tr:last-child td,
+.racing3d-ranking tr:last-child td,
+.game10-ranking tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   SURVOL
+========================================================= */
+
+.classement tr:hover td,
+.classement3d tr:hover td,
+.racing3d-ranking tr:hover td,
+.game10-ranking tr:hover td {
+    background:
+        rgba(0, 234, 255, 0.08);
+}
+
+
+/* =========================================================
+   MON SCORE
+========================================================= */
+
+.mon-score {
+    color: #00eaff !important;
+    font-weight: bold !important;
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
+}
+
+
+/* =========================================================
+   CONTOURS DES ZONES 3D
+========================================================= */
+
+#jeu3d,
+#jeuRacing3D,
+#game10-canvas-zone {
+    border: 3px solid #00eaff !important;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.35),
+        0 0 30px rgba(0, 234, 255, 0.12) !important;
+}
+
+
+/* =========================================================
+   MOBILE — CONTOURS
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #jeu,
+    #jeuSpaceInvaders,
+    #jeuFlappy,
+    #jeuTetris,
+    #jeu3d,
+    #jeuRacing3D,
+    #game10-canvas-zone {
+        border-width: 2px !important;
+        border-radius: 12px !important;
+    }
+
+    .classement,
+    .classement3d,
+    .racing3d-ranking,
+    .game10-ranking {
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 12px !important;
+        border-width: 2px !important;
+        border-radius: 12px !important;
+        overflow-x: auto;
+    }
+
+    .classement table,
+    .classement3d table,
+    .racing3d-ranking table,
+    .game10-ranking table {
+        min-width: 100%;
+    }
+
+    .classement th,
+    .classement td,
+    .classement3d th,
+    .classement3d td,
+    .racing3d-ranking th,
+    .racing3d-ranking td,
+    .game10-ranking th,
+    .game10-ranking td {
+        padding: 9px 6px;
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE — ESPACE POUR LES CONTROLES FIXES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .page-space .container,
+    .page-tetris .container,
+    .jeu3d-container,
+    .racing3d-container,
+    .game10-page {
+        padding-bottom: 100px;
+    }
+}
+
+
+/* =========================================================
+   GAMEZONE — BOUTON RETOUR AUX JEUX
+========================================================= */
+
+.bouton-retour-jeux {
+    display: inline-block;
+    margin: 10px auto 20px;
+    padding: 12px 22px;
+    background: #101020;
+    border: 2px solid #00aaff;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        box-shadow 0.2s,
+        transform 0.2s;
+}
+
+.bouton-retour-jeux:hover {
+    background: #00aaff;
+    color: black;
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.bouton-retour-jeux:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   RETOUR — MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .bouton-retour-jeux {
+        width: 90%;
+        max-width: 300px;
+        padding: 12px 15px;
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   RACING 3D — FORCE TAILLE FINALE
+========================================================= */
+
+/*
+   Cette partie est volontairement placée
+   TOUT À LA FIN du CSS pour être prioritaire.
+*/
+
+#jeuRacing3D {
+    width: 90% !important;
+    max-width: 900px !important;
+
+    height: 450px !important;
+    min-height: 400px !important;
+    max-height: 400px !important;
+
+    margin: 20px auto !important;
+
+    overflow: hidden !important;
+}
+
+
+/* CANVAS */
+
+#jeuRacing3D canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+/* =========================================================
+   RACING 3D — MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #jeuRacing3D {
+        width: 95% !important;
+
+        height: 400px !important;
+        min-height: 400px !important;
+        max-height: 400px !important;
+    }
+
+    #jeuRacing3D canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+
+/* =========================================================
+   RACING 3D — PETIT TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    #jeuRacing3D {
+        width: 96% !important;
+
+        height: 350px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
+    }
 }
 
 

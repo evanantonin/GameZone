@@ -1,21 +1,11 @@
 /* =========================================================
    GAMEZONE — JEU 9
    CUBE RUNNER 3D
-   THREE.JS
-
-   👤 VISITEUR
-   🏆 CLASSEMENT SUPABASE
-   💾 MEILLEUR SCORE LOCAL
-   📊 COMPTEUR DE PARTIES SUPABASE
-   📱 MOBILE
-   💻 PC
-   ⏸️ PAUSE
-   💀 GAME OVER
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURATION SUPABASE
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -24,42 +14,26 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_F0af00-z9ZDemm9ch1tIaA_wSNCZb9G";
 
-
-/* =========================================================
-   IDENTIFICATION DU JEU
-========================================================= */
-
-const JEU_ID = "9";
-
-const NOM_JEU = "Cube Runner 3D";
-
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 let supabaseClient3D = null;
-
 
 if (
     window.supabase &&
     typeof window.supabase.createClient === "function"
 ) {
-
     supabaseClient3D =
         window.supabase.createClient(
             SUPABASE_URL,
             SUPABASE_KEY
         );
-
 }
-else {
 
-    console.error(
-        "❌ Bibliothèque Supabase non chargée."
-    );
 
-}
+/* =========================================================
+   IDENTIFICATION
+========================================================= */
+
+const JEU_ID = "9";
+const NOM_JEU = "Cube Runner 3D";
 
 
 /* =========================================================
@@ -87,6 +61,9 @@ const boutonPause3D =
 const boutonRejouer3D =
     document.getElementById("boutonRejouer3D");
 
+const boutonPleinEcran3D =
+    document.getElementById("boutonGrandEcran3D");
+
 const boutonGauche3D =
     document.getElementById("boutonGauche3D");
 
@@ -104,62 +81,30 @@ const statutClassement3D =
 
 
 /* =========================================================
-   VERIFICATION HTML
-========================================================= */
-
-if (!zoneJeu) {
-
-    console.error(
-        "❌ Élément #jeu3d introuvable."
-    );
-
-}
-
-if (!scoreElement3D) {
-
-    console.error(
-        "❌ Élément #score introuvable."
-    );
-
-}
-
-
-/* =========================================================
    PSEUDO
 ========================================================= */
 
 let pseudo =
-    localStorage.getItem(
-        "pseudoGameZone"
-    );
-
+    localStorage.getItem("pseudoGameZone");
 
 if (
     typeof pseudo !== "string" ||
     pseudo.trim() === ""
 ) {
-
     pseudo = null;
-
 }
 else {
-
-    pseudo =
-        pseudo.trim();
-
+    pseudo = pseudo.trim();
 }
 
-
 if (pseudoAffiche3D) {
-
     pseudoAffiche3D.textContent =
         pseudo || "Visiteur";
-
 }
 
 
 /* =========================================================
-   MEILLEUR SCORE
+   MEILLEUR SCORE LOCAL
 ========================================================= */
 
 function obtenirCleMeilleurScore3D() {
@@ -173,16 +118,11 @@ function obtenirCleMeilleurScore3D() {
 
     }
 
-    return (
-        "meilleurScoreCubeRunner3D_visiteur"
-    );
-
+    return "meilleurScoreCubeRunner3D_visiteur";
 }
-
 
 let cleMeilleurScore3D =
     obtenirCleMeilleurScore3D();
-
 
 let meilleurScore3D =
     Number(
@@ -190,7 +130,6 @@ let meilleurScore3D =
             cleMeilleurScore3D
         )
     ) || 0;
-
 
 if (meilleurScoreElement3D) {
 
@@ -205,17 +144,12 @@ if (meilleurScoreElement3D) {
 ========================================================= */
 
 let scene = null;
-
 let camera = null;
-
 let renderer = null;
-
 let joueur = null;
-
 let route = null;
 
 let obstacles = [];
-
 let etoiles = [];
 
 let animationID = null;
@@ -233,8 +167,6 @@ let jeuEnPause = false;
 
 let jeuDemarre = false;
 
-let partieComptee = false;
-
 let scoreEnvoye = false;
 
 let positionJoueurX = 0;
@@ -243,15 +175,13 @@ let vitesse = 0.25;
 
 let dernierTemps = 0;
 
-let hauteurJoueur = 0;
-
 let vitesseVerticale = 0;
 
 let peutSauter = true;
 
 
 /* =========================================================
-   CONFIGURATION DU GAMEPLAY
+   CONFIGURATION
 ========================================================= */
 
 const LARGEUR_ROUTE = 9;
@@ -266,58 +196,39 @@ const VOIES = [-3, 0, 3];
 
 
 /* =========================================================
-   INITIALISATION THREE.JS
+   INITIALISATION
 ========================================================= */
 
 function initialiser3D() {
 
     if (!zoneJeu) {
 
-        return false;
-
-    }
-
-
-    if (
-        typeof THREE === "undefined"
-    ) {
-
         console.error(
-            "❌ Three.js n'est pas chargé."
+            "❌ #jeu3d introuvable."
         );
 
-        if (message3D) {
+        return false;
+    }
 
-            message3D.textContent =
-                "❌ Three.js n'est pas chargé.";
+    if (typeof THREE === "undefined") {
 
-            message3D.style.display =
-                "block";
-
-        }
+        console.error(
+            "❌ Three.js non chargé."
+        );
 
         return false;
-
     }
 
 
-    /*
+    /* =====================================================
        SCENE
-    */
+    ===================================================== */
 
     scene =
         new THREE.Scene();
 
-
     scene.background =
-        new THREE.Color(
-            0x03030c
-        );
-
-
-    /*
-       BROUILLARD
-    */
+        new THREE.Color(0x03030c);
 
     scene.fog =
         new THREE.Fog(
@@ -327,9 +238,9 @@ function initialiser3D() {
         );
 
 
-    /*
+    /* =====================================================
        DIMENSIONS
-    */
+    ===================================================== */
 
     const largeur =
         Math.max(
@@ -344,30 +255,23 @@ function initialiser3D() {
         );
 
 
-    /*
+    /* =====================================================
        CAMERA
-    */
+    ===================================================== */
 
     camera =
         new THREE.PerspectiveCamera(
-
             70,
-
             largeur / hauteur,
-
             0.1,
-
             300
-
         );
-
 
     camera.position.set(
         0,
         4,
         8
     );
-
 
     camera.lookAt(
         0,
@@ -376,9 +280,9 @@ function initialiser3D() {
     );
 
 
-    /*
+    /* =====================================================
        RENDERER
-    */
+    ===================================================== */
 
     renderer =
         new THREE.WebGLRenderer({
@@ -390,22 +294,17 @@ function initialiser3D() {
 
         });
 
-
     renderer.setPixelRatio(
-
         Math.min(
             window.devicePixelRatio || 1,
             2
         )
-
     );
-
 
     renderer.setSize(
         largeur,
         hauteur
     );
-
 
     renderer.domElement.style.display =
         "block";
@@ -417,24 +316,22 @@ function initialiser3D() {
         "100%";
 
 
+    /* =====================================================
+       IMPORTANT :
+       ON VIDE LE CANVAS EXISTANT
+       POUR EVITER DEUX ECRANS
+    ===================================================== */
+
+    zoneJeu.innerHTML = "";
+
     zoneJeu.appendChild(
         renderer.domElement
     );
+
+
     /* =====================================================
-   CACHER LE MESSAGE AU DÉMARRAGE
-===================================================== */
-
-if (message3D) {
-
-    message3D.style.display =
-        "none";
-
-}
-
-
-    /*
-       LUMIERE AMBIANTE
-    */
+       LUMIERES
+    ===================================================== */
 
     const lumiere =
         new THREE.HemisphereLight(
@@ -443,15 +340,10 @@ if (message3D) {
             1.5
         );
 
-
     scene.add(
         lumiere
     );
 
-
-    /*
-       LUMIERE DIRECTIONNELLE
-    */
 
     const lumiereDirectionnelle =
         new THREE.DirectionalLight(
@@ -459,22 +351,20 @@ if (message3D) {
             1
         );
 
-
     lumiereDirectionnelle.position.set(
         5,
         10,
         5
     );
 
-
     scene.add(
         lumiereDirectionnelle
     );
 
 
-    /*
-       CREATION DU MONDE
-    */
+    /* =====================================================
+       CREATION MONDE
+    ===================================================== */
 
     creerRoute();
 
@@ -485,9 +375,9 @@ if (message3D) {
     creerEtoiles();
 
 
-    /*
+    /* =====================================================
        RESIZE
-    */
+    ===================================================== */
 
     window.addEventListener(
         "resize",
@@ -500,9 +390,7 @@ if (message3D) {
         camera
     );
 
-
     return true;
-
 }
 
 
@@ -519,14 +407,10 @@ function creerRoute() {
             PROFONDEUR_ROUTE
         );
 
-
     const materiau =
         new THREE.MeshStandardMaterial({
-
             color: 0x111122
-
         });
-
 
     route =
         new THREE.Mesh(
@@ -534,22 +418,16 @@ function creerRoute() {
             materiau
         );
 
-
     route.position.set(
         0,
         -0.4,
         -70
     );
 
-
     scene.add(
         route
     );
 
-
-    /*
-       LIGNES
-    */
 
     for (
         let x = -3;
@@ -564,14 +442,10 @@ function creerRoute() {
                 PROFONDEUR_ROUTE
             );
 
-
         const materiauLigne =
             new THREE.MeshBasicMaterial({
-
                 color: 0x00ffff
-
             });
-
 
         const ligne =
             new THREE.Mesh(
@@ -579,20 +453,16 @@ function creerRoute() {
                 materiauLigne
             );
 
-
         ligne.position.set(
             x,
             -0.12,
             -70
         );
 
-
         scene.add(
             ligne
         );
-
     }
-
 }
 
 
@@ -609,7 +479,6 @@ function creerJoueur() {
             1.2
         );
 
-
     const materiau =
         new THREE.MeshStandardMaterial({
 
@@ -619,13 +488,11 @@ function creerJoueur() {
 
         });
 
-
     joueur =
         new THREE.Mesh(
             geometrie,
             materiau
         );
-
 
     joueur.position.set(
         0,
@@ -633,11 +500,9 @@ function creerJoueur() {
         3
     );
 
-
     scene.add(
         joueur
     );
-
 }
 
 
@@ -656,19 +521,15 @@ function creerObstacles() {
         creerObstacle(
             -20 - i * 7
         );
-
     }
-
 }
 
 
 /* =========================================================
-   CREER UN OBSTACLE
+   CREER OBSTACLE
 ========================================================= */
 
-function creerObstacle(
-    z
-) {
+function creerObstacle(z) {
 
     const geometrie =
         new THREE.BoxGeometry(
@@ -676,7 +537,6 @@ function creerObstacle(
             1.5,
             1.5
         );
-
 
     const materiau =
         new THREE.MeshStandardMaterial({
@@ -687,13 +547,11 @@ function creerObstacle(
 
         });
 
-
     const obstacle =
         new THREE.Mesh(
             geometrie,
             materiau
         );
-
 
     const voie =
         VOIES[
@@ -703,23 +561,19 @@ function creerObstacle(
             )
         ];
 
-
     obstacle.position.set(
         voie,
         0.75,
         z
     );
 
-
     scene.add(
         obstacle
     );
 
-
     obstacles.push(
         obstacle
     );
-
 }
 
 
@@ -736,14 +590,10 @@ function creerEtoiles() {
             6
         );
 
-
     const materiau =
         new THREE.MeshBasicMaterial({
-
             color: 0xffffff
-
         });
-
 
     for (
         let i = 0;
@@ -757,7 +607,6 @@ function creerEtoiles() {
                 materiau
             );
 
-
         etoile.position.set(
 
             (Math.random() - 0.5) * 100,
@@ -768,18 +617,14 @@ function creerEtoiles() {
 
         );
 
-
         scene.add(
             etoile
         );
 
-
         etoiles.push(
             etoile
         );
-
     }
-
 }
 
 
@@ -793,21 +638,14 @@ function allerGauche() {
         jeuTermine ||
         jeuEnPause
     ) {
-
         return;
-
     }
-
 
     positionJoueurX =
         Math.max(
-
             -3,
-
             positionJoueurX - 3
-
         );
-
 }
 
 
@@ -821,21 +659,14 @@ function allerDroite() {
         jeuTermine ||
         jeuEnPause
     ) {
-
         return;
-
     }
-
 
     positionJoueurX =
         Math.min(
-
             3,
-
             positionJoueurX + 3
-
         );
-
 }
 
 
@@ -846,27 +677,18 @@ function allerDroite() {
 function sauter() {
 
     if (
-
         jeuTermine ||
-
         jeuEnPause ||
-
         !peutSauter
-
     ) {
-
         return;
-
     }
-
 
     vitesseVerticale =
         FORCE_SAUT;
 
-
     peutSauter =
         false;
-
 }
 
 
@@ -878,80 +700,86 @@ document.addEventListener(
     "keydown",
     function(event) {
 
+        /* ================================================
+           ESPACE APRÈS GAME OVER = REJOUER
+        ================================================= */
+
+        if (
+            event.code === "Space" &&
+            jeuTermine
+        ) {
+
+            event.preventDefault();
+
+            rejouer3D();
+
+            return;
+        }
+
+
         const touche =
             event.key.toLowerCase();
 
 
-        /*
+        /* ================================================
            GAUCHE
-        */
+        ================================================= */
 
         if (
-
             touche === "q" ||
-
             touche === "a" ||
-
             event.key === "ArrowLeft"
-
         ) {
 
             event.preventDefault();
 
             allerGauche();
 
+            return;
         }
 
 
-        /*
+        /* ================================================
            DROITE
-        */
+        ================================================= */
 
-        else if (
-
+        if (
             touche === "d" ||
-
             event.key === "ArrowRight"
-
         ) {
 
             event.preventDefault();
 
             allerDroite();
 
+            return;
         }
 
 
-        /*
+        /* ================================================
            SAUT
-        */
+           ESPACE UNIQUEMENT SI PARTIE EN COURS
+        ================================================= */
 
-        else if (
-
+        if (
             touche === "z" ||
-
             event.key === "ArrowUp" ||
-
             event.code === "Space"
-
         ) {
 
             event.preventDefault();
 
             sauter();
 
+            return;
         }
 
 
-        /*
+        /* ================================================
            PAUSE
-        */
+        ================================================= */
 
-        else if (
-
-            touche === "p"
-
-        ) {
+        if (touche === "p") {
 
             event.preventDefault();
 
@@ -973,9 +801,7 @@ function ajouterControleMobile(
 ) {
 
     if (!bouton) {
-
         return;
-
     }
 
 
@@ -1004,7 +830,6 @@ function ajouterControleMobile(
 
         }
     );
-
 }
 
 
@@ -1013,12 +838,10 @@ ajouterControleMobile(
     allerGauche
 );
 
-
 ajouterControleMobile(
     boutonDroite3D,
     allerDroite
 );
-
 
 ajouterControleMobile(
     boutonSaut3D,
@@ -1030,57 +853,38 @@ ajouterControleMobile(
    COLLISION
 ========================================================= */
 
-function verifierCollision(
-    obstacle
-) {
+function verifierCollision(obstacle) {
 
     if (
         !joueur ||
         !obstacle
     ) {
-
         return false;
-
     }
-
 
     const distanceX =
         Math.abs(
-
             joueur.position.x -
             obstacle.position.x
-
         );
-
 
     const distanceY =
         Math.abs(
-
             joueur.position.y -
             obstacle.position.y
-
         );
-
 
     const distanceZ =
         Math.abs(
-
             joueur.position.z -
             obstacle.position.z
-
         );
 
-
     return (
-
         distanceX < 1.15 &&
-
         distanceY < 1.25 &&
-
         distanceZ < 1.25
-
     );
-
 }
 
 
@@ -1088,13 +892,9 @@ function verifierCollision(
    SCORE
 ========================================================= */
 
-function augmenterScore(
-    valeur
-) {
+function augmenterScore(valeur) {
 
-    score +=
-        valeur;
-
+    score += valeur;
 
     const scoreEntier =
         Math.floor(score);
@@ -1104,13 +904,8 @@ function augmenterScore(
 
         scoreElement3D.textContent =
             scoreEntier;
-
     }
 
-
-    /*
-       MEILLEUR SCORE
-    */
 
     if (
         scoreEntier >
@@ -1125,20 +920,14 @@ function augmenterScore(
 
             meilleurScoreElement3D.textContent =
                 meilleurScore3D;
-
         }
 
 
         localStorage.setItem(
-
             cleMeilleurScore3D,
-
             meilleurScore3D
-
         );
-
     }
-
 }
 
 
@@ -1149,11 +938,8 @@ function augmenterScore(
 async function gameOver3D() {
 
     if (jeuTermine) {
-
         return;
-
     }
-
 
     jeuTermine =
         true;
@@ -1167,11 +953,11 @@ async function gameOver3D() {
 
         message3D.textContent =
             "💀 GAME OVER — Score : " +
-            scoreFinal;
+            scoreFinal +
+            " — ESPACE pour rejouer";
 
         message3D.style.display =
             "block";
-
     }
 
 
@@ -1179,7 +965,6 @@ async function gameOver3D() {
 
         boutonPause3D.style.display =
             "none";
-
     }
 
 
@@ -1187,13 +972,12 @@ async function gameOver3D() {
 
         boutonRejouer3D.style.display =
             "inline-block";
-
     }
 
 
-    /*
+    /* =====================================================
        VISITEUR
-    */
+    ===================================================== */
 
     if (!pseudo) {
 
@@ -1201,20 +985,17 @@ async function gameOver3D() {
 
             statutClassement3D.textContent =
                 "👤 Visiteur : ton score reste uniquement sur cet appareil.";
-
         }
 
         return;
-
     }
 
 
-    /*
-       JOUEUR CONNECTÉ
-    */
+    /* =====================================================
+       JOUEUR CONNECTE
+    ===================================================== */
 
     await enregistrerScore3D();
-
 }
 
 
@@ -1224,29 +1005,15 @@ async function gameOver3D() {
 
 async function enregistrerScore3D() {
 
-    if (
-        scoreEnvoye
-    ) {
-
+    if (scoreEnvoye) {
         return;
-
     }
-
 
     if (
         !pseudo ||
         !supabaseClient3D
     ) {
-
-        if (statutClassement3D) {
-
-            statutClassement3D.textContent =
-                "⚠️ Supabase indisponible pour le classement.";
-
-        }
-
         return;
-
     }
 
 
@@ -1260,13 +1027,8 @@ async function enregistrerScore3D() {
 
             statutClassement3D.textContent =
                 "⏳ Enregistrement du score...";
-
         }
 
-
-        /*
-           RECHERCHE DU SCORE EXISTANT
-        */
 
         const resultat =
             await supabaseClient3D
@@ -1304,34 +1066,23 @@ async function enregistrerScore3D() {
                 resultat.error
             );
 
-
             scoreEnvoye =
                 false;
 
-
-            if (statutClassement3D) {
-
-                statutClassement3D.textContent =
-                    "❌ Impossible de charger ton score.";
-
-            }
-
             return;
-
         }
 
 
         const anciens =
             resultat.data || [];
 
-
         const scoreActuel =
             Math.floor(score);
 
 
-        /*
-           AUCUN SCORE EXISTANT
-        */
+        /* =================================================
+           AUCUN SCORE
+        ================================================= */
 
         if (
             anciens.length === 0
@@ -1363,20 +1114,10 @@ async function enregistrerScore3D() {
                     insertion.error
                 );
 
-
                 scoreEnvoye =
                     false;
 
-
-                if (statutClassement3D) {
-
-                    statutClassement3D.textContent =
-                        "❌ Impossible d'enregistrer le score.";
-
-                }
-
                 return;
-
             }
 
 
@@ -1384,15 +1125,14 @@ async function enregistrerScore3D() {
 
                 statutClassement3D.textContent =
                     "🏆 Premier score enregistré !";
-
             }
 
         }
 
 
-        /*
+        /* =================================================
            SCORE EXISTANT
-        */
+        ================================================= */
 
         else {
 
@@ -1401,10 +1141,6 @@ async function enregistrerScore3D() {
                     anciens[0].score
                 ) || 0;
 
-
-            /*
-               NOUVEAU RECORD
-            */
 
             if (
                 scoreActuel >
@@ -1436,20 +1172,10 @@ async function enregistrerScore3D() {
                         miseAJour.error
                     );
 
-
                     scoreEnvoye =
                         false;
 
-
-                    if (statutClassement3D) {
-
-                        statutClassement3D.textContent =
-                            "❌ Impossible de mettre à jour le score.";
-
-                    }
-
                     return;
-
                 }
 
 
@@ -1457,15 +1183,9 @@ async function enregistrerScore3D() {
 
                     statutClassement3D.textContent =
                         "🔥 NOUVEAU RECORD !";
-
                 }
 
             }
-
-
-            /*
-               ANCIEN RECORD MEILLEUR
-            */
 
             else {
 
@@ -1474,17 +1194,10 @@ async function enregistrerScore3D() {
                     statutClassement3D.textContent =
                         "ℹ️ Ton meilleur score reste " +
                         ancienScore;
-
                 }
-
             }
-
         }
 
-
-        /*
-           ACTUALISER LE CLASSEMENT
-        */
 
         await chargerClassement3D();
 
@@ -1497,50 +1210,34 @@ async function enregistrerScore3D() {
             erreur
         );
 
-
         scoreEnvoye =
             false;
-
     }
-
 }
 
 
 /* =========================================================
-   CLASSEMENT TOP 10
+   CLASSEMENT
 ========================================================= */
 
 async function chargerClassement3D() {
 
-    if (
-        !listeScores3D
-    ) {
-
+    if (!listeScores3D) {
         return;
-
     }
 
 
-    if (
-        !supabaseClient3D
-    ) {
+    if (!supabaseClient3D) {
 
         listeScores3D.innerHTML = `
-
             <tr>
-
                 <td colspan="3">
-
                     ⚠️ Supabase indisponible.
-
                 </td>
-
             </tr>
-
         `;
 
         return;
-
     }
 
 
@@ -1577,23 +1274,15 @@ async function chargerClassement3D() {
                 resultat.error
             );
 
-
             listeScores3D.innerHTML = `
-
                 <tr>
-
                     <td colspan="3">
-
                         ❌ Erreur de chargement.
-
                     </td>
-
                 </tr>
-
             `;
 
             return;
-
         }
 
 
@@ -1605,36 +1294,21 @@ async function chargerClassement3D() {
             "";
 
 
-        /*
-           AUCUN SCORE
-        */
-
         if (
             scores.length === 0
         ) {
 
             listeScores3D.innerHTML = `
-
                 <tr>
-
                     <td colspan="3">
-
                         Aucun score pour le moment.
-
                     </td>
-
                 </tr>
-
             `;
 
             return;
-
         }
 
-
-        /*
-           CREATION DES LIGNES
-        */
 
         scores.forEach(
             function(
@@ -1648,37 +1322,27 @@ async function chargerClassement3D() {
                     );
 
 
-                /*
-                   NUMERO
-                */
-
                 const numero =
                     document.createElement(
                         "td"
                     );
 
 
-                if (
-                    index === 0
-                ) {
+                if (index === 0) {
 
                     numero.textContent =
                         "🥇";
 
                 }
 
-                else if (
-                    index === 1
-                ) {
+                else if (index === 1) {
 
                     numero.textContent =
                         "🥈";
 
                 }
 
-                else if (
-                    index === 2
-                ) {
+                else if (index === 2) {
 
                     numero.textContent =
                         "🥉";
@@ -1693,30 +1357,20 @@ async function chargerClassement3D() {
                 }
 
 
-                /*
-                   PSEUDO
-                */
-
                 const pseudoCellule =
                     document.createElement(
                         "td"
                     );
-
 
                 pseudoCellule.textContent =
                     joueurScore.pseudo ||
                     "Anonyme";
 
 
-                /*
-                   SCORE
-                */
-
                 const scoreCellule =
                     document.createElement(
                         "td"
                     );
-
 
                 scoreCellule.textContent =
                     Number(
@@ -1724,17 +1378,10 @@ async function chargerClassement3D() {
                     ) || 0;
 
 
-                /*
-                   MON SCORE
-                */
-
                 if (
-
                     pseudo &&
-
                     joueurScore.pseudo ===
                     pseudo
-
                 ) {
 
                     pseudoCellule.classList.add(
@@ -1744,7 +1391,6 @@ async function chargerClassement3D() {
                     scoreCellule.classList.add(
                         "mon-score"
                     );
-
                 }
 
 
@@ -1777,23 +1423,14 @@ async function chargerClassement3D() {
             erreur
         );
 
-
         listeScores3D.innerHTML = `
-
             <tr>
-
                 <td colspan="3">
-
                     ❌ Impossible de charger le classement.
-
                 </td>
-
             </tr>
-
         `;
-
     }
-
 }
 
 
@@ -1801,20 +1438,10 @@ async function chargerClassement3D() {
    COMPTEUR DE PARTIES
 ========================================================= */
 
-/* =========================================================
-   COMPTER UNE PARTIE
-========================================================= */
-
 async function compterPartieJeu9() {
 
     if (!supabaseClient3D) {
-
-        console.warn(
-            "⚠️ Supabase indisponible pour le compteur Cube Runner 3D."
-        );
-
         return;
-
     }
 
 
@@ -1822,40 +1449,43 @@ async function compterPartieJeu9() {
 
         const resultat =
             await supabaseClient3D
+
                 .from("statistiques_jeux")
-                .select("nombre_parties")
+
+                .select(
+                    "nombre_parties"
+                )
+
                 .eq(
                     "nom_jeu",
-                    "Cube Runner 3D"
+                    NOM_JEU
                 )
+
                 .maybeSingle();
 
 
         if (resultat.error) {
 
             console.error(
-                "❌ Erreur récupération compteur Cube Runner 3D :",
+                "❌ Erreur récupération compteur :",
                 resultat.error
             );
 
             return;
-
         }
 
-
-        /* =========================
-           LE JEU N'EXISTE PAS
-        ========================= */
 
         if (!resultat.data) {
 
             const insertion =
                 await supabaseClient3D
+
                     .from("statistiques_jeux")
+
                     .insert({
 
                         nom_jeu:
-                            "Cube Runner 3D",
+                            NOM_JEU,
 
                         nombre_parties:
                             1
@@ -1866,27 +1496,15 @@ async function compterPartieJeu9() {
             if (insertion.error) {
 
                 console.error(
-                    "❌ Erreur création compteur Cube Runner 3D :",
+                    "❌ Erreur création compteur :",
                     insertion.error
                 );
 
-                return;
-
             }
 
-
-            console.log(
-                "🎮 Première partie de Cube Runner 3D enregistrée."
-            );
-
             return;
-
         }
 
-
-        /* =========================
-           INCREMENTER
-        ========================= */
 
         const nouveauNombre =
             Number(
@@ -1896,48 +1514,44 @@ async function compterPartieJeu9() {
 
         const miseAJour =
             await supabaseClient3D
+
                 .from("statistiques_jeux")
+
                 .update({
 
                     nombre_parties:
                         nouveauNombre
 
                 })
+
                 .eq(
                     "nom_jeu",
-                    "Cube Runner 3D"
+                    NOM_JEU
                 );
 
 
         if (miseAJour.error) {
 
             console.error(
-                "❌ Erreur mise à jour compteur Cube Runner 3D :",
+                "❌ Erreur mise à jour compteur :",
                 miseAJour.error
             );
 
-            return;
-
         }
-
-
-        console.log(
-            "🎮 Partie Cube Runner 3D comptée :",
-            nouveauNombre
-        );
 
     }
 
     catch (erreur) {
 
         console.error(
-            "❌ Erreur compteur Cube Runner 3D :",
+            "❌ Erreur compteur :",
             erreur
         );
 
     }
-
 }
+
+
 /* =========================================================
    PAUSE
 ========================================================= */
@@ -1945,9 +1559,7 @@ async function compterPartieJeu9() {
 function basculerPause() {
 
     if (jeuTermine) {
-
         return;
-
     }
 
 
@@ -1961,7 +1573,6 @@ function basculerPause() {
 
             boutonPause3D.textContent =
                 "▶️ Reprendre";
-
         }
 
 
@@ -1972,7 +1583,6 @@ function basculerPause() {
 
             message3D.style.display =
                 "block";
-
         }
 
     }
@@ -1983,7 +1593,6 @@ function basculerPause() {
 
             boutonPause3D.textContent =
                 "⏸️ Pause";
-
         }
 
 
@@ -1991,15 +1600,12 @@ function basculerPause() {
 
             message3D.style.display =
                 "none";
-
         }
 
 
         dernierTemps =
             performance.now();
-
     }
-
 }
 
 
@@ -2009,7 +1615,6 @@ if (boutonPause3D) {
         "click",
         basculerPause
     );
-
 }
 
 
@@ -2017,58 +1622,59 @@ if (boutonPause3D) {
    REJOUER
 ========================================================= */
 
-/* =========================================================
-   REJOUER
-========================================================= */
-
-/* =========================================================
-   REJOUER — CUBE RUNNER 3D
-========================================================= */
-
 async function rejouer3D(event) {
 
     if (event) {
+
         event.preventDefault();
+
         event.stopPropagation();
     }
 
-    console.log("🔄 Nouvelle partie Cube Runner 3D");
-
 
     /* =====================================================
-       SUPPRIMER LES ANCIENS OBSTACLES
+       SUPPRIMER ANCIENS OBSTACLES
     ===================================================== */
 
-    if (obstacles && obstacles.length > 0) {
+    if (
+        obstacles &&
+        obstacles.length > 0
+    ) {
 
-        obstacles.forEach(function(obstacle) {
+        obstacles.forEach(
+            function(obstacle) {
 
-            scene.remove(obstacle);
+                scene.remove(
+                    obstacle
+                );
 
-            if (obstacle.geometry) {
-                obstacle.geometry.dispose();
+
+                if (obstacle.geometry) {
+
+                    obstacle.geometry.dispose();
+                }
+
+
+                if (obstacle.material) {
+
+                    obstacle.material.dispose();
+                }
+
             }
-
-            if (obstacle.material) {
-                obstacle.material.dispose();
-            }
-
-        });
-
+        );
     }
+
 
     obstacles = [];
 
 
     /* =====================================================
-       RESET VARIABLES
+       RESET
     ===================================================== */
 
     score = 0;
 
     positionJoueurX = 0;
-
-    hauteurJoueur = 0;
 
     vitesseVerticale = 0;
 
@@ -2079,6 +1685,8 @@ async function rejouer3D(event) {
     jeuTermine = false;
 
     jeuEnPause = false;
+
+    scoreEnvoye = false;
 
 
     /* =====================================================
@@ -2098,23 +1706,22 @@ async function rejouer3D(event) {
             0,
             0
         );
-
     }
 
 
     /* =====================================================
-       RESET SCORE
+       SCORE
     ===================================================== */
 
     if (scoreElement3D) {
 
-        scoreElement3D.textContent = "0";
-
+        scoreElement3D.textContent =
+            "0";
     }
 
 
     /* =====================================================
-       RESET MESSAGE
+       MESSAGE
     ===================================================== */
 
     if (message3D) {
@@ -2124,12 +1731,11 @@ async function rejouer3D(event) {
 
         message3D.style.display =
             "none";
-
     }
 
 
     /* =====================================================
-       BOUTONS
+       BOUTON PAUSE
     ===================================================== */
 
     if (boutonPause3D) {
@@ -2139,44 +1745,40 @@ async function rejouer3D(event) {
 
         boutonPause3D.textContent =
             "⏸️ Pause";
-
     }
 
+
+    /* =====================================================
+       BOUTON REJOUER
+    ===================================================== */
 
     if (boutonRejouer3D) {
 
         boutonRejouer3D.style.display =
             "none";
-
     }
 
 
     /* =====================================================
-       RECREER LES OBSTACLES
+       NOUVEAUX OBSTACLES
     ===================================================== */
 
     creerObstacles();
 
 
     /* =====================================================
-       COMPTER LA NOUVELLE PARTIE
+       COMPTEUR
     ===================================================== */
 
     compterPartieJeu9();
 
 
     /* =====================================================
-       RESET TEMPS
+       TEMPS
     ===================================================== */
 
     dernierTemps =
         performance.now();
-
-
-    console.log(
-        "✅ Nouvelle partie lancée !"
-    );
-
 }
 
 
@@ -2190,15 +1792,128 @@ if (boutonRejouer3D) {
         "click",
         rejouer3D
     );
-
 }
+
+
+/* =========================================================
+   GRAND ECRAN
+========================================================= */
+
+async function basculerGrandEcran3D() {
+
+    /*
+       On met le CANVAS lui-même en plein écran.
+       Cela évite d'avoir une deuxième zone de jeu.
+    */
+
+    const element =
+        renderer &&
+        renderer.domElement
+            ? renderer.domElement
+            : zoneJeu;
+
+
+    if (!element) {
+        return;
+    }
+
+
+    try {
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            await document.exitFullscreen();
+
+            return;
+        }
+
+
+        if (
+            element.requestFullscreen
+        ) {
+
+            await element.requestFullscreen();
+
+        }
+
+        else if (
+            element.webkitRequestFullscreen
+        ) {
+
+            element.webkitRequestFullscreen();
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "❌ Erreur grand écran :",
+            erreur
+        );
+
+    }
+}
+
+
+/* =========================================================
+   BOUTON GRAND ECRAN
+========================================================= */
+
+if (boutonPleinEcran3D) {
+
+    boutonPleinEcran3D.addEventListener(
+        "click",
+        basculerGrandEcran3D
+    );
+}
+
+
+/* =========================================================
+   CHANGEMENT PLEIN ECRAN
+========================================================= */
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        if (boutonPleinEcran3D) {
+
+            if (
+                document.fullscreenElement
+            ) {
+
+                boutonPleinEcran3D.textContent =
+                    "✕ QUITTER";
+
+            }
+
+            else {
+
+                boutonPleinEcran3D.textContent =
+                    "⛶ GRAND ÉCRAN";
+
+            }
+        }
+
+
+        setTimeout(
+            redimensionner3D,
+            100
+        );
+
+    }
+);
+
+
 /* =========================================================
    BOUCLE DU JEU
 ========================================================= */
 
-function boucle3D(
-    tempsActuel
-) {
+function boucle3D(tempsActuel) {
 
     animationID =
         requestAnimationFrame(
@@ -2209,11 +1924,10 @@ function boucle3D(
     if (
         !renderer ||
         !scene ||
-        !camera
+        !camera ||
+        !joueur
     ) {
-
         return;
-
     }
 
 
@@ -2221,18 +1935,14 @@ function boucle3D(
 
         dernierTemps =
             tempsActuel;
-
     }
 
 
     const delta =
         Math.min(
-
             tempsActuel -
             dernierTemps,
-
             50
-
         );
 
 
@@ -2240,9 +1950,9 @@ function boucle3D(
         tempsActuel;
 
 
-    /*
+    /* =====================================================
        PAUSE / GAME OVER
-    */
+    ===================================================== */
 
     if (
         jeuEnPause ||
@@ -2255,37 +1965,33 @@ function boucle3D(
         );
 
         return;
-
     }
 
 
-    /*
+    /* =====================================================
        SCORE
-    */
+    ===================================================== */
 
     augmenterScore(
         delta * 0.01
     );
 
 
-    /*
+    /* =====================================================
        DIFFICULTE
-    */
+    ===================================================== */
 
     vitesse =
         0.25 +
         Math.min(
-
             0.5,
-
             score / 2000
-
         );
 
 
-    /*
+    /* =====================================================
        POSITION X
-    */
+    ===================================================== */
 
     joueur.position.x +=
 
@@ -2295,21 +2001,20 @@ function boucle3D(
         ) * 0.18;
 
 
-    /*
+    /* =====================================================
        GRAVITE
-    */
+    ===================================================== */
 
     vitesseVerticale +=
         GRAVITE;
-
 
     joueur.position.y +=
         vitesseVerticale;
 
 
-    /*
+    /* =====================================================
        SOL
-    */
+    ===================================================== */
 
     if (
         joueur.position.y <=
@@ -2319,32 +2024,28 @@ function boucle3D(
         joueur.position.y =
             0.6;
 
-
         vitesseVerticale =
             0;
 
-
         peutSauter =
             true;
-
     }
 
 
-    /*
-       ROTATION
-    */
+    /* =====================================================
+       ROTATION JOUEUR
+    ===================================================== */
 
     joueur.rotation.x +=
         0.04;
-
 
     joueur.rotation.z +=
         0.03;
 
 
-    /*
+    /* =====================================================
        OBSTACLES
-    */
+    ===================================================== */
 
     obstacles.forEach(
         function(obstacle) {
@@ -2359,14 +2060,13 @@ function boucle3D(
             obstacle.rotation.x +=
                 0.02;
 
-
             obstacle.rotation.y +=
                 0.03;
 
 
-            /*
+            /* =============================================
                COLLISION
-            */
+            ============================================= */
 
             if (
                 verifierCollision(
@@ -2379,9 +2079,9 @@ function boucle3D(
             }
 
 
-            /*
+            /* =============================================
                REPOSITIONNEMENT
-            */
+            ============================================= */
 
             if (
                 obstacle.position.z >
@@ -2402,16 +2102,15 @@ function boucle3D(
                             VOIES.length
                         )
                     ];
-
             }
 
         }
     );
 
 
-    /*
+    /* =====================================================
        CAMERA
-    */
+    ===================================================== */
 
     camera.position.x +=
 
@@ -2421,10 +2120,6 @@ function boucle3D(
         ) * 0.05;
 
 
-    /*
-       CAMERA REGARDE LE JOUEUR
-    */
-
     camera.lookAt(
         joueur.position.x * 0.15,
         1,
@@ -2432,15 +2127,14 @@ function boucle3D(
     );
 
 
-    /*
+    /* =====================================================
        RENDU
-    */
+    ===================================================== */
 
     renderer.render(
         scene,
         camera
     );
-
 }
 
 
@@ -2455,30 +2149,51 @@ function redimensionner3D() {
         !camera ||
         !zoneJeu
     ) {
-
         return;
-
     }
 
 
-    const largeur =
-        Math.max(
-            zoneJeu.clientWidth,
-            320
-        );
+    let largeur;
+    let hauteur;
 
 
-    const hauteur =
-        Math.max(
-            zoneJeu.clientHeight,
-            400
-        );
+    /* =====================================================
+       SI LE CANVAS EST EN GRAND ECRAN
+    ===================================================== */
+
+    if (
+        document.fullscreenElement ===
+        renderer.domElement
+    ) {
+
+        largeur =
+            window.innerWidth;
+
+        hauteur =
+            window.innerHeight;
+
+    }
+
+    else {
+
+        largeur =
+            Math.max(
+                zoneJeu.clientWidth,
+                320
+            );
+
+        hauteur =
+            Math.max(
+                zoneJeu.clientHeight,
+                400
+            );
+
+    }
 
 
     camera.aspect =
         largeur /
         hauteur;
-
 
     camera.updateProjectionMatrix();
 
@@ -2487,58 +2202,36 @@ function redimensionner3D() {
         largeur,
         hauteur
     );
-
 }
 
 
 /* =========================================================
-   DEMARRAGE DU JEU
-========================================================= */
-
-/* =========================================================
-   DEMARRAGE DU JEU
+   DEMARRAGE
 ========================================================= */
 
 async function demarrerJeu3D() {
 
-    /* =========================
-       INITIALISER THREE.JS
-    ========================= */
-
-    initialiser3D();
+    const initialise =
+        initialiser3D();
 
 
-    /* =========================
-       MESSAGE DE DÉPART
-    ========================= */
-
-    if (message3D) {
-
-        message3D.textContent =
-            "🏃 Évite les obstacles !";
-
-        message3D.style.display =
-            "none";
-
+    if (!initialise) {
+        return;
     }
 
-
-    /* =========================
-       CHARGER LE CLASSEMENT
-    ========================= */
 
     await chargerClassement3D();
 
 
-    /* =========================
-       LANCER LE JEU
-    ========================= */
+    jeuDemarre =
+        true;
 
-    jeuDemarre = true;
+    jeuTermine =
+        false;
 
-    jeuTermine = false;
+    jeuEnPause =
+        false;
 
-    jeuEnPause = false;
 
     dernierTemps =
         performance.now();
@@ -2553,8 +2246,9 @@ async function demarrerJeu3D() {
     console.log(
         "🎮 Cube Runner 3D démarré !"
     );
-
 }
+
+
 /* =========================================================
    LANCEMENT
 ========================================================= */

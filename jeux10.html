@@ -49,182 +49,102 @@
          JEU
     ===================================================== -->
 
-    <main class="racing-container">
+   <main class="game10-page">
 
-        <h1>
-            🏎️ 3D Racing
-        </h1>
+    <h1>Racing 3D</h1>
 
+<a href="liste-jeux.html" class="bouton-retour-jeux">
+    ← Retour aux jeux
+</a>
 
-        <p class="racing-joueur">
+    <p class="joueur-info">
+        👤 Joueur :
+        <strong id="game10-pseudo">Visiteur</strong>
+    </p>
 
-            👤 Joueur :
-            <strong id="pseudoAffiche10">
-                Visiteur
-            </strong>
+    <div class="game10-stats">
 
-        </p>
-
-
-        <!-- =================================================
-             STATISTIQUES
-        ================================================= -->
-
-        <div class="racing-stats">
-
-            <div>
-
-                🏁 Score
-
-                <strong id="score10">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                🏆 Meilleur
-
-                <strong id="meilleurScore10">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                💨 Vitesse
-
-                <strong id="vitesse10">
-                    0
-                </strong>
-
-            </div>
-
+        <div class="game10-stat">
+            Score
+            <strong id="game10-score">0</strong>
         </div>
 
-
-        <!-- =================================================
-             CANVAS 3D
-        ================================================= -->
-
-        <div id="jeuRacing3D">
-
-            <div
-                id="messageRacing10"
-                class="message-racing"
-            >
-                🏎️ Évite les voitures !
-            </div>
-
+        <div class="game10-stat">
+            Meilleur
+            <strong id="game10-best">0</strong>
         </div>
 
-
-        <!-- =================================================
-             CONTROLES MOBILE
-        ================================================= -->
-
-        <div class="controles-racing">
-
-            <button id="boutonGauche10">
-                ◀️
-            </button>
+    </div>
 
 
-            <button id="boutonDroite10">
-                ▶️
-            </button>
+    <div id="game10-canvas-zone">
 
+        <div id="game10-message">
+            🏎️ Prépare-toi !
         </div>
 
-
-        <!-- =================================================
-             BOUTONS
-        ================================================= -->
-
-        <div class="boutons-racing">
-
-            <button id="boutonPause10">
-                ⏸️ Pause
-            </button>
+    </div>
 
 
-            <button
-                id="boutonRejouer10"
-                style="display:none;"
-            >
-                🔄 Rejouer
-            </button>
+    <div class="game10-controls">
 
-        </div>
+        <button id="game10-left">◀️</button>
 
+        <button id="game10-accelerate">🔼</button>
 
-        <!-- =================================================
-             STATUT CLASSEMENT
-        ================================================= -->
+        <button id="game10-right">▶️</button>
 
-        <p id="statutClassement10">
-
-            Chargement du classement...
-
-        </p>
+    </div>
 
 
-        <!-- =================================================
-             CLASSEMENT
-        ================================================= -->
+    <div class="game10-buttons">
 
-        <section class="classement-racing">
+        <button id="game10-pause">
+            ⏸️ Pause
+        </button>
 
-            <h2>
-                🏆 TOP 10 MONDIAL
-            </h2>
+        <button id="game10-restart"
+                style="display:none;">
+            🔄 Rejouer
+        </button>
 
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            #
-                        </th>
-
-                        <th>
-                            Pseudo
-                        </th>
-
-                        <th>
-                            Score
-                        </th>
-
-                    </tr>
-
-                </thead>
+    </div>
 
 
-                <tbody id="listeScores10">
+    <p id="game10-classement-statut">
+        Chargement du classement...
+    </p>
 
-                    <tr>
 
-                        <td colspan="3">
-                            Chargement...
-                        </td>
+    <div class="game10-ranking">
 
-                    </tr>
+        <h2>🏆 TOP 10 MONDIAL</h2>
 
-                </tbody>
+        <table>
 
-            </table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Pseudo</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
 
-        </section>
+            <tbody id="game10-ranking-list">
 
-    </main>
+                <tr>
+                    <td colspan="3">
+                        Chargement...
+                    </td>
+                </tr>
 
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
 
     <!-- =====================================================
          SCRIPT
