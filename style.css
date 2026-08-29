@@ -1,5 +1,6 @@
 /* =========================================================
-   GAMEZONE — STYLE GLOBAL
+   GAMEZONE — STYLE GLOBAL PROPRE
+   PC + MOBILE
 ========================================================= */
 
 * {
@@ -16,9 +17,15 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+
     background: #050510;
     color: white;
+
     font-family: Arial, Helvetica, sans-serif;
+
+    text-align: center;
+
+    overflow-x: hidden;
 }
 
 button,
@@ -28,21 +35,24 @@ input {
 
 button {
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
-
-
-/* =========================================================
-   TITRES
-========================================================= */
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+label {
     text-align: center;
 }
 
 h1 {
     color: #00eaff;
+
     text-shadow:
         0 0 10px #00eaff,
         0 0 20px rgba(0, 234, 255, 0.5);
@@ -50,52 +60,122 @@ h1 {
 
 
 /* =========================================================
-   MENU GLOBAL
+   MENU
 ========================================================= */
 
 nav {
     width: 100%;
     min-height: 70px;
+
     padding: 15px;
+
     background: #080812;
+
     border-bottom: 2px solid #00aaff;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     gap: 30px;
+
     position: relative;
     z-index: 1000;
+
+    text-align: center;
 }
 
 nav a {
     color: white;
+
     text-decoration: none;
+
     font-size: 18px;
     font-weight: bold;
+
     padding: 10px 15px;
+
     border-radius: 8px;
-    transition:
-        color 0.2s,
-        background 0.2s,
-        transform 0.2s;
+
+    transition: 0.2s;
+
+    text-align: center;
 }
 
 nav a:hover {
     color: #00aaff;
     background: #101025;
+
     transform: translateY(-2px);
+}
+
+.menu-gauche {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 30px;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   MENU GAUCHE
+   ICONE COMPTE
 ========================================================= */
 
-.menu-gauche {
+.page-accueil nav,
+.page-compte nav {
+    position: relative;
+}
+
+.page-accueil .icone-compte,
+.page-compte .icone-compte {
+    position: absolute;
+
+    right: 20px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 45px;
+    height: 45px;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
-    gap: 30px;
+
+    padding: 0;
+
+    background: #101025;
+
+    border: 2px solid #00aaff;
+    border-radius: 50%;
+
+    color: white;
+
+    font-size: 22px;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 0 10px rgba(0, 170, 255, 0.25);
+
+    transition: 0.2s;
+
+    text-align: center;
+}
+
+.page-accueil .icone-compte:hover,
+.page-compte .icone-compte:hover {
+    background: #00aaff;
+    color: black;
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
 }
 
 
@@ -104,74 +184,26 @@ nav a:hover {
 ========================================================= */
 
 .page-accueil {
+    width: 100%;
     min-height: 100vh;
-    background: #050510;
-    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     text-align: center;
 }
 
 .page-accueil .bienvenue {
+    width: 100%;
+
     margin: 10px 0 25px;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
+
     color: #ddd;
+
     font-size: 18px;
-}
 
-
-/* =========================================================
-   ICÔNE COMPTE — ACCUEIL
-========================================================= */
-
-.page-accueil nav {
-    position: relative;
-}
-
-.page-accueil .menu-gauche {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-}
-
-.page-accueil .icone-compte {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    background: #101025;
-    border: 2px solid #00aaff;
-    border-radius: 50%;
-    color: white;
-    font-size: 22px;
-    text-decoration: none;
-    box-shadow:
-        0 0 10px rgba(0, 170, 255, 0.25);
-    transition:
-        transform 0.2s,
-        background 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s;
-}
-
-.page-accueil .icone-compte:hover {
-    background: #00aaff;
-    border-color: #00aaff;
-    color: black;
-    transform:
-        translateY(-50%)
-        scale(1.08);
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.6);
+    text-align: center;
 }
 
 
@@ -181,49 +213,73 @@ nav a:hover {
 
 .liste-jeux {
     width: min(1200px, 94%);
+
     margin: 0 auto;
+
     text-align: center;
 }
 
 .grille-jeux {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
     width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+
+    justify-content: center;
+
+    align-items: stretch;
 }
 
-
-/* =========================================================
-   CARTES DE JEUX
-========================================================= */
-
 .jeu {
-    width: auto;
-    max-width: none;
+    width: 100%;
+
     background: #101020;
+
     border: 2px solid #00aaff;
     border-radius: 15px;
+
     padding: 15px;
+
     text-align: center;
+
     box-shadow:
         0 0 12px rgba(0, 170, 255, 0.15);
-    transition:
-        transform 0.2s,
-        box-shadow 0.2s;
+
+    transition: 0.2s;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .jeu:hover {
     transform: translateY(-5px);
+
     box-shadow:
         0 0 20px rgba(0, 170, 255, 0.4);
 }
 
 .jeu img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
     display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto;
+
+    border-radius: 10px;
+}
+
+.jeu h2,
+.jeu h3,
+.jeu p {
+    width: 100%;
+
+    text-align: center;
 }
 
 .jeu h2,
@@ -237,7 +293,7 @@ nav a:hover {
 
 
 /* =========================================================
-   BOUTONS GAMEZONE
+   BOUTONS GENERAUX
 ========================================================= */
 
 button,
@@ -246,26 +302,103 @@ button,
 }
 
 .bouton-jeu {
-    display: inline-block;
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
     padding: 12px 25px;
+
     background: #101025;
+
     border: 2px solid #00aaff;
+
     color: white;
+
     text-decoration: none;
+
     font-weight: bold;
-    transition:
-        background 0.2s,
-        color 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
+
+    text-align: center;
+
+    transition: 0.2s;
 }
 
 .bouton-jeu:hover {
     background: #00aaff;
     color: black;
+
     box-shadow:
         0 0 15px rgba(0, 170, 255, 0.5);
+
     transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RETOUR AUX JEUX
+========================================================= */
+
+.bouton-retour-jeux {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin: 10px auto 20px;
+
+    padding: 12px 22px;
+
+    background: #101020;
+
+    border: 2px solid #00aaff;
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    text-align: center;
+
+    transition: 0.2s;
+}
+
+.bouton-retour-jeux:hover {
+    background: #00aaff;
+    color: black;
+
+    box-shadow:
+        0 0 15px rgba(0, 170, 255, 0.6);
+
+    transform: translateY(-2px);
+}
+
+.bouton-retour-jeux:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   REGLE GENERALE DE CENTRAGE DES JEUX
+========================================================= */
+
+.page-clicker,
+.page-nombre,
+.page-pfc,
+.page-snake,
+.page-space,
+.page-flappy,
+.page-tetris,
+.page-pong,
+.jeu3d-container,
+.racing3d-container,
+.game10-page {
+    width: 100%;
+
+    text-align: center;
 }
 
 
@@ -275,36 +408,87 @@ button,
 
 .page-clicker {
     min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.page-clicker h1,
+.page-clicker h2,
+.page-clicker h3,
+.page-clicker p,
+.page-clicker span {
+    width: 100%;
+
     text-align: center;
 }
 
 .clicker-container {
     width: 95%;
     max-width: 700px;
+
     margin: 30px auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.clicker-container > * {
+    margin-left: auto;
+    margin-right: auto;
+
     text-align: center;
 }
 
 .clicker-score {
+    width: 100%;
+
     font-size: 30px;
+
     color: #00eaff;
+
     font-weight: bold;
+
+    text-align: center;
 }
 
 .bouton-clicker {
     width: 200px;
     height: 200px;
+
+    margin: 20px auto;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
     border: 4px solid #00eaff;
     border-radius: 50%;
+
     background: #101020;
     color: white;
+
     font-size: 28px;
     font-weight: bold;
+
+    text-align: center;
+
     box-shadow:
         0 0 20px rgba(0, 234, 255, 0.4);
-    transition:
-        transform 0.1s,
-        box-shadow 0.2s;
+
+    transition: 0.1s;
 }
 
 .bouton-clicker:hover {
@@ -323,33 +507,79 @@ button,
 
 .page-nombre {
     min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.page-nombre h1,
+.page-nombre h2,
+.page-nombre h3,
+.page-nombre p,
+.page-nombre span {
     text-align: center;
 }
 
 .nombre-container {
     width: 95%;
     max-width: 600px;
+
     margin: 30px auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+.nombre-container > * {
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
 }
 
 .nombre-container input {
     width: 200px;
     max-width: 100%;
+
     padding: 12px;
+
     background: #101020;
+
     color: white;
+
     border: 2px solid #00aaff;
+
     border-radius: 10px;
+
     text-align: center;
+
     font-size: 18px;
 }
 
 .nombre-container button {
+    margin: 10px;
+
     padding: 12px 20px;
+
     background: #101025;
+
     color: white;
+
     border: 2px solid #00aaff;
+
     border-radius: 10px;
+
+    text-align: center;
 }
 
 
@@ -359,31 +589,73 @@ button,
 
 .page-pfc {
     min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.page-pfc h1,
+.page-pfc h2,
+.page-pfc h3,
+.page-pfc p,
+.page-pfc span {
     text-align: center;
 }
 
 .pfc-container {
     width: 95%;
     max-width: 700px;
+
     margin: 30px auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.pfc-container > * {
+    text-align: center;
 }
 
 .boutons-pfc {
+    width: 100%;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
-    gap: 15px;
+
     flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin: 0 auto;
+
+    text-align: center;
 }
 
 .boutons-pfc button {
     min-width: 100px;
     min-height: 60px;
+
     background: #101025;
+
     color: white;
+
     border: 2px solid #00aaff;
+
     font-size: 18px;
     font-weight: bold;
+
+    text-align: center;
+
     transition: 0.2s;
 }
 
@@ -399,126 +671,337 @@ button,
 
 .page-snake {
     min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.page-snake h1,
+.page-snake h2,
+.page-snake h3,
+.page-snake p,
+.page-snake span {
+    width: 100%;
     text-align: center;
 }
 
 .snake-container {
     width: 95%;
     max-width: 700px;
+
     margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
 }
 
+.snake-container > * {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+/* =========================================================
+   ECRAN SNAKE
+========================================================= */
+
 #jeu {
     display: block;
+
     width: 400px;
     max-width: 100%;
     height: auto;
+
     margin: 20px auto;
+
     background: #050510;
+
     border: 3px solid #00ff66;
     border-radius: 10px;
+
     box-shadow:
         0 0 20px rgba(0, 255, 102, 0.4);
 }
 
+
+/* =========================================================
+   SNAKE — CONTROLES
+========================================================= */
+
+/* =========================================================
+   SNAKE — CONTROLES PARFAITEMENT DROITS
+========================================================= */
+
 .controles-snake {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 70px 70px 70px;
+    grid-template-rows: 60px 60px;
+
+    gap: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    margin: 25px auto;
+}
+
+
+/* TOUS LES BOUTONS */
+
+.controles-snake button {
+    width: 70px;
+    height: 60px;
+
+    margin: 0;
+    padding: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 20px auto;
-}
 
-.controles-snake button {
-    width: 65px;
-    height: 55px;
     background: #101020;
     color: white;
+
     border: 2px solid #00ff66;
     border-radius: 10px;
+
     font-size: 24px;
+    font-weight: bold;
+
+    line-height: 1;
+
+    text-align: center;
+
+    touch-action: manipulation;
+    user-select: none;
+
+    transition: 0.15s;
 }
 
 
+/* ⬆️ HAUT */
+
+.controles-snake button:nth-child(1) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+
+/* ⬇️ BAS */
+
+.controles-snake button:nth-child(2) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+
+/* ⬅️ GAUCHE */
+
+.controles-snake button:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+
+/* ➡️ DROITE */
+
+.controles-snake button:nth-child(4) {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+
+/* EFFET APPUI */
+
+.controles-snake button:active {
+    transform: scale(0.9);
+
+    background: #00ff66;
+    color: black;
+}
+
+
+/* =========================================================
+   PETIT TELEPHONE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .controles-snake {
+        grid-template-columns: 60px 60px 60px;
+        grid-template-rows: 55px 55px;
+    }
+
+    .controles-snake button {
+        width: 60px;
+        height: 55px;
+
+        font-size: 22px;
+    }
+}
 /* =========================================================
    SPACE INVADERS
 ========================================================= */
 
 .page-space {
     min-height: 100vh;
+
     background: #050510;
-    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.page-space h1,
+.page-space h2,
+.page-space h3,
+.page-space p,
+.page-space span {
     text-align: center;
 }
 
 .page-space .container {
     width: 95%;
     max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
 
-.page-space h1 {
-    color: #00eaff;
+    margin: 0 auto;
+
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
 }
 
 .page-space .infos {
     width: 100%;
+
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
     gap: 10px;
+
     margin: 20px auto;
+
+    text-align: center;
 }
 
 .page-space .infos > div {
     min-height: 55px;
+
     padding: 10px;
+
     background: #101020;
+
     border: 2px solid #00eaff;
+
     border-radius: 10px;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
+
     font-weight: bold;
+
+    text-align: center;
 }
 
 .page-space .infos span {
     color: #00eaff;
+
     margin-left: 5px;
+
+    text-align: center;
 }
 
-#jeuSpaceInvaders {
+
+/* =========================================================
+   ECRAN SPACE INVADERS
+========================================================= */
+
+#jeuSpaceInvaders,
+#jeuSpace {
     display: block;
+
     width: 800px;
     max-width: 100%;
+
     height: auto;
+
     margin: 20px auto;
+
     background: #020208;
-    border: 3px solid #00eaff;
+
+    border: 4px solid #00eaff;
+
     border-radius: 12px;
+
     box-shadow:
-        0 0 25px rgba(0, 234, 255, 0.4);
+        0 0 10px rgba(0, 234, 255, 0.5),
+        0 0 25px rgba(0, 234, 255, 0.25);
 }
 
+
+/* =========================================================
+   SPACE — BOUTONS
+========================================================= */
+
 .page-space .boutons {
+    width: 100%;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
-    gap: 15px;
+
     flex-wrap: wrap;
-    margin: 20px 0;
+
+    gap: 15px;
+
+    margin: 20px auto;
+
+    text-align: center;
 }
 
 .page-space .boutons button {
     padding: 12px 25px;
+
     background: #101020;
+
     color: white;
+
     border: 2px solid #00eaff;
+
     border-radius: 10px;
+
     font-weight: bold;
+
+    text-align: center;
 }
 
 .page-space .boutons button:hover {
@@ -528,75 +1011,58 @@ button,
 
 
 /* =========================================================
-   SPACE INVADERS — CONTROLES MOBILES
+   SPACE — CONTROLES MOBILE
 ========================================================= */
 
 .page-space .controles-mobile {
     display: none;
 }
 
-
-/* =========================================================
-   SPACE INVADERS — MOBILE
-========================================================= */
-
 @media (max-width: 768px) {
 
     .page-space .controles-mobile {
-        position: fixed !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 15px !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 25px !important;
-        margin: 0 !important;
-        padding: 0 15px !important;
-        z-index: 99999 !important;
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 15px;
+
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 25px;
+
+        padding: 0 15px;
+
+        z-index: 99999;
+
         pointer-events: none;
     }
 
     .page-space .controles-mobile button {
         pointer-events: auto;
-        width: 70px !important;
-        height: 70px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        font-size: 32px !important;
-        border-radius: 15px !important;
+
+        width: 70px;
+        height: 70px;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        padding: 0;
+
+        border-radius: 15px;
+
+        font-size: 32px;
+
         touch-action: none;
-        flex-shrink: 0;
-    }
-}
 
-
-@media (min-width: 769px) {
-
-    .page-space .controles-mobile {
-        display: none !important;
-    }
-}
-
-
-/* =========================================================
-   SPACE INVADERS — PETITS ÉCRANS
-========================================================= */
-
-@media screen and (max-width: 750px) {
-
-    body.page-space .infos {
-        width: 100% !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    body.page-space .infos > div {
-        height: 50px !important;
-        font-size: 13px !important;
+        text-align: center;
     }
 }
 
@@ -605,261 +1071,194 @@ button,
    FLAPPY BIRD
 ========================================================= */
 
-body.page-flappy {
-    margin: 0;
+.page-flappy {
     min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
     text-align: center;
 }
 
-.page-flappy .flappy-container {
+.page-flappy h1,
+.page-flappy h2,
+.page-flappy h3,
+.page-flappy p,
+.page-flappy span {
+    text-align: center;
+}
+
+.flappy-container {
     width: 95%;
     max-width: 900px;
+
     margin: 20px auto;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
-    justify-content: center;
+
     text-align: center;
 }
 
 .page-flappy h1 {
     width: 100%;
+
     margin: 20px auto;
+
     text-align: center;
 }
 
-.page-flappy .pseudo-joueur {
-    margin: 10px auto 15px;
-    text-align: center;
-}
-
-
-/* =========================================================
-   FLAPPY — INFORMATIONS
-========================================================= */
-
-.page-flappy .flappy-infos {
+.flappy-infos {
     width: 100%;
     max-width: 500px;
+
     margin: 10px auto 20px;
+
     display: flex;
+
     justify-content: center;
-    align-items: center;
+
     gap: 15px;
-}
 
-.page-flappy .flappy-infos > div {
-    flex: 1;
-    padding: 10px;
-    background: #101010;
-    border: 2px solid #00ffff;
-    border-radius: 12px;
-    color: white;
     text-align: center;
-    font-weight: bold;
 }
 
-.page-flappy .flappy-infos span {
+.flappy-infos > div {
+    flex: 1;
+
+    padding: 10px;
+
+    background: #101010;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 12px;
+
+    color: white;
+
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.flappy-infos span {
     color: #00ffff;
+
     font-size: 22px;
-    font-weight: bold;
+
+    text-align: center;
 }
 
-
-/* =========================================================
-   FLAPPY — MEILLEUR SCORE
-========================================================= */
-
-.page-flappy .flappy-infos > div:nth-child(2) {
-    border-color: #ffff00;
-}
-
-.page-flappy .flappy-infos > div:nth-child(2) span {
-    color: #ffff00;
-}
-
-
-/* =========================================================
-   FLAPPY — ZONE
-========================================================= */
-
-.page-flappy .flappy-zone {
+.flappy-zone {
     position: relative;
+
     width: 400px;
     max-width: 100%;
+
     margin: 0 auto;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
-    text-align: center;
 }
 
-
-/* =========================================================
-   FLAPPY — CANVAS
-========================================================= */
-
-.page-flappy #jeuFlappy {
+#jeuFlappy {
     display: block;
+
     width: 400px;
     max-width: 100%;
+
     height: auto;
+
     margin: 0 auto;
+
     background: #050520;
+
     border: 4px solid #00ffff;
+
     border-radius: 15px;
+
     box-shadow:
         0 0 12px #00ffff,
         0 0 25px rgba(0, 255, 255, 0.35);
 }
 
-
-/* =========================================================
-   FLAPPY — MESSAGE
-========================================================= */
-
-.page-flappy #messageFlappy {
+#messageFlappy {
     position: absolute;
+
     top: 50%;
     left: 50%;
+
     transform: translate(-50%, -50%);
+
     width: 80%;
+
     padding: 15px;
+
     background: rgba(0, 0, 0, 0.85);
+
     border: 2px solid #00ffff;
+
     border-radius: 12px;
+
     color: white;
+
     text-align: center;
+
     font-weight: bold;
+
     z-index: 5;
 }
 
-
-/* =========================================================
-   FLAPPY — BOUTONS
-========================================================= */
-
-.page-flappy .flappy-boutons {
+.flappy-boutons,
+.flappy-mobile {
     width: 100%;
-    margin: 20px auto;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
-    gap: 15px;
+
     flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin: 20px auto;
+
     text-align: center;
 }
 
-.page-flappy .flappy-boutons button,
-.page-flappy .flappy-boutons .bouton-jeu {
-    margin: 0;
-}
-
-
-/* =========================================================
-   FLAPPY — CONTROLE MOBILE
-========================================================= */
-
-.page-flappy .flappy-mobile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 10px auto 20px;
-}
-
-.page-flappy .flappy-mobile button {
+.flappy-mobile button {
     width: 75px;
     height: 60px;
-    padding: 0;
+
     font-size: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    text-align: center;
 }
 
-
-/* =========================================================
-   FLAPPY — COMMANDES
-========================================================= */
-
-.page-flappy .flappy-commandes {
+.flappy-commandes {
     width: 100%;
     max-width: 500px;
+
     margin: 10px auto 30px;
+
     padding: 15px;
+
     background: #101010;
+
     border: 2px solid #333;
+
     border-radius: 15px;
+
     text-align: center;
-}
-
-.page-flappy .flappy-commandes p {
-    margin: 7px auto;
-    color: #aaa;
-    text-align: center;
-}
-
-
-/* =========================================================
-   FLAPPY — MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .page-flappy .flappy-container {
-        width: 94%;
-        margin: 15px auto;
-    }
-
-    .page-flappy h1 {
-        font-size: 38px;
-        margin: 15px auto;
-    }
-
-    .page-flappy .flappy-infos {
-        width: 100%;
-        gap: 8px;
-    }
-
-    .page-flappy .flappy-infos > div {
-        padding: 8px 5px;
-        font-size: 14px;
-    }
-
-    .page-flappy .flappy-infos span {
-        font-size: 19px;
-    }
-
-    .page-flappy .flappy-zone {
-        width: 100%;
-    }
-
-    .page-flappy #jeuFlappy {
-        width: 100%;
-        max-width: 400px;
-        border-width: 3px;
-    }
-
-    .page-flappy .flappy-boutons {
-        gap: 10px;
-    }
-
-    .page-flappy .flappy-commandes {
-        width: 100%;
-    }
-}
-
-
-/* =========================================================
-   PLUS DE JEUX
-========================================================= */
-
-.plus-jeux {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 25px;
 }
 
 
@@ -869,181 +1268,127 @@ body.page-flappy {
 
 .page-tetris {
     min-height: 100vh;
-    background: #02020a;
-    color: white;
-}
 
-.page-tetris .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
+    background: #02020a;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
     text-align: center;
 }
 
-.page-tetris h1 {
-    color: #00eaff;
-    text-shadow:
-        0 0 15px #00eaff;
+.page-tetris h1,
+.page-tetris h2,
+.page-tetris h3,
+.page-tetris p,
+.page-tetris span {
+    text-align: center;
 }
 
-.page-tetris .pseudo-joueur {
-    font-size: 18px;
-    margin: 15px 0;
+.page-tetris .container {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
 }
-
-
-/* =========================================================
-   TETRIS — INFORMATIONS
-========================================================= */
 
 .page-tetris .infos {
     display: flex;
+
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+
     flex-wrap: wrap;
-    margin: 20px 0;
+
+    gap: 20px;
+
+    margin: 20px auto;
+
+    text-align: center;
 }
 
 .page-tetris .infos div {
     background: #11152b;
+
     border: 2px solid #00eaff;
+
     border-radius: 10px;
+
     padding: 10px 18px;
+
     box-shadow:
         0 0 10px rgba(0, 234, 255, 0.4);
+
+    text-align: center;
 }
 
-
-/* =========================================================
-   TETRIS — CANVAS
-========================================================= */
-
-.page-tetris #jeuTetris {
+#jeuTetris {
     display: block;
+
     margin: 20px auto;
+
     background: #050510;
+
     border: 3px solid #00eaff;
+
     border-radius: 8px;
+
     box-shadow:
         0 0 25px rgba(0, 234, 255, 0.5);
+
     max-width: 100%;
+
     height: auto;
 }
 
-.page-tetris #message {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 15px;
-}
-
-
-/* =========================================================
-   TETRIS — BOUTONS
-========================================================= */
-
 .page-tetris .boutons {
     display: flex;
+
     justify-content: center;
-    gap: 15px;
+    align-items: center;
+
     flex-wrap: wrap;
-    margin: 20px 0;
+
+    gap: 15px;
+
+    margin: 20px auto;
+
+    text-align: center;
 }
 
 .page-tetris .commandes {
-    margin: 20px auto;
-    padding: 15px;
-    max-width: 600px;
-    background: #0d1020;
-    border: 1px solid #333;
-    border-radius: 10px;
-}
-
-
-/* =========================================================
-   TETRIS — CLASSEMENT
-========================================================= */
-
-.page-tetris .classement {
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 20px;
-    border: 2px solid #00eaff;
-    border-radius: 15px;
-    background: #080812;
-    box-shadow:
-        0 0 15px rgba(0, 234, 255, 0.25);
-}
-
-.page-tetris .classement h2 {
-    color: #00eaff;
-    text-shadow:
-        0 0 8px rgba(0, 234, 255, 0.5);
-}
-
-.page-tetris .classement table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
-    border: 1px solid #00aaff;
+    max-width: 600px;
+
+    margin: 20px auto;
+
+    padding: 15px;
+
+    background: #0d1020;
+
+    border: 1px solid #333;
+
     border-radius: 10px;
-}
 
-.page-tetris .classement th,
-.page-tetris .classement td {
-    padding: 10px;
-    border-bottom: 1px solid #333;
-}
-
-.page-tetris .classement th {
-    background: #11152b;
-    color: #00eaff;
-}
-
-.page-tetris .classement tr:last-child td {
-    border-bottom: none;
-}
-
-.page-tetris .classement tr:hover td {
-    background: rgba(0, 234, 255, 0.08);
+    text-align: center;
 }
 
 
 /* =========================================================
-   TETRIS — MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .page-tetris .container {
-        padding: 10px;
-    }
-
-    .page-tetris h1 {
-        font-size: 28px;
-    }
-
-    .page-tetris .infos {
-        gap: 8px;
-    }
-
-    .page-tetris .infos div {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
-
-    .page-tetris #jeuTetris {
-        width: min(95vw, 400px);
-    }
-
-    .page-tetris .commandes {
-        margin-bottom: 100px;
-    }
-}
-
-
-/* =========================================================
-   TETRIS — CONTROLES MOBILES
+   TETRIS CONTROLES MOBILE
 ========================================================= */
 
 .controles-tetris-mobile {
@@ -1054,321 +1399,128 @@ body.page-flappy {
 
     .controles-tetris-mobile {
         position: fixed;
+
         left: 0;
         right: 0;
         bottom: 10px;
+
         width: 100%;
+
         display: flex;
+
         justify-content: center;
         align-items: center;
+
         gap: 8px;
+
         padding: 10px;
+
         z-index: 99999;
+
         pointer-events: none;
     }
 
     .controles-tetris-mobile button {
         pointer-events: auto;
+
         width: 58px;
         height: 58px;
+
         padding: 0;
+
         border: 2px solid #00eaff;
+
         border-radius: 12px;
+
         background: #11152b;
+
         color: white;
+
         font-size: 24px;
         font-weight: bold;
-        box-shadow:
-            0 0 12px rgba(0, 234, 255, 0.5);
+
         touch-action: manipulation;
-        user-select: none;
-        -webkit-user-select: none;
-    }
 
-    .controles-tetris-mobile button:active {
-        transform: scale(0.92);
-        background: #18264a;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .controles-tetris-mobile {
-        bottom: 5px;
-        gap: 5px;
-        padding: 5px;
-    }
-
-    .controles-tetris-mobile button {
-        width: 52px;
-        height: 52px;
-        font-size: 21px;
+        text-align: center;
     }
 }
 
 
 /* =========================================================
-   MENU — ICÔNE COMPTE
+   PONG
 ========================================================= */
 
-.page-compte {
+.page-pong {
+    width: 100%;
     min-height: 100vh;
-    background: #050510;
-    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
     text-align: center;
 }
 
-.page-compte nav {
-    position: relative;
+.page-pong h1,
+.page-pong h2,
+.page-pong h3,
+.page-pong h4,
+.page-pong p,
+.page-pong span {
     width: 100%;
-    min-height: 70px;
-    padding: 15px 70px 15px 15px;
-    background: #080812;
-    border-bottom: 2px solid #00aaff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.page-compte .menu-gauche {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-}
-
-.page-compte nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: 0.2s;
-}
-
-.page-compte nav a:hover {
-    color: #00aaff;
-    background: #101025;
-}
-
-
-/* =========================================================
-   ICÔNE COMPTE
-========================================================= */
-
-.page-compte .icone-compte {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #101025;
-    border: 2px solid #00aaff;
-    border-radius: 50%;
-    font-size: 22px;
-    color: white;
-    box-shadow:
-        0 0 10px rgba(0, 170, 255, 0.25);
-}
-
-
-/* =========================================================
-   PAGE COMPTE
-========================================================= */
-
-.compte-container {
-    width: 92%;
-    max-width: 600px;
-    margin: 45px auto;
     text-align: center;
 }
 
-.compte-container > h1 {
-    margin-bottom: 30px;
-}
-
-
-/* =========================================================
-   CARTE COMPTE
-========================================================= */
-
-.compte-card {
-    padding: 30px;
-    background: #09091a;
-    border: 2px solid #00aaff;
-    border-radius: 20px;
-    box-shadow:
-        0 0 25px rgba(0, 170, 255, 0.15);
-}
-
-
-/* =========================================================
-   AVATAR
-========================================================= */
-
-.avatar-compte {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #101025;
-    border: 3px solid #00aaff;
-    border-radius: 50%;
-    font-size: 38px;
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.3);
-}
-
-
-/* =========================================================
-   TITRE COMPTE
-========================================================= */
-
-.compte-card h2 {
-    margin: 10px 0 25px;
-    color: #00aaff;
-}
-
-
-/* =========================================================
-   INFORMATIONS COMPTE
-========================================================= */
-
-.info-compte {
-    margin: 20px 0;
-}
-
-.info-ligne {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin: 10px 0;
-    padding: 15px;
-    background: #111122;
-    border: 1px solid #333355;
-    border-radius: 10px;
-    text-align: left;
-}
-
-.info-ligne span {
-    color: #aaa;
-}
-
-.info-ligne strong {
-    color: #00aaff;
-    overflow-wrap: anywhere;
-    text-align: right;
-}
-
-
-/* =========================================================
-   BOUTON DÉCONNEXION
-========================================================= */
-
-.bouton-deconnexion-compte {
+.pong-container {
     width: 100%;
-    margin-top: 15px;
-    padding: 13px;
-    background: #111122;
-    border: 2px solid #ff4444;
-    border-radius: 10px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
+    max-width: 900px;
+
+    margin: 20px auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
 }
 
-.bouton-deconnexion-compte:hover {
-    background: #ff4444;
-    color: white;
+.pong-container > * {
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+}
+
+#pong {
+    display: block;
+
+    width: 800px;
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 20px auto;
+
+    background: #000;
+
+    border: 4px solid #00eaff;
+
+    border-radius: 12px;
+
     box-shadow:
-        0 0 15px rgba(255, 68, 68, 0.4);
+        0 0 10px rgba(0, 234, 255, 0.5),
+        0 0 25px rgba(0, 234, 255, 0.2);
 }
 
 
 /* =========================================================
-   BOUTON CONNEXION
-========================================================= */
-
-.bouton-compte {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 13px 25px;
-    background: #101025;
-    border: 2px solid #00aaff;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.bouton-compte:hover {
-    background: #00aaff;
-    color: black;
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.5);
-}
-
-
-/* =========================================================
-   COMPTE — MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .page-compte nav {
-        padding-left: 5px;
-        padding-right: 60px;
-    }
-
-    .page-compte .menu-gauche {
-        gap: 5px;
-    }
-
-    .page-compte nav a {
-        font-size: 14px;
-        padding: 8px 10px;
-    }
-
-    .page-compte .icone-compte {
-        right: 10px;
-        width: 42px;
-        height: 42px;
-    }
-
-    .compte-container {
-        width: 94%;
-        margin-top: 30px;
-    }
-
-    .compte-card {
-        padding: 20px;
-    }
-
-    .info-ligne {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .info-ligne strong {
-        text-align: left;
-    }
-}
-
-
-/* =========================================================
-   PONG — CONTROLES MOBILES
+   PONG CONTROLES
 ========================================================= */
 
 .controles-pong {
@@ -1379,8 +1531,12 @@ body.page-flappy {
 
     .controles-pong {
         display: block;
+
         width: 100%;
-        margin-top: 20px;
+
+        margin: 20px auto;
+
+        text-align: center;
     }
 
     .joueur1-mobile {
@@ -1391,1089 +1547,1245 @@ body.page-flappy {
         display: none;
     }
 
-    .controles-pong.mode-2-joueurs
-    .joueur2-mobile {
+    .controles-pong.mode-2-joueurs .joueur2-mobile {
         display: block;
     }
 
     .controle-joueur-pong {
         margin: 15px auto;
+
         text-align: center;
     }
 
     .boutons-pong-mobile {
         display: flex;
+
         justify-content: center;
+        align-items: center;
+
         gap: 15px;
+
+        text-align: center;
     }
 
     .boutons-pong-mobile button {
         width: 80px;
         height: 60px;
+
         font-size: 25px;
-        cursor: pointer;
+
         touch-action: none;
+
         user-select: none;
-    }
-}
 
-@media (min-width: 769px) {
-
-    .controles-pong {
-        display: none !important;
+        text-align: center;
     }
 }
 
 
 /* =========================================================
-   CUBE RUNNER 3D
+   CUBE RUNNER 3D — JEU 9
 ========================================================= */
 
 .jeu3d-container {
     width: 100%;
     max-width: 1000px;
+
     margin: 0 auto;
+
     padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.jeu3d-container h1,
+.jeu3d-container h2,
+.jeu3d-container h3,
+.jeu3d-container p,
+.jeu3d-container span {
     text-align: center;
 }
 
 .jeu3d-stats {
+    width: 100%;
+
     display: flex;
+
     justify-content: center;
-    gap: 30px;
-    margin: 15px 0;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    margin: 15px auto;
+
+    text-align: center;
 }
 
 .jeu3d-stats div {
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid #00eaff;
-    border-radius: 12px;
-    padding: 10px 25px;
     min-width: 120px;
+
+    padding: 10px 25px;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    border: 2px solid #00eaff;
+
+    border-radius: 12px;
+
+    text-align: center;
 }
 
 .jeu3d-stats strong {
     display: block;
+
     font-size: 24px;
+
     margin-top: 5px;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   CUBE RUNNER — ZONE
+   CUBE RUNNER — ECRAN
 ========================================================= */
 
 #jeu3d {
     position: relative;
+
     width: 100%;
+    max-width: 900px;
+
     height: 600px;
+
+    margin: 20px auto;
+
     overflow: hidden;
-    border: 3px solid #00eaff;
-    border-radius: 15px;
+
     background: #03030c;
+
+    border: 4px solid #00eaff;
+
+    border-radius: 15px;
+
     box-shadow:
-        0 0 20px rgba(0, 234, 255, 0.4);
+        0 0 15px rgba(0, 234, 255, 0.5),
+        0 0 30px rgba(0, 234, 255, 0.15);
 }
 
 #jeu3d canvas {
     display: block;
-    width: 100%;
-    height: 100%;
+
+    width: 100% !important;
+    height: 100% !important;
 }
-
-
-/* =========================================================
-   CUBE RUNNER — MESSAGE
-========================================================= */
 
 #message3D {
     position: absolute;
+
     z-index: 10;
+
     top: 50%;
     left: 50%;
+
     transform: translate(-50%, -50%);
+
+    width: 90%;
+
     color: white;
+
     font-size: 28px;
     font-weight: bold;
+
     text-shadow:
         0 0 10px #00eaff,
         0 0 20px #00eaff;
+
     pointer-events: none;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   CUBE RUNNER — CONTROLES
+   CUBE RUNNER CONTROLES
 ========================================================= */
 
 .controles-3d {
     display: none;
 }
 
-.controles-3d button {
-    width: 80px;
-    height: 60px;
-    border: 2px solid #00eaff;
-    border-radius: 12px;
-    background: #101020;
-    color: white;
-    font-size: 25px;
-    cursor: pointer;
-    touch-action: manipulation;
-}
-
-.controles-3d button:active {
-    transform: scale(0.92);
-}
-
-
-/* =========================================================
-   CUBE RUNNER — BOUTONS
-========================================================= */
-
 .boutons-jeu3d {
-    margin-top: 15px;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 15px auto;
+
+    text-align: center;
 }
 
 .boutons-jeu3d button {
     padding: 12px 25px;
-    margin: 5px;
-    border: 2px solid #00eaff;
-    border-radius: 10px;
+
     background: #101020;
+
     color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
 
-.boutons-jeu3d button:hover {
-    box-shadow:
-        0 0 15px #00eaff;
-}
-
-
-/* =========================================================
-   CUBE RUNNER — CLASSEMENT
-========================================================= */
-
-#statutClassement3D {
-    margin: 15px;
-}
-
-.classement3d {
-    margin-top: 25px;
-    width: 100%;
-    overflow-x: auto;
-    padding: 20px;
     border: 2px solid #00eaff;
-    border-radius: 15px;
-    background: #080812;
-    box-shadow:
-        0 0 15px rgba(0, 234, 255, 0.25);
-}
 
-.classement3d table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid #00aaff;
     border-radius: 10px;
-    overflow: hidden;
-}
 
-.classement3d th,
-.classement3d td {
-    padding: 12px;
-    border-bottom:
-        1px solid rgba(0, 234, 255, 0.25);
-}
+    font-size: 16px;
 
-.classement3d th {
-    color: #00eaff;
-}
-
-.classement3d tr:last-child td {
-    border-bottom: none;
-}
-
-.classement3d tr:hover td {
-    background: rgba(0, 234, 255, 0.08);
-}
-
-.mon-score {
-    color: #00eaff;
-    font-weight: bold;
-    text-shadow:
-        0 0 8px rgba(0, 234, 255, 0.5);
+    text-align: center;
 }
 
 
 /* =========================================================
-   CUBE RUNNER — MOBILE
+   CUBE RUNNER MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 
     .jeu3d-container {
         padding: 10px;
     }
 
     #jeu3d {
+        width: 96%;
+
         height: 70vh;
-        min-height: 450px;
+
+        min-height: 400px;
         max-height: 650px;
+
+        border-width: 3px;
     }
-
-    .jeu3d-stats {
-        gap: 10px;
-    }
-
-    .jeu3d-stats div {
-        padding: 8px 15px;
-        min-width: 100px;
-    }
-
-    #message3D {
-        font-size: 22px;
-        white-space: nowrap;
-    }
-}
-
-
-/* =========================================================
-   CUBE RUNNER — CONTROLES MOBILE
-========================================================= */
-
-@media (max-width: 768px) {
 
     .controles-3d {
-        display: flex;
         position: fixed;
+
         left: 0;
         right: 0;
         bottom: 20px;
+
         width: 100%;
+
+        display: flex;
+
         justify-content: center;
         align-items: center;
-        gap: 25px;
+
+        gap: 20px;
+
         z-index: 9999;
+
         pointer-events: none;
     }
 
     .controles-3d button {
         width: 70px;
         height: 70px;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
         border: 2px solid #00eaff;
+
         border-radius: 18px;
+
         background: rgba(0, 0, 0, 0.75);
+
         color: white;
+
         font-size: 30px;
-        font-weight: bold;
-        box-shadow:
-            0 0 15px rgba(0, 234, 255, 0.5);
-        cursor: pointer;
+
         pointer-events: auto;
+
         touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
+
+        text-align: center;
     }
 
     .controles-3d button:active {
         transform: scale(0.9);
-        background:
-            rgba(0, 234, 255, 0.35);
-    }
-}
-
-@media (max-width: 450px) {
-
-    .controles-3d {
-        bottom: 15px;
-        gap: 15px;
-    }
-
-    .controles-3d button {
-        width: 62px;
-        height: 62px;
-        font-size: 26px;
     }
 }
 
 
 /* =========================================================
-   JEU 10 — 3D RACING
-========================================================= */
-
-.racing3d-container {
-    width: min(1100px, 95%);
-    margin: 30px auto;
-    text-align: center;
-}
-
-.racing3d-container h1 {
-    color: #00eaff;
-    text-shadow:
-        0 0 10px #00eaff,
-        0 0 25px #00eaff;
-}
-
-
-/* =========================================================
-   RACING — STATS
-========================================================= */
-
-.racing3d-stats {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 20px 0;
-}
-
-.racing3d-stat {
-    padding: 12px 25px;
-    border-radius: 12px;
-    background: #111827;
-    border: 1px solid #00eaff;
-}
-
-.racing3d-stat strong {
-    display: block;
-    color: #00eaff;
-    font-size: 24px;
-    margin-top: 5px;
-}
-
-
-/* =========================================================
-   RACING — JEU
-========================================================= */
-
-#jeuRacing3D {
-    position: relative;
-    width: 90%;
-    max-width: 900px;
-
-    /* HAUTEUR PC */
-    height: 450px !important;
-    min-height: 450px !important;
-    max-height: 450px !important;
-
-    margin: 20px auto;
-
-    overflow: hidden;
-
-    border-radius: 16px;
-    border: 3px solid #00eaff !important;
-
-    background: #03040a;
-
-    box-shadow:
-        0 0 20px rgba(0, 234, 255, 0.35);
-}
-
-
-/* =========================================================
-   RACING — CANVAS
-========================================================= */
-
-#jeuRacing3D canvas {
-    display: block;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    max-width: none !important;
-}
-
-
-/* =========================================================
-   RACING — MESSAGE
-========================================================= */
-
-#messageRacing3D {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    pointer-events: none;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    text-shadow:
-        0 0 15px #00eaff;
-}
-
-
-/* =========================================================
-   RACING — CONTROLES
-========================================================= */
-
-.racing3d-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px auto;
-}
-
-.racing3d-controls button {
-    width: 80px;
-    height: 55px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(
-        135deg,
-        #0077ff,
-        #00eaff
-    );
-    color: white;
-    font-size: 25px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   RACING — BOUTONS
-========================================================= */
-
-.racing3d-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 15px 0;
-}
-
-.racing3d-buttons button {
-    padding: 12px 22px;
-    border: 1px solid #00eaff;
-    border-radius: 10px;
-    background: #111827;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.racing3d-buttons button:hover {
-    background: #00eaff;
-    color: #050505;
-}
-
-
-/* =========================================================
-   RACING — CLASSEMENT
-========================================================= */
-
-.racing3d-ranking {
-    width: min(700px, 95%);
-    margin: 30px auto;
-    padding: 20px;
-    border: 2px solid #00eaff;
-    border-radius: 15px;
-    background: #080812;
-    box-shadow:
-        0 0 15px rgba(0, 234, 255, 0.25);
-}
-
-.racing3d-ranking h2 {
-    color: #00eaff;
-}
-
-.racing3d-ranking table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: #080b12;
-    border: 1px solid #00aaff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.racing3d-ranking th,
-.racing3d-ranking td {
-    padding: 12px;
-    border-bottom: 1px solid #222b3d;
-}
-
-.racing3d-ranking th {
-    color: #00eaff;
-}
-
-.racing3d-ranking td {
-    color: white;
-}
-
-.racing3d-ranking tr:last-child td {
-    border-bottom: none;
-}
-
-.racing3d-ranking tr:hover td {
-    background: rgba(0, 234, 255, 0.08);
-}
-
-.racing3d-ranking .mon-score {
-    color: #00eaff;
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   RACING — MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .racing3d-container {
-        width: 96%;
-    }
-
-    #jeuRacing3D {
-        width: 95%;
-
-        /* HAUTEUR MOBILE */
-        height: 400px !important;
-        min-height: 400px !important;
-        max-height: 400px !important;
-
-        margin: 15px auto;
-    }
-
-    #jeuRacing3D canvas {
-        width: 100% !important;
-        height: 100% !important;
-    }
-
-    .racing3d-stats {
-        gap: 8px;
-    }
-
-    .racing3d-stat {
-        padding: 10px 15px;
-    }
-
-    .racing3d-controls button {
-        width: 70px;
-        height: 55px;
-    }
-}
-
-
-/* =========================================================
-   RACING — PETIT TELEPHONE
-========================================================= */
-
-@media (max-width: 450px) {
-
-    #jeuRacing3D {
-        width: 96%;
-
-        height: 350px !important;
-        min-height: 350px !important;
-        max-height: 350px !important;
-    }
-}
-
-
-/* =========================================================
-   GAME 10 — AUTRE VERSION
+   JEU 10 — RACING 3D
 ========================================================= */
 
 .game10-page {
     width: 100%;
     max-width: 1200px;
+
     margin: 0 auto;
+
     padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.game10-page h1,
+.game10-page h2,
+.game10-page h3,
+.game10-page p,
+.game10-page span {
+    text-align: center;
+}
+
+.game10-page h1 {
+    width: 100%;
+}
+
+.game10-stats {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    margin: 15px auto;
+
+    text-align: center;
+}
+
+.game10-stat {
+    min-width: 130px;
+
+    padding: 12px 20px;
+
+    background: #151d2e;
+
+    border: 1px solid #00aaff;
+
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.game10-stat strong {
+    display: block;
+
+    font-size: 24px;
+
+    margin-top: 5px;
+
     text-align: center;
 }
 
 
 /* =========================================================
-   GAME 10 — CANVAS
+   JEU 10 — ECRAN
 ========================================================= */
 
 #game10-canvas-zone {
     position: relative;
-    width: 100%;
-    height: 650px;
-    min-height: 650px;
-    overflow: hidden;
+
+    width: min(100%, 1100px);
+
+    height: 600px;
+
     margin: 20px auto;
-    border-radius: 15px;
+
+    overflow: hidden;
+
     background: #101827;
-    border: 3px solid #00eaff;
+
+    border: 4px solid #00eaff;
+
+    border-radius: 15px;
+
     box-shadow:
-        0 0 20px rgba(0, 234, 255, 0.35);
+        0 0 15px rgba(0, 234, 255, 0.5),
+        0 0 30px rgba(0, 234, 255, 0.15);
 }
 
 #game10-canvas-zone canvas {
     display: block;
+
     width: 100% !important;
     height: 100% !important;
 }
 
 #game10-message {
     position: absolute;
+
     z-index: 10;
+
     top: 50%;
     left: 50%;
+
     transform: translate(-50%, -50%);
+
+    width: 90%;
+
+    color: white;
+
     font-size: 28px;
     font-weight: bold;
+
     pointer-events: none;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   GAME 10 — STATS
-========================================================= */
-
-.game10-stats {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin: 15px 0;
-}
-
-.game10-stat {
-    min-width: 130px;
-    padding: 12px 20px;
-    border-radius: 12px;
-    background: #151d2e;
-    border: 1px solid #00aaff;
-}
-
-.game10-stat strong {
-    display: block;
-    font-size: 24px;
-    margin-top: 5px;
-}
-
-
-/* =========================================================
-   GAME 10 — CONTROLES
+   JEU 10 — CONTROLES
 ========================================================= */
 
 .game10-controls {
+    width: 100%;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
+
     gap: 20px;
+
     margin: 20px auto;
+
+    text-align: center;
 }
 
 .game10-controls button {
     width: 75px;
     height: 60px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
     font-size: 25px;
-    border: none;
+
+    border: 2px solid #00eaff;
+
     border-radius: 12px;
-    cursor: pointer;
+
+    background: #101827;
+
+    color: white;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   GAME 10 — BOUTONS
+   JEU 10 — BOUTONS
 ========================================================= */
 
 .game10-buttons {
     display: flex;
+
     justify-content: center;
+    align-items: center;
+
     gap: 15px;
-    margin: 15px 0;
+
+    margin: 15px auto;
+
+    text-align: center;
 }
 
 .game10-buttons button {
     padding: 12px 25px;
-    font-size: 17px;
-    border: none;
+
+    background: #111827;
+
+    color: white;
+
+    border: 2px solid #00eaff;
+
     border-radius: 10px;
-    cursor: pointer;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.game10-buttons button:hover {
+    background: #00eaff;
+    color: black;
 }
 
 
 /* =========================================================
-   GAME 10 — CLASSEMENT
+   CLASSEMENTS
 ========================================================= */
 
-.game10-ranking {
-    width: 100%;
-    max-width: 700px;
+.classement,
+.classement3d,
+.game10-ranking,
+.racing3d-ranking {
+    width: min(700px, 95%);
+
     margin: 30px auto;
+
     padding: 20px;
-    border: 2px solid #00eaff;
-    border-radius: 15px;
+
     background: #080812;
+
+    border: 2px solid #00eaff;
+
+    border-radius: 15px;
+
     box-shadow:
         0 0 15px rgba(0, 234, 255, 0.25);
+
+    text-align: center;
+
+    overflow-x: auto;
 }
 
-.game10-ranking h2 {
+.classement h2,
+.classement3d h2,
+.game10-ranking h2,
+.racing3d-ranking h2 {
     color: #00eaff;
+
+    text-align: center;
+
     text-shadow:
         0 0 8px rgba(0, 234, 255, 0.5);
 }
 
-.game10-ranking table {
+.classement table,
+.classement3d table,
+.game10-ranking table,
+.racing3d-ranking table {
     width: 100%;
+
     border-collapse: separate;
+
     border-spacing: 0;
+
+    background: #080b12;
+
     border: 1px solid #00aaff;
+
     border-radius: 10px;
+
     overflow: hidden;
+
+    text-align: center;
 }
 
+.classement th,
+.classement3d th,
 .game10-ranking th,
-.game10-ranking td {
+.racing3d-ranking th {
     padding: 12px;
-    border-bottom: 1px solid #222b3d;
-}
 
-.game10-ranking th {
-    color: #00eaff;
     background: #11152b;
+
+    color: #00eaff;
+
+    border-bottom: 2px solid #00aaff;
+
+    text-align: center;
 }
 
-.game10-ranking tr:last-child td {
+.classement td,
+.classement3d td,
+.game10-ranking td,
+.racing3d-ranking td {
+    padding: 12px;
+
+    color: white;
+
+    border-bottom: 1px solid #263044;
+
+    text-align: center;
+}
+
+.classement tr:last-child td,
+.classement3d tr:last-child td,
+.game10-ranking tr:last-child td,
+.racing3d-ranking tr:last-child td {
     border-bottom: none;
 }
 
-.game10-ranking tr:hover td {
+.classement tr:hover td,
+.classement3d tr:hover td,
+.game10-ranking tr:hover td,
+.racing3d-ranking tr:hover td {
     background: rgba(0, 234, 255, 0.08);
 }
 
+.mon-score {
+    color: #00eaff !important;
 
-/* =========================================================
-   GAME 10 — MOBILE
-========================================================= */
+    font-weight: bold !important;
 
-@media (max-width: 700px) {
+    text-align: center !important;
 
-    .game10-page {
-        padding: 10px;
-    }
-
-    #game10-canvas-zone {
-        height: 500px;
-        min-height: 500px;
-        border-radius: 10px;
-    }
-
-    .game10-controls button {
-        width: 70px;
-        height: 55px;
-    }
+    text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.5);
 }
 
 
 /* =========================================================
-   ACCUEIL — AFFICHAGE PC
+   PAGE COMPTE
 ========================================================= */
 
-@media (min-width: 901px) {
+.page-compte {
+    min-height: 100vh;
 
-    .grille-jeux {
-        display: grid !important;
-        grid-template-columns:
-            repeat(4, minmax(0, 1fr)) !important;
-        gap: 20px !important;
-    }
+    display: flex;
 
-    .jeu {
-        width: auto !important;
-        max-width: none !important;
-    }
+    flex-direction: column;
 
-    .liste-jeux {
-        width: min(1200px, 94%) !important;
-        margin: 0 auto !important;
-    }
+    align-items: center;
 
-    nav {
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: center !important;
-        align-items: center !important;
-    }
+    text-align: center;
+}
 
-    nav a {
-        font-size: 16px !important;
-    }
+.page-compte h1,
+.page-compte h2,
+.page-compte h3,
+.page-compte p,
+.page-compte span {
+    text-align: center;
+}
+
+.compte-container {
+    width: 92%;
+    max-width: 600px;
+
+    margin: 45px auto;
+
+    text-align: center;
+}
+
+.compte-card {
+    width: 100%;
+
+    padding: 30px;
+
+    background: #09091a;
+
+    border: 2px solid #00aaff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 25px rgba(0, 170, 255, 0.15);
+
+    text-align: center;
+}
+
+.avatar-compte {
+    width: 80px;
+    height: 80px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: #101025;
+
+    border: 3px solid #00aaff;
+
+    border-radius: 50%;
+
+    font-size: 38px;
+
+    text-align: center;
+}
+
+.compte-card h2 {
+    color: #00aaff;
+
+    text-align: center;
+}
+
+.info-compte {
+    margin: 20px 0;
+
+    text-align: center;
+}
+
+.info-ligne {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 10px 0;
+
+    padding: 15px;
+
+    background: #111122;
+
+    border: 1px solid #333355;
+
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.info-ligne span {
+    color: #aaa;
+
+    text-align: center;
+}
+
+.info-ligne strong {
+    color: #00aaff;
+
+    overflow-wrap: anywhere;
+
+    text-align: center;
+}
+
+.bouton-deconnexion-compte {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 13px;
+
+    background: #111122;
+
+    border: 2px solid #ff4444;
+
+    border-radius: 10px;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.bouton-deconnexion-compte:hover {
+    background: #ff4444;
+}
+
+.bouton-compte {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 15px;
+
+    padding: 13px 25px;
+
+    background: #101025;
+
+    border: 2px solid #00aaff;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    text-align: center;
 }
 
 
 /* =========================================================
-   ACCUEIL — TABLETTE
+   PLUS DE JEUX
+========================================================= */
+
+.plus-jeux {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    margin-top: 25px;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLETTE
 ========================================================= */
 
 @media (min-width: 551px) and (max-width: 900px) {
 
     .grille-jeux {
-        display: grid !important;
         grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-        gap: 20px !important;
+            repeat(2, minmax(0, 1fr));
     }
 }
 
 
 /* =========================================================
-   ACCUEIL — TÉLÉPHONE
+   RESPONSIVE MOBILE
 ========================================================= */
 
-@media (max-width: 550px) {
+@media (max-width: 768px) {
 
-    .grille-jeux {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-    }
-}
+    body {
+        overflow-x: hidden;
 
-
-/* =========================================================
-   ACCUEIL — ICÔNE COMPTE MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .page-accueil nav {
-        min-height: 70px;
-        padding:
-            12px
-            70px
-            12px
-            10px;
+        text-align: center;
     }
 
-    .page-accueil .menu-gauche {
+    nav {
         gap: 8px;
+
+        padding: 12px;
+
+        text-align: center;
     }
 
-    .page-accueil .menu-gauche a {
-        width: auto;
-        padding: 9px 12px;
+    nav a {
         font-size: 14px;
+
+        padding: 8px 10px;
+
+        text-align: center;
     }
 
-    .page-accueil .icone-compte {
-        right: 12px;
+    .page-accueil .icone-compte,
+    .page-compte .icone-compte {
+        right: 10px;
+
         width: 42px;
         height: 42px;
+
         font-size: 20px;
     }
-}
 
 
-/* =========================================================
-   GAMEZONE — CONTOURS DE TOUS LES ÉCRANS DE JEU
-========================================================= */
+    /* -----------------------------------------
+       LISTE
+    ----------------------------------------- */
 
-#jeu,
-#jeuSpaceInvaders,
-#jeuFlappy,
-#jeuTetris,
-#jeu3d,
-#jeuRacing3D,
-#game10-canvas-zone {
-    border: 3px solid #00eaff !important;
-    border-radius: 15px !important;
-    box-shadow:
-        0 0 10px rgba(0, 234, 255, 0.35),
-        0 0 25px rgba(0, 234, 255, 0.15) !important;
-}
+    .grille-jeux {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .jeu {
+        text-align: center;
+    }
 
 
-/* =========================================================
-   GAMEZONE — CONTOURS DES CLASSEMENTS
-========================================================= */
+    /* -----------------------------------------
+       JEUX CLASSIQUES
+    ----------------------------------------- */
 
-.classement,
-.classement3d,
-.racing3d-ranking,
-.game10-ranking {
-    border: 2px solid #00eaff !important;
-    border-radius: 15px !important;
-    background: #080812 !important;
-    padding: 20px !important;
-    box-shadow:
-        0 0 12px rgba(0, 234, 255, 0.25),
-        0 0 25px rgba(0, 234, 255, 0.08) !important;
-}
+    .clicker-container,
+    .nombre-container,
+    .pfc-container,
+    .snake-container {
+        width: 94%;
 
+        margin-left: auto;
+        margin-right: auto;
 
-/* =========================================================
-   TITRES DES CLASSEMENTS
-========================================================= */
-
-.classement h2,
-.classement3d h2,
-.racing3d-ranking h2,
-.game10-ranking h2 {
-    color: #00eaff !important;
-    text-shadow:
-        0 0 8px rgba(0, 234, 255, 0.5);
-}
+        text-align: center;
+    }
 
 
-/* =========================================================
-   TABLEAUX
-========================================================= */
+    /* -----------------------------------------
+       CENTRAGE GENERAL
+    ----------------------------------------- */
 
-.classement table,
-.classement3d table,
-.racing3d-ranking table,
-.game10-ranking table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
-    border: 1px solid #00aaff;
-    border-radius: 10px;
-}
+    .page-clicker,
+    .page-nombre,
+    .page-pfc,
+    .page-snake,
+    .page-pong,
+    .page-flappy,
+    .page-tetris {
+        display: flex;
 
+        flex-direction: column;
 
-/* =========================================================
-   EN-TÊTES
-========================================================= */
+        align-items: center;
 
-.classement th,
-.classement3d th,
-.racing3d-ranking th,
-.game10-ranking th {
-    background: #11152b !important;
-    color: #00eaff !important;
-    border-bottom:
-        2px solid #00aaff !important;
-}
+        text-align: center;
+    }
 
 
-/* =========================================================
-   CELLULES
-========================================================= */
-
-.classement td,
-.classement3d td,
-.racing3d-ranking td,
-.game10-ranking td {
-    color: white;
-    border-bottom:
-        1px solid #263044;
-}
-
-
-/* =========================================================
-   DERNIÈRE LIGNE
-========================================================= */
-
-.classement tr:last-child td,
-.classement3d tr:last-child td,
-.racing3d-ranking tr:last-child td,
-.game10-ranking tr:last-child td {
-    border-bottom: none;
-}
-
-
-/* =========================================================
-   SURVOL
-========================================================= */
-
-.classement tr:hover td,
-.classement3d tr:hover td,
-.racing3d-ranking tr:hover td,
-.game10-ranking tr:hover td {
-    background:
-        rgba(0, 234, 255, 0.08);
-}
-
-
-/* =========================================================
-   MON SCORE
-========================================================= */
-
-.mon-score {
-    color: #00eaff !important;
-    font-weight: bold !important;
-    text-shadow:
-        0 0 8px rgba(0, 234, 255, 0.5);
-}
-
-
-/* =========================================================
-   CONTOURS DES ZONES 3D
-========================================================= */
-
-#jeu3d,
-#jeuRacing3D,
-#game10-canvas-zone {
-    border: 3px solid #00eaff !important;
-    box-shadow:
-        0 0 15px rgba(0, 234, 255, 0.35),
-        0 0 30px rgba(0, 234, 255, 0.12) !important;
-}
-
-
-/* =========================================================
-   MOBILE — CONTOURS
-========================================================= */
-
-@media (max-width: 700px) {
+    /* -----------------------------------------
+       CANVAS
+    ----------------------------------------- */
 
     #jeu,
     #jeuSpaceInvaders,
+    #jeuSpace,
     #jeuFlappy,
     #jeuTetris,
-    #jeu3d,
-    #jeuRacing3D,
-    #game10-canvas-zone {
-        border-width: 2px !important;
-        border-radius: 12px !important;
+    #pong {
+
+        max-width: 96%;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        display: block;
     }
+
+
+    /* -----------------------------------------
+       SPACE
+    ----------------------------------------- */
+
+    .page-space .container {
+        width: 96%;
+
+        padding: 10px;
+
+        text-align: center;
+    }
+
+    .page-space .infos {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+    .page-space .infos > div {
+        min-height: 50px;
+
+        font-size: 13px;
+
+        text-align: center;
+    }
+
+    #jeuSpaceInvaders,
+    #jeuSpace {
+        border-width: 3px;
+
+        border-radius: 10px;
+    }
+
+
+    /* -----------------------------------------
+       SNAKE
+    ----------------------------------------- */
+
+    #jeu {
+        border-width: 3px;
+
+        display: block;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .controles-snake {
+        justify-content: center;
+
+        align-items: center;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        text-align: center;
+    }
+
+
+    /* -----------------------------------------
+       PONG
+    ----------------------------------------- */
+
+    #pong {
+        border-width: 3px;
+
+        border-radius: 10px;
+
+        display: block;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .controles-pong {
+        width: 100%;
+
+        display: block;
+
+        text-align: center;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* -----------------------------------------
+       CLICKER
+    ----------------------------------------- */
+
+    .clicker-container {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        text-align: center;
+    }
+
+    .bouton-clicker {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    /* -----------------------------------------
+       PFC
+    ----------------------------------------- */
+
+    .boutons-pfc {
+        gap: 10px;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+    .boutons-pfc button {
+        min-width: 90px;
+    }
+
+
+    /* -----------------------------------------
+       FLAPPY
+    ----------------------------------------- */
+
+    .flappy-container {
+        width: 94%;
+
+        text-align: center;
+    }
+
+    .flappy-infos {
+        gap: 8px;
+    }
+
+    .flappy-infos > div {
+        padding: 8px 5px;
+
+        font-size: 14px;
+
+        text-align: center;
+    }
+
+    .flappy-zone {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    #jeuFlappy {
+        width: 100%;
+
+        max-width: 400px;
+
+        border-width: 3px;
+    }
+
+
+    /* -----------------------------------------
+       TETRIS
+    ----------------------------------------- */
+
+    .page-tetris .container {
+        padding: 10px;
+
+        text-align: center;
+    }
+
+    #jeuTetris {
+        width: min(95vw, 400px);
+    }
+
+
+    /* -----------------------------------------
+       CUBE RUNNER
+    ----------------------------------------- */
+
+    #jeu3d {
+        width: 96%;
+
+        height: 70vh;
+
+        min-height: 400px;
+
+        max-height: 650px;
+    }
+
+
+    /* -----------------------------------------
+       GAME 10
+    ----------------------------------------- */
+
+    .game10-page {
+        padding: 10px;
+
+        text-align: center;
+    }
+
+    #game10-canvas-zone {
+        width: 96%;
+
+        height: 500px;
+
+        min-height: 500px;
+
+        border-width: 3px;
+
+        border-radius: 12px;
+    }
+
+    .game10-controls {
+        gap: 10px;
+
+        justify-content: center;
+    }
+
+    .game10-controls button {
+        width: 65px;
+
+        height: 55px;
+    }
+
+
+    /* -----------------------------------------
+       CLASSEMENTS
+    ----------------------------------------- */
 
     .classement,
     .classement3d,
-    .racing3d-ranking,
-    .game10-ranking {
+    .game10-ranking,
+    .racing3d-ranking {
         width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 12px !important;
-        border-width: 2px !important;
-        border-radius: 12px !important;
-        overflow-x: auto;
-    }
 
-    .classement table,
-    .classement3d table,
-    .racing3d-ranking table,
-    .game10-ranking table {
-        min-width: 100%;
+        padding: 12px;
+
+        border-width: 2px;
+
+        border-radius: 12px;
+
+        text-align: center;
     }
 
     .classement th,
     .classement td,
     .classement3d th,
     .classement3d td,
-    .racing3d-ranking th,
-    .racing3d-ranking td,
     .game10-ranking th,
-    .game10-ranking td {
+    .game10-ranking td,
+    .racing3d-ranking th,
+    .racing3d-ranking td {
         padding: 9px 6px;
+
         font-size: 14px;
+
+        text-align: center;
     }
-}
 
 
-/* =========================================================
-   MOBILE — ESPACE POUR LES CONTROLES FIXES
-========================================================= */
+    /* -----------------------------------------
+       COMPTE
+    ----------------------------------------- */
 
-@media (max-width: 768px) {
+    .compte-container {
+        width: 94%;
+
+        margin-top: 30px;
+    }
+
+    .compte-card {
+        padding: 20px;
+
+        text-align: center;
+    }
+
+    .info-ligne {
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+    }
+
+    .info-ligne strong {
+        text-align: center;
+    }
+
+
+    /* -----------------------------------------
+       RETOUR
+    ----------------------------------------- */
+
+    .bouton-retour-jeux {
+        width: 90%;
+
+        max-width: 300px;
+
+        padding: 12px 15px;
+
+        font-size: 15px;
+
+        text-align: center;
+    }
+
+
+    /* -----------------------------------------
+       ESPACE CONTROLES FIXES
+    ----------------------------------------- */
 
     .page-space .container,
     .page-tetris .container,
     .jeu3d-container,
-    .racing3d-container,
     .game10-page {
         padding-bottom: 100px;
     }
@@ -2481,123 +2793,123 @@ body.page-flappy {
 
 
 /* =========================================================
-   GAMEZONE — BOUTON RETOUR AUX JEUX
+   PETITS TELEPHONES
 ========================================================= */
 
-.bouton-retour-jeux {
-    display: inline-block;
-    margin: 10px auto 20px;
-    padding: 12px 22px;
-    background: #101020;
-    border: 2px solid #00aaff;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    transition:
-        background 0.2s,
-        color 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
-}
+@media (max-width: 480px) {
 
-.bouton-retour-jeux:hover {
-    background: #00aaff;
-    color: black;
-    box-shadow:
-        0 0 15px rgba(0, 170, 255, 0.6);
-    transform: translateY(-2px);
-}
+    .bouton-clicker {
+        width: 170px;
 
-.bouton-retour-jeux:active {
-    transform: scale(0.95);
-}
+        height: 170px;
 
+        font-size: 24px;
+    }
 
-/* =========================================================
-   RETOUR — MOBILE
-========================================================= */
+    .controles-snake button {
+        width: 58px;
 
-@media (max-width: 600px) {
+        height: 52px;
+    }
 
-    .bouton-retour-jeux {
-        width: 90%;
-        max-width: 300px;
-        padding: 12px 15px;
-        font-size: 15px;
+    .controles-3d {
+        gap: 12px;
+    }
+
+    .controles-3d button {
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 26px;
+    }
+
+    .controles-tetris-mobile {
+        gap: 5px;
+
+        padding: 5px;
+    }
+
+    .controles-tetris-mobile button {
+        width: 52px;
+
+        height: 52px;
+
+        font-size: 21px;
+    }
+
+    #game10-canvas-zone {
+        width: 96%;
+
+        height: 430px;
+
+        min-height: 430px;
+    }
+
+    .game10-controls button {
+        width: 58px;
+
+        height: 52px;
+
+        font-size: 21px;
+    }
+
+    .page-space .controles-mobile {
+        gap: 15px;
+    }
+
+    .page-space .controles-mobile button {
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 28px;
     }
 }
 
 
 /* =========================================================
-   RACING 3D — FORCE TAILLE FINALE
+   CORRECTION FINALE — CENTRAGE DE TOUS LES TEXTES
 ========================================================= */
 
-/*
-   Cette partie est volontairement placée
-   TOUT À LA FIN du CSS pour être prioritaire.
-*/
-
-#jeuRacing3D {
-    width: 90% !important;
-    max-width: 900px !important;
-
-    height: 450px !important;
-    min-height: 400px !important;
-    max-height: 400px !important;
-
-    margin: 20px auto !important;
-
-    overflow: hidden !important;
-}
-
-
-/* CANVAS */
-
-#jeuRacing3D canvas {
-    width: 100% !important;
-    height: 100% !important;
+.page-clicker *,
+.page-nombre *,
+.page-pfc *,
+.page-snake *,
+.page-space *,
+.page-flappy *,
+.page-tetris *,
+.page-pong *,
+.jeu3d-container *,
+.game10-page *,
+.classement *,
+.classement3d *,
+.game10-ranking *,
+.racing3d-ranking *,
+.compte-container * {
+    text-align: center;
 }
 
 
 /* =========================================================
-   RACING 3D — MOBILE
+   CENTRAGE DES BLOCS
 ========================================================= */
 
-@media (max-width: 700px) {
-
-    #jeuRacing3D {
-        width: 95% !important;
-
-        height: 400px !important;
-        min-height: 400px !important;
-        max-height: 400px !important;
-    }
-
-    #jeuRacing3D canvas {
-        width: 100% !important;
-        height: 100% !important;
-    }
+.page-clicker > *,
+.page-nombre > *,
+.page-pfc > *,
+.page-snake > *,
+.page-space > *,
+.page-flappy > *,
+.page-tetris > *,
+.page-pong > *,
+.jeu3d-container > *,
+.game10-page > * {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
 /* =========================================================
-   RACING 3D — PETIT TÉLÉPHONE
-========================================================= */
-
-@media (max-width: 450px) {
-
-    #jeuRacing3D {
-        width: 96% !important;
-
-        height: 350px !important;
-        min-height: 350px !important;
-        max-height: 350px !important;
-    }
-}
-
-
-/* =========================================================
-   FIN DU STYLE GAMEZONE
+   FIN GAMEZONE
 ========================================================= */
