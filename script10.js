@@ -30,6 +30,7 @@ const SUPABASE_KEY =
 let supabaseClient10 = null;
 
 if (window.supabase) {
+
     supabaseClient10 =
         window.supabase.createClient(
             SUPABASE_URL,
@@ -91,43 +92,218 @@ const statutClassement =
    PSEUDO
 ========================================================= */
 
-let pseudo =
-    localStorage.getItem("pseudoGameZone");
 
-if (pseudo) {
-    pseudo = pseudo.trim();
-}
+/* =========================================================
+   PSEUDO + SESSION SUPABASE
+========================================================= */
 
-if (pseudoAffiche) {
-    pseudoAffiche.textContent =
-        pseudo || "Visiteur";
+let pseudo = null;
+let utilisateurConnecte10 = false;
+
+
+/* =========================================================
+   VÉRIFIER LA SESSION RÉELLE
+========================================================= */
+
+async function verifierConnexion10() {
+
+    utilisateurConnecte10 = false;
+    pseudo = null;
+
+    if (!supabaseClient10) {
+        actualiserPseudo10();
+        return false;
+    }
+
+    try {
+
+        const resultat =
+            await supabaseClient10.auth.getSession();
+
+        const session =
+            resultat.data?.session;
+
+        if (
+            session &&
+            session.user
+        ) {
+
+            utilisateurConnecte10 = true;
+
+            /*
+               On récupère le pseudo depuis localStorage.
+               Il est créé par ton système de compte.
+            */
+
+            const pseudoLocal =
+                localStorage.getItem(
+                    "pseudoGameZone"
+                );
+
+            if (pseudoLocal) {
+
+                const pseudoNettoye =
+                    pseudoLocal.trim();
+
+                pseudo =
+                    pseudoNettoye || null;
+            }
+
+            /*
+               Si aucun pseudo local n'existe,
+               on essaie les données du compte.
+            */
+
+            if (!pseudo) {
+
+                const pseudoMetadata =
+                    session.user.user_metadata?.pseudo;
+
+                if (pseudoMetadata) {
+
+                    pseudo =
+                        String(
+                            pseudoMetadata
+                        ).trim();
+
+                }
+            }
+
+            /*
+               Sécurité :
+               si aucun pseudo valide n'est trouvé,
+               on considère le joueur comme visiteur.
+            */
+
+            if (!pseudo) {
+
+                utilisateurConnecte10 = false;
+
+            }
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            "Erreur vérification session Racing :",
+            erreur
+        );
+
+        utilisateurConnecte10 = false;
+        pseudo = null;
+    }
+
+    actualiserPseudo10();
+
+    return utilisateurConnecte10 && !!pseudo;
 }
 
 
 /* =========================================================
-   MEILLEUR SCORE
+   AFFICHER LE PSEUDO
 ========================================================= */
 
-function obtenirCleMeilleurScore10() {
+function obtenirPseudo10() {
 
-    if (pseudo) {
-        return "meilleurScore3DRacing_" + pseudo;
+    /*
+       IMPORTANT :
+       cette fonction ne suffit plus à déterminer
+       si le joueur est connecté.
+    */
+
+    if (!utilisateurConnecte10) {
+        return null;
     }
 
-    return "meilleurScore3DRacing_visiteur";
+    if (!pseudo) {
+        return null;
+    }
+
+    return pseudo;
 }
 
-const cleMeilleurScore =
-    obtenirCleMeilleurScore10();
 
-let meilleurScore =
-    Number(
-        localStorage.getItem(cleMeilleurScore)
-    ) || 0;
+function actualiserPseudo10() {
 
-if (meilleurScoreElement) {
-    meilleurScoreElement.textContent =
-        meilleurScore;
+    if (pseudoAffiche) {
+
+        pseudoAffiche.textContent =
+            pseudo || "Visiteur";
+    }
+}
+
+
+/* =========================================================
+   ÉCOUTER LES CHANGEMENTS DE SESSION
+========================================================= */
+
+if (supabaseClient10) {
+
+    supabaseClient10.auth.onAuthStateChange(
+        function(event, session) {
+
+            console.log(
+                "Racing Auth event :",
+                event
+            );
+
+            if (
+                session &&
+                session.user
+            ) {
+
+                utilisateurConnecte10 = true;
+
+                const pseudoLocal =
+                    localStorage.getItem(
+                        "pseudoGameZone"
+                    );
+
+                const pseudoMetadata =
+                    session.user.user_metadata?.pseudo;
+
+                pseudo =
+                    (
+                        pseudoLocal ||
+                        pseudoMetadata ||
+                        ""
+                    ).trim() || null;
+
+                /*
+                   Si on a un compte mais pas de pseudo,
+                   on repasse en visiteur par sécurité.
+                */
+
+                if (!pseudo) {
+                    utilisateurConnecte10 = false;
+                }
+
+            }
+
+            else {
+
+                /*
+                   DÉCONNEXION :
+                   on efface immédiatement l'identité
+                   utilisée par Racing.
+                */
+
+                utilisateurConnecte10 = false;
+                pseudo = null;
+
+                if (pseudoAffiche) {
+
+                    pseudoAffiche.textContent =
+                        "Visiteur";
+                }
+
+            }
+
+        }
+    );
 }
 
 
@@ -145,6 +321,7 @@ let voituresEnnemies = [];
 
 let lignesRoute = [];
 let bandesRoute = [];
+
 let vibreursGauche = [];
 let vibreursDroite = [];
 
@@ -214,31 +391,46 @@ const COULEUR_HERBE =
 
 let boutonPleinEcran10 = null;
 
+
 function creerBoutonPleinEcran10() {
 
-    if (!zoneRacing) return;
+    if (!zoneRacing) {
+        return;
+    }
+
 
     const ancien =
         document.getElementById(
             "game10-fullscreen"
         );
 
+
     if (ancien) {
-        boutonPleinEcran10 = ancien;
+
+        boutonPleinEcran10 =
+            ancien;
+
         return;
     }
 
+
     boutonPleinEcran10 =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
+
 
     boutonPleinEcran10.id =
         "game10-fullscreen";
 
+
     boutonPleinEcran10.type =
         "button";
 
+
     boutonPleinEcran10.textContent =
         "⛶ Plein écran";
+
 
     Object.assign(
         boutonPleinEcran10.style,
@@ -260,6 +452,7 @@ function creerBoutonPleinEcran10() {
         }
     );
 
+
     boutonPleinEcran10.addEventListener(
         "click",
         function(event) {
@@ -268,8 +461,10 @@ function creerBoutonPleinEcran10() {
             event.stopPropagation();
 
             basculerPleinEcran10();
+
         }
     );
+
 
     document.body.appendChild(
         boutonPleinEcran10
@@ -279,7 +474,10 @@ function creerBoutonPleinEcran10() {
 
 async function basculerPleinEcran10() {
 
-    if (!zoneRacing) return;
+    if (!zoneRacing) {
+        return;
+    }
+
 
     try {
 
@@ -305,8 +503,12 @@ async function basculerPleinEcran10() {
 
         else {
 
-            if (document.exitFullscreen) {
+            if (
+                document.exitFullscreen
+            ) {
+
                 await document.exitFullscreen();
+
             }
 
             else if (
@@ -334,7 +536,10 @@ async function basculerPleinEcran10() {
 
 function mettreAJourBoutonPleinEcran10() {
 
-    if (!boutonPleinEcran10) return;
+    if (!boutonPleinEcran10) {
+        return;
+    }
+
 
     if (document.fullscreenElement) {
 
@@ -349,6 +554,7 @@ function mettreAJourBoutonPleinEcran10() {
             "⛶ Plein écran";
 
     }
+
 
     setTimeout(
         redimensionnerRacing,
@@ -369,7 +575,11 @@ document.addEventListener(
 
 function initialiserRacing() {
 
-    if (!zoneRacing || renderer) {
+    if (
+        !zoneRacing ||
+        renderer
+    ) {
+
         return;
     }
 
@@ -381,10 +591,12 @@ function initialiserRacing() {
     scene =
         new THREE.Scene();
 
+
     scene.background =
         new THREE.Color(
             COULEUR_CIEL
         );
+
 
     scene.fog =
         new THREE.Fog(
@@ -404,11 +616,13 @@ function initialiserRacing() {
             1
         );
 
+
     const hauteur =
         Math.max(
             zoneRacing.clientHeight,
             1
         );
+
 
     camera =
         new THREE.PerspectiveCamera(
@@ -418,11 +632,13 @@ function initialiserRacing() {
             400
         );
 
+
     camera.position.set(
         0,
         4.4,
         10
     );
+
 
     camera.lookAt(
         0,
@@ -440,6 +656,7 @@ function initialiserRacing() {
             antialias: true
         });
 
+
     renderer.setPixelRatio(
         Math.min(
             window.devicePixelRatio || 1,
@@ -447,27 +664,42 @@ function initialiserRacing() {
         )
     );
 
+
     renderer.setSize(
         largeur,
         hauteur
     );
 
-    renderer.shadowMap.enabled = true;
+
+    renderer.shadowMap.enabled =
+        true;
+
 
     renderer.shadowMap.type =
         THREE.PCFSoftShadowMap;
 
-    renderer.outputEncoding =
-        THREE.sRGBEncoding;
+
+    if (
+        "outputEncoding" in renderer &&
+        typeof THREE.sRGBEncoding !== "undefined"
+    ) {
+
+        renderer.outputEncoding =
+            THREE.sRGBEncoding;
+    }
+
 
     renderer.domElement.style.display =
         "block";
 
+
     renderer.domElement.style.width =
         "100%";
 
+
     renderer.domElement.style.height =
         "100%";
+
 
     zoneRacing.appendChild(
         renderer.domElement
@@ -485,6 +717,7 @@ function initialiserRacing() {
             2
         );
 
+
     scene.add(
         lumiereCiel
     );
@@ -496,31 +729,41 @@ function initialiserRacing() {
             2.2
         );
 
+
     soleil.position.set(
         -40,
         80,
         30
     );
 
-    soleil.castShadow = true;
+
+    soleil.castShadow =
+        true;
+
 
     soleil.shadow.mapSize.width =
         2048;
 
+
     soleil.shadow.mapSize.height =
         2048;
+
 
     soleil.shadow.camera.left =
         -80;
 
+
     soleil.shadow.camera.right =
         80;
+
 
     soleil.shadow.camera.top =
         80;
 
+
     soleil.shadow.camera.bottom =
         -80;
+
 
     scene.add(
         soleil
@@ -584,11 +827,13 @@ function creerSol() {
             500
         );
 
+
     const materiau =
         new THREE.MeshStandardMaterial({
             color: COULEUR_HERBE,
             roughness: 1
         });
+
 
     const sol =
         new THREE.Mesh(
@@ -596,18 +841,26 @@ function creerSol() {
             materiau
         );
 
+
     sol.rotation.x =
         -Math.PI / 2;
+
 
     sol.position.y =
         -0.45;
 
+
     sol.position.z =
         -100;
 
-    sol.receiveShadow = true;
 
-    scene.add(sol);
+    sol.receiveShadow =
+        true;
+
+
+    scene.add(
+        sol
+    );
 }
 
 
@@ -624,11 +877,13 @@ function creerRoute() {
             LONGUEUR_ROUTE
         );
 
+
     const materiau =
         new THREE.MeshStandardMaterial({
             color: COULEUR_ROUTE,
             roughness: 0.85
         });
+
 
     const route =
         new THREE.Mesh(
@@ -636,15 +891,21 @@ function creerRoute() {
             materiau
         );
 
+
     route.position.set(
         0,
         -0.2,
         -120
     );
 
-    route.receiveShadow = true;
 
-    scene.add(route);
+    route.receiveShadow =
+        true;
+
+
+    scene.add(
+        route
+    );
 
 
     /* -----------------------------------------------------
@@ -658,10 +919,12 @@ function creerRoute() {
             LONGUEUR_ROUTE
         );
 
+
     const materiauAccotement =
         new THREE.MeshStandardMaterial({
             color: 0x333333
         });
+
 
     const accotementGauche =
         new THREE.Mesh(
@@ -669,11 +932,13 @@ function creerRoute() {
             materiauAccotement
         );
 
+
     accotementGauche.position.set(
         -7.7,
         -0.05,
         -120
     );
+
 
     scene.add(
         accotementGauche
@@ -683,8 +948,10 @@ function creerRoute() {
     const accotementDroite =
         accotementGauche.clone();
 
+
     accotementDroite.position.x =
         7.7;
+
 
     scene.add(
         accotementDroite
@@ -716,13 +983,18 @@ function creerRoute() {
 
             );
 
+
         ligne.position.set(
             0,
             0.01,
             -i * 7
         );
 
-        scene.add(ligne);
+
+        scene.add(
+            ligne
+        );
+
 
         lignesRoute.push(
             ligne
@@ -758,13 +1030,18 @@ function creerRoute() {
 
                     );
 
+
                 bande.position.set(
                     x,
                     0.015,
                     -i * 9 - 3
                 );
 
-                scene.add(bande);
+
+                scene.add(
+                    bande
+                );
+
 
                 bandesRoute.push(
                     bande
@@ -789,11 +1066,11 @@ function creerRoute() {
             -i * 5
         );
 
+
         creerVibreur(
             6.7,
             -i * 5
         );
-
     }
 }
 
@@ -814,6 +1091,7 @@ function creerVibreur(
             ? 0xffffff
             : 0xd71919;
 
+
     const vibreur =
         new THREE.Mesh(
 
@@ -830,20 +1108,29 @@ function creerVibreur(
 
         );
 
+
     vibreur.position.set(
         x,
         -0.01,
         z
     );
 
-    scene.add(vibreur);
+
+    scene.add(
+        vibreur
+    );
+
 
     if (x < 0) {
+
         vibreursGauche.push(
             vibreur
         );
+
     }
+
     else {
+
         vibreursDroite.push(
             vibreur
         );
@@ -882,12 +1169,18 @@ function creerVoiture() {
 
         );
 
+
     chassis.position.y =
         0.58;
 
-    chassis.castShadow = true;
 
-    voiture.add(chassis);
+    chassis.castShadow =
+        true;
+
+
+    voiture.add(
+        chassis
+    );
 
 
     /* -----------------------------------------------------
@@ -911,15 +1204,21 @@ function creerVoiture() {
 
         );
 
+
     nez.position.set(
         0,
         0.72,
         -1.65
     );
 
-    nez.castShadow = true;
 
-    voiture.add(nez);
+    nez.castShadow =
+        true;
+
+
+    voiture.add(
+        nez
+    );
 
 
     /* -----------------------------------------------------
@@ -943,11 +1242,13 @@ function creerVoiture() {
 
         );
 
+
     cockpit.scale.set(
         0.8,
         0.45,
         1.15
     );
+
 
     cockpit.position.set(
         0,
@@ -955,9 +1256,14 @@ function creerVoiture() {
         0.25
     );
 
-    cockpit.castShadow = true;
 
-    voiture.add(cockpit);
+    cockpit.castShadow =
+        true;
+
+
+    voiture.add(
+        cockpit
+    );
 
 
     /* -----------------------------------------------------
@@ -979,11 +1285,13 @@ function creerVoiture() {
 
         );
 
+
     supportGauche.position.set(
         -0.7,
         1.0,
         1.75
     );
+
 
     voiture.add(
         supportGauche
@@ -993,8 +1301,10 @@ function creerVoiture() {
     const supportDroite =
         supportGauche.clone();
 
+
     supportDroite.position.x =
         0.7;
+
 
     voiture.add(
         supportDroite
@@ -1018,13 +1328,17 @@ function creerVoiture() {
 
         );
 
+
     aileron.position.set(
         0,
         1.28,
         1.8
     );
 
-    aileron.castShadow = true;
+
+    aileron.castShadow =
+        true;
+
 
     voiture.add(
         aileron
@@ -1042,6 +1356,7 @@ function creerVoiture() {
         -1.25
     );
 
+
     creerRoueCourse(
         voiture,
         1.18,
@@ -1049,12 +1364,14 @@ function creerVoiture() {
         -1.25
     );
 
+
     creerRoueCourse(
         voiture,
         -1.18,
         0.45,
         1.25
     );
+
 
     creerRoueCourse(
         voiture,
@@ -1073,6 +1390,7 @@ function creerVoiture() {
         0,
         5
     );
+
 
     scene.add(
         voiture
@@ -1108,8 +1426,10 @@ function creerRoueCourse(
 
         );
 
+
     pneu.rotation.z =
         Math.PI / 2;
+
 
     pneu.position.set(
         x,
@@ -1117,9 +1437,14 @@ function creerRoueCourse(
         z
     );
 
-    pneu.castShadow = true;
 
-    parent.add(pneu);
+    pneu.castShadow =
+        true;
+
+
+    parent.add(
+        pneu
+    );
 
 
     const jante =
@@ -1140,8 +1465,10 @@ function creerRoueCourse(
 
         );
 
+
     jante.rotation.z =
         Math.PI / 2;
+
 
     jante.position.set(
         x,
@@ -1149,7 +1476,10 @@ function creerRoueCourse(
         z
     );
 
-    parent.add(jante);
+
+    parent.add(
+        jante
+    );
 }
 
 
@@ -1193,6 +1523,7 @@ function creerVoitureEnnemie(
         0xff6600
     ];
 
+
     const couleur =
         couleurs[
             Math.floor(
@@ -1223,10 +1554,14 @@ function creerVoitureEnnemie(
 
         );
 
+
     carrosserie.position.y =
         0.62;
 
-    carrosserie.castShadow = true;
+
+    carrosserie.castShadow =
+        true;
+
 
     ennemi.add(
         carrosserie
@@ -1254,17 +1589,20 @@ function creerVoitureEnnemie(
 
         );
 
+
     cockpit.scale.set(
         0.8,
         0.42,
         1.1
     );
 
+
     cockpit.position.set(
         0,
         1.02,
         0
     );
+
 
     ennemi.add(
         cockpit
@@ -1290,11 +1628,13 @@ function creerVoitureEnnemie(
 
         );
 
+
     aileron.position.set(
         0,
         1.2,
         1.65
     );
+
 
     ennemi.add(
         aileron
@@ -1312,6 +1652,7 @@ function creerVoitureEnnemie(
         -1.15
     );
 
+
     creerRoueCourse(
         ennemi,
         1.12,
@@ -1319,12 +1660,14 @@ function creerVoitureEnnemie(
         -1.15
     );
 
+
     creerRoueCourse(
         ennemi,
         -1.12,
         0.43,
         1.15
     );
+
 
     creerRoueCourse(
         ennemi,
@@ -1353,9 +1696,11 @@ function creerVoitureEnnemie(
 
     );
 
+
     scene.add(
         ennemi
     );
+
 
     voituresEnnemies.push(
         ennemi
@@ -1379,6 +1724,7 @@ function creerDecor() {
             -10,
             -i * 7 - 10
         );
+
 
         creerArbre(
             10,
@@ -1417,12 +1763,18 @@ function creerArbre(
 
         );
 
+
     tronc.position.y =
         1.1;
 
-    tronc.castShadow = true;
 
-    arbre.add(tronc);
+    tronc.castShadow =
+        true;
+
+
+    arbre.add(
+        tronc
+    );
 
 
     const feuillage =
@@ -1441,10 +1793,14 @@ function creerArbre(
 
         );
 
+
     feuillage.position.y =
         3.6;
 
-    feuillage.castShadow = true;
+
+    feuillage.castShadow =
+        true;
+
 
     arbre.add(
         feuillage
@@ -1457,9 +1813,11 @@ function creerArbre(
         z
     );
 
+
     scene.add(
         arbre
     );
+
 
     arbres.push(
         arbre
@@ -1483,6 +1841,7 @@ function creerLampes() {
             -9,
             -i * 15 - 15
         );
+
 
         creerLampe(
             9,
@@ -1518,8 +1877,10 @@ function creerLampe(
 
         );
 
+
     poteau.position.y =
         2.5;
+
 
     groupe.add(
         poteau
@@ -1541,11 +1902,13 @@ function creerLampe(
 
         );
 
+
     lampe.position.set(
         0,
         5,
         0
     );
+
 
     groupe.add(
         lampe
@@ -1558,9 +1921,11 @@ function creerLampe(
         z
     );
 
+
     scene.add(
         groupe
     );
+
 
     lampes.push(
         groupe
@@ -1612,10 +1977,14 @@ function creerPanneau(
 
         );
 
+
     poteau.position.y =
         1.5;
 
-    groupe.add(poteau);
+
+    groupe.add(
+        poteau
+    );
 
 
     const panneau =
@@ -1633,8 +2002,10 @@ function creerPanneau(
 
         );
 
+
     panneau.position.y =
         3;
+
 
     groupe.add(
         panneau
@@ -1647,9 +2018,11 @@ function creerPanneau(
         z
     );
 
+
     scene.add(
         groupe
     );
+
 
     panneaux.push(
         groupe
@@ -1658,7 +2031,7 @@ function creerPanneau(
 
 
 /* =========================================================
-   NUAGE
+   NUAGES
 ========================================================= */
 
 function creerNuages() {
@@ -1671,6 +2044,7 @@ function creerNuages() {
 
         const nuage =
             new THREE.Group();
+
 
         for (
             let j = 0;
@@ -1695,16 +2069,20 @@ function creerNuages() {
 
                 );
 
+
             boule.position.x =
                 j * 3;
 
+
             boule.position.y =
                 Math.random() * 2;
+
 
             nuage.add(
                 boule
             );
         }
+
 
         nuage.position.set(
             Math.random() * 160 - 80,
@@ -1712,9 +2090,11 @@ function creerNuages() {
             -Math.random() * 200
         );
 
+
         scene.add(
             nuage
         );
+
 
         nuages.push(
             nuage
@@ -1733,8 +2113,10 @@ function allerGauche10() {
         jeuTermine ||
         jeuEnPause
     ) {
+
         return;
     }
+
 
     positionVoitureX =
         Math.max(
@@ -1754,8 +2136,10 @@ function allerDroite10() {
         jeuTermine ||
         jeuEnPause
     ) {
+
         return;
     }
+
 
     positionVoitureX =
         Math.min(
@@ -1775,8 +2159,10 @@ function activerAcceleration10() {
         jeuTermine ||
         jeuEnPause
     ) {
+
         return;
     }
+
 
     accelerationActive =
         true;
@@ -1800,23 +2186,29 @@ function basculerPause10() {
         return;
     }
 
+
     jeuEnPause =
         !jeuEnPause;
+
 
     if (jeuEnPause) {
 
         accelerationActive =
             false;
 
+
         if (boutonPause) {
+
             boutonPause.textContent =
                 "▶️ Reprendre";
         }
+
 
         if (messageRacing) {
 
             messageRacing.textContent =
                 "⏸️ PAUSE";
+
 
             messageRacing.style.display =
                 "block";
@@ -1827,14 +2219,18 @@ function basculerPause10() {
     else {
 
         if (boutonPause) {
+
             boutonPause.textContent =
                 "⏸️ Pause";
         }
 
+
         if (messageRacing) {
+
             messageRacing.style.display =
                 "none";
         }
+
 
         dernierTemps =
             performance.now();
@@ -1855,6 +2251,7 @@ if (boutonPause) {
             event.preventDefault();
 
             basculerPause10();
+
         }
     );
 }
@@ -1962,7 +2359,10 @@ function ajouterControle10(
     action
 ) {
 
-    if (!bouton) return;
+    if (!bouton) {
+        return;
+    }
+
 
     bouton.addEventListener(
         "touchstart",
@@ -2073,9 +2473,14 @@ function verifierCollision10(
     ennemi
 ) {
 
-    if (!voiture || !ennemi) {
+    if (
+        !voiture ||
+        !ennemi
+    ) {
+
         return false;
     }
+
 
     const distanceX =
         Math.abs(
@@ -2083,11 +2488,13 @@ function verifierCollision10(
             ennemi.position.x
         );
 
+
     const distanceZ =
         Math.abs(
             voiture.position.z -
             ennemi.position.z
         );
+
 
     return (
         distanceX < 1.75 &&
@@ -2104,15 +2511,20 @@ function augmenterScore10(
     valeur
 ) {
 
-    score += valeur;
+    score +=
+        valeur;
+
 
     const scoreEntier =
         Math.floor(score);
 
+
     if (scoreElement) {
+
         scoreElement.textContent =
             scoreEntier;
     }
+
 
     if (
         scoreEntier >
@@ -2122,10 +2534,13 @@ function augmenterScore10(
         meilleurScore =
             scoreEntier;
 
+
         if (meilleurScoreElement) {
+
             meilleurScoreElement.textContent =
                 meilleurScore;
         }
+
 
         localStorage.setItem(
             cleMeilleurScore,
@@ -2133,6 +2548,8 @@ function augmenterScore10(
         );
     }
 }
+
+
 
 
 /* =========================================================
@@ -2145,11 +2562,9 @@ async function gameOver10() {
         return;
     }
 
-    jeuTermine =
-        true;
+    jeuTermine = true;
 
-    accelerationActive =
-        false;
+    accelerationActive = false;
 
     const scoreFinal =
         Math.floor(score);
@@ -2175,37 +2590,224 @@ async function gameOver10() {
     }
 
 
-    if (!pseudo) {
+    /* =====================================================
+       VÉRIFICATION RÉELLE DU COMPTE
+    ===================================================== */
+
+    const connecte =
+        await verifierConnexion10();
+
+
+    /* =====================================================
+       VISITEUR
+    ===================================================== */
+
+    if (!connecte) {
+
+        console.log(
+            "👤 Visiteur : score NON envoyé à Supabase."
+        );
 
         if (statutClassement) {
 
             statutClassement.textContent =
                 "👤 Visiteur : ton score reste uniquement sur cet appareil.";
-
         }
 
         return;
     }
 
 
+    /* =====================================================
+       COMPTE CONNECTÉ
+    ===================================================== */
+
+    console.log(
+        "🏆 Score envoyé pour :",
+        pseudo
+    );
+
     await enregistrerScore10();
 }
+
 
 
 /* =========================================================
    ENREGISTRER SCORE
 ========================================================= */
 
+
 async function enregistrerScore10() {
 
-    if (
-        !pseudo ||
-        !supabaseClient10
-    ) {
+    /*
+     * =====================================================
+     * 3D RACING — ENREGISTREMENT DU SCORE
+     * =====================================================
+     *
+     * IMPORTANT :
+     * Le pseudo dans localStorage ne suffit PAS.
+     * On vérifie obligatoirement la session Supabase.
+     *
+     * Donc :
+     * - Visiteur → aucun score envoyé
+     * - Connecté → score enregistré
+     * - Déconnecté → aucun score envoyé
+     * - Ancien pseudo dans localStorage → ignoré
+     */
+
+    if (!supabaseClient10) {
+        console.log(
+            "❌ Supabase indisponible : score non envoyé."
+        );
         return;
     }
 
     try {
+
+        /* =================================================
+           1. VÉRIFIER LA SESSION SUPABASE
+           ================================================= */
+
+        const resultatSession =
+            await supabaseClient10.auth.getSession();
+
+        if (resultatSession.error) {
+
+            console.error(
+                "Erreur vérification session :",
+                resultatSession.error
+            );
+
+            return;
+        }
+
+        const session =
+            resultatSession.data.session;
+
+        /*
+         * AUCUNE SESSION = VISITEUR
+         *
+         * Même si pseudoGameZone contient encore
+         * "saty 1203", on ne fait RIEN.
+         */
+
+        if (
+            !session ||
+            !session.user
+        ) {
+
+            pseudo = null;
+
+            if (pseudoAffiche) {
+                pseudoAffiche.textContent =
+                    "Visiteur";
+            }
+
+            if (statutClassement) {
+                statutClassement.textContent =
+                    "👤 Visiteur : ton score reste uniquement sur cet appareil.";
+            }
+
+            console.log(
+                "👤 Visiteur : score NON envoyé à Supabase."
+            );
+
+            return;
+        }
+
+
+        /* =================================================
+           2. RÉCUPÉRER LE PSEUDO DE L'UTILISATEUR CONNECTÉ
+           ================================================= */
+
+        let pseudoActuel =
+            localStorage.getItem(
+                "pseudoGameZone"
+            );
+
+        if (
+            !pseudoActuel ||
+            !pseudoActuel.trim()
+        ) {
+
+            /*
+             * Si le pseudo n'est plus dans localStorage,
+             * on essaie de le récupérer depuis le profil.
+             */
+
+            const resultatProfil =
+                await supabaseClient10
+                    .from("profils")
+                    .select("pseudo")
+                    .eq(
+                        "id",
+                        session.user.id
+                    )
+                    .maybeSingle();
+
+            if (
+                resultatProfil.error ||
+                !resultatProfil.data ||
+                !resultatProfil.data.pseudo
+            ) {
+
+                console.log(
+                    "❌ Aucun pseudo associé au compte : score non envoyé."
+                );
+
+                return;
+            }
+
+            pseudoActuel =
+                resultatProfil.data.pseudo;
+
+            localStorage.setItem(
+                "pseudoGameZone",
+                pseudoActuel
+            );
+        }
+
+        pseudoActuel =
+            pseudoActuel.trim();
+
+        if (!pseudoActuel) {
+
+            console.log(
+                "❌ Pseudo vide : score non envoyé."
+            );
+
+            return;
+        }
+
+        /*
+         * On met à jour la variable globale.
+         */
+
+        pseudo =
+            pseudoActuel;
+
+
+        /* =================================================
+           3. AFFICHER LE PSEUDO
+           ================================================= */
+
+        if (pseudoAffiche) {
+            pseudoAffiche.textContent =
+                pseudoActuel;
+        }
+
+
+        /* =================================================
+           4. CALCULER LE SCORE FINAL
+           ================================================= */
+
+        const scoreFinal =
+            Math.floor(score);
+
+
+        /* =================================================
+           5. AFFICHER LE STATUT
+           ================================================= */
 
         if (statutClassement) {
 
@@ -2213,16 +2815,36 @@ async function enregistrerScore10() {
                 "⏳ Enregistrement du score...";
         }
 
-        const scoreFinal =
-            Math.floor(score);
 
+        console.log(
+            "🏎️ Score 3D Racing :",
+            scoreFinal
+        );
+
+        console.log(
+            "👤 Pseudo :",
+            pseudoActuel
+        );
+
+
+        /* =================================================
+           6. CHERCHER LE MEILLEUR SCORE EXISTANT
+           ================================================= */
 
         const resultat =
             await supabaseClient10
                 .from("scores")
-                .select("id,pseudo,score,jeu")
-                .eq("pseudo", pseudo)
-                .eq("jeu", NOM_JEU)
+                .select(
+                    "id,pseudo,score,jeu"
+                )
+                .eq(
+                    "pseudo",
+                    pseudoActuel
+                )
+                .eq(
+                    "jeu",
+                    NOM_JEU
+                )
                 .order(
                     "score",
                     {
@@ -2239,113 +2861,189 @@ async function enregistrerScore10() {
                 resultat.error
             );
 
+            if (statutClassement) {
+
+                statutClassement.textContent =
+                    "❌ Impossible de vérifier ton score.";
+            }
+
             return;
         }
 
 
-        const anciens =
-            resultat.data || [];
+        /* =================================================
+           7. SCORE EXISTANT
+           ================================================= */
 
+        const scoreExistant =
+            resultat.data &&
+            resultat.data.length > 0
+                ? Number(
+                    resultat.data[0].score
+                )
+                : 0;
+
+
+        console.log(
+            "🏆 Meilleur score déjà enregistré :",
+            scoreExistant
+        );
+
+
+        /* =================================================
+           8. SI LE NOUVEAU SCORE N'EST PAS MEILLEUR
+           ================================================= */
 
         if (
-            anciens.length === 0
+            scoreFinal <= scoreExistant
         ) {
 
-            const insertion =
+            console.log(
+                "ℹ️ Le score existant est meilleur ou égal."
+            );
+
+            if (statutClassement) {
+
+                statutClassement.textContent =
+                    "🏆 Ton meilleur score reste : " +
+                    scoreExistant;
+            }
+
+            /*
+             * On recharge quand même le classement.
+             */
+
+            await chargerClassement10();
+
+            return;
+        }
+
+
+        /* =================================================
+           9. NOUVEAU RECORD
+           ================================================= */
+
+        console.log(
+            "🎉 Nouveau record !",
+            scoreFinal
+        );
+
+
+        /* =================================================
+           10. METTRE À JOUR LE SCORE EXISTANT
+           ================================================= */
+
+        if (
+            resultat.data &&
+            resultat.data.length > 0
+        ) {
+
+            const idScore =
+                resultat.data[0].id;
+
+            const miseAJour =
                 await supabaseClient10
                     .from("scores")
-                    .insert({
-                        pseudo: pseudo,
-                        score: scoreFinal,
-                        jeu: NOM_JEU
-                    });
+                    .update({
+                        score: scoreFinal
+                    })
+                    .eq(
+                        "id",
+                        idScore
+                    );
 
-
-            if (insertion.error) {
+            if (miseAJour.error) {
 
                 console.error(
-                    "Erreur insertion :",
-                    insertion.error
+                    "Erreur mise à jour score :",
+                    miseAJour.error
                 );
+
+                if (statutClassement) {
+
+                    statutClassement.textContent =
+                        "❌ Impossible d'enregistrer le nouveau record.";
+                }
 
                 return;
             }
 
-            if (statutClassement) {
-                statutClassement.textContent =
-                    "🏆 Score enregistré !";
-            }
+        } else {
 
-        }
+            /* =============================================
+               11. PREMIER SCORE DU JOUEUR
+               ============================================= */
 
-        else {
+            const insertion =
+                await supabaseClient10
+                    .from("scores")
+                    .insert([
+                        {
+                            pseudo: pseudoActuel,
+                            score: scoreFinal,
+                            jeu: NOM_JEU
+                        }
+                    ]);
 
-            const ancienScore =
-                Number(
-                    anciens[0].score
-                ) || 0;
+            if (insertion.error) {
 
-
-            if (
-                scoreFinal >
-                ancienScore
-            ) {
-
-                const miseAJour =
-                    await supabaseClient10
-                        .from("scores")
-                        .update({
-                            score: scoreFinal
-                        })
-                        .eq(
-                            "id",
-                            anciens[0].id
-                        );
-
-
-                if (miseAJour.error) {
-
-                    console.error(
-                        "Erreur mise à jour :",
-                        miseAJour.error
-                    );
-
-                    return;
-                }
+                console.error(
+                    "Erreur insertion score :",
+                    insertion.error
+                );
 
                 if (statutClassement) {
 
                     statutClassement.textContent =
-                        "🔥 NOUVEAU RECORD !";
+                        "❌ Impossible d'enregistrer le score.";
                 }
 
-            }
-
-            else {
-
-                if (statutClassement) {
-
-                    statutClassement.textContent =
-                        "ℹ️ Ton meilleur score reste " +
-                        ancienScore;
-                }
-
+                return;
             }
         }
 
+
+        /* =================================================
+           12. SUCCÈS
+           ================================================= */
+
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "🏆 Nouveau record : " +
+                scoreFinal +
+                " points !";
+        }
+
+        console.log(
+            "✅ Score enregistré sur Supabase :",
+            pseudoActuel,
+            scoreFinal
+        );
+
+
+        /* =================================================
+           13. RECHARGER LE TOP 10
+           ================================================= */
 
         await chargerClassement10();
 
-    }
 
-    catch (erreur) {
+    } catch (erreur) {
 
         console.error(
-            "Erreur score 3D Racing :",
+            "❌ Erreur score 3D Racing :",
             erreur
         );
+
+        if (statutClassement) {
+
+            statutClassement.textContent =
+                "❌ Une erreur est survenue lors de l'enregistrement.";
+        }
     }
 }
+
 
 
 /* =========================================================
@@ -2358,16 +3056,23 @@ async function chargerClassement10() {
         !listeScores ||
         !supabaseClient10
     ) {
+
         return;
     }
+
 
     try {
 
         const resultat =
             await supabaseClient10
                 .from("scores")
-                .select("pseudo,score,jeu")
-                .eq("jeu", NOM_JEU)
+                .select(
+                    "pseudo,score,jeu"
+                )
+                .eq(
+                    "jeu",
+                    NOM_JEU
+                )
                 .order(
                     "score",
                     {
@@ -2386,6 +3091,7 @@ async function chargerClassement10() {
                     </td>
                 </tr>
             `;
+
 
             return;
         }
@@ -2411,6 +3117,7 @@ async function chargerClassement10() {
                 </tr>
             `;
 
+
             return;
         }
 
@@ -2422,33 +3129,47 @@ async function chargerClassement10() {
             ) {
 
                 const ligne =
-                    document.createElement("tr");
+                    document.createElement(
+                        "tr"
+                    );
 
 
                 const position =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
 
 
                 if (index === 0) {
-                    position.textContent = "🥇";
+
+                    position.textContent =
+                        "🥇";
                 }
 
                 else if (index === 1) {
-                    position.textContent = "🥈";
+
+                    position.textContent =
+                        "🥈";
                 }
 
                 else if (index === 2) {
-                    position.textContent = "🥉";
+
+                    position.textContent =
+                        "🥉";
                 }
 
                 else {
+
                     position.textContent =
                         index + 1;
                 }
 
 
                 const pseudoCellule =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
+
 
                 pseudoCellule.textContent =
                     joueurScore.pseudo ||
@@ -2456,7 +3177,10 @@ async function chargerClassement10() {
 
 
                 const scoreCellule =
-                    document.createElement("td");
+                    document.createElement(
+                        "td"
+                    );
+
 
                 scoreCellule.textContent =
                     Number(
@@ -2474,6 +3198,7 @@ async function chargerClassement10() {
                         "mon-score"
                     );
 
+
                     scoreCellule.classList.add(
                         "mon-score"
                     );
@@ -2484,13 +3209,16 @@ async function chargerClassement10() {
                     position
                 );
 
+
                 ligne.appendChild(
                     pseudoCellule
                 );
 
+
                 ligne.appendChild(
                     scoreCellule
                 );
+
 
                 listeScores.appendChild(
                     ligne
@@ -2520,6 +3248,7 @@ async function compterPartieJeu10() {
         return;
     }
 
+
     try {
 
         const resultat =
@@ -2538,8 +3267,10 @@ async function compterPartieJeu10() {
                 resultat.error
             );
 
+
             return;
         }
+
 
         console.log(
             "🎮 Partie 3D Racing comptée :",
@@ -2567,8 +3298,8 @@ function rejouer10(event) {
     if (event) {
 
         event.preventDefault();
-        event.stopPropagation();
 
+        event.stopPropagation();
     }
 
 
@@ -2580,30 +3311,45 @@ function rejouer10(event) {
         function(ennemi) {
 
             if (scene) {
-                scene.remove(ennemi);
-            }
 
+                scene.remove(
+                    ennemi
+                );
+            }
         }
     );
 
-    voituresEnnemies = [];
+
+    voituresEnnemies =
+        [];
 
 
     /* -----------------------------------------------------
        RESET
     ----------------------------------------------------- */
 
-    score = 0;
+    score =
+        0;
 
-    vitesse = 0.45;
 
-    positionVoitureX = 0;
+    vitesse =
+        0.45;
 
-    jeuTermine = false;
 
-    jeuEnPause = false;
+    positionVoitureX =
+        0;
 
-    accelerationActive = false;
+
+    jeuTermine =
+        false;
+
+
+    jeuEnPause =
+        false;
+
+
+    accelerationActive =
+        false;
 
 
     /* -----------------------------------------------------
@@ -2618,6 +3364,7 @@ function rejouer10(event) {
             5
         );
 
+
         voiture.rotation.set(
             0,
             0,
@@ -2631,6 +3378,7 @@ function rejouer10(event) {
     ----------------------------------------------------- */
 
     if (scoreElement) {
+
         scoreElement.textContent =
             "0";
     }
@@ -2641,6 +3389,7 @@ function rejouer10(event) {
     ----------------------------------------------------- */
 
     if (messageRacing) {
+
         messageRacing.style.display =
             "none";
     }
@@ -2655,13 +3404,14 @@ function rejouer10(event) {
         boutonPause.style.display =
             "inline-block";
 
+
         boutonPause.textContent =
             "⏸️ Pause";
     }
 
 
     /* -----------------------------------------------------
-       REJOUER
+       BOUTON REJOUER
     ----------------------------------------------------- */
 
     if (boutonRejouer) {
@@ -2690,6 +3440,10 @@ function rejouer10(event) {
 }
 
 
+/* =========================================================
+   BOUTON REJOUER
+========================================================= */
+
 if (boutonRejouer) {
 
     boutonRejouer.addEventListener(
@@ -2714,6 +3468,7 @@ function boucleRacing(
 
 
     if (!dernierTemps) {
+
         dernierTemps =
             tempsActuel;
     }
@@ -2736,9 +3491,14 @@ function boucleRacing(
         !scene ||
         !camera
     ) {
+
         return;
     }
 
+
+    /* -----------------------------------------------------
+       PAUSE / GAME OVER
+    ----------------------------------------------------- */
 
     if (
         jeuEnPause ||
@@ -2749,6 +3509,7 @@ function boucleRacing(
             scene,
             camera
         );
+
 
         return;
     }
@@ -2793,7 +3554,6 @@ function boucleRacing(
 
 
         voiture.position.x +=
-
             (
                 positionVoitureX -
                 voiture.position.x
@@ -2801,7 +3561,6 @@ function boucleRacing(
 
 
         voiture.rotation.z =
-
             (
                 anciennePosition -
                 voiture.position.x
@@ -2809,7 +3568,6 @@ function boucleRacing(
 
 
         voiture.rotation.y =
-
             (
                 anciennePosition -
                 voiture.position.x
@@ -2833,6 +3591,7 @@ function boucleRacing(
             ligne.position.z +=
                 mouvement;
 
+
             if (
                 ligne.position.z > 15
             ) {
@@ -2844,11 +3603,16 @@ function boucleRacing(
     );
 
 
+    /* -----------------------------------------------------
+       BANDES
+    ----------------------------------------------------- */
+
     bandesRoute.forEach(
         function(bande) {
 
             bande.position.z +=
                 mouvement;
+
 
             if (
                 bande.position.z > 15
@@ -2874,6 +3638,7 @@ function boucleRacing(
             vibreur.position.z +=
                 mouvement;
 
+
             if (
                 vibreur.position.z > 15
             ) {
@@ -2892,7 +3657,9 @@ function boucleRacing(
     voituresEnnemies.forEach(
         function(ennemi) {
 
-            if (!ennemi) return;
+            if (!ennemi) {
+                return;
+            }
 
 
             ennemi.position.z +=
@@ -2946,6 +3713,7 @@ function boucleRacing(
             arbre.position.z +=
                 mouvement;
 
+
             if (
                 arbre.position.z > 20
             ) {
@@ -2966,6 +3734,7 @@ function boucleRacing(
 
             lampe.position.z +=
                 mouvement;
+
 
             if (
                 lampe.position.z > 20
@@ -2988,6 +3757,7 @@ function boucleRacing(
             panneau.position.z +=
                 mouvement;
 
+
             if (
                 panneau.position.z > 20
             ) {
@@ -3009,6 +3779,7 @@ function boucleRacing(
             nuage.position.x +=
                 0.003 * delta;
 
+
             if (
                 nuage.position.x > 100
             ) {
@@ -3021,13 +3792,12 @@ function boucleRacing(
 
 
     /* -----------------------------------------------------
-       CAMERA DYNAMIQUE
+       CAMERA
     ----------------------------------------------------- */
 
     if (voiture) {
 
         camera.position.x +=
-
             (
                 voiture.position.x -
                 camera.position.x
@@ -3035,7 +3805,6 @@ function boucleRacing(
 
 
         camera.position.y =
-
             4.4 +
             Math.sin(
                 tempsActuel * 0.004
@@ -3072,12 +3841,14 @@ function redimensionnerRacing() {
         !camera ||
         !zoneRacing
     ) {
+
         return;
     }
 
 
     let largeur =
         zoneRacing.clientWidth;
+
 
     let hauteur =
         zoneRacing.clientHeight;
@@ -3091,6 +3862,7 @@ function redimensionnerRacing() {
         largeur =
             window.innerWidth;
 
+
         hauteur =
             window.innerHeight;
     }
@@ -3102,6 +3874,7 @@ function redimensionnerRacing() {
             1
         );
 
+
     hauteur =
         Math.max(
             hauteur,
@@ -3112,6 +3885,7 @@ function redimensionnerRacing() {
     camera.aspect =
         largeur /
         hauteur;
+
 
     camera.updateProjectionMatrix();
 
@@ -3125,7 +3899,7 @@ function redimensionnerRacing() {
 
 
 /* =========================================================
-   ORIENTATION
+   ORIENTATION MOBILE
 ========================================================= */
 
 window.addEventListener(
@@ -3136,8 +3910,55 @@ window.addEventListener(
             redimensionnerRacing,
             300
         );
+
     }
 );
+
+function obtenirPseudo10() {
+
+    const pseudoActuel =
+        localStorage.getItem(
+            "pseudoGameZone"
+        );
+
+    if (!pseudoActuel) {
+        return null;
+    }
+
+    const pseudoNettoye =
+        pseudoActuel.trim();
+
+    return pseudoNettoye || null;
+}
+
+
+
+function obtenirCleMeilleurScore10() {
+
+    /*
+     * Si un joueur est connecté :
+     * → meilleur score propre à son pseudo
+     *
+     * Si personne n'est connecté :
+     * → meilleur score visiteur uniquement sur cet appareil
+     */
+
+    const pseudoActuel =
+        obtenirPseudo10();
+
+    if (
+        pseudoActuel &&
+        pseudoActuel.trim()
+    ) {
+        return (
+            "meilleurScore3DRacing_" +
+            pseudoActuel.trim()
+        );
+    }
+
+    return "meilleurScore3DRacing_visiteur";
+}
+
 
 
 /* =========================================================
@@ -3146,29 +3967,83 @@ window.addEventListener(
 
 async function demarrerRacing() {
 
+    /* -----------------------------------------------------
+       INITIALISATION
+    ----------------------------------------------------- */
+
     initialiserRacing();
 
 
+    /* -----------------------------------------------------
+       MESSAGE
+    ----------------------------------------------------- */
+
     if (messageRacing) {
+
         messageRacing.style.display =
             "none";
     }
 
 
+    /* -----------------------------------------------------
+       PSEUDO
+    ----------------------------------------------------- */
+
+    actualiserPseudo10();
+
+
+    /* -----------------------------------------------------
+       MEILLEUR SCORE
+    ----------------------------------------------------- */
+
+    cleMeilleurScore =
+        obtenirCleMeilleurScore10();
+
+
+    meilleurScore =
+        Number(
+            localStorage.getItem(
+                cleMeilleurScore
+            )
+        ) || 0;
+
+
+    if (meilleurScoreElement) {
+
+        meilleurScoreElement.textContent =
+            meilleurScore;
+    }
+
+
+    /* -----------------------------------------------------
+       CLASSEMENT
+    ----------------------------------------------------- */
+
     await chargerClassement10();
 
 
+    /* -----------------------------------------------------
+       COMPTEUR
+    ----------------------------------------------------- */
+
     compterPartieJeu10();
 
+
+    /* -----------------------------------------------------
+       BOUCLE
+    ----------------------------------------------------- */
 
     dernierTemps =
         performance.now();
 
 
-    animationID =
-        requestAnimationFrame(
-            boucleRacing
-        );
+    if (!animationID) {
+
+        animationID =
+            requestAnimationFrame(
+                boucleRacing
+            );
+    }
 }
 
 
@@ -3193,3 +4068,4 @@ else {
     demarrerRacing();
 
 }
+
