@@ -2908,18 +2908,91 @@ button,
     margin-left: auto;
     margin-right: auto;
 }
+```css
 /* =========================================================
-   GAME 10 — PLEIN ÉCRAN
-========================================================= */
+   GAME 10 — PLEIN ÉCRAN + CONTRÔLES
+   ========================================================= */
+
+
+/* =========================================================
+   ZONE DE JEU NORMALE
+   ========================================================= */
 
 #game10-canvas-zone {
-    position: relative;
+    position: relative !important;
+
+    width: min(100%, 1100px);
+    height: 600px;
+
+    margin: 20px auto;
+
+    overflow: hidden;
+
+    background: #101827;
+
+    border: 4px solid #00eaff;
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.5),
+        0 0 30px rgba(0, 234, 255, 0.15);
 }
 
 
 /* =========================================================
-   FAUX PLEIN ÉCRAN — MOBILE / SECOURS
-========================================================= */
+   CANVAS
+   IMPORTANT :
+   ON NE FORCE PAS 100vw / 100vh
+   ========================================================= */
+
+#game10-canvas-zone canvas {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 1 !important;
+}
+
+
+/* =========================================================
+   MESSAGE DU JEU
+   ========================================================= */
+
+#game10-message {
+    position: absolute !important;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: 90% !important;
+
+    color: white;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    text-align: center;
+
+    pointer-events: none;
+
+    z-index: 100 !important;
+}
+
+
+/* =========================================================
+   FAUX PLEIN ÉCRAN
+   ========================================================= */
 
 html.game10-html-fullscreen,
 body.game10-body-fullscreen {
@@ -2935,21 +3008,16 @@ body.game10-body-fullscreen {
 }
 
 
-/* Zone de jeu */
-
 #game10-canvas-zone.game10-faux-fullscreen {
     position: fixed !important;
 
-    inset: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
 
     width: 100vw !important;
     height: 100vh !important;
-
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -2962,82 +3030,24 @@ body.game10-body-fullscreen {
     overflow: hidden !important;
 
     z-index: 2147483647 !important;
-
-    transform: none !important;
-}
-
-
-/* Canvas */
-
-#game10-canvas-zone.game10-faux-fullscreen canvas {
-    position: absolute !important;
-
-    top: 0 !important;
-    left: 0 !important;
-
-    width: 100vw !important;
-    height: 100vh !important;
-
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    display: block !important;
 }
 
 
 /* =========================================================
    VRAI PLEIN ÉCRAN
-========================================================= */
+   ========================================================= */
 
-#game10-canvas-zone:fullscreen {
-    position: fixed !important;
-
-    inset: 0 !important;
-
-    width: 100vw !important;
-    height: 100vh !important;
-
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    background: #000 !important;
-
-    overflow: hidden !important;
-}
-
-
-/* =========================================================
-   SAFARI / WEBKIT
-========================================================= */
-
+#game10-canvas-zone:fullscreen,
 #game10-canvas-zone:-webkit-full-screen {
     position: fixed !important;
 
-    inset: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
 
     width: 100vw !important;
     height: 100vh !important;
-
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -3052,9 +3062,16 @@ body.game10-body-fullscreen {
 
 
 /* =========================================================
-   CANVAS — VRAI PLEIN ÉCRAN
-========================================================= */
+   CANVAS EN PLEIN ÉCRAN
+   ========================================================= */
 
+/*
+   Le canvas reste à 100% de la ZONE.
+   Le JavaScript s'occupe de la résolution
+   et de la caméra.
+*/
+
+#game10-canvas-zone.game10-faux-fullscreen canvas,
 #game10-canvas-zone:fullscreen canvas,
 #game10-canvas-zone:-webkit-full-screen canvas {
     position: absolute !important;
@@ -3062,25 +3079,21 @@ body.game10-body-fullscreen {
     top: 0 !important;
     left: 0 !important;
 
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
 
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
+    display: block !important;
 
     margin: 0 !important;
     padding: 0 !important;
 
-    display: block !important;
+    z-index: 1 !important;
 }
 
 
 /* =========================================================
    BOUTON QUITTER LE PLEIN ÉCRAN
-========================================================= */
+   ========================================================= */
 
 #game10-exit-fullscreen {
     position: absolute !important;
@@ -3103,17 +3116,16 @@ body.game10-body-fullscreen {
     color: white !important;
 
     border: 2px solid #00eaff !important;
-
     border-radius: 12px !important;
 
     font-size: 24px !important;
     font-weight: bold !important;
 
-    z-index: 2147483647 !important;
-
     cursor: pointer !important;
 
     touch-action: manipulation !important;
+
+    z-index: 2147483647 !important;
 
     box-shadow:
         0 0 15px rgba(0, 234, 255, 0.5) !important;
@@ -3122,31 +3134,24 @@ body.game10-body-fullscreen {
 
 #game10-exit-fullscreen:hover {
     background: #00eaff !important;
-
     color: black !important;
 }
 
 
 /* =========================================================
-   BOUTON PLEIN ÉCRAN
-========================================================= */
-
-#game10-fullscreen {
-    position: relative;
-
-    z-index: 100;
-}
-/* =========================================================
-   GAME 10 — CONTRÔLES TOUJOURS VISIBLES
+   BOUTON ENTRER PLEIN ÉCRAN
    ========================================================= */
 
-#game10-canvas-zone {
+#game10-fullscreen {
     position: relative !important;
+
+    z-index: 100 !important;
 }
 
-/* ---------------------------------------------------------
-   CONTRÔLES NORMAUX
-   --------------------------------------------------------- */
+
+/* =========================================================
+   CONTRÔLES DU JEU
+   ========================================================= */
 
 .game10-controls {
     position: absolute !important;
@@ -3158,31 +3163,36 @@ body.game10-body-fullscreen {
     width: 100% !important;
 
     display: flex !important;
+
     justify-content: center !important;
     align-items: center !important;
 
     gap: 15px !important;
 
     margin: 0 !important;
+    padding: 0 !important;
 
-    z-index: 999999 !important;
+    z-index: 200 !important;
 
     pointer-events: none !important;
 }
 
+
 .game10-controls button {
-    pointer-events: auto !important;
+    position: relative !important;
 
     width: 70px !important;
     height: 60px !important;
 
     display: flex !important;
+
     justify-content: center !important;
     align-items: center !important;
 
     padding: 0 !important;
 
     background: rgba(10, 16, 30, 0.85) !important;
+
     color: white !important;
 
     border: 2px solid #00eaff !important;
@@ -3193,18 +3203,25 @@ body.game10-body-fullscreen {
 
     cursor: pointer !important;
 
+    pointer-events: auto !important;
+
     touch-action: none !important;
+
     user-select: none !important;
     -webkit-user-select: none !important;
 
-    z-index: 999999 !important;
+    z-index: 201 !important;
 
-    box-shadow: 0 0 15px rgba(0, 234, 255, 0.45) !important;
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.45) !important;
 }
+
 
 .game10-controls button:active {
     background: #00eaff !important;
+
     color: #000 !important;
+
     transform: scale(0.9) !important;
 }
 
@@ -3213,22 +3230,21 @@ body.game10-body-fullscreen {
    CONTRÔLES EN PLEIN ÉCRAN
    ========================================================= */
 
-/* Faux plein écran */
 #game10-canvas-zone.game10-faux-fullscreen .game10-controls,
-
-/* Vrai plein écran */
 #game10-canvas-zone:fullscreen .game10-controls,
-
 #game10-canvas-zone:-webkit-full-screen .game10-controls {
+
     position: absolute !important;
 
     left: 0 !important;
     right: 0 !important;
+
     bottom: 25px !important;
 
-    width: 100vw !important;
+    width: 100% !important;
 
     display: flex !important;
+
     justify-content: center !important;
     align-items: center !important;
 
@@ -3237,25 +3253,21 @@ body.game10-body-fullscreen {
     margin: 0 !important;
     padding: 0 !important;
 
-    z-index: 2147483647 !important;
+    z-index: 2147483646 !important;
 
     pointer-events: none !important;
 }
 
 
-/* Boutons en plein écran */
-
 #game10-canvas-zone.game10-faux-fullscreen .game10-controls button,
-
 #game10-canvas-zone:fullscreen .game10-controls button,
-
 #game10-canvas-zone:-webkit-full-screen .game10-controls button {
-    position: relative !important;
 
     width: 80px !important;
     height: 65px !important;
 
     display: flex !important;
+
     justify-content: center !important;
     align-items: center !important;
 
@@ -3271,23 +3283,25 @@ body.game10-body-fullscreen {
     font-size: 30px !important;
     font-weight: bold !important;
 
-    z-index: 2147483647 !important;
-
     touch-action: none !important;
+
     user-select: none !important;
     -webkit-user-select: none !important;
+
+    z-index: 2147483647 !important;
 
     box-shadow:
         0 0 10px rgba(0, 234, 255, 0.5),
         0 0 25px rgba(0, 234, 255, 0.2) !important;
 }
 
+
 #game10-canvas-zone.game10-faux-fullscreen .game10-controls button:active,
-
 #game10-canvas-zone:fullscreen .game10-controls button:active,
-
 #game10-canvas-zone:-webkit-full-screen .game10-controls button:active {
+
     background: #00eaff !important;
+
     color: #000 !important;
 
     transform: scale(0.9) !important;
@@ -3300,23 +3314,43 @@ body.game10-body-fullscreen {
 
 @media (max-width: 768px) {
 
+    #game10-canvas-zone {
+        width: 96% !important;
+        height: 500px !important;
+
+        min-height: 500px !important;
+
+        border-width: 3px !important;
+        border-radius: 12px !important;
+    }
+
+
+    #game10-canvas-zone.game10-faux-fullscreen,
+    #game10-canvas-zone:fullscreen,
+    #game10-canvas-zone:-webkit-full-screen {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+    }
+
+
     #game10-canvas-zone.game10-faux-fullscreen .game10-controls,
-
     #game10-canvas-zone:fullscreen .game10-controls,
-
     #game10-canvas-zone:-webkit-full-screen .game10-controls {
+
         bottom: 20px !important;
 
         gap: 12px !important;
-
-        padding: 0 10px !important;
     }
 
+
     #game10-canvas-zone.game10-faux-fullscreen .game10-controls button,
-
     #game10-canvas-zone:fullscreen .game10-controls button,
-
     #game10-canvas-zone:-webkit-full-screen .game10-controls button {
+
         width: 75px !important;
         height: 65px !important;
 
@@ -3331,55 +3365,46 @@ body.game10-body-fullscreen {
 
 @media (max-width: 480px) {
 
+    #game10-canvas-zone {
+        width: 96% !important;
+        height: 430px !important;
+
+        min-height: 430px !important;
+    }
+
+
     #game10-canvas-zone.game10-faux-fullscreen .game10-controls,
-
     #game10-canvas-zone:fullscreen .game10-controls,
-
     #game10-canvas-zone:-webkit-full-screen .game10-controls {
+
         bottom: 12px !important;
 
         gap: 8px !important;
     }
 
+
     #game10-canvas-zone.game10-faux-fullscreen .game10-controls button,
-
     #game10-canvas-zone:fullscreen .game10-controls button,
-
     #game10-canvas-zone:-webkit-full-screen .game10-controls button {
+
         width: 65px !important;
         height: 58px !important;
 
         font-size: 24px !important;
     }
-}
 
 
-/* =========================================================
-   PETITS TELEPHONES
-========================================================= */
+    #game10-exit-fullscreen {
+        top: 10px !important;
+        right: 10px !important;
 
-@media (max-width: 480px) {
+        width: 45px !important;
+        height: 45px !important;
 
-    #game10-canvas-zone.game10-faux-fullscreen .game10-controls,
-    #game10-canvas-zone:fullscreen .game10-controls,
-    #game10-canvas-zone:-webkit-full-screen .game10-controls {
-
-        bottom: 15px !important;
-
-        gap: 10px !important;
-    }
-
-
-    #game10-canvas-zone.game10-faux-fullscreen .game10-controls button,
-    #game10-canvas-zone:fullscreen .game10-controls button,
-    #game10-canvas-zone:-webkit-full-screen .game10-controls button {
-
-        width: 65px !important;
-        height: 60px !important;
-
-        font-size: 26px !important;
+        font-size: 21px !important;
     }
 }
+
 
 
 /* =========================================================
