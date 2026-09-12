@@ -2917,74 +2917,11 @@ button,
 }
 
 
-/* ---------------------------------------------------------
-   FAUX PLEIN ÉCRAN
---------------------------------------------------------- */
+/* =========================================================
+   FAUX PLEIN ÉCRAN — MOBILE / SECOURS
+========================================================= */
 
-#game10-canvas-zone.game10-faux-fullscreen {
-    position: fixed !important;
-
-    top: 0 !important;
-    left: 0 !important;
-
-    right: 0 !important;
-    bottom: 0 !important;
-
-    width: 100vw !important;
-    height: 100vh !important;
-
-    max-width: none !important;
-    max-height: none !important;
-
-    min-width: 100vw !important;
-    min-height: 100vh !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    z-index: 2147483646 !important;
-
-    background: #000 !important;
-
-    border-radius: 0 !important;
-}
-
-
-/* ---------------------------------------------------------
-   CANVAS EN PLEIN ÉCRAN
---------------------------------------------------------- */
-
-#game10-canvas-zone.game10-faux-fullscreen canvas {
-    position: absolute !important;
-
-    top: 0 !important;
-    left: 0 !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    max-width: none !important;
-    max-height: none !important;
-
-    display: block !important;
-}
-
-
-/* ---------------------------------------------------------
-   DOCUMENT EN PLEIN ÉCRAN
---------------------------------------------------------- */
-
-html.game10-html-fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    overflow: hidden !important;
-}
-
-
+html.game10-html-fullscreen,
 body.game10-body-fullscreen {
     width: 100% !important;
     height: 100% !important;
@@ -2993,16 +2930,23 @@ body.game10-body-fullscreen {
     padding: 0 !important;
 
     overflow: hidden !important;
+
+    overscroll-behavior: none !important;
 }
 
 
-/* ---------------------------------------------------------
-   VRAI FULLSCREEN
---------------------------------------------------------- */
+/* Zone de jeu */
 
-#game10-canvas-zone:fullscreen {
+#game10-canvas-zone.game10-faux-fullscreen {
+    position: fixed !important;
+
+    inset: 0 !important;
+
     width: 100vw !important;
     height: 100vh !important;
+
+    min-width: 100vw !important;
+    min-height: 100vh !important;
 
     max-width: none !important;
     max-height: none !important;
@@ -3010,42 +2954,189 @@ body.game10-body-fullscreen {
     margin: 0 !important;
     padding: 0 !important;
 
+    border: 0 !important;
+    border-radius: 0 !important;
+
     background: #000 !important;
+
+    overflow: hidden !important;
+
+    z-index: 2147483647 !important;
+
+    transform: none !important;
 }
 
 
-/* ---------------------------------------------------------
-   SAFARI
---------------------------------------------------------- */
+/* Canvas */
 
-#game10-canvas-zone:-webkit-full-screen {
+#game10-canvas-zone.game10-faux-fullscreen canvas {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
     width: 100vw !important;
     height: 100vh !important;
+
+    min-width: 100vw !important;
+    min-height: 100vh !important;
 
     max-width: none !important;
     max-height: none !important;
 
     margin: 0 !important;
     padding: 0 !important;
-
-    background: #000 !important;
-}
-
-
-/* ---------------------------------------------------------
-   CANVAS VRAI FULLSCREEN
---------------------------------------------------------- */
-
-#game10-canvas-zone:fullscreen canvas,
-#game10-canvas-zone:-webkit-full-screen canvas {
-    width: 100% !important;
-    height: 100% !important;
-
-    max-width: none !important;
-    max-height: none !important;
 
     display: block !important;
 }
+
+
+/* =========================================================
+   VRAI PLEIN ÉCRAN
+========================================================= */
+
+#game10-canvas-zone:fullscreen {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+
+    background: #000 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   SAFARI / WEBKIT
+========================================================= */
+
+#game10-canvas-zone:-webkit-full-screen {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+
+    background: #000 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   CANVAS — VRAI PLEIN ÉCRAN
+========================================================= */
+
+#game10-canvas-zone:fullscreen canvas,
+#game10-canvas-zone:-webkit-full-screen canvas {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+}
+
+
+/* =========================================================
+   BOUTON QUITTER LE PLEIN ÉCRAN
+========================================================= */
+
+#game10-exit-fullscreen {
+    position: absolute !important;
+
+    top: 15px !important;
+    right: 15px !important;
+
+    width: 50px !important;
+    height: 50px !important;
+
+    display: flex !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    padding: 0 !important;
+
+    background: rgba(0, 0, 0, 0.75) !important;
+
+    color: white !important;
+
+    border: 2px solid #00eaff !important;
+
+    border-radius: 12px !important;
+
+    font-size: 24px !important;
+    font-weight: bold !important;
+
+    z-index: 2147483647 !important;
+
+    cursor: pointer !important;
+
+    touch-action: manipulation !important;
+
+    box-shadow:
+        0 0 15px rgba(0, 234, 255, 0.5) !important;
+}
+
+
+#game10-exit-fullscreen:hover {
+    background: #00eaff !important;
+
+    color: black !important;
+}
+
+
+/* =========================================================
+   BOUTON PLEIN ÉCRAN
+========================================================= */
+
+#game10-fullscreen {
+    position: relative;
+
+    z-index: 100;
+}
+
 
 /* =========================================================
    FIN GAMEZONE
