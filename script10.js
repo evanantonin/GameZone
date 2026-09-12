@@ -524,16 +524,15 @@ const COULEUR_HERBE =
 
 
 /* =========================================================
-   PLEIN ÉCRAN
+   PLEIN ÉCRAN — RACING 3D
 ========================================================= */
 
 let boutonPleinEcran10 = null;
-
 let boutonQuitterPleinEcran10 = null;
 
 
 /* =========================================================
-   CRÉER LES BOUTONS PLEIN ÉCRAN
+   CRÉER LES BOUTONS
 ========================================================= */
 
 function creerBoutonsPleinEcran10() {
@@ -542,9 +541,12 @@ function creerBoutonsPleinEcran10() {
         return;
     }
 
+    /* La zone doit pouvoir contenir les boutons */
+    zoneRacing.style.position = "relative";
+
 
     /* -----------------------------------------------------
-       BOUTON ENTRER PLEIN ÉCRAN
+       BOUTON PLEIN ÉCRAN
     ----------------------------------------------------- */
 
     boutonPleinEcran10 =
@@ -552,13 +554,10 @@ function creerBoutonsPleinEcran10() {
             "game10-fullscreen"
         );
 
-
     if (!boutonPleinEcran10) {
 
         boutonPleinEcran10 =
-            document.createElement(
-                "button"
-            );
+            document.createElement("button");
 
         boutonPleinEcran10.id =
             "game10-fullscreen";
@@ -569,49 +568,44 @@ function creerBoutonsPleinEcran10() {
         boutonPleinEcran10.textContent =
             "⛶ Plein écran";
 
-
-        Object.assign(
-            boutonPleinEcran10.style,
-            {
-                position: "fixed",
-                right: "20px",
-                bottom: "20px",
-                zIndex: "2147483647",
-                padding: "12px 18px",
-                border: "2px solid rgba(255,255,255,.3)",
-                borderRadius: "12px",
-                background: "rgba(10,15,25,.95)",
-                color: "white",
-                fontSize: "15px",
-                fontWeight: "bold",
-                cursor: "pointer",
-                backdropFilter: "blur(8px)",
-                boxShadow: "0 5px 25px rgba(0,0,0,.5)",
-                display: "block"
-            }
-        );
-
-
-        boutonPleinEcran10.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                basculerPleinEcran10();
-            }
-        );
-
-
         document.body.appendChild(
             boutonPleinEcran10
         );
     }
 
 
+    Object.assign(
+        boutonPleinEcran10.style,
+        {
+            position: "fixed",
+            right: "15px",
+            bottom: "15px",
+            zIndex: "2147483647",
+            padding: "12px 18px",
+            border: "2px solid #00aaff",
+            borderRadius: "12px",
+            background: "#101020",
+            color: "#ffffff",
+            fontSize: "15px",
+            fontWeight: "bold",
+            cursor: "pointer"
+        }
+    );
+
+
+    /* Éviter plusieurs listeners */
+    boutonPleinEcran10.onclick =
+        function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            entrerPleinEcran10();
+        };
+
+
     /* -----------------------------------------------------
-       BOUTON QUITTER PLEIN ÉCRAN
+       BOUTON QUITTER
     ----------------------------------------------------- */
 
     boutonQuitterPleinEcran10 =
@@ -619,13 +613,10 @@ function creerBoutonsPleinEcran10() {
             "game10-exit-fullscreen"
         );
 
-
     if (!boutonQuitterPleinEcran10) {
 
         boutonQuitterPleinEcran10 =
-            document.createElement(
-                "button"
-            );
+            document.createElement("button");
 
         boutonQuitterPleinEcran10.id =
             "game10-exit-fullscreen";
@@ -634,46 +625,49 @@ function creerBoutonsPleinEcran10() {
             "button";
 
         boutonQuitterPleinEcran10.textContent =
-            "✕ Quitter plein écran";
+            "✕ Quitter";
 
-
-        Object.assign(
-            boutonQuitterPleinEcran10.style,
-            {
-                position: "fixed",
-                top: "15px",
-                right: "15px",
-                zIndex: "2147483647",
-                padding: "11px 15px",
-                border: "2px solid rgba(255,255,255,.35)",
-                borderRadius: "12px",
-                background: "rgba(10,15,25,.95)",
-                color: "white",
-                fontSize: "14px",
-                fontWeight: "bold",
-                cursor: "pointer",
-                boxShadow: "0 5px 25px rgba(0,0,0,.5)",
-                display: "none"
-            }
-        );
-
-
-        boutonQuitterPleinEcran10.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                quitterPleinEcran10();
-            }
-        );
-
-
-        document.body.appendChild(
+        /*
+         * TRÈS IMPORTANT :
+         * Le bouton est ajouté DANS zoneRacing.
+         *
+         * Ainsi il reste visible lorsque
+         * zoneRacing est l'élément fullscreen.
+         */
+        zoneRacing.appendChild(
             boutonQuitterPleinEcran10
         );
     }
+
+
+    Object.assign(
+        boutonQuitterPleinEcran10.style,
+        {
+            position: "absolute",
+            top: "15px",
+            right: "15px",
+            zIndex: "2147483647",
+            padding: "11px 16px",
+            border: "2px solid #ff4444",
+            borderRadius: "12px",
+            background: "rgba(10,10,20,0.95)",
+            color: "#ffffff",
+            fontSize: "15px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            display: "none"
+        }
+    );
+
+
+    boutonQuitterPleinEcran10.onclick =
+        function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            quitterPleinEcran10();
+        };
 
 
     mettreAJourBoutonsPleinEcran10();
@@ -681,10 +675,10 @@ function creerBoutonsPleinEcran10() {
 
 
 /* =========================================================
-   BASCULER PLEIN ÉCRAN
+   ENTRER EN PLEIN ÉCRAN
 ========================================================= */
 
-async function basculerPleinEcran10() {
+async function entrerPleinEcran10() {
 
     if (!zoneRacing) {
         return;
@@ -693,78 +687,103 @@ async function basculerPleinEcran10() {
 
     try {
 
-        if (!estEnPleinEcran10()) {
+        /* ---------------------------------------------
+           VRAI PLEIN ÉCRAN
+        --------------------------------------------- */
 
-            if (
-                zoneRacing.requestFullscreen
-            ) {
+        if (
+            zoneRacing.requestFullscreen
+        ) {
 
-                await zoneRacing.requestFullscreen();
-
-            }
-
-            else if (
-                zoneRacing.webkitRequestFullscreen
-            ) {
-
-                zoneRacing.webkitRequestFullscreen();
-
-            }
-
-            else {
-
-                activerFauxPleinEcran10();
-            }
+            await zoneRacing.requestFullscreen();
 
         }
 
+        /* ---------------------------------------------
+           SAFARI / iOS
+        --------------------------------------------- */
+
+        else if (
+            zoneRacing.webkitRequestFullscreen
+        ) {
+
+            zoneRacing.webkitRequestFullscreen();
+
+        }
+
+        /* ---------------------------------------------
+           FALLBACK MOBILE
+        --------------------------------------------- */
+
         else {
 
-            await quitterPleinEcran10();
+            activerFauxPleinEcran10();
         }
 
     } catch (erreur) {
 
         console.warn(
-            "API plein écran indisponible :",
+            "Fullscreen API refusée :",
             erreur
         );
 
-        if (!estEnPleinEcran10()) {
-
-            activerFauxPleinEcran10();
-
-        } else {
-
-            desactiverFauxPleinEcran10();
-        }
+        /*
+         * Si le navigateur refuse le vrai fullscreen,
+         * on force quand même la zone en 100vw / 100vh.
+         */
+        activerFauxPleinEcran10();
     }
+
+
+    setTimeout(
+        function() {
+
+            mettreAJourBoutonsPleinEcran10();
+            redimensionnerRacing();
+
+        },
+        150
+    );
 }
 
 
 /* =========================================================
-   QUITTER PLEIN ÉCRAN
+   QUITTER LE PLEIN ÉCRAN
 ========================================================= */
 
 async function quitterPleinEcran10() {
 
     try {
 
-        if (document.fullscreenElement) {
+        /* ---------------------------------------------
+           FALLBACK
+        --------------------------------------------- */
+
+        if (
+            zoneRacing.classList.contains(
+                "game10-faux-fullscreen"
+            )
+        ) {
+
+            desactiverFauxPleinEcran10();
+
+            return;
+        }
+
+
+        /* ---------------------------------------------
+           VRAI FULLSCREEN
+        --------------------------------------------- */
+
+        if (
+            document.fullscreenElement
+        ) {
 
             if (
                 document.exitFullscreen
             ) {
 
                 await document.exitFullscreen();
-
-            }
-
-            else if (
-                document.webkitExitFullscreen
-            ) {
-
-                document.webkitExitFullscreen();
             }
 
         }
@@ -779,18 +798,23 @@ async function quitterPleinEcran10() {
 
                 document.webkitExitFullscreen();
             }
-
         }
 
-        else {
 
-            desactiverFauxPleinEcran10();
-        }
+        setTimeout(
+            function() {
+
+                mettreAJourBoutonsPleinEcran10();
+                redimensionnerRacing();
+
+            },
+            150
+        );
 
     } catch (erreur) {
 
         console.error(
-            "Erreur sortie plein écran :",
+            "Erreur sortie fullscreen :",
             erreur
         );
 
@@ -800,7 +824,7 @@ async function quitterPleinEcran10() {
 
 
 /* =========================================================
-   DÉTECTER LE PLEIN ÉCRAN
+   DÉTECTION
 ========================================================= */
 
 function estEnPleinEcran10() {
@@ -808,18 +832,15 @@ function estEnPleinEcran10() {
     return (
         document.fullscreenElement === zoneRacing ||
         document.webkitFullscreenElement === zoneRacing ||
-        (
-            zoneRacing &&
-            zoneRacing.classList.contains(
-                "game10-faux-fullscreen"
-            )
+        zoneRacing.classList.contains(
+            "game10-faux-fullscreen"
         )
     );
 }
 
 
 /* =========================================================
-   FALLBACK MOBILE
+   FAUX PLEIN ÉCRAN MOBILE
 ========================================================= */
 
 function activerFauxPleinEcran10() {
@@ -833,6 +854,12 @@ function activerFauxPleinEcran10() {
         "game10-faux-fullscreen"
     );
 
+
+    document.documentElement.classList.add(
+        "game10-html-fullscreen"
+    );
+
+
     document.body.classList.add(
         "game10-body-fullscreen"
     );
@@ -843,10 +870,14 @@ function activerFauxPleinEcran10() {
 
     setTimeout(
         redimensionnerRacing,
-        150
+        100
     );
 }
 
+
+/* =========================================================
+   SORTIR DU FAUX PLEIN ÉCRAN
+========================================================= */
 
 function desactiverFauxPleinEcran10() {
 
@@ -859,6 +890,12 @@ function desactiverFauxPleinEcran10() {
         "game10-faux-fullscreen"
     );
 
+
+    document.documentElement.classList.remove(
+        "game10-html-fullscreen"
+    );
+
+
     document.body.classList.remove(
         "game10-body-fullscreen"
     );
@@ -869,13 +906,13 @@ function desactiverFauxPleinEcran10() {
 
     setTimeout(
         redimensionnerRacing,
-        150
+        100
     );
 }
 
 
 /* =========================================================
-   METTRE À JOUR LES BOUTONS
+   BOUTONS
 ========================================================= */
 
 function mettreAJourBoutonsPleinEcran10() {
@@ -900,29 +937,67 @@ function mettreAJourBoutonsPleinEcran10() {
                 ? "block"
                 : "none";
     }
-
-
-    setTimeout(
-        redimensionnerRacing,
-        100
-    );
 }
 
 
 /* =========================================================
-   ÉVÉNEMENTS PLEIN ÉCRAN
+   ÉVÉNEMENTS FULLSCREEN
 ========================================================= */
 
 document.addEventListener(
     "fullscreenchange",
-    mettreAJourBoutonsPleinEcran10
+    function() {
+
+        mettreAJourBoutonsPleinEcran10();
+
+        setTimeout(
+            redimensionnerRacing,
+            100
+        );
+    }
 );
+
 
 document.addEventListener(
     "webkitfullscreenchange",
-    mettreAJourBoutonsPleinEcran10
+    function() {
+
+        mettreAJourBoutonsPleinEcran10();
+
+        setTimeout(
+            redimensionnerRacing,
+            100
+        );
+    }
 );
 
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        setTimeout(
+            redimensionnerRacing,
+            100
+        );
+    }
+);
+
+
+window.addEventListener(
+    "orientationchange",
+    function() {
+
+        setTimeout(
+            redimensionnerRacing,
+            300
+        );
+    }
+);
 
 /* =========================================================
    INITIALISATION THREE.JS
